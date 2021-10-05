@@ -1,17 +1,13 @@
 <template>
-  <v-app>
-    <NavBar />
-  </v-app>
+  <div v-layout="'app-layout'">
+    <h1>hola</h1>
+  </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import NavBar from '@/components/NavBar.vue';
-
 @Component({
-  components: {
-    NavBar,
-  },
+  components: {},
 })
 export default class Inicio extends Vue {}
 </script>

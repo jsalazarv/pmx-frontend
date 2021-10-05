@@ -7,6 +7,7 @@ import vuetify from './plugins/vuetify';
 import Axios from "axios";
 import VueAxios from "vue-axios";
 import Vuelidate from 'vuelidate';
+import "./directives";
 
 Vue.use(VueAxios, Axios);
 Vue.use(Vuelidate);
