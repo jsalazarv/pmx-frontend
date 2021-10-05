@@ -18,7 +18,7 @@ const routes: Array<RouteConfig> = [
     name: 'Inicio',
     component: Inicio,
     meta: { requiresAuth: true },
-    children: [
+    /*children: [
       {
         path: "/opcion1", 
         name: "opcion1",
@@ -49,8 +49,38 @@ const routes: Array<RouteConfig> = [
         component: Opcion1,
         meta: { requiresAuth: true }
       }
-    ]
+    ]*/
   },
+  {
+    path: "/opcion1",
+    name: "opcion1",
+    component: Opcion1,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: "/opcion2",
+    name: "opcion2",
+    component: Opcion1,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: "/opcion3",
+    name: "opcion3",
+    component: Opcion1,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: "/hijo1",
+    name: "hijo1",
+    component: Opcion1,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: "/hijo2",
+    name: "hijo2",
+    component: Opcion1,
+    meta: { requiresAuth: true }
+  }
 ]
 
 const router = new VueRouter({

@@ -1,5 +1,5 @@
 <template>
-  <v-container class="fill-height pa-0 back fondo-login" fluid>
+  <v-container v-layout="'public-layout'" class="fill-height pa-0 back fondo-login" fluid>
     <v-row align="center" justify="center" class="fill-height pa-0">
       <v-col cols="12" sm="8" md="4">
         <v-form @submit.prevent="login">
@@ -113,7 +113,7 @@ export default class Login extends Vue {
     if (!this.$v.$invalid) {
       this.cargando = true;
       this.$store
-        .dispatch('login', {
+        .dispatch('user/login', {
           usuario: this.usuario,
           password: this.password,
         })

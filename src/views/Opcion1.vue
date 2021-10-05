@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-layout="'app-layout'">
       <h1>Opcion 1</h1>
   </div>
 </template>
