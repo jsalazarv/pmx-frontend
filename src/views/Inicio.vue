@@ -1,6 +1,8 @@
 <template>
   <div v-layout="'app-layout'">
-    <h1>hola</h1>
+    <div class="pa-4">
+      <h1>Dashboard</h1>
+    </div>
   </div>
 </template>
 
