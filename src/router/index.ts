@@ -3,7 +3,7 @@ import VueRouter, { RouteConfig } from 'vue-router';
 import store from "../store/index";
 import Login from '@/views/Login.vue';
 import Inicio from '@/views/Inicio.vue';
-import Opcion1 from '@/views/Opcion1.vue';
+import PeopleCreate from '@/views/people/PeopleCreate.vue';
 
 Vue.use(VueRouter)
 
@@ -52,33 +52,33 @@ const routes: Array<RouteConfig> = [
     ]*/
   },
   {
-    path: "/opcion1",
-    name: "opcion1",
-    component: Opcion1,
+    path: "/alta",
+    name: "people:create",
+    component: PeopleCreate,
     meta: { requiresAuth: true }
   },
   {
     path: "/opcion2",
     name: "opcion2",
-    component: Opcion1,
+    component: PeopleCreate,
     meta: { requiresAuth: true }
   },
   {
     path: "/opcion3",
     name: "opcion3",
-    component: Opcion1,
+    component: PeopleCreate,
     meta: { requiresAuth: true }
   },
   {
     path: "/hijo1",
     name: "hijo1",
-    component: Opcion1,
+    component: PeopleCreate,
     meta: { requiresAuth: true }
   },
   {
     path: "/hijo2",
     name: "hijo2",
-    component: Opcion1,
+    component: PeopleCreate,
     meta: { requiresAuth: true }
   }
 ]

@@ -20,6 +20,9 @@ git clone https://source.pemex.pmx.com/desarrollo-e-integracion/procesossoporte/
 npm install
 ```
 
+### Configurar variables de entorno
+Deberas copiar el archivo .env.example a un archivo llamado .env y configurar los valores correspondientes.
+
 ### Compilar y realizar hot-reloads en desarrollo
 ```
 npm run serve
