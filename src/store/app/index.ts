@@ -6,7 +6,7 @@ const appStore: Module<IAppState, any>  = {
     state: {
         layout: 'public-layout',
         sidebar: {
-            open: false,
+            open: true,
             miniVariant: false
         }
     },

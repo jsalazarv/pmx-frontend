@@ -14,8 +14,9 @@
             label="CURP"
             outlined
             required
+            v-model="person.curp"
         ></v-text-field>
-        <v-btn color="success">VALIDAR</v-btn>
+        <v-btn color="success" @click="search">VALIDAR</v-btn>
       </v-col>
       <v-col cols="12" md="6">
         <v-text-field
@@ -42,6 +43,7 @@
             label="Nombres"
             outlined
             required
+            v-model="person.nombres"
         ></v-text-field>
       </v-col>
       <v-col cols="12" md="4">
@@ -51,6 +53,7 @@
             label="Apellido paterno"
             outlined
             required
+            v-model="person.apellidoPaterno"
         ></v-text-field>
       </v-col>
       <v-col cols="12" md="4">
@@ -60,6 +63,7 @@
             label="Apellido materno"
             outlined
             required
+            v-model="person.apellidoMaterno"
         ></v-text-field>
       </v-col>
       <v-col cols="12" md="4">
@@ -69,6 +73,7 @@
             label="Fecha de nacimiento"
             outlined
             required
+            v-model="person.fechaNacimiento"
         ></v-text-field>
       </v-col>
       <v-col cols="12" md="4">
@@ -78,6 +83,7 @@
             label="Sexo"
             outlined
             required
+            v-model="person.sexo"
         ></v-text-field>
       </v-col>
       <v-col cols="12" md="4">
@@ -96,12 +102,19 @@
 <script lang="ts">
 import Component from "vue-class-component";
 import {Vue} from "vue-property-decorator";
+import {IEmpleado} from "@/store/people/types";
 
-@Component({
-  name: "PeopleForm"
-})
+@Component({})
+export default class RenapoPeopleForm extends Vue {
 
-export default class PeopleForm extends Vue {}
+  get person(): IEmpleado {
+    return this.$store.state.empleados.empleado;
+  }
+
+  search() {
+    this.$store.dispatch("empleados/getEmpleadoPorCurp", this.person.curp)
+  }
+}
 </script>
 
 <style scoped>

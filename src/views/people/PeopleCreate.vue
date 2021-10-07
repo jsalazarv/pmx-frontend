@@ -9,7 +9,11 @@
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
         </v-toolbar>
-        <people-form-renapo />
+        <v-progress-linear
+            :active="isLoading"
+            :indeterminate="isLoading"
+        ></v-progress-linear>
+        <renapo-people-form />
       </v-card>
     </div>
   </div>
@@ -18,11 +22,15 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import PeopleFormRenapo from "@/views/people/components/PeopleFormRenapo.vue";
+
+import RenapoPeopleForm from "@/views/people/components/RenapoPeopleForm.vue";
+import {IStoreEmpleados} from "@/store/people/types";
 @Component({
-  components: {PeopleFormRenapo}
+  components: {RenapoPeopleForm}
 })
 export default class PeopleCreate extends Vue {
-
+  get isLoading(): IStoreEmpleados {
+    return this.$store.state.empleados.isLoading;
+  }
 }
 </script>
