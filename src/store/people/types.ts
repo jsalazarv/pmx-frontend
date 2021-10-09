@@ -12,7 +12,15 @@ export interface IEmpleado {
     idEntidadEmisora: string;
 }
 
+export interface IEmpleadoRenapo extends IEmpleado {}
+export interface IEmpleadoMFE extends IEmpleado {}
+
 export interface IStoreEmpleados {
     isLoading: boolean;
+    dialogOpen: boolean;
     empleado: IEmpleado;
+    dataRenapo: IEmpleadoRenapo | null;
+    dataMFE: IEmpleadoMFE | null;
 }
+
+

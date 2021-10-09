@@ -1,10 +1,11 @@
 import {Module} from "vuex";
-import {IEmpleado, IStoreEmpleados} from "@/store/people/types";
+import {IEmpleado, IEmpleadoMFE, IEmpleadoRenapo, IStoreEmpleados} from "@/store/people/types";
 import {AxiosResponse} from "axios";
 import RenapoPeopleService from "@/services/RenapoPeopleService";
 
 const estadoInicial: IStoreEmpleados = {
     isLoading: false,
+    dialogOpen: false,
     empleado: {
         curp: "",
         nombres: "",
@@ -17,7 +18,9 @@ const estadoInicial: IStoreEmpleados = {
         idMunicipioRegistro: null,
         idEntidadNacional: "",
         idEntidadEmisora: ""
-    }
+    },
+    dataRenapo: null,
+    dataMFE: null
 };
 
 const peopleStore: Module<IStoreEmpleados, any> = {
@@ -28,8 +31,17 @@ const peopleStore: Module<IStoreEmpleados, any> = {
         SET_EMPLEADO(state, empleado: IEmpleado) {
             state.empleado = empleado;
         },
+        SET_DATA_RENAPO(state, dataRenapo: IEmpleadoRenapo | null) {
+            state.dataRenapo = dataRenapo;
+        },
+        SET_DATA_MFE(state, dataMFE: IEmpleadoMFE | null) {
+            state.dataMFE = dataMFE;
+        },
         IS_LOADING(state, isLoading: boolean) {
             state.isLoading = isLoading;
+        },
+        DIALOG_STATUS(state, isOpen: boolean) {
+            state.dialogOpen = isOpen;
         }
     },
 
@@ -40,11 +52,24 @@ const peopleStore: Module<IStoreEmpleados, any> = {
             renapoService
                 .find(curp.trim(), {})
                 .then((response: AxiosResponse) => {
-                    commit("SET_EMPLEADO", response.data.data.renapo);
+                    commit("SET_DATA_RENAPO", response.data.data.renapo);
+                    //TODO Cambiar data obtenida de RENAPO por data MFE
+                    commit("SET_DATA_MFE", { ...response.data.data.renapo, nombres: "nombre de prueba MFE" });
+                    commit("DIALOG_STATUS", true);
                 })
                 .finally(() => {
                     commit("IS_LOADING", false);
                 });
+        },
+        setEmpleado({ commit }, empleado: IEmpleado) {
+            commit("SET_EMPLEADO", empleado);
+        },
+        closeDialog({ commit }) {
+            commit("DIALOG_STATUS", false);
+        },
+        clearSelectionData({ commit }) {
+            commit("SET_DATA_RENAPO", null);
+            commit("SET_DATA_MFE", null);
         }
     }
 }
