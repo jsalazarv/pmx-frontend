@@ -7,7 +7,7 @@ const appStore: Module<IAppState, any>  = {
         layout: 'public-layout',
         sidebar: {
             open: true,
-            miniVariant: false
+            miniVariant: true
         }
     },
     mutations: {
