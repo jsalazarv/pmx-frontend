@@ -1,10 +1,8 @@
 <template>
   <v-app-bar clipped-left app dense color="black darken-3" dark>
-    <v-app-bar-nav-icon
-        @click="toggleSidebar"
-    ></v-app-bar-nav-icon>
+    <v-app-bar-nav-icon @click="toggleSidebar"></v-app-bar-nav-icon>
     <v-toolbar-title class="pl-1"
-    ><v-img
+      ><v-img
         contain
         src="@/assets/logoPemex.png"
         transition="scale-transition"
@@ -59,27 +57,24 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import {Prop} from "vue-property-decorator";
 
 @Component
 export default class Navbar extends Vue {
-  toggleSidebar() {
+  toggleSidebar(): void {
     this.$store.dispatch("app/toggleSidebar");
   }
 
-  logOut = () => {
+  logOut(): void {
     this.$store
-        .dispatch("user/logout")
-        .then(() => {
-          this.$router.push({ name: "Login" });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-  };
+      .dispatch("user/logout")
+      .then(() => {
+        this.$router.push({ name: "Login" });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

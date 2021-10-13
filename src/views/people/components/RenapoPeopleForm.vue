@@ -3,112 +3,100 @@
     <v-container>
       <v-row>
         <v-col cols="12" md="6">
-          <v-select
-              dense
-              label="Tipo de empledo"
-              outlined
-              required
-          ></v-select>
+          <v-select dense label="Tipo de empledo" outlined required></v-select>
           <v-text-field
-              clearable
-              dense
-              label="CURP"
-              outlined
-              required
-              v-model="person.curp"
+            clearable
+            dense
+            label="CURP"
+            outlined
+            required
+            v-model="person.curp"
           ></v-text-field>
           <v-btn color="success" @click="search">VALIDAR</v-btn>
         </v-col>
         <v-col cols="12" md="6">
           <v-text-field
-              dense
-              disabled
-              label="Número de asignación"
-              outlined
-              required
+            dense
+            disabled
+            label="Número de asignación"
+            outlined
+            required
           ></v-text-field>
           <v-text-field
-              dense
-              disabled
-              label="Estado de número de asignación"
-              outlined
-              required
+            dense
+            disabled
+            label="Estado de número de asignación"
+            outlined
+            required
           ></v-text-field>
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" md="4">
           <v-text-field
-              dense
-              disabled
-              label="Nombres"
-              outlined
-              required
-              v-model="person.nombres"
+            dense
+            disabled
+            label="Nombres"
+            outlined
+            required
+            v-model="person.nombres"
           ></v-text-field>
         </v-col>
         <v-col cols="12" md="4">
           <v-text-field
-              dense
-              disabled
-              label="Apellido paterno"
-              outlined
-              required
-              v-model="person.apellidoPaterno"
+            dense
+            disabled
+            label="Apellido paterno"
+            outlined
+            required
+            v-model="person.apellidoPaterno"
           ></v-text-field>
         </v-col>
         <v-col cols="12" md="4">
           <v-text-field
-              dense
-              disabled
-              label="Apellido materno"
-              outlined
-              required
-              v-model="person.apellidoMaterno"
+            dense
+            disabled
+            label="Apellido materno"
+            outlined
+            required
+            v-model="person.apellidoMaterno"
           ></v-text-field>
         </v-col>
         <v-col cols="12" md="4">
           <v-text-field
-              dense
-              disabled
-              label="Fecha de nacimiento"
-              outlined
-              required
-              v-model="person.fechaNacimiento"
+            dense
+            disabled
+            label="Fecha de nacimiento"
+            outlined
+            required
+            v-model="person.fechaNacimiento"
           ></v-text-field>
         </v-col>
         <v-col cols="12" md="4">
           <v-text-field
-              dense
-              disabled
-              label="Sexo"
-              outlined
-              required
-              v-model="person.sexo"
+            dense
+            disabled
+            label="Sexo"
+            outlined
+            required
+            v-model="person.sexo"
           ></v-text-field>
         </v-col>
         <v-col cols="12" md="4">
-          <v-text-field
-              dense
-              label="RFC"
-              outlined
-              required
-          ></v-text-field>
+          <v-text-field dense label="RFC" outlined required></v-text-field>
         </v-col>
       </v-row>
     </v-container>
 
     <v-dialog
-        v-model="dialog"
-        persistent
-        max-width="750"
-        scrollable
-        class="mx-2"
+      v-model="dialog"
+      persistent
+      max-width="750"
+      scrollable
+      class="mx-2"
     >
       <v-card>
-        <v-card-title class="text-h6">
-          Lorem Ipsum
-        </v-card-title>
+        <v-card-title class="text-h6"> Lorem Ipsum </v-card-title>
 
         <v-card-text>
           <v-row>
@@ -126,19 +114,25 @@
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
-                    <v-list-item-content>Apellido paterno: </v-list-item-content>
+                    <v-list-item-content
+                      >Apellido paterno:
+                    </v-list-item-content>
                     <v-list-item-content class="align-end">
                       {{ dataMFE.apellidoPaterno }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
-                    <v-list-item-content>Apellido materno: </v-list-item-content>
+                    <v-list-item-content
+                      >Apellido materno:
+                    </v-list-item-content>
                     <v-list-item-content class="align-end">
                       {{ dataMFE.apellidoMaterno }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
-                    <v-list-item-content>Fecha de nacimiento: </v-list-item-content>
+                    <v-list-item-content
+                      >Fecha de nacimiento:
+                    </v-list-item-content>
                     <v-list-item-content class="align-end">
                       {{ dataMFE.fechaNacimiento }}
                     </v-list-item-content>
@@ -152,11 +146,7 @@
                 </v-list>
                 <v-card-actions>
                   <div class="text-right">
-                    <v-btn
-                        color="success"
-                        elevation="0"
-                        @click="selectDataMFE"
-                    >
+                    <v-btn color="success" elevation="0" @click="selectDataMFE">
                       SELECCIONAR
                     </v-btn>
                   </div>
@@ -177,19 +167,25 @@
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
-                    <v-list-item-content>Apellido paterno: </v-list-item-content>
+                    <v-list-item-content
+                      >Apellido paterno:
+                    </v-list-item-content>
                     <v-list-item-content class="align-end">
                       {{ dataRenapo.apellidoPaterno }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
-                    <v-list-item-content>Apellido materno: </v-list-item-content>
+                    <v-list-item-content
+                      >Apellido materno:
+                    </v-list-item-content>
                     <v-list-item-content class="align-end">
                       {{ dataRenapo.apellidoMaterno }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
-                    <v-list-item-content>Fecha de nacimiento: </v-list-item-content>
+                    <v-list-item-content
+                      >Fecha de nacimiento:
+                    </v-list-item-content>
                     <v-list-item-content class="align-end">
                       {{ dataRenapo.fechaNacimiento }}
                     </v-list-item-content>
@@ -204,9 +200,9 @@
                 <v-card-actions>
                   <div class="text-right">
                     <v-btn
-                        color="success"
-                        elevation="0"
-                        @click="selectDataRenapo"
+                      color="success"
+                      elevation="0"
+                      @click="selectDataRenapo"
                     >
                       SELECCIONAR
                     </v-btn>
@@ -219,11 +215,7 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn
-              color="error darken-1"
-              text
-              @click="closeDialog"
-          >
+          <v-btn color="error darken-1" text @click="closeDialog">
             CANCELAR
           </v-btn>
         </v-card-actions>
@@ -234,12 +226,11 @@
 
 <script lang="ts">
 import Component from "vue-class-component";
-import {Vue} from "vue-property-decorator";
-import {IEmpleado, IEmpleadoMFE, IEmpleadoRenapo} from "@/store/people/types";
+import { Vue } from "vue-property-decorator";
+import { IEmpleado, IEmpleadoMFE, IEmpleadoRenapo } from "@/store/people/types";
 
 @Component({})
 export default class RenapoPeopleForm extends Vue {
-
   get person(): IEmpleado {
     return this.$store.state.empleados.empleado;
   }
@@ -252,25 +243,25 @@ export default class RenapoPeopleForm extends Vue {
     return this.$store.state.empleados.dataMFE;
   }
 
-  get dialog() {
+  get dialog(): boolean {
     return this.$store.state.empleados.dialogOpen;
   }
 
-  search() {
-    this.$store.dispatch("empleados/getEmpleadoPorCurp", this.person.curp)
+  search(): void {
+    this.$store.dispatch("empleados/getEmpleadoPorCurp", this.person.curp);
   }
 
-  closeDialog() {
-    return this.$store.dispatch("empleados/closeDialog");
+  closeDialog(): void {
+    this.$store.dispatch("empleados/closeDialog");
   }
 
-  selectDataRenapo() {
+  selectDataRenapo(): void {
     this.$store.dispatch("empleados/setEmpleado", this.dataRenapo);
     this.closeDialog();
     this.$store.dispatch("empleados/clearSelectionData");
   }
 
-  selectDataMFE() {
+  selectDataMFE(): void {
     this.$store.dispatch("empleados/setEmpleado", this.dataMFE);
     this.closeDialog();
     this.$store.dispatch("empleados/clearSelectionData");
@@ -278,6 +269,4 @@ export default class RenapoPeopleForm extends Vue {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

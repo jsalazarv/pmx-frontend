@@ -1,4 +1,4 @@
-import Vue from 'vue';
-import layout from './layout';
+import Vue from "vue";
+import layout from "./layout";
 
-Vue.directive('layout', layout);
+Vue.directive("layout", layout);

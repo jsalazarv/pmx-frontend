@@ -1,7 +1,7 @@
 <template>
   <div>
-    <navbar/>
-    <sidebar/>
+    <navbar />
+    <sidebar />
     <v-main>
       <router-view :key="$route.fullPath"></router-view>
     </v-main>
@@ -15,8 +15,7 @@ import Sidebar from "@/components/layouts/partials/Sidebar.vue";
 import Navbar from "@/components/layouts/partials/Navbar.vue";
 
 @Component({
-  components: {Navbar, Sidebar}
+  components: { Navbar, Sidebar },
 })
 export default class AppLayout extends Vue {}
-
 </script>

@@ -4,10 +4,8 @@
 
 <script>
 export default {
-  name: "PublicLayout"
-}
+  name: "PublicLayout",
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

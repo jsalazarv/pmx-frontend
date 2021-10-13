@@ -1,19 +1,19 @@
 <template>
   <v-navigation-drawer
-      v-model="sidebar.open"
-      clipped
-      app
-      :mini-variant="sidebar.miniVariant"
-      dark
+    v-model="sidebar.open"
+    clipped
+    app
+    :mini-variant="sidebar.miniVariant"
+    dark
   >
     <v-list dense>
       <template v-for="item in menu">
         <v-list-group
-            v-if="item.children"
-            :key="item.text"
-            v-model="item.model"
-            :prepend-icon="item.model ? item.icon : item['icon-alt']"
-            append-icon
+          v-if="item.children"
+          :key="item.text"
+          v-model="item.model"
+          :prepend-icon="item.model ? item.icon : item['icon-alt']"
+          append-icon
         >
           <template v-slot:activator>
             <v-list-item-content>
@@ -21,10 +21,10 @@
             </v-list-item-content>
           </template>
           <v-list-item
-              v-for="(child, i) in item.children"
-              :key="i"
-              link
-              :to="child.link"
+            v-for="(child, i) in item.children"
+            :key="i"
+            link
+            :to="child.link"
           >
             <v-list-item-action v-if="child.icon">
               <v-icon>{{ child.icon }}</v-icon>
@@ -43,13 +43,13 @@
           </v-list-item-content>
           <v-list-item-action v-if="item.message">
             <v-btn
-                color="error"
-                style="background-color: white"
-                x-small
-                text
-                outlined
-                fab
-            >{{ item.message }}</v-btn
+              color="error"
+              style="background-color: white"
+              x-small
+              text
+              outlined
+              fab
+              >{{ item.message }}</v-btn
             >
           </v-list-item-action>
         </v-list-item>
@@ -61,22 +61,22 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import {Prop} from "vue-property-decorator";
+import { ISidebar } from "@/store/app/types";
 
 interface menu {
   icon?: string;
   "icon-alt"?: string;
   text?: string;
   model?: boolean;
-  message?: any;
+  message?: null | number | string;
   link?: string;
-  children?: any;
+  children?: Array<unknown>;
 }
 
 type MenuObjeto = menu;
 
 @Component({
-  name: "Sidebar"
+  name: "Sidebar",
 })
 export default class Sidebar extends Vue {
   menu: Array<MenuObjeto> = [
@@ -114,12 +114,10 @@ export default class Sidebar extends Vue {
     },
   ];
 
-  get sidebar() {
+  get sidebar(): ISidebar {
     return this.$store.state.app.sidebar;
   }
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

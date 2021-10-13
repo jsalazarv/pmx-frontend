@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { ConfigService } from "./ConfigService";
 
 const apiClient = axios.create({
@@ -10,7 +10,7 @@ const apiClient = axios.create({
 });
 
 export default {
-  AutenticaInterno(usuario: string, password: string): Promise<any> {
+  AutenticaInterno(usuario: string, password: string): Promise<AxiosResponse> {
     const params = {
       usuario: usuario,
       password: password,
