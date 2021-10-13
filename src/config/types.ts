@@ -1,31 +1,31 @@
-import {AxiosRequestConfig} from "axios";
+import { AxiosRequestConfig } from "axios";
 
 export interface IApp {
-    name: string;
+  name: string;
 }
 
 export interface IApiConnections {
-    api: AxiosRequestConfig;
-    [name: string]: AxiosRequestConfig;
+  api: AxiosRequestConfig;
+  [name: string]: AxiosRequestConfig;
 }
 
 export interface IApi {
-    default: string;
-    connections: IApiConnections;
+  default: string;
+  connections: IApiConnections;
 }
 
 export interface IAuthRefresh {
-    timeInterval: number;
-    timeOffset: number;
-    maxAttempts: number;
+  timeInterval: number;
+  timeOffset: number;
+  maxAttempts: number;
 }
 
 export interface IAuth {
-    refresh: IAuthRefresh;
+  refresh: IAuthRefresh;
 }
 
 export interface IConfig {
-    app: IApp;
-    api: IApi;
-    auth: IAuth;
+  app: IApp;
+  api: IApi;
+  auth: IAuth;
 }

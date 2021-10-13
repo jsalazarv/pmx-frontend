@@ -1,5 +1,9 @@
 <template>
-  <v-container v-layout="'public-layout'" class="fill-height pa-0 back fondo-login" fluid>
+  <v-container
+    v-layout="'public-layout'"
+    class="fill-height pa-0 back fondo-login"
+    fluid
+  >
     <v-row align="center" justify="center" class="fill-height pa-0">
       <v-col cols="12" sm="8" md="4">
         <v-form @submit.prevent="login">
@@ -67,9 +71,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { validationMixin } from 'vuelidate';
-import { required, maxLength } from 'vuelidate/lib/validators';
+import { Component, Vue } from "vue-property-decorator";
+import { validationMixin } from "vuelidate";
+import { required, maxLength } from "vuelidate/lib/validators";
 
 @Component({
   mixins: [validationMixin],
@@ -79,50 +83,50 @@ import { required, maxLength } from 'vuelidate/lib/validators';
   },
 })
 export default class Login extends Vue {
-  usuario: string = '';
-  password: string = '';
-  showPassword: boolean = false;
-  error: string = '';
-  alert: boolean = false;
-  cargando: boolean = false;
+  usuario = "";
+  password = "";
+  showPassword = false;
+  error = "";
+  alert = false;
+  cargando = false;
 
-  get usuarioErrors() {
+  get usuarioErrors(): Array<string> {
     const errors: Array<string> = [];
 
     if (!this.$v.usuario.$dirty) return errors;
     !this.$v.usuario.maxLength &&
-      errors.push('Usuario puedo contener un máximo de 20 dígitos');
-    !this.$v.usuario.required && errors.push('Usuario es requerido.');
+      errors.push("Usuario puedo contener un máximo de 20 dígitos");
+    !this.$v.usuario.required && errors.push("Usuario es requerido.");
 
     return errors;
   }
 
-  get passwordErrors() {
+  get passwordErrors(): Array<string> {
     const errors: Array<string> = [];
 
     if (!this.$v.password.$dirty) return errors;
     !this.$v.password.maxLength &&
-      errors.push('Contraseña puedo contener un máximo de 30 caracteres');
-    !this.$v.password.required && errors.push('Contraseña es requerida.');
+      errors.push("Contraseña puedo contener un máximo de 30 caracteres");
+    !this.$v.password.required && errors.push("Contraseña es requerida.");
     return errors;
   }
-  
+
   login(): void {
     this.$v.$touch();
 
     if (!this.$v.$invalid) {
       this.cargando = true;
       this.$store
-        .dispatch('user/login', {
+        .dispatch("user/login", {
           usuario: this.usuario,
           password: this.password,
         })
         .then(() => {
           this.cargando = false;
-          this.$router.push({ name: 'Inicio' });
+          this.$router.push({ name: "Inicio" });
         })
-        .catch((err) => {
-          this.error = 'Error interno. Favor de verificar';
+        .catch(() => {
+          this.error = "Error interno. Favor de verificar";
           this.alert = true;
           this.cargando = false;
         });
@@ -132,7 +136,7 @@ export default class Login extends Vue {
 </script>
 <style>
 .fondo-login {
-  background-image: url('../assets/login-background.png');
+  background-image: url("../assets/login-background.png");
   background-size: cover;
 }
 </style>

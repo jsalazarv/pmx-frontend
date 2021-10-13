@@ -5,19 +5,18 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import Vue from "vue";
+import Component from "vue-class-component";
 import AppLayout from "@/components/layouts/AppLayout.vue";
 import PublicLayout from "@/components/layouts/PublicLayout.vue";
 
 @Component({
-  components: {PublicLayout, AppLayout}
+  components: { PublicLayout, AppLayout },
 })
 export default class App extends Vue {
-  name: string = 'App';
-
-  get layout() {
+  name = "App";
+  get layout(): string {
     return this.$store.state.app.layout;
   }
-};
+}
 </script>
