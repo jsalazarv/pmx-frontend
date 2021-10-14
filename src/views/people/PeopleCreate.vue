@@ -12,6 +12,7 @@
           :indeterminate="isLoading"
         ></v-progress-linear>
         <renapo-people-form />
+        <employment-information-form />
       </v-card>
     </div>
   </div>
@@ -23,8 +24,9 @@ import Component from "vue-class-component";
 
 import RenapoPeopleForm from "@/views/people/components/RenapoPeopleForm.vue";
 import { IStoreEmpleados } from "@/store/people/types";
+import EmploymentInformationForm from "@/views/people/components/EmploymentInformationForm.vue";
 @Component({
-  components: { RenapoPeopleForm },
+  components: { EmploymentInformationForm, RenapoPeopleForm },
 })
 export default class PeopleCreate extends Vue {
   get isLoading(): IStoreEmpleados {
