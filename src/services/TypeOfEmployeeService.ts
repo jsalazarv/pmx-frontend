@@ -1,8 +1,9 @@
 import Service from "@/services/Service";
 import AuthorizationRequestInterceptor from "@/http/interceptors/request/AuthorizationRequestInterceptor";
-import { AxiosResponse } from "axios";
+import { ServiceReponse } from "@/services/types";
+import { ITypesOfEmployees } from "@/store/people/types";
 
-export default class RenapoPeopleService extends Service {
+export default class TypeOfEmployeeService extends Service {
   constructor(
     protected connection = "api",
     protected requestInterceptors = [AuthorizationRequestInterceptor],
@@ -11,7 +12,7 @@ export default class RenapoPeopleService extends Service {
     super(connection, requestInterceptors, responseInterceptors);
   }
 
-  findByCurp(curp: string, params = {}): Promise<AxiosResponse> {
-    return this.client.get(`/Personas/${curp}/Curp`, params);
+  getTypesOfEmployees(): ServiceReponse<ITypesOfEmployees> {
+    return this.client.get("/TiposEmpleado");
   }
 }
