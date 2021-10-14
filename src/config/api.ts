@@ -8,9 +8,6 @@ const api: IApi = {
       baseURL: process.env.VUE_APP_API_HOST,
       timeout: 50000,
     },
-    apiRenapoPeople: {
-      baseURL: process.env.VUE_APP_API_RENAPO,
-    },
   },
 };
 

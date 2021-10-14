@@ -12,6 +12,12 @@ export interface IEmpleado {
   idEntidadEmisora: string;
 }
 
+export interface ITypesOfEmployees {
+  id: number;
+  nombre: string;
+  sigla: string;
+}
+
 export type IEmpleadoRenapo = IEmpleado;
 export type IEmpleadoMFE = IEmpleado;
 
@@ -19,6 +25,7 @@ export interface IStoreEmpleados {
   isLoading: boolean;
   dialogOpen: boolean;
   empleado: IEmpleado;
+  typesOfEmployees: Array<ITypesOfEmployees>;
   dataRenapo: IEmpleadoRenapo | null;
   dataMFE: IEmpleadoMFE | null;
 }

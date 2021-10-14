@@ -3,7 +3,15 @@
     <v-container>
       <v-row>
         <v-col cols="12" md="6">
-          <v-select dense label="Tipo de empledo" outlined required></v-select>
+          <v-autocomplete
+            dense
+            :items="dataTypesOfEmployee"
+            item-text="nombre"
+            item-value="id"
+            label="Tipo de empledo"
+            outlined
+            required
+          ></v-autocomplete>
           <v-text-field
             clearable
             dense
@@ -227,7 +235,12 @@
 <script lang="ts">
 import Component from "vue-class-component";
 import { Vue } from "vue-property-decorator";
-import { IEmpleado, IEmpleadoMFE, IEmpleadoRenapo } from "@/store/people/types";
+import {
+  IEmpleado,
+  IEmpleadoMFE,
+  IEmpleadoRenapo,
+  ITypesOfEmployees,
+} from "@/store/people/types";
 
 @Component({})
 export default class RenapoPeopleForm extends Vue {
@@ -237,6 +250,10 @@ export default class RenapoPeopleForm extends Vue {
 
   get dataRenapo(): IEmpleadoRenapo {
     return this.$store.state.empleados.dataRenapo;
+  }
+
+  get dataTypesOfEmployee(): ITypesOfEmployees {
+    return this.$store.state.empleados.typesOfEmployees;
   }
 
   get dataMFE(): IEmpleadoMFE {
@@ -265,6 +282,17 @@ export default class RenapoPeopleForm extends Vue {
     this.$store.dispatch("empleados/setEmpleado", this.dataMFE);
     this.closeDialog();
     this.$store.dispatch("empleados/clearSelectionData");
+  }
+
+  typesOfEmployee(): void {
+    this.$store.dispatch(
+      "empleados/getTiposDeEmpleado",
+      this.dataTypesOfEmployee
+    );
+  }
+
+  mounted(): void {
+    this.typesOfEmployee();
   }
 }
 </script>
