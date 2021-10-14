@@ -13,6 +13,7 @@
         ></v-progress-linear>
         <renapo-people-form />
         <employment-information-form />
+        <location-form />
       </v-card>
     </div>
   </div>
@@ -25,8 +26,9 @@ import Component from "vue-class-component";
 import RenapoPeopleForm from "@/views/people/components/RenapoPeopleForm.vue";
 import { IStoreEmpleados } from "@/store/people/types";
 import EmploymentInformationForm from "@/views/people/components/EmploymentInformationForm.vue";
+import LocationForm from "@/views/people/components/LocationForm.vue";
 @Component({
-  components: { EmploymentInformationForm, RenapoPeopleForm },
+  components: { LocationForm, EmploymentInformationForm, RenapoPeopleForm },
 })
 export default class PeopleCreate extends Vue {
   get isLoading(): IStoreEmpleados {
