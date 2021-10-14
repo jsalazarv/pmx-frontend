@@ -21,6 +21,14 @@ export interface ITypesOfEmployees {
 export type IEmpleadoRenapo = IEmpleado;
 export type IEmpleadoMFE = IEmpleado;
 
+export interface ICountries {
+  id: number;
+  clave: string;
+  nombre: string;
+  nacionalidad: string;
+  baja: boolean;
+}
+
 export interface IStoreEmpleados {
   isLoading: boolean;
   dialogOpen: boolean;
@@ -28,4 +36,5 @@ export interface IStoreEmpleados {
   typesOfEmployees: Array<ITypesOfEmployees>;
   dataRenapo: IEmpleadoRenapo | null;
   dataMFE: IEmpleadoMFE | null;
+  countries: Array<ICountries>;
 }

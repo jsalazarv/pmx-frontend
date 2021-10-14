@@ -1,5 +1,6 @@
 import { Module } from "vuex";
 import {
+  ICountries,
   IEmpleado,
   IEmpleadoMFE,
   IEmpleadoRenapo,
@@ -10,6 +11,7 @@ import { AxiosResponse } from "axios";
 import RenapoPeopleService from "@/services/RenapoPeopleService";
 import { IRootState } from "@/store/types";
 import TypeOfEmployee from "@/services/TypeOfEmployeeService";
+import LocationService from "@/services/LocationService";
 
 const estadoInicial: IStoreEmpleados = {
   isLoading: false,
@@ -30,6 +32,7 @@ const estadoInicial: IStoreEmpleados = {
   typesOfEmployees: [],
   dataRenapo: null,
   dataMFE: null,
+  countries: [],
 };
 
 const peopleStore: Module<IStoreEmpleados, IRootState> = {
@@ -57,6 +60,9 @@ const peopleStore: Module<IStoreEmpleados, IRootState> = {
       typeOfEmployee: Array<ITypesOfEmployees>
     ) {
       state.typesOfEmployees = typeOfEmployee;
+    },
+    SET_DATA_ALL_COUNTRIES(state, allCountries: Array<ICountries>) {
+      state.countries = allCountries;
     },
   },
 
@@ -103,6 +109,20 @@ const peopleStore: Module<IStoreEmpleados, IRootState> = {
     clearSelectionData({ commit }) {
       commit("SET_DATA_RENAPO", null);
       commit("SET_DATA_MFE", null);
+    },
+
+    getCountries({ commit }) {
+      const allCountries = new LocationService();
+
+      commit("IS_LOADING", true);
+      allCountries
+        .getCountries()
+        .then((response: AxiosResponse) => {
+          commit("SET_DATA_ALL_COUNTRIES", response.data.data);
+        })
+        .finally(() => {
+          commit("IS_LOADING", false);
+        });
     },
   },
 };
