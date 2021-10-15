@@ -3,7 +3,7 @@ import VueRouter, { RouteConfig } from "vue-router";
 import store from "../store/index";
 import Login from "@/views/Login.vue";
 import Dashboard from "@/views/Dashboard.vue";
-import EmployeeForm from "@/views/people/EmployeeForm.vue";
+import EmployeeForm from "@/views/employee/EmployeeForm.vue";
 
 Vue.use(VueRouter);
 

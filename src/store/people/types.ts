@@ -24,12 +24,6 @@ export interface IAddress {
   lote: string;
 }
 
-export interface ITypesOfEmployees {
-  id: number;
-  nombre: string;
-  sigla: string;
-}
-
 export interface IPeopleState {
   person: IPerson;
   address: IAddress;

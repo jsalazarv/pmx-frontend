@@ -23,9 +23,9 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 
-import EmployeeSearchForm from "@/views/people/components/EmployeeSearchForm.vue";
-import EmploymentInformationForm from "@/views/people/components/EmploymentInformationForm.vue";
-import LocationForm from "@/views/people/components/LocationForm.vue";
+import EmployeeSearchForm from "@/views/employee/components/EmployeeSearchForm.vue";
+import EmploymentInformationForm from "@/views/employee/components/EmploymentInformationForm.vue";
+import LocationForm from "@/views/employee/components/LocationForm.vue";
 
 @Component({
   components: {

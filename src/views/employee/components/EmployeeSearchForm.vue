@@ -245,16 +245,17 @@
 <script lang="ts">
 import Component from "vue-class-component";
 import { Vue } from "vue-property-decorator";
-import { IPerson, ITypesOfEmployees } from "@/store/people/types";
+import { IPerson } from "@/store/people/types";
 import EmployeeTypeService from "@/services/EmployeeTypeService";
 import PersonService from "@/services/PersonService";
 import { IPersonValidationResponse } from "@/services/PersonService/types";
+import { IEmployeeType } from "@/services/EmployeeTypeService/types";
 
 @Component({})
 export default class EmployeeSearchForm extends Vue {
   protected employeeTypesService = new EmployeeTypeService();
   protected personService = new PersonService();
-  public employeeTypeList: Array<ITypesOfEmployees> = [];
+  public employeeTypeList: Array<IEmployeeType> = [];
   public isLoadingEmployeeList = false;
   public personValidationData: IPersonValidationResponse | null = null;
   public isValidatingEmployee = false;
@@ -264,7 +265,7 @@ export default class EmployeeSearchForm extends Vue {
     return this.$store.state.people.person;
   }
 
-  get dataTypesOfEmployee(): ITypesOfEmployees {
+  get dataTypesOfEmployee(): IEmployeeType {
     return this.$store.state.people.typesOfEmployees;
   }
 
