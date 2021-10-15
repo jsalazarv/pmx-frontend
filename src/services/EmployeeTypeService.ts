@@ -3,7 +3,7 @@ import AuthorizationRequestInterceptor from "@/http/interceptors/request/Authori
 import { ServiceReponse } from "@/services/types";
 import { ITypesOfEmployees } from "@/store/people/types";
 
-export default class TypeOfEmployeeService extends Service {
+export default class EmployeeTypeService extends Service {
   constructor(
     protected connection = "api",
     protected requestInterceptors = [AuthorizationRequestInterceptor],
@@ -12,7 +12,7 @@ export default class TypeOfEmployeeService extends Service {
     super(connection, requestInterceptors, responseInterceptors);
   }
 
-  getTypesOfEmployees(): ServiceReponse<ITypesOfEmployees> {
+  getAll(): ServiceReponse<Array<ITypesOfEmployees>> {
     return this.client.get("/TiposEmpleado");
   }
 }

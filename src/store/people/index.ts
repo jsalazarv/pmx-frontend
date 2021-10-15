@@ -5,12 +5,10 @@ import {
   IEmpleadoMFE,
   IEmpleadoRenapo,
   IStoreEmpleados,
-  ITypesOfEmployees,
 } from "@/store/people/types";
 import { AxiosResponse } from "axios";
 import RenapoPeopleService from "@/services/RenapoPeopleService";
 import { IRootState } from "@/store/types";
-import TypeOfEmployee from "@/services/TypeOfEmployeeService";
 import LocationService from "@/services/LocationService";
 
 const estadoInicial: IStoreEmpleados = {
@@ -29,7 +27,6 @@ const estadoInicial: IStoreEmpleados = {
     idEntidadNacional: "",
     idEntidadEmisora: "",
   },
-  typesOfEmployees: [],
   dataRenapo: null,
   dataMFE: null,
   countries: [],
@@ -54,12 +51,6 @@ const peopleStore: Module<IStoreEmpleados, IRootState> = {
     },
     DIALOG_STATUS(state, isOpen: boolean) {
       state.dialogOpen = isOpen;
-    },
-    SET_DATA_TYPES_OF_EMPLOYEES(
-      state,
-      typeOfEmployee: Array<ITypesOfEmployees>
-    ) {
-      state.typesOfEmployees = typeOfEmployee;
     },
     SET_DATA_ALL_COUNTRIES(state, allCountries: Array<ICountries>) {
       state.countries = allCountries;
@@ -87,20 +78,6 @@ const peopleStore: Module<IStoreEmpleados, IRootState> = {
     },
     setEmpleado({ commit }, empleado: IEmpleado) {
       commit("SET_EMPLEADO", empleado);
-    },
-
-    getTiposDeEmpleado({ commit }) {
-      const tiposDeEmpleadoService = new TypeOfEmployee();
-
-      commit("IS_LOADING", true);
-      tiposDeEmpleadoService
-        .getTypesOfEmployees()
-        .then((response: AxiosResponse) => {
-          commit("SET_DATA_TYPES_OF_EMPLOYEES", response.data.data);
-        })
-        .finally(() => {
-          commit("IS_LOADING", false);
-        });
     },
 
     closeDialog({ commit }) {

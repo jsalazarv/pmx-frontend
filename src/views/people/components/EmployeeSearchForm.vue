@@ -5,12 +5,14 @@
         <v-col cols="12" md="6">
           <v-autocomplete
             dense
-            :items="dataTypesOfEmployee"
+            :items="employeeTypeList"
             item-text="nombre"
             item-value="id"
             label="Tipo de empledo"
             outlined
             required
+            :loading="isLoadingEmployeeList"
+            :disabled="isLoadingEmployeeList"
           ></v-autocomplete>
           <v-text-field
             clearable
@@ -241,9 +243,14 @@ import {
   IEmpleadoRenapo,
   ITypesOfEmployees,
 } from "@/store/people/types";
+import EmployeeTypeService from "@/services/EmployeeTypeService";
 
 @Component({})
-export default class RenapoPeopleForm extends Vue {
+export default class EmployeeSearchForm extends Vue {
+  protected employeeTypesService = new EmployeeTypeService();
+  public employeeTypeList: Array<ITypesOfEmployees> = [];
+  public isLoadingEmployeeList = false;
+
   get person(): IEmpleado {
     return this.$store.state.empleados.empleado;
   }
@@ -284,15 +291,20 @@ export default class RenapoPeopleForm extends Vue {
     this.$store.dispatch("empleados/clearSelectionData");
   }
 
-  typesOfEmployee(): void {
-    this.$store.dispatch(
-      "empleados/getTiposDeEmpleado",
-      this.dataTypesOfEmployee
-    );
+  getEmployeeTypes(): void {
+    this.isLoadingEmployeeList = true;
+    this.employeeTypesService
+      .getAll()
+      .then((response) => {
+        this.employeeTypeList = response.data.data;
+      })
+      .finally(() => {
+        this.isLoadingEmployeeList = false;
+      });
   }
 
   mounted(): void {
-    this.typesOfEmployee();
+    this.getEmployeeTypes();
   }
 }
 </script>

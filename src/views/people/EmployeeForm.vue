@@ -11,7 +11,7 @@
           :active="isLoading"
           :indeterminate="isLoading"
         ></v-progress-linear>
-        <renapo-people-form />
+        <employee-search-form />
         <employment-information-form />
         <location-form />
       </v-card>
@@ -23,16 +23,22 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 
-import RenapoPeopleForm from "@/views/people/components/RenapoPeopleForm.vue";
 import { IStoreEmpleados } from "@/store/people/types";
+import EmployeeSearchForm from "@/views/people/components/EmployeeSearchForm.vue";
 import EmploymentInformationForm from "@/views/people/components/EmploymentInformationForm.vue";
 import LocationForm from "@/views/people/components/LocationForm.vue";
+
 @Component({
-  components: { LocationForm, EmploymentInformationForm, RenapoPeopleForm },
+  components: {
+    EmployeeSearchForm,
+    LocationForm,
+    EmploymentInformationForm,
+  },
 })
 export default class PeopleCreate extends Vue {
   get isLoading(): IStoreEmpleados {
-    return this.$store.state.empleados.isLoading;
+    // TODO Refactor this form is submitting
+    return false;
   }
 }
 </script>

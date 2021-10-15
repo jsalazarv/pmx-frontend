@@ -2,8 +2,8 @@ import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import store from "../store/index";
 import Login from "@/views/Login.vue";
-import Inicio from "@/views/Inicio.vue";
-import PeopleCreate from "@/views/people/PeopleCreate.vue";
+import Dashboard from "@/views/Dashboard.vue";
+import EmployeeForm from "@/views/people/EmployeeForm.vue";
 
 Vue.use(VueRouter);
 
@@ -16,37 +16,13 @@ const routes: Array<RouteConfig> = [
   {
     path: "/inicio",
     name: "Inicio",
-    component: Inicio,
+    component: Dashboard,
     meta: { requiresAuth: true },
   },
   {
     path: "/alta",
     name: "people:create",
-    component: PeopleCreate,
-    meta: { requiresAuth: true },
-  },
-  {
-    path: "/opcion2",
-    name: "opcion2",
-    component: PeopleCreate,
-    meta: { requiresAuth: true },
-  },
-  {
-    path: "/opcion3",
-    name: "opcion3",
-    component: PeopleCreate,
-    meta: { requiresAuth: true },
-  },
-  {
-    path: "/hijo1",
-    name: "hijo1",
-    component: PeopleCreate,
-    meta: { requiresAuth: true },
-  },
-  {
-    path: "/hijo2",
-    name: "hijo2",
-    component: PeopleCreate,
+    component: EmployeeForm,
     meta: { requiresAuth: true },
   },
 ];

@@ -33,7 +33,6 @@ export interface IStoreEmpleados {
   isLoading: boolean;
   dialogOpen: boolean;
   empleado: IEmpleado;
-  typesOfEmployees: Array<ITypesOfEmployees>;
   dataRenapo: IEmpleadoRenapo | null;
   dataMFE: IEmpleadoMFE | null;
   countries: Array<ICountries>;
