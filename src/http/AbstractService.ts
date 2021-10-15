@@ -6,13 +6,13 @@ import HttpClient from "@/http/HttpClient";
 import ClientFactory from "@/http/ClientFactory";
 import config from "@/config";
 
-export default abstract class Service {
+export default abstract class AbstractService {
   static readonly DEFAULT_CONNECTION: string = config.api.default;
 
   protected client: HttpClient;
 
   constructor(
-    protected connection: string = Service.DEFAULT_CONNECTION,
+    protected connection: string = AbstractService.DEFAULT_CONNECTION,
     protected requestInterceptors: IRequestInterceptor[] = [],
     protected responseInterceptors: IResponseInterceptor[] = []
   ) {

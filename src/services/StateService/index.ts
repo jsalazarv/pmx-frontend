@@ -1,17 +1,8 @@
-import Service from "@/services/Service";
-import AuthorizationRequestInterceptor from "@/http/interceptors/request/AuthorizationRequestInterceptor";
+import BaseService from "@/services/BaseService";
 import { IServiceResponse } from "@/services/types";
 import { IState } from "@/services/StateService/types";
 
-export default class StateService extends Service {
-  constructor(
-    protected connection = "api",
-    protected requestInterceptors = [AuthorizationRequestInterceptor],
-    protected responseInterceptors = []
-  ) {
-    super(connection, requestInterceptors, responseInterceptors);
-  }
-
+export default class StateService extends BaseService {
   getAll(): IServiceResponse<Array<IState>> {
     return this.client.get("/Estados");
   }
