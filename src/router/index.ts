@@ -1,9 +1,6 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import store from "../store/index";
-import Login from "@/views/Login.vue";
-import Dashboard from "@/views/Dashboard.vue";
-import EmployeeForm from "@/views/employee/EmployeeForm.vue";
 
 Vue.use(VueRouter);
 
@@ -11,18 +8,18 @@ const routes: Array<RouteConfig> = [
   {
     path: "/",
     name: "Login",
-    component: Login,
+    component: () => import("@/views/Login.vue"),
   },
   {
     path: "/inicio",
     name: "Inicio",
-    component: Dashboard,
+    component: () => import("@/views/Dashboard.vue"),
     meta: { requiresAuth: true },
   },
   {
-    path: "/alta",
+    path: "/empleados/alta",
     name: "people:create",
-    component: EmployeeForm,
+    component: () => import("@/views/employee/EmployeeForm.vue"),
     meta: { requiresAuth: true },
   },
 ];

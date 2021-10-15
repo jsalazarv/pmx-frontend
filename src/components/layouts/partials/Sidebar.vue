@@ -83,13 +83,13 @@ export default class Sidebar extends Vue {
       icon: "mdi-keyboard-f1",
       text: "Dashboard",
       message: null,
-      link: "inicio",
+      link: "/inicio",
     },
     {
       icon: "mdi-keyboard-f2",
       text: "Alta",
       message: null,
-      link: "alta",
+      link: "/empleados/alta",
     },
   ];
 
