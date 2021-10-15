@@ -105,11 +105,11 @@ import { ICountries } from "@/store/people/types";
 @Component({})
 export default class LocationForm extends Vue {
   get dataAllCountries(): ICountries {
-    return this.$store.state.empleados.countries;
+    return this.$store.state.people.countries;
   }
 
   countries(): void {
-    this.$store.dispatch("empleados/getCountries", this.dataAllCountries);
+    this.$store.dispatch("people/getCountries", this.dataAllCountries);
   }
   mounted(): void {
     this.countries();

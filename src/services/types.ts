@@ -6,6 +6,6 @@ export interface IApiResponse<T> {
   success: boolean;
 }
 
-export type ServiceReponse<T = unknown> = Promise<
+export type IServiceResponse<T = unknown> = Promise<
   AxiosResponse<IApiResponse<T>>
 >;

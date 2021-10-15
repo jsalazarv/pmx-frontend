@@ -1,4 +1,4 @@
-export interface IEmpleado {
+export interface IPerson {
   curp: string;
   nombres: string;
   apellidoPaterno: string;
@@ -18,9 +18,6 @@ export interface ITypesOfEmployees {
   sigla: string;
 }
 
-export type IEmpleadoRenapo = IEmpleado;
-export type IEmpleadoMFE = IEmpleado;
-
 export interface ICountries {
   id: number;
   clave: string;
@@ -29,11 +26,7 @@ export interface ICountries {
   baja: boolean;
 }
 
-export interface IStoreEmpleados {
-  isLoading: boolean;
-  dialogOpen: boolean;
-  empleado: IEmpleado;
-  dataRenapo: IEmpleadoRenapo | null;
-  dataMFE: IEmpleadoMFE | null;
+export interface IPeopleState {
+  person: IPerson;
   countries: Array<ICountries>;
 }

@@ -12,7 +12,7 @@
             outlined
             required
             :loading="isLoadingEmployeeList"
-            :disabled="isLoadingEmployeeList"
+            :disabled="isLoadingEmployeeList || isValidatingEmployee"
           ></v-autocomplete>
           <v-text-field
             clearable
@@ -21,8 +21,16 @@
             outlined
             required
             v-model="person.curp"
+            :disabled="isValidatingEmployee"
+            :loading="isValidatingEmployee"
           ></v-text-field>
-          <v-btn color="success" @click="search">VALIDAR</v-btn>
+          <v-btn
+            color="success"
+            @click="validateCurp"
+            :disabled="isValidatingEmployee"
+            :loading="isValidatingEmployee"
+            >VALIDAR</v-btn
+          >
         </v-col>
         <v-col cols="12" md="6">
           <v-text-field
@@ -99,7 +107,7 @@
     </v-container>
 
     <v-dialog
-      v-model="dialog"
+      v-model="isDialogOpen"
       persistent
       max-width="750"
       scrollable
@@ -111,7 +119,7 @@
         <v-card-text>
           <v-row>
             <v-col cols="12" md="6">
-              <v-card v-if="dataMFE" elevation="0" outlined>
+              <v-card elevation="0" outlined>
                 <v-card-title class="subheading font-weight-bold">
                   MFE
                 </v-card-title>
@@ -120,7 +128,7 @@
                   <v-list-item>
                     <v-list-item-content>Nombres: </v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{ dataMFE.nombres }}
+                      {{ mfeData.nombres }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
@@ -128,7 +136,7 @@
                       >Apellido paterno:
                     </v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{ dataMFE.apellidoPaterno }}
+                      {{ mfeData.apellidoPaterno }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
@@ -136,7 +144,7 @@
                       >Apellido materno:
                     </v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{ dataMFE.apellidoMaterno }}
+                      {{ mfeData.apellidoMaterno }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
@@ -144,13 +152,13 @@
                       >Fecha de nacimiento:
                     </v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{ dataMFE.fechaNacimiento }}
+                      {{ mfeData.fechaNacimiento }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
                     <v-list-item-content>Sexo: </v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{ dataMFE.sexo }}
+                      {{ mfeData.sexo }}
                     </v-list-item-content>
                   </v-list-item>
                 </v-list>
@@ -164,7 +172,7 @@
               </v-card>
             </v-col>
             <v-col cols="12" md="6">
-              <v-card v-if="dataRenapo" elevation="0" outlined>
+              <v-card elevation="0" outlined>
                 <v-card-title class="subheading font-weight-bold">
                   RENAPO
                 </v-card-title>
@@ -173,7 +181,7 @@
                   <v-list-item>
                     <v-list-item-content>Nombres: </v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{ dataRenapo.nombres }}
+                      {{ renapoData.nombres }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
@@ -181,7 +189,7 @@
                       >Apellido paterno:
                     </v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{ dataRenapo.apellidoPaterno }}
+                      {{ renapoData.apellidoPaterno }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
@@ -189,7 +197,7 @@
                       >Apellido materno:
                     </v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{ dataRenapo.apellidoMaterno }}
+                      {{ renapoData.apellidoMaterno }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
@@ -197,13 +205,13 @@
                       >Fecha de nacimiento:
                     </v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{ dataRenapo.fechaNacimiento }}
+                      {{ renapoData.fechaNacimiento }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
                     <v-list-item-content>Sexo: </v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{ dataRenapo.sexo }}
+                      {{ renapoData.sexo }}
                     </v-list-item-content>
                   </v-list-item>
                 </v-list>
@@ -237,58 +245,80 @@
 <script lang="ts">
 import Component from "vue-class-component";
 import { Vue } from "vue-property-decorator";
-import {
-  IEmpleado,
-  IEmpleadoMFE,
-  IEmpleadoRenapo,
-  ITypesOfEmployees,
-} from "@/store/people/types";
+import { IPerson, ITypesOfEmployees } from "@/store/people/types";
 import EmployeeTypeService from "@/services/EmployeeTypeService";
+import PersonService from "@/services/PersonService";
+import { IPersonValidationResponse } from "@/services/PersonService/types";
 
 @Component({})
 export default class EmployeeSearchForm extends Vue {
   protected employeeTypesService = new EmployeeTypeService();
+  protected personService = new PersonService();
   public employeeTypeList: Array<ITypesOfEmployees> = [];
   public isLoadingEmployeeList = false;
+  public personValidationData: IPersonValidationResponse | null = null;
+  public isValidatingEmployee = false;
+  public isDialogOpen = false;
 
-  get person(): IEmpleado {
-    return this.$store.state.empleados.empleado;
-  }
-
-  get dataRenapo(): IEmpleadoRenapo {
-    return this.$store.state.empleados.dataRenapo;
+  get person(): IPerson {
+    return this.$store.state.people.person;
   }
 
   get dataTypesOfEmployee(): ITypesOfEmployees {
-    return this.$store.state.empleados.typesOfEmployees;
+    return this.$store.state.people.typesOfEmployees;
   }
 
-  get dataMFE(): IEmpleadoMFE {
-    return this.$store.state.empleados.dataMFE;
+  get mfeData(): Partial<IPerson> {
+    return {
+      nombres: this.personValidationData?.mfe.nombres,
+      apellidoPaterno: this.personValidationData?.mfe.apellidoPaterno,
+      apellidoMaterno: this.personValidationData?.mfe.apellidoMaterno,
+      fechaNacimiento: this.personValidationData?.mfe.fechaNacimiento,
+      sexo: this.personValidationData?.mfe.sexo,
+    };
   }
 
-  get dialog(): boolean {
-    return this.$store.state.empleados.dialogOpen;
+  get renapoData(): Partial<IPerson> {
+    return {
+      nombres: this.personValidationData?.renapo.nombres,
+      apellidoPaterno: this.personValidationData?.renapo.apellidoPaterno,
+      apellidoMaterno: this.personValidationData?.renapo.apellidoMaterno,
+      fechaNacimiento: this.personValidationData?.renapo.fechaNacimiento,
+      sexo: this.personValidationData?.renapo.sexo,
+    };
   }
 
-  search(): void {
-    this.$store.dispatch("empleados/getEmpleadoPorCurp", this.person.curp);
+  validateCurp(): void {
+    this.isValidatingEmployee = true;
+    this.personService
+      .findByCurp(this.person.curp)
+      .then((response) => {
+        this.personValidationData = response.data.data;
+        this.openDialog();
+      })
+      .finally(() => {
+        this.isValidatingEmployee = false;
+      });
   }
 
   closeDialog(): void {
-    this.$store.dispatch("empleados/closeDialog");
+    this.isDialogOpen = false;
+  }
+
+  openDialog(): void {
+    this.isDialogOpen = true;
   }
 
   selectDataRenapo(): void {
-    this.$store.dispatch("empleados/setEmpleado", this.dataRenapo);
+    this.$store.dispatch("people/setPersonData", this.renapoData);
     this.closeDialog();
-    this.$store.dispatch("empleados/clearSelectionData");
+    this.personValidationData = null;
   }
 
   selectDataMFE(): void {
-    this.$store.dispatch("empleados/setEmpleado", this.dataMFE);
+    this.$store.dispatch("people/setPersonData", this.mfeData);
     this.closeDialog();
-    this.$store.dispatch("empleados/clearSelectionData");
+    this.personValidationData = null;
   }
 
   getEmployeeTypes(): void {

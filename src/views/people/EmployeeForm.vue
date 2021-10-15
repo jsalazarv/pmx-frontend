@@ -23,7 +23,6 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 
-import { IStoreEmpleados } from "@/store/people/types";
 import EmployeeSearchForm from "@/views/people/components/EmployeeSearchForm.vue";
 import EmploymentInformationForm from "@/views/people/components/EmploymentInformationForm.vue";
 import LocationForm from "@/views/people/components/LocationForm.vue";
@@ -36,7 +35,7 @@ import LocationForm from "@/views/people/components/LocationForm.vue";
   },
 })
 export default class PeopleCreate extends Vue {
-  get isLoading(): IStoreEmpleados {
+  get isLoading(): boolean {
     // TODO Refactor this form is submitting
     return false;
   }

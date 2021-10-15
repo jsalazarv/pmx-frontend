@@ -1,6 +1,6 @@
 import Service from "@/services/Service";
 import AuthorizationRequestInterceptor from "@/http/interceptors/request/AuthorizationRequestInterceptor";
-import { ServiceReponse } from "@/services/types";
+import { IServiceResponse } from "@/services/types";
 import { ICountries } from "@/store/people/types";
 
 export default class LocationService extends Service {
@@ -12,7 +12,7 @@ export default class LocationService extends Service {
     super(connection, requestInterceptors, responseInterceptors);
   }
 
-  getCountries(): ServiceReponse<ICountries> {
+  getCountries(): IServiceResponse<ICountries> {
     return this.client.get("/Paises");
   }
 }
