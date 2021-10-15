@@ -5,10 +5,35 @@
         <v-col cols="12" md="4">
           <v-autocomplete
             dense
-            :items="dataAllCountries"
+            :items="countries"
             item-text="nombre"
             item-value="id"
+            :disabled="isLoadingCountries"
+            :loading="isLoadingCountries"
             label="País"
+            outlined
+            required
+            v-model="address.idPais"
+            @change="getStates"
+          ></v-autocomplete>
+        </v-col>
+        <v-col cols="12" md="4">
+          <v-autocomplete
+            dense
+            :items="states"
+            item-text="nombre"
+            item-value="id"
+            :disabled="isLoadingStates || !address.idPais"
+            :loading="isLoadingStates"
+            label="Estado"
+            outlined
+            required
+          ></v-autocomplete>
+        </v-col>
+        <v-col cols="12" md="4">
+          <v-autocomplete
+            dense
+            label="Municipio/Localidad"
             outlined
             required
           ></v-autocomplete>
@@ -23,14 +48,6 @@
           ></v-text-field>
         </v-col>
         <v-col cols="12" md="4">
-          <v-autocomplete
-            dense
-            label="Estado"
-            outlined
-            required
-          ></v-autocomplete>
-        </v-col>
-        <v-col cols="12" md="4">
           <v-text-field
             clearable
             dense
@@ -38,14 +55,6 @@
             outlined
             required
           ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="4">
-          <v-autocomplete
-            dense
-            label="Municipio/Localidad"
-            outlined
-            required
-          ></v-autocomplete>
         </v-col>
         <v-col cols="12" md="4">
           <v-text-field
@@ -100,19 +109,53 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { ICountries } from "@/store/people/types";
+import { IAddress } from "@/store/people/types";
+import CountryService from "@/services/CountryService";
+import { ICountry } from "@/services/CountryService/types";
+import { IState } from "@/services/StateService/types";
+import StateService from "@/services/StateService";
 
 @Component({})
 export default class LocationForm extends Vue {
-  get dataAllCountries(): ICountries {
-    return this.$store.state.people.countries;
+  protected countryService = new CountryService();
+  protected stateService = new StateService();
+  public countries: Array<ICountry> = [];
+  public isLoadingCountries = false;
+  public states: Array<IState> = [];
+  public isLoadingStates = false;
+
+  get address(): IAddress {
+    return this.$store.state.people.address;
   }
 
-  countries(): void {
-    this.$store.dispatch("people/getCountries", this.dataAllCountries);
+  getCountries(): void {
+    this.isLoadingCountries = true;
+    this.countryService
+      .getAll()
+      .then((response) => {
+        this.countries = response.data.data;
+      })
+      .finally(() => {
+        this.isLoadingCountries = false;
+      });
   }
+
+  getStates(): void {
+    if (!this.address.idPais) return;
+
+    this.isLoadingStates = true;
+    this.stateService
+      .getByCountryId(this.address.idPais)
+      .then((response) => {
+        this.states = response.data.data;
+      })
+      .finally(() => {
+        this.isLoadingStates = false;
+      });
+  }
+
   mounted(): void {
-    this.countries();
+    this.getCountries();
   }
 }
 </script>

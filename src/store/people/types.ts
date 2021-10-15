@@ -12,21 +12,25 @@ export interface IPerson {
   idEntidadEmisora: string;
 }
 
+export interface IAddress {
+  idPais: number | null;
+  idEstado: number | null;
+  idMunicipio: number | null;
+  codigoPostal: string;
+  colonia: string;
+  numeroInterior: string;
+  numeroExterior: string;
+  manzana: string;
+  lote: string;
+}
+
 export interface ITypesOfEmployees {
   id: number;
   nombre: string;
   sigla: string;
 }
 
-export interface ICountries {
-  id: number;
-  clave: string;
-  nombre: string;
-  nacionalidad: string;
-  baja: boolean;
-}
-
 export interface IPeopleState {
   person: IPerson;
-  countries: Array<ICountries>;
+  address: IAddress;
 }

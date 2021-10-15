@@ -1,9 +1,9 @@
 import Service from "@/services/Service";
 import AuthorizationRequestInterceptor from "@/http/interceptors/request/AuthorizationRequestInterceptor";
 import { IServiceResponse } from "@/services/types";
-import { ICountries } from "@/store/people/types";
+import { ICountry } from "@/services/CountryService/types";
 
-export default class LocationService extends Service {
+export default class CountryService extends Service {
   constructor(
     protected connection = "api",
     protected requestInterceptors = [AuthorizationRequestInterceptor],
@@ -12,7 +12,7 @@ export default class LocationService extends Service {
     super(connection, requestInterceptors, responseInterceptors);
   }
 
-  getCountries(): IServiceResponse<ICountries> {
+  getAll(): IServiceResponse<Array<ICountry>> {
     return this.client.get("/Paises");
   }
 }
