@@ -1,7 +1,7 @@
 import {
   IRequestInterceptor,
   IResponseInterceptor,
-} from "@/http/interceptors/types";
+} from "@/services/interceptors/types";
 import HttpClient from "@/http/HttpClient";
 import ClientFactory from "@/http/ClientFactory";
 import config from "@/config";
@@ -32,10 +32,7 @@ export default abstract class AbstractService {
   applyRequestInterceptors(
     interceptors: Array<IRequestInterceptor> = []
   ): void {
-    const requestInterceptors = [
-      ...this.getRequestInterceptors(),
-      ...interceptors,
-    ];
+    const requestInterceptors = [...interceptors];
 
     requestInterceptors.forEach((interceptor) => {
       this.client.applyInterceptorRequest(interceptor);
@@ -49,10 +46,7 @@ export default abstract class AbstractService {
   applyResponseInterceptors(
     interceptors: Array<IResponseInterceptor> = []
   ): void {
-    const responseInterceptors = [
-      ...this.getResponseInterceptors(),
-      ...interceptors,
-    ];
+    const responseInterceptors = [...interceptors];
 
     responseInterceptors.forEach((interceptor) => {
       this.client.applyInterceptorResponse(interceptor);

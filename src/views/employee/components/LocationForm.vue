@@ -145,7 +145,7 @@ export default class LocationForm extends Vue {
     this.countryService
       .getAll()
       .then((response) => {
-        this.countries = response.data.data;
+        this.countries = response.data;
       })
       .finally(() => {
         this.isLoadingCountries = false;
@@ -159,7 +159,7 @@ export default class LocationForm extends Vue {
     this.stateService
       .getByCountryId(this.address.idPais)
       .then((response) => {
-        this.states = response.data.data;
+        this.states = response.data;
       })
       .finally(() => {
         this.isLoadingStates = false;
@@ -173,7 +173,7 @@ export default class LocationForm extends Vue {
     this.municipalityService
       .getByStateId(this.address.idEstado)
       .then((response) => {
-        this.municipalities = response.data.data;
+        this.municipalities = response.data;
       })
       .finally(() => {
         this.isLoadingMunicipalities = false;

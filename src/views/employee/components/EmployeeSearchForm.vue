@@ -294,7 +294,7 @@ export default class EmployeeSearchForm extends Vue {
     this.personService
       .findByCurp(this.person.curp)
       .then((response) => {
-        this.personValidationData = response.data.data;
+        this.personValidationData = response.data;
         this.openDialog();
       })
       .finally(() => {
@@ -327,7 +327,7 @@ export default class EmployeeSearchForm extends Vue {
     this.employeeTypesService
       .getAll()
       .then((response) => {
-        this.employeeTypeList = response.data.data;
+        this.employeeTypeList = response.data;
       })
       .finally(() => {
         this.isLoadingEmployeeList = false;
