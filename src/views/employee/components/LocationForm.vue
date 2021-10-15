@@ -28,11 +28,18 @@
             label="Estado"
             outlined
             required
+            v-model="address.idEstado"
+            @change="getMunicipality"
           ></v-autocomplete>
         </v-col>
         <v-col cols="12" md="4">
           <v-autocomplete
             dense
+            :items="municipalities"
+            item-text="nombre"
+            item-value="id"
+            :disabled="isLoadingMunicipalities || !address.idEstado"
+            :loading="isLoadingMunicipalities"
             label="Municipio/Localidad"
             outlined
             required
@@ -109,20 +116,25 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { IAddress } from "@/store/people/types";
 import CountryService from "@/services/CountryService";
+import StateService from "@/services/StateService";
+import MunicipalityService from "@/services/MunicipalityService";
 import { ICountry } from "@/services/CountryService/types";
 import { IState } from "@/services/StateService/types";
-import StateService from "@/services/StateService";
+import { IAddress } from "@/store/people/types";
+import { IMunicipality } from "@/services/MunicipalityService/types";
 
 @Component({})
 export default class LocationForm extends Vue {
   protected countryService = new CountryService();
   protected stateService = new StateService();
+  protected municipalityService = new MunicipalityService();
   public countries: Array<ICountry> = [];
   public isLoadingCountries = false;
   public states: Array<IState> = [];
   public isLoadingStates = false;
+  public municipalities: Array<IMunicipality> = [];
+  public isLoadingMunicipalities = false;
 
   get address(): IAddress {
     return this.$store.state.people.address;
@@ -151,6 +163,20 @@ export default class LocationForm extends Vue {
       })
       .finally(() => {
         this.isLoadingStates = false;
+      });
+  }
+
+  getMunicipality(): void {
+    if (!this.address.idEstado) return;
+
+    this.isLoadingMunicipalities = true;
+    this.municipalityService
+      .getByStateId(this.address.idEstado)
+      .then((response) => {
+        this.municipalities = response.data.data;
+      })
+      .finally(() => {
+        this.isLoadingMunicipalities = false;
       });
   }
 
