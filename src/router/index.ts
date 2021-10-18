@@ -1,9 +1,6 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import store from "../store/index";
-import Login from "@/views/Login.vue";
-import Inicio from "@/views/Inicio.vue";
-import PeopleCreate from "@/views/people/PeopleCreate.vue";
 
 Vue.use(VueRouter);
 
@@ -11,42 +8,18 @@ const routes: Array<RouteConfig> = [
   {
     path: "/",
     name: "Login",
-    component: Login,
+    component: () => import("@/views/Login.vue"),
   },
   {
     path: "/inicio",
     name: "Inicio",
-    component: Inicio,
+    component: () => import("@/views/Dashboard.vue"),
     meta: { requiresAuth: true },
   },
   {
-    path: "/alta",
+    path: "/empleados/alta",
     name: "people:create",
-    component: PeopleCreate,
-    meta: { requiresAuth: true },
-  },
-  {
-    path: "/opcion2",
-    name: "opcion2",
-    component: PeopleCreate,
-    meta: { requiresAuth: true },
-  },
-  {
-    path: "/opcion3",
-    name: "opcion3",
-    component: PeopleCreate,
-    meta: { requiresAuth: true },
-  },
-  {
-    path: "/hijo1",
-    name: "hijo1",
-    component: PeopleCreate,
-    meta: { requiresAuth: true },
-  },
-  {
-    path: "/hijo2",
-    name: "hijo2",
-    component: PeopleCreate,
+    component: () => import("@/views/employee/EmployeeForm.vue"),
     meta: { requiresAuth: true },
   },
 ];

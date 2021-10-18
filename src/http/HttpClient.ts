@@ -2,7 +2,7 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import {
   IRequestInterceptor,
   IResponseInterceptor,
-} from "@/http/interceptors/types";
+} from "@/services/interceptors/types";
 
 class HttpClient {
   protected http: AxiosInstance;

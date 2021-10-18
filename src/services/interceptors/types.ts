@@ -3,6 +3,6 @@ import { AxiosRequestConfig, AxiosResponse } from "axios";
 export type IRequestInterceptor = (
   config: AxiosRequestConfig
 ) => AxiosRequestConfig | Promise<AxiosRequestConfig>;
-export type IResponseInterceptor = (
+export type IResponseInterceptor<T = AxiosResponse> = (
   response: AxiosResponse
-) => AxiosResponse | Promise<AxiosResponse>;
+) => T | Promise<T>;

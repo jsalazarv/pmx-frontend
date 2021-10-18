@@ -13,7 +13,6 @@
           :key="item.text"
           v-model="item.model"
           :prepend-icon="item.model ? item.icon : item['icon-alt']"
-          append-icon
         >
           <template v-slot:activator>
             <v-list-item-content>
@@ -83,34 +82,14 @@ export default class Sidebar extends Vue {
     {
       icon: "mdi-keyboard-f1",
       text: "Dashboard",
-      message: 4,
-      link: "inicio",
+      message: null,
+      link: "/inicio",
     },
     {
       icon: "mdi-keyboard-f2",
       text: "Alta",
       message: null,
-      link: "alta",
-    },
-    {
-      icon: "mdi-keyboard-f3",
-      text: "Opción 3",
-      message: null,
-      link: "opcion3",
-    },
-    {
-      icon: "mdi-chevron-up-box-outline",
-      "icon-alt": "mdi-chevron-down-box-outline",
-      text: "Opción con hijos",
-      model: true,
-      children: [
-        {
-          icon: "mdi-numeric-1-box",
-          text: "Hijo 1",
-          link: "/hijo1",
-        },
-        { icon: "mdi-numeric-2-box", text: "Hijo 2", link: "/hijo2" },
-      ],
+      link: "/empleados/alta",
     },
   ];
 
