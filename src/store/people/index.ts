@@ -16,6 +16,15 @@ const initialState: IPeopleState = {
     idEntidadNacional: "",
     idEntidadEmisora: "",
   },
+  employmentData: {
+    referencia: "",
+    empresaOrganismoSolicitante: "",
+    centroDeTrabajoSolicitante: "",
+    descripcionDelCentroDeTrabajoSolicitante: "",
+    idSindicato: null,
+    idSeccionSindical: null,
+    observaciones: "",
+  },
   address: {
     idPais: null,
     idEstado: null,
