@@ -12,6 +12,16 @@ export interface IPerson {
   idEntidadEmisora: string;
 }
 
+export interface IEmploymentData {
+  referencia: string;
+  empresaOrganismoSolicitante: string;
+  centroDeTrabajoSolicitante: string;
+  descripcionDelCentroDeTrabajoSolicitante: string;
+  idSindicato: number | null;
+  idSeccionSindical: number | null;
+  observaciones: string;
+}
+
 export interface IAddress {
   idPais: number | null;
   idEstado: number | null;
@@ -26,5 +36,6 @@ export interface IAddress {
 
 export interface IPeopleState {
   person: IPerson;
+  employmentData: IEmploymentData;
   address: IAddress;
 }
