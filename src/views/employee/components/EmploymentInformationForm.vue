@@ -117,6 +117,8 @@ export default class EmploymentInformationForm extends Vue {
   }
 
   getSyndicateSections(): void {
+    if (!this.employmentData.idSindicato) return;
+
     this.isLoadingSyndicateSections = true;
     this.syndicateSectionService
       .getBySyndicateId(this.employmentData.idSindicato)
