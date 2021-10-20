@@ -10,6 +10,7 @@ export interface IPerson {
   idMunicipioRegistro: number | null;
   idEntidadNacional: string;
   idEntidadEmisora: string;
+  idTipoEmpleado: number | null;
 }
 
 export interface IEmploymentData {

@@ -1,5 +1,10 @@
 import { Module } from "vuex";
-import { IPerson, IPeopleState } from "@/store/people/types";
+import {
+  IPerson,
+  IPeopleState,
+  IEmploymentData,
+  IAddress,
+} from "@/store/people/types";
 import { IRootState } from "@/store/types";
 
 const initialState: IPeopleState = {
@@ -15,6 +20,7 @@ const initialState: IPeopleState = {
     idMunicipioRegistro: null,
     idEntidadNacional: "",
     idEntidadEmisora: "",
+    idTipoEmpleado: null,
   },
   employmentData: {
     referencia: "",
@@ -46,11 +52,22 @@ const peopleModule: Module<IPeopleState, IRootState> = {
     SET_EMPLOYEE_DATA(state, employee: Partial<IPerson>) {
       state.person = { ...state.person, ...employee };
     },
+    SET_EMPLOYMENT_DATA(state, employmentData: Partial<IEmploymentData>) {
+      state.employmentData = { ...state.employmentData, ...employmentData };
+    },
+    SET_ADDRESS(state, address: Partial<IAddress>) {
+      state.address = { ...state.address, ...address };
+    },
   },
 
   actions: {
     setPersonData({ commit }, employee: Partial<IPerson>) {
       commit("SET_EMPLOYEE_DATA", employee);
+    },
+    clear({ commit }, employee: Partial<IPerson>) {
+      commit("SET_EMPLOYEE_DATA", { ...initialState.person, ...employee });
+      commit("SET_EMPLOYMENT_DATA", { ...initialState.employmentData });
+      commit("SET_ADDRESS", { ...initialState.address });
     },
   },
 };
