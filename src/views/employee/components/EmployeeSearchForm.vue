@@ -13,6 +13,7 @@
             required
             :loading="isLoadingEmployeeList"
             :disabled="isLoadingEmployeeList || isValidatingEmployee"
+            v-model="person.idTipoEmpleado"
           ></v-autocomplete>
           <v-text-field
             clearable
@@ -23,11 +24,12 @@
             v-model="person.curp"
             :disabled="isValidatingEmployee"
             :loading="isValidatingEmployee"
+            @click:clear="resetForm"
           ></v-text-field>
           <v-btn
             color="success"
             @click="validateCurp"
-            :disabled="isValidatingEmployee"
+            :disabled="isValidatingEmployee || !canValidate"
             :loading="isValidatingEmployee"
             >VALIDAR</v-btn
           >
@@ -53,7 +55,7 @@
         <v-col cols="12" md="4">
           <v-text-field
             dense
-            disabled
+            :disabled="canEditPersonalInfo"
             label="Nombres"
             outlined
             required
@@ -63,7 +65,7 @@
         <v-col cols="12" md="4">
           <v-text-field
             dense
-            disabled
+            :disabled="canEditPersonalInfo"
             label="Apellido paterno"
             outlined
             required
@@ -73,7 +75,7 @@
         <v-col cols="12" md="4">
           <v-text-field
             dense
-            disabled
+            :disabled="canEditPersonalInfo"
             label="Apellido materno"
             outlined
             required
@@ -83,7 +85,7 @@
         <v-col cols="12" md="4">
           <v-text-field
             dense
-            disabled
+            :disabled="canEditPersonalInfo"
             label="Fecha de nacimiento"
             outlined
             required
@@ -93,7 +95,7 @@
         <v-col cols="12" md="4">
           <v-text-field
             dense
-            disabled
+            :disabled="canEditPersonalInfo"
             label="Sexo"
             outlined
             required
@@ -239,6 +241,20 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-snackbar v-model="snackbar.visible" :top="true">
+      {{ snackbar.message }}
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          :color="snackbar.color"
+          text
+          v-bind="attrs"
+          @click="snackbar.visible = false"
+        >
+          Cerrar
+        </v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
@@ -250,6 +266,7 @@ import EmployeeTypeService from "@/services/EmployeeTypeService";
 import PersonService from "@/services/PersonService";
 import { IPersonValidationResponse } from "@/services/PersonService/types";
 import { IEmployeeType } from "@/services/EmployeeTypeService/types";
+import { ISnackbarProps } from "@/components/types";
 
 @Component({})
 export default class EmployeeSearchForm extends Vue {
@@ -260,6 +277,12 @@ export default class EmployeeSearchForm extends Vue {
   public personValidationData: IPersonValidationResponse | null = null;
   public isValidatingEmployee = false;
   public isDialogOpen = false;
+  public snackbar: ISnackbarProps = {
+    visible: false,
+    message: null,
+    color: null,
+  };
+  public infoSelected = false;
 
   get person(): IPerson {
     return this.$store.state.people.person;
@@ -289,6 +312,14 @@ export default class EmployeeSearchForm extends Vue {
     };
   }
 
+  get canEditPersonalInfo(): boolean {
+    return this.infoSelected;
+  }
+
+  get canValidate(): number | boolean {
+    return this.person.idTipoEmpleado !== null && this.person.curp?.length;
+  }
+
   validateCurp(): void {
     this.isValidatingEmployee = true;
     this.personService
@@ -296,6 +327,14 @@ export default class EmployeeSearchForm extends Vue {
       .then((response) => {
         this.personValidationData = response.data;
         this.openDialog();
+      })
+      .catch((error) => {
+        if (error.response.data.success === false) {
+          this.showSnackbar(true, error.response.data.message, "error");
+          this.infoSelected = false;
+          const { curp, idTipoEmpleado } = this.person;
+          this.$store.dispatch("people/clear", { curp, idTipoEmpleado });
+        }
       })
       .finally(() => {
         this.isValidatingEmployee = false;
@@ -314,12 +353,14 @@ export default class EmployeeSearchForm extends Vue {
     this.$store.dispatch("people/setPersonData", this.renapoData);
     this.closeDialog();
     this.personValidationData = null;
+    this.infoSelected = true;
   }
 
   selectDataMFE(): void {
     this.$store.dispatch("people/setPersonData", this.mfeData);
     this.closeDialog();
     this.personValidationData = null;
+    this.infoSelected = true;
   }
 
   getEmployeeTypes(): void {
@@ -332,6 +373,17 @@ export default class EmployeeSearchForm extends Vue {
       .finally(() => {
         this.isLoadingEmployeeList = false;
       });
+  }
+
+  showSnackbar(visible: boolean, message: string, color: string): void {
+    this.snackbar.visible = visible;
+    this.snackbar.message = message;
+    this.snackbar.color = color;
+  }
+
+  resetForm(): void {
+    this.$store.dispatch("people/clear");
+    this.infoSelected = false;
   }
 
   mounted(): void {
