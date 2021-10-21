@@ -51,6 +51,7 @@
             required
             v-model="employmentData.idSindicato"
             @change="getSyndicateSections"
+            v-if="showSyndicates === true"
           ></v-autocomplete>
         </v-col>
         <v-col cols="12" md="4">
@@ -58,13 +59,16 @@
             :items="syndicateSections"
             item-text="nombre"
             item-value="idSeccionSindicato"
-            :disabled="isLoadingSyndicateSections"
+            :disabled="
+              isLoadingSyndicateSections || !employmentData.idSindicato
+            "
             :loading="isLoadingSyndicateSections"
             dense
             label="Sección sindical"
             outlined
             required
             v-model="employmentData.idSeccionSindical"
+            v-if="showSyndicates === true"
           ></v-autocomplete>
         </v-col>
         <v-col cols="12">
@@ -86,10 +90,11 @@
 import Component from "vue-class-component";
 import Vue from "vue";
 import SyndicateService from "@/services/SyndicateService";
-import { ISyndicate } from "@/services/SyndicateService/types";
 import SyndicateSectionService from "@/services/SyndicateSectionService";
+import { ISyndicate } from "@/services/SyndicateService/types";
 import { ISyndicateSection } from "@/services/SyndicateSectionService/types";
-import { IEmploymentData } from "@/store/people/types";
+import { IEmploymentData, IPerson } from "@/store/people/types";
+import { Watch } from "vue-property-decorator";
 
 @Component({})
 export default class EmploymentInformationForm extends Vue {
@@ -99,9 +104,14 @@ export default class EmploymentInformationForm extends Vue {
   public syndicateSections: Array<ISyndicateSection> = [];
   public isLoadingSyndicates = false;
   public isLoadingSyndicateSections = false;
+  public showSyndicates = false;
 
   get employmentData(): IEmploymentData {
     return this.$store.state.people.employmentData;
+  }
+
+  get person(): IPerson {
+    return this.$store.state.people.person;
   }
 
   getSyndicates(): void {
@@ -128,6 +138,17 @@ export default class EmploymentInformationForm extends Vue {
       .finally(() => {
         this.isLoadingSyndicateSections = false;
       });
+  }
+
+  @Watch("person.idTipoEmpleado")
+  selectedEmployeeType(employeeTypeId: number | null): void {
+    if (employeeTypeId === 0) {
+      this.showSyndicates = true;
+    } else {
+      this.showSyndicates = false;
+      this.employmentData.idSindicato = null;
+      this.employmentData.idSeccionSindical = null;
+    }
   }
 
   mounted(): void {
