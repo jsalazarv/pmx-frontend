@@ -3,29 +3,41 @@
     <v-container>
       <v-row>
         <v-col cols="12" md="6">
-          <v-autocomplete
-            dense
-            :items="employeeTypeList"
-            item-text="nombre"
-            item-value="id"
-            label="Tipo de empledo"
-            outlined
-            required
-            :loading="isLoadingEmployeeList"
-            :disabled="isLoadingEmployeeList || isValidatingEmployee"
-            v-model="person.idTipoEmpleado"
-          ></v-autocomplete>
-          <v-text-field
-            clearable
-            dense
-            label="CURP"
-            outlined
-            required
-            v-model="person.curp"
-            :disabled="isValidatingEmployee"
-            :loading="isValidatingEmployee"
-            @click:clear="resetForm"
-          ></v-text-field>
+          <ValidationProvider
+            name="typeOfEmployee"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-autocomplete
+              dense
+              name="typeOfEmployee"
+              :items="employeeTypeList"
+              item-text="nombre"
+              item-value="id"
+              label="Tipo de empledo"
+              outlined
+              required
+              :loading="isLoadingEmployeeList"
+              :disabled="isLoadingEmployeeList || isValidatingEmployee"
+              v-model="person.idTipoEmpleado"
+              :error-messages="errors"
+            ></v-autocomplete>
+          </ValidationProvider>
+          <ValidationProvider name="curp" rules="required" v-slot="{ errors }">
+            <v-text-field
+              clearable
+              dense
+              name="curp"
+              label="CURP"
+              outlined
+              required
+              v-model="person.curp"
+              :disabled="isValidatingEmployee"
+              :loading="isValidatingEmployee"
+              @click:clear="resetForm"
+              :error-messages="errors"
+            ></v-text-field>
+          </ValidationProvider>
           <v-btn
             color="success"
             @click="validateCurp"
@@ -35,75 +47,136 @@
           >
         </v-col>
         <v-col cols="12" md="6">
-          <v-text-field
-            dense
-            disabled
-            label="Número de asignación"
-            outlined
-            required
-          ></v-text-field>
-          <v-text-field
-            dense
-            disabled
-            label="Estado de número de asignación"
-            outlined
-            required
-          ></v-text-field>
+          <ValidationProvider
+            name="assignmentNumber"
+            rules=""
+            v-slot="{ errors }"
+          >
+            <v-text-field
+              dense
+              name="assignmentNumber"
+              disabled
+              label="Número de asignación"
+              outlined
+              required
+              :error-messages="errors"
+            ></v-text-field>
+          </ValidationProvider>
+          <ValidationProvider
+            name="assignmentNumberStatus"
+            rules=""
+            v-slot="{ errors }"
+          >
+            <v-text-field
+              dense
+              name="assignmentNumberStatus"
+              disabled
+              label="Estado de número de asignación"
+              outlined
+              required
+              :error-messages="errors"
+            ></v-text-field>
+          </ValidationProvider>
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" md="4">
-          <v-text-field
-            dense
-            :disabled="canEditPersonalInfo"
-            label="Nombres"
-            outlined
-            required
-            v-model="person.nombres"
-          ></v-text-field>
+          <ValidationProvider name="names" rules="required" v-slot="{ errors }">
+            <v-text-field
+              dense
+              name="names"
+              :disabled="canEditPersonalInfo"
+              label="Nombres"
+              outlined
+              required
+              v-model="person.nombres"
+              :error-messages="errors"
+            ></v-text-field>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
-          <v-text-field
-            dense
-            :disabled="canEditPersonalInfo"
-            label="Apellido paterno"
-            outlined
-            required
-            v-model="person.apellidoPaterno"
-          ></v-text-field>
+          <ValidationProvider
+            name="lastname"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-text-field
+              dense
+              name="lastname"
+              :disabled="canEditPersonalInfo"
+              label="Apellido paterno"
+              outlined
+              required
+              v-model="person.apellidoPaterno"
+              :error-messages="errors"
+            ></v-text-field>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
-          <v-text-field
-            dense
-            :disabled="canEditPersonalInfo"
-            label="Apellido materno"
-            outlined
-            required
-            v-model="person.apellidoMaterno"
-          ></v-text-field>
+          <ValidationProvider
+            name="surname"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-text-field
+              dense
+              name="surname"
+              :disabled="canEditPersonalInfo"
+              label="Apellido materno"
+              outlined
+              required
+              v-model="person.apellidoMaterno"
+              :error-messages="errors"
+            ></v-text-field>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
-          <v-text-field
-            dense
-            :disabled="canEditPersonalInfo"
-            label="Fecha de nacimiento"
-            outlined
-            required
-            v-model="person.fechaNacimiento"
-          ></v-text-field>
+          <ValidationProvider
+            name="birthday"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-text-field
+              dense
+              name="birthday"
+              :disabled="canEditPersonalInfo"
+              label="Fecha de nacimiento"
+              outlined
+              required
+              v-model="person.fechaNacimiento"
+              :error-messages="errors"
+            ></v-text-field>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
-          <v-text-field
-            dense
-            :disabled="canEditPersonalInfo"
-            label="Sexo"
-            outlined
-            required
-            v-model="person.sexo"
-          ></v-text-field>
+          <ValidationProvider
+            name="gender"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-text-field
+              dense
+              name="birthday"
+              :disabled="canEditPersonalInfo"
+              label="Sexo"
+              outlined
+              required
+              v-model="person.sexo"
+              :error-messages="errors"
+            ></v-text-field>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
-          <v-text-field dense label="RFC" outlined required></v-text-field>
+          <ValidationProvider name="rfc" rules="required" v-slot="{ errors }">
+            <v-text-field
+              dense
+              name="rfc"
+              label="RFC"
+              outlined
+              required
+              :error-messages="errors"
+            ></v-text-field>
+          </ValidationProvider>
         </v-col>
       </v-row>
     </v-container>
