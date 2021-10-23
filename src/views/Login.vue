@@ -6,8 +6,8 @@
   >
     <v-row align="center" justify="center" class="fill-height pa-0">
       <v-col cols="12" sm="8" md="4">
-        <v-form @submit.prevent="login">
-          <v-card dark :loading="cargando" style="opacity: 0.9">
+        <ValidationObserver ref="form">
+          <v-card dark style="opacity: 0.9">
             <template slot="progress">
               <v-progress-linear
                 color="aceptar"
@@ -16,55 +16,59 @@
             </template>
             <v-toolbar dark>
               <v-spacer></v-spacer>
-              <v-toolbar-title style="justify-center"
-                >Plantilla Vue.js</v-toolbar-title
-              >
+              <v-toolbar-title class="justify-center">
+                Plantilla Vue.js
+              </v-toolbar-title>
               <v-spacer></v-spacer>
             </v-toolbar>
-
             <v-card-text>
-              <v-text-field
-                id="txtUsuario"
-                label="Usuario"
-                v-model.trim="usuario"
-                prepend-icon="mdi-account-circle"
-                :error-messages="usuarioErrors"
-                required
-                @input="$v.usuario.$touch()"
-                @blur="$v.usuario.$touch()"
-              />
-
-              <v-text-field
-                id="txtPassword"
-                label="Contraseña"
-                v-model.trim="password"
-                :type="showPassword ? 'text' : 'password'"
-                prepend-icon="mdi-lock"
-                :error-messages="passwordErrors"
-                required
-                @input="$v.password.$touch()"
-                @blur="$v.password.$touch()"
-                :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                @click:append="showPassword = !showPassword"
-              />
+              <ValidationProvider
+                name="user"
+                rules="required"
+                v-slot="{ errors }"
+              >
+                <v-text-field
+                  id="txtUsuario"
+                  label="Usuario"
+                  name="user"
+                  v-model="usuario"
+                  prepend-icon="mdi-account-circle"
+                  required
+                  :error-messages="errors"
+                />
+              </ValidationProvider>
+              <ValidationProvider
+                name="password"
+                rules="required|min:8"
+                v-slot="{ errors }"
+              >
+                <v-text-field
+                  id="txtPassword"
+                  label="Contraseña"
+                  v-model="password"
+                  :type="showPassword ? 'text' : 'password'"
+                  prepend-icon="mdi-lock"
+                  required
+                  :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                  @click:append="showPassword = !showPassword"
+                  :error-messages="errors"
+                />
+              </ValidationProvider>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn id="btnLogin" dark type="submit" color="aceptar"
-                >Iniciar Sesión</v-btn
+              <v-btn
+                id="btnLogin"
+                dark
+                type="submit"
+                color="aceptar"
+                @click="login"
               >
+                Iniciar Sesión
+              </v-btn>
             </v-card-actions>
           </v-card>
-          <v-alert
-            v-model="alert"
-            v-if="alert"
-            type="error"
-            icon="mdi-cloud-alert"
-            close-text="Cerrar"
-            dismissible
-            >{{ error }}</v-alert
-          >
-        </v-form>
+        </ValidationObserver>
       </v-col>
     </v-row>
   </v-container>
@@ -72,16 +76,9 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { validationMixin } from "vuelidate";
-import { required, maxLength } from "vuelidate/lib/validators";
+import { IValidationObserver } from "@/components/types";
 
-@Component({
-  mixins: [validationMixin],
-  validations: {
-    usuario: { required, maxLength: maxLength(20) },
-    password: { required, maxLength: maxLength(30) },
-  },
-})
+@Component({})
 export default class Login extends Vue {
   usuario = "";
   password = "";
@@ -90,32 +87,10 @@ export default class Login extends Vue {
   alert = false;
   cargando = false;
 
-  get usuarioErrors(): Array<string> {
-    const errors: Array<string> = [];
+  async login(): Promise<void> {
+    this.cargando = true;
 
-    if (!this.$v.usuario.$dirty) return errors;
-    !this.$v.usuario.maxLength &&
-      errors.push("Usuario puedo contener un máximo de 20 dígitos");
-    !this.$v.usuario.required && errors.push("Usuario es requerido.");
-
-    return errors;
-  }
-
-  get passwordErrors(): Array<string> {
-    const errors: Array<string> = [];
-
-    if (!this.$v.password.$dirty) return errors;
-    !this.$v.password.maxLength &&
-      errors.push("Contraseña puedo contener un máximo de 30 caracteres");
-    !this.$v.password.required && errors.push("Contraseña es requerida.");
-    return errors;
-  }
-
-  login(): void {
-    this.$v.$touch();
-
-    if (!this.$v.$invalid) {
-      this.cargando = true;
+    if (await (this.$refs.form as IValidationObserver).validate()) {
       this.$store
         .dispatch("user/login", {
           usuario: this.usuario,
