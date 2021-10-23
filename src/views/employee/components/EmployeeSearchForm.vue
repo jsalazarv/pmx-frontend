@@ -12,14 +12,14 @@
               dense
               name="typeOfEmployee"
               :items="employeeTypeList"
-              item-text="nombre"
-              item-value="id"
+              item-text="Nombre"
+              item-value="Id"
               label="Tipo de empledo"
               outlined
               required
               :loading="isLoadingEmployeeList"
               :disabled="isLoadingEmployeeList || isValidatingEmployee"
-              v-model="person.idTipoEmpleado"
+              v-model="person.IdTipoEmpleado"
               :error-messages="errors"
             ></v-autocomplete>
           </ValidationProvider>
@@ -31,7 +31,7 @@
               label="CURP"
               outlined
               required
-              v-model="person.curp"
+              v-model="person.Curp"
               :disabled="isValidatingEmployee"
               :loading="isValidatingEmployee"
               @click:clear="resetForm"
@@ -89,7 +89,7 @@
               label="Nombres"
               outlined
               required
-              v-model="person.nombres"
+              v-model="person.Nombres"
               :error-messages="errors"
             ></v-text-field>
           </ValidationProvider>
@@ -107,7 +107,7 @@
               label="Apellido paterno"
               outlined
               required
-              v-model="person.apellidoPaterno"
+              v-model="person.ApellidoPaterno"
               :error-messages="errors"
             ></v-text-field>
           </ValidationProvider>
@@ -125,7 +125,7 @@
               label="Apellido materno"
               outlined
               required
-              v-model="person.apellidoMaterno"
+              v-model="person.ApellidoMaterno"
               :error-messages="errors"
             ></v-text-field>
           </ValidationProvider>
@@ -143,7 +143,7 @@
               label="Fecha de nacimiento"
               outlined
               required
-              v-model="person.fechaNacimiento"
+              v-model="person.FechaNacimiento"
               :error-messages="errors"
             ></v-text-field>
           </ValidationProvider>
@@ -161,7 +161,7 @@
               label="Sexo"
               outlined
               required
-              v-model="person.sexo"
+              v-model="person.Sexo"
               :error-messages="errors"
             ></v-text-field>
           </ValidationProvider>
@@ -203,7 +203,7 @@
                   <v-list-item>
                     <v-list-item-content>Nombres: </v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{ mfeData.nombres }}
+                      {{ mfeData.Nombres }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
@@ -211,7 +211,7 @@
                       >Apellido paterno:
                     </v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{ mfeData.apellidoPaterno }}
+                      {{ mfeData.ApellidoPaterno }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
@@ -219,7 +219,7 @@
                       >Apellido materno:
                     </v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{ mfeData.apellidoMaterno }}
+                      {{ mfeData.ApellidoMaterno }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
@@ -227,19 +227,24 @@
                       >Fecha de nacimiento:
                     </v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{ mfeData.fechaNacimiento }}
+                      {{ mfeData.FechaNacimiento }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
                     <v-list-item-content>Sexo: </v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{ mfeData.sexo }}
+                      {{ mfeData.Sexo }}
                     </v-list-item-content>
                   </v-list-item>
                 </v-list>
                 <v-card-actions>
                   <div class="text-right">
-                    <v-btn color="success" elevation="0" @click="selectDataMFE">
+                    <v-btn
+                      color="success"
+                      elevation="0"
+                      @click="selectDataMFE"
+                      :disabled="!mfeData.Nombres"
+                    >
                       SELECCIONAR
                     </v-btn>
                   </div>
@@ -256,7 +261,7 @@
                   <v-list-item>
                     <v-list-item-content>Nombres: </v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{ renapoData.nombres }}
+                      {{ renapoData.Nombres }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
@@ -264,7 +269,7 @@
                       >Apellido paterno:
                     </v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{ renapoData.apellidoPaterno }}
+                      {{ renapoData.ApellidoPaterno }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
@@ -272,7 +277,7 @@
                       >Apellido materno:
                     </v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{ renapoData.apellidoMaterno }}
+                      {{ renapoData.ApellidoMaterno }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
@@ -280,13 +285,13 @@
                       >Fecha de nacimiento:
                     </v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{ renapoData.fechaNacimiento }}
+                      {{ renapoData.FechaNacimiento }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
                     <v-list-item-content>Sexo: </v-list-item-content>
                     <v-list-item-content class="align-end">
-                      {{ renapoData.sexo }}
+                      {{ renapoData.Sexo }}
                     </v-list-item-content>
                   </v-list-item>
                 </v-list>
@@ -296,6 +301,7 @@
                       color="success"
                       elevation="0"
                       @click="selectDataRenapo"
+                      :disabled="!renapoData.Nombres"
                     >
                       SELECCIONAR
                     </v-btn>
@@ -367,21 +373,21 @@ export default class EmployeeSearchForm extends Vue {
 
   get mfeData(): Partial<IPerson> {
     return {
-      nombres: this.personValidationData?.mfe.nombres,
-      apellidoPaterno: this.personValidationData?.mfe.apellidoPaterno,
-      apellidoMaterno: this.personValidationData?.mfe.apellidoMaterno,
-      fechaNacimiento: this.personValidationData?.mfe.fechaNacimiento,
-      sexo: this.personValidationData?.mfe.sexo,
+      Nombres: this.personValidationData?.Mfe?.Nombres,
+      ApellidoPaterno: this.personValidationData?.Mfe?.ApellidoPaterno,
+      ApellidoMaterno: this.personValidationData?.Mfe?.ApellidoMaterno,
+      FechaNacimiento: this.personValidationData?.Mfe?.FechaNacimiento,
+      Sexo: this.personValidationData?.Mfe?.Sexo,
     };
   }
 
   get renapoData(): Partial<IPerson> {
     return {
-      nombres: this.personValidationData?.renapo.nombres,
-      apellidoPaterno: this.personValidationData?.renapo.apellidoPaterno,
-      apellidoMaterno: this.personValidationData?.renapo.apellidoMaterno,
-      fechaNacimiento: this.personValidationData?.renapo.fechaNacimiento,
-      sexo: this.personValidationData?.renapo.sexo,
+      Nombres: this.personValidationData?.Renapo?.Nombres,
+      ApellidoPaterno: this.personValidationData?.Renapo?.ApellidoPaterno,
+      ApellidoMaterno: this.personValidationData?.Renapo?.ApellidoMaterno,
+      FechaNacimiento: this.personValidationData?.Renapo?.FechaNacimiento,
+      Sexo: this.personValidationData?.Renapo?.Sexo,
     };
   }
 
@@ -390,23 +396,26 @@ export default class EmployeeSearchForm extends Vue {
   }
 
   get canValidate(): number | boolean {
-    return this.person.idTipoEmpleado !== null && this.person.curp?.length;
+    return this.person.IdTipoEmpleado !== null && this.person.Curp?.length;
   }
 
   validateCurp(): void {
     this.isValidatingEmployee = true;
     this.personService
-      .findByCurp(this.person.curp)
+      .findByCurp(this.person.Curp, this.person.IdTipoEmpleado)
       .then((response) => {
-        this.personValidationData = response.data;
+        this.personValidationData = response.Data;
         this.openDialog();
       })
       .catch((error) => {
         if (error.response.data.success === false) {
           this.showSnackbar(true, error.response.data.message, "error");
           this.infoSelected = false;
-          const { curp, idTipoEmpleado } = this.person;
-          this.$store.dispatch("people/clear", { curp, idTipoEmpleado });
+          const { Curp, IdTipoEmpleado } = this.person;
+          this.$store.dispatch("people/clear", {
+            Curp: Curp,
+            IdTipoEmpleado: IdTipoEmpleado,
+          });
         }
       })
       .finally(() => {
@@ -441,7 +450,7 @@ export default class EmployeeSearchForm extends Vue {
     this.employeeTypesService
       .getAll()
       .then((response) => {
-        this.employeeTypeList = response.data;
+        this.employeeTypeList = response.Data;
       })
       .finally(() => {
         this.isLoadingEmployeeList = false;

@@ -1,7 +1,7 @@
 export interface ICountry {
-  id: number;
-  clave: string;
-  nombre: string;
-  nacionalidad: string;
-  baja: boolean;
+  Id: number;
+  Clave: string;
+  Nombre: string;
+  Nacionalidad: string;
+  Baja: boolean;
 }

@@ -1,5 +1,5 @@
 export interface IEmployeeType {
-  id: number;
-  nombre: string;
-  sigla: string;
+  Id: number;
+  Nombre: string;
+  Sigla: string;
 }

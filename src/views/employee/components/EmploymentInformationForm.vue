@@ -10,7 +10,7 @@
               label="Referencia"
               outlined
               required
-              v-model="employmentData.referencia"
+              v-model="employmentData.Referencia"
               :error-messages="errors"
             ></v-text-field>
           </ValidationProvider>
@@ -27,7 +27,7 @@
               label="Empresa/Organismo solicitante"
               outlined
               required
-              v-model="employmentData.empresaOrganismoSolicitante"
+              v-model="employmentData.EmpresaOrganismoSolicitante"
               :error-messages="errors"
             ></v-text-field>
           </ValidationProvider>
@@ -44,7 +44,7 @@
               label="Centro de trabajo solicitante"
               outlined
               required
-              v-model="employmentData.centroDeTrabajoSolicitante"
+              v-model="employmentData.CentroDeTrabajoSolicitante"
               :error-messages="errors"
             ></v-text-field>
           </ValidationProvider>
@@ -61,7 +61,7 @@
               label="Descripción del centro de trabajo solicitante"
               outlined
               required
-              v-model="employmentData.descripcionDelCentroDeTrabajoSolicitante"
+              v-model="employmentData.DescripcionDelCentroDeTrabajoSolicitante"
               :error-messages="errors"
             ></v-text-field>
           </ValidationProvider>
@@ -76,14 +76,14 @@
               :disabled="isLoadingSyndicates"
               :loading="isLoadingSyndicates"
               :items="syndicates"
-              item-text="nombre"
-              item-value="idSindicato"
+              item-text="Nombre"
+              item-value="IdSindicato"
               dense
               name="syndicate"
               label="Sindicato"
               outlined
               required
-              v-model="employmentData.idSindicato"
+              v-model="employmentData.IdSindicato"
               @change="getSyndicateSections"
               v-if="showSyndicates === true"
               :error-messages="errors"
@@ -98,10 +98,10 @@
           >
             <v-autocomplete
               :items="syndicateSections"
-              item-text="nombre"
-              item-value="idSeccionSindicato"
+              item-text="Nombre"
+              item-value="IdSeccionSindicato"
               :disabled="
-                isLoadingSyndicateSections || !employmentData.idSindicato
+                isLoadingSyndicateSections || !employmentData.IdSindicato
               "
               :loading="isLoadingSyndicateSections"
               dense
@@ -109,7 +109,7 @@
               label="Sección sindical"
               outlined
               required
-              v-model="employmentData.idSeccionSindical"
+              v-model="employmentData.IdSeccionSindical"
               v-if="showSyndicates === true"
               :error-messages="errors"
             ></v-autocomplete>
@@ -125,7 +125,7 @@
               name="observations"
               rows="5"
               row-height="20"
-              v-model="employmentData.observaciones"
+              v-model="employmentData.Observaciones"
               :error-messages="errors"
             ></v-textarea>
           </ValidationProvider>
@@ -168,7 +168,7 @@ export default class EmploymentInformationForm extends Vue {
     this.syndicateService
       .getAll()
       .then((response) => {
-        this.syndicates = response.data;
+        this.syndicates = response.Data;
       })
       .finally(() => {
         this.isLoadingSyndicates = false;
@@ -176,27 +176,27 @@ export default class EmploymentInformationForm extends Vue {
   }
 
   getSyndicateSections(): void {
-    if (!this.employmentData.idSindicato) return;
+    if (!this.employmentData.IdSindicato) return;
 
     this.isLoadingSyndicateSections = true;
     this.syndicateSectionService
-      .getBySyndicateId(this.employmentData.idSindicato)
+      .getBySyndicateId(this.employmentData.IdSindicato)
       .then((response) => {
-        this.syndicateSections = response.data;
+        this.syndicateSections = response.Data;
       })
       .finally(() => {
         this.isLoadingSyndicateSections = false;
       });
   }
 
-  @Watch("person.idTipoEmpleado")
+  @Watch("person.IdTipoEmpleado")
   selectedEmployeeType(employeeTypeId: number | null): void {
     if (employeeTypeId === 0) {
       this.showSyndicates = true;
     } else {
       this.showSyndicates = false;
-      this.employmentData.idSindicato = null;
-      this.employmentData.idSeccionSindical = null;
+      this.employmentData.IdSindicato = null;
+      this.employmentData.IdSeccionSindical = null;
     }
   }
 
