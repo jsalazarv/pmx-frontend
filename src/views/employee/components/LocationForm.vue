@@ -3,110 +3,182 @@
     <v-container>
       <v-row>
         <v-col cols="12" md="4">
-          <v-autocomplete
-            dense
-            :items="countries"
-            item-text="nombre"
-            item-value="id"
-            :disabled="isLoadingCountries"
-            :loading="isLoadingCountries"
-            label="País"
-            outlined
-            required
-            v-model="address.idPais"
-            @change="getStates"
-          ></v-autocomplete>
+          <ValidationProvider
+            name="countries"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-autocomplete
+              dense
+              name="countries"
+              :items="countries"
+              item-text="nombre"
+              item-value="id"
+              :disabled="isLoadingCountries"
+              :loading="isLoadingCountries"
+              label="País"
+              outlined
+              required
+              v-model="address.idPais"
+              @change="getStates"
+              :error-messages="errors"
+            ></v-autocomplete>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
-          <v-autocomplete
-            dense
-            :items="states"
-            item-text="nombre"
-            item-value="id"
-            :disabled="isLoadingStates || !address.idPais"
-            :loading="isLoadingStates"
-            label="Estado"
-            outlined
-            required
-            v-model="address.idEstado"
-            @change="getMunicipality"
-          ></v-autocomplete>
+          <ValidationProvider
+            name="states"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-autocomplete
+              dense
+              name="states"
+              :items="states"
+              item-text="nombre"
+              item-value="id"
+              :disabled="isLoadingStates || !address.idPais"
+              :loading="isLoadingStates"
+              label="Estado"
+              outlined
+              required
+              v-model="address.idEstado"
+              @change="getMunicipality"
+              :error-messages="errors"
+            ></v-autocomplete>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
-          <v-autocomplete
-            dense
-            :items="municipalities"
-            item-text="nombre"
-            item-value="id"
-            :disabled="isLoadingMunicipalities || !address.idEstado"
-            :loading="isLoadingMunicipalities"
-            label="Municipio/Localidad"
-            outlined
-            required
-          ></v-autocomplete>
+          <ValidationProvider
+            name="municipalities"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-autocomplete
+              dense
+              name="municipalities"
+              :items="municipalities"
+              item-text="nombre"
+              item-value="id"
+              :disabled="isLoadingMunicipalities || !address.idEstado"
+              :loading="isLoadingMunicipalities"
+              label="Municipio/Localidad"
+              outlined
+              required
+              :error-messages="errors"
+            ></v-autocomplete>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
-          <v-text-field
-            clearable
-            dense
-            label="Código postal"
-            outlined
-            required
-          ></v-text-field>
+          <ValidationProvider
+            name="postalCode"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-text-field
+              clearable
+              dense
+              name="postalCode"
+              label="Código postal"
+              outlined
+              required
+              :error-messages="errors"
+            ></v-text-field>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
-          <v-text-field
-            clearable
-            dense
-            label="Colonia"
-            outlined
-            required
-          ></v-text-field>
+          <ValidationProvider
+            name="suburb"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-text-field
+              clearable
+              dense
+              name="suburb"
+              label="Colonia"
+              outlined
+              required
+              :error-messages="errors"
+            ></v-text-field>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
-          <v-text-field
-            clearable
-            dense
-            label="Calle"
-            outlined
-            required
-          ></v-text-field>
+          <ValidationProvider
+            name="street"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-text-field
+              clearable
+              dense
+              name="street"
+              label="Calle"
+              outlined
+              required
+              :error-messages="errors"
+            ></v-text-field>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12" md="2">
-          <v-text-field
-            clearable
-            dense
-            label="Núm. interior"
-            outlined
-            required
-          ></v-text-field>
+          <ValidationProvider
+            name="interiorNumber"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-text-field
+              clearable
+              dense
+              name="interiorNumber"
+              label="Núm. interior"
+              outlined
+              required
+              :error-messages="errors"
+            ></v-text-field>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12" md="2">
-          <v-text-field
-            clearable
-            dense
-            label="Núm. exterior"
-            outlined
-            required
-          ></v-text-field>
+          <ValidationProvider
+            name="exteriorNumber"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-text-field
+              clearable
+              dense
+              name="exteriorNumber"
+              label="Núm. exterior"
+              outlined
+              required
+              :error-messages="errors"
+            ></v-text-field>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
-          <v-text-field
-            clearable
-            dense
-            label="Manzana"
-            outlined
-            required
-          ></v-text-field>
+          <ValidationProvider name="block" rules="required" v-slot="{ errors }">
+            <v-text-field
+              clearable
+              dense
+              name="block"
+              label="Manzana"
+              outlined
+              required
+              :error-messages="errors"
+            ></v-text-field>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
-          <v-text-field
-            clearable
-            dense
-            label="Lote"
-            outlined
-            required
-          ></v-text-field>
+          <ValidationProvider name="lot" rules="required" v-slot="{ errors }">
+            <v-text-field
+              clearable
+              dense
+              name="lot"
+              label="Lote"
+              outlined
+              required
+              :error-messages="errors"
+            ></v-text-field>
+          </ValidationProvider>
         </v-col>
       </v-row>
     </v-container>

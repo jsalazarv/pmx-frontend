@@ -3,83 +3,132 @@
     <v-container>
       <v-row>
         <v-col cols="12" md="4">
-          <v-text-field
-            dense
-            label="Referencia"
-            outlined
-            required
-            v-model="employmentData.referencia"
-          ></v-text-field>
+          <ValidationProvider name="reference" rules="" v-slot="{ errors }">
+            <v-text-field
+              dense
+              name="reference"
+              label="Referencia"
+              outlined
+              required
+              v-model="employmentData.referencia"
+              :error-messages="errors"
+            ></v-text-field>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
-          <v-text-field
-            dense
-            label="Empresa/Organismo solicitante"
-            outlined
-            required
-            v-model="employmentData.empresaOrganismoSolicitante"
-          ></v-text-field>
+          <ValidationProvider
+            name="applicantCompany"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-text-field
+              dense
+              name="applicantCompany"
+              label="Empresa/Organismo solicitante"
+              outlined
+              required
+              v-model="employmentData.empresaOrganismoSolicitante"
+              :error-messages="errors"
+            ></v-text-field>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
-          <v-text-field
-            dense
-            label="Centro de trabajo solicitante"
-            outlined
-            required
-            v-model="employmentData.centroDeTrabajoSolicitante"
-          ></v-text-field>
+          <ValidationProvider
+            name="applicantWorkCenter"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-text-field
+              dense
+              name="applicantWorkCenter"
+              label="Centro de trabajo solicitante"
+              outlined
+              required
+              v-model="employmentData.centroDeTrabajoSolicitante"
+              :error-messages="errors"
+            ></v-text-field>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
-          <v-text-field
-            dense
-            label="Descripción del centro de trabajo solicitante"
-            outlined
-            required
-            v-model="employmentData.descripcionDelCentroDeTrabajoSolicitante"
-          ></v-text-field>
+          <ValidationProvider
+            name="descriptionOfWorkCenter"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-text-field
+              dense
+              name="descriptionOfWorkCenter"
+              label="Descripción del centro de trabajo solicitante"
+              outlined
+              required
+              v-model="employmentData.descripcionDelCentroDeTrabajoSolicitante"
+              :error-messages="errors"
+            ></v-text-field>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
-          <v-autocomplete
-            :disabled="isLoadingSyndicates"
-            :loading="isLoadingSyndicates"
-            :items="syndicates"
-            item-text="nombre"
-            item-value="idSindicato"
-            dense
-            label="Sindicato"
-            outlined
-            required
-            v-model="employmentData.idSindicato"
-            @change="getSyndicateSections"
-            v-if="showSyndicates === true"
-          ></v-autocomplete>
+          <ValidationProvider
+            name="syndicate"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-autocomplete
+              :disabled="isLoadingSyndicates"
+              :loading="isLoadingSyndicates"
+              :items="syndicates"
+              item-text="nombre"
+              item-value="idSindicato"
+              dense
+              name="syndicate"
+              label="Sindicato"
+              outlined
+              required
+              v-model="employmentData.idSindicato"
+              @change="getSyndicateSections"
+              v-if="showSyndicates === true"
+              :error-messages="errors"
+            ></v-autocomplete>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
-          <v-autocomplete
-            :items="syndicateSections"
-            item-text="nombre"
-            item-value="idSeccionSindicato"
-            :disabled="
-              isLoadingSyndicateSections || !employmentData.idSindicato
-            "
-            :loading="isLoadingSyndicateSections"
-            dense
-            label="Sección sindical"
-            outlined
-            required
-            v-model="employmentData.idSeccionSindical"
-            v-if="showSyndicates === true"
-          ></v-autocomplete>
+          <ValidationProvider
+            name="syndicateSection"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-autocomplete
+              :items="syndicateSections"
+              item-text="nombre"
+              item-value="idSeccionSindicato"
+              :disabled="
+                isLoadingSyndicateSections || !employmentData.idSindicato
+              "
+              :loading="isLoadingSyndicateSections"
+              dense
+              name="syndicateSection"
+              label="Sección sindical"
+              outlined
+              required
+              v-model="employmentData.idSeccionSindical"
+              v-if="showSyndicates === true"
+              :error-messages="errors"
+            ></v-autocomplete>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12">
-          <v-textarea
-            label="Observaciones"
-            auto-grow
-            outlined
-            rows="5"
-            row-height="20"
-            v-model="employmentData.observaciones"
-          ></v-textarea>
+          <ValidationProvider name="observations" rules="" v-slot="{ errors }">
+            <v-textarea
+              label="Observaciones"
+              auto-grow
+              outlined
+              dense
+              name="observations"
+              rows="5"
+              row-height="20"
+              v-model="employmentData.observaciones"
+              :error-messages="errors"
+            ></v-textarea>
+          </ValidationProvider>
         </v-col>
       </v-row>
     </v-container>

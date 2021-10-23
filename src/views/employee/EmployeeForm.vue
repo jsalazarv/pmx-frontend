@@ -11,9 +11,16 @@
           :active="isLoading"
           :indeterminate="isLoading"
         ></v-progress-linear>
-        <employee-search-form />
-        <employment-information-form />
-        <location-form />
+        <ValidationObserver ref="form">
+          <employee-search-form />
+          <employment-information-form />
+          <location-form />
+          <v-container>
+            <v-btn color="success" @click="registerEmployee"
+              >Generar número de asignación</v-btn
+            >
+          </v-container>
+        </ValidationObserver>
       </v-card>
     </div>
   </div>
@@ -26,6 +33,7 @@ import Component from "vue-class-component";
 import EmployeeSearchForm from "@/views/employee/components/EmployeeSearchForm.vue";
 import EmploymentInformationForm from "@/views/employee/components/EmploymentInformationForm.vue";
 import LocationForm from "@/views/employee/components/LocationForm.vue";
+import { IValidationObserver } from "@/components/types";
 
 @Component({
   components: {
@@ -38,6 +46,10 @@ export default class PeopleCreate extends Vue {
   get isLoading(): boolean {
     // TODO Refactor this form is submitting
     return false;
+  }
+
+  async registerEmployee(): Promise<void> {
+    await (this.$refs.form as IValidationObserver).validate();
   }
 }
 </script>
