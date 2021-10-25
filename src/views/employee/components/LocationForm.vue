@@ -12,14 +12,14 @@
               dense
               name="countries"
               :items="countries"
-              item-text="nombre"
-              item-value="id"
+              item-text="Nombre"
+              item-value="Id"
               :disabled="isLoadingCountries"
               :loading="isLoadingCountries"
               label="País"
               outlined
               required
-              v-model="address.idPais"
+              v-model="address.IdPais"
               @change="getStates"
               :error-messages="errors"
             ></v-autocomplete>
@@ -35,14 +35,14 @@
               dense
               name="states"
               :items="states"
-              item-text="nombre"
-              item-value="id"
-              :disabled="isLoadingStates || !address.idPais"
+              item-text="Nombre"
+              item-value="IdEstado"
+              :disabled="isLoadingStates || !address.IdPais"
               :loading="isLoadingStates"
               label="Estado"
               outlined
               required
-              v-model="address.idEstado"
+              v-model="address.IdEstado"
               @change="getMunicipality"
               :error-messages="errors"
             ></v-autocomplete>
@@ -58,13 +58,14 @@
               dense
               name="municipalities"
               :items="municipalities"
-              item-text="nombre"
-              item-value="id"
-              :disabled="isLoadingMunicipalities || !address.idEstado"
+              item-text="Nombre"
+              item-value="IdMunicipio"
+              :disabled="isLoadingMunicipalities || !address.IdEstado"
               :loading="isLoadingMunicipalities"
               label="Municipio/Localidad"
               outlined
               required
+              v-model="address.IdMunicipio"
               :error-messages="errors"
             ></v-autocomplete>
           </ValidationProvider>
@@ -217,7 +218,7 @@ export default class LocationForm extends Vue {
     this.countryService
       .getAll()
       .then((response) => {
-        this.countries = response.data;
+        this.countries = response.Data;
       })
       .finally(() => {
         this.isLoadingCountries = false;
@@ -225,13 +226,13 @@ export default class LocationForm extends Vue {
   }
 
   getStates(): void {
-    if (!this.address.idPais) return;
-
+    if (!this.address.IdPais) return;
+    console.log(this.address.IdPais);
     this.isLoadingStates = true;
     this.stateService
-      .getByCountryId(this.address.idPais)
+      .getByCountryId(this.address.IdPais)
       .then((response) => {
-        this.states = response.data;
+        this.states = response.Data;
       })
       .finally(() => {
         this.isLoadingStates = false;
@@ -239,13 +240,13 @@ export default class LocationForm extends Vue {
   }
 
   getMunicipality(): void {
-    if (!this.address.idEstado) return;
+    if (!this.address.IdEstado) return;
 
     this.isLoadingMunicipalities = true;
     this.municipalityService
-      .getByStateId(this.address.idEstado)
+      .getByStateId(this.address.IdEstado)
       .then((response) => {
-        this.municipalities = response.data;
+        this.municipalities = response.Data;
       })
       .finally(() => {
         this.isLoadingMunicipalities = false;
