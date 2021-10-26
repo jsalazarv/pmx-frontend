@@ -25,7 +25,7 @@
             rules="required"
             v-slot="{ errors }"
           >
-            <v-text-field
+            <v-autocomplete
               dense
               name="applicantCompany"
               :label="
@@ -37,7 +37,10 @@
               required
               v-model="employmentData.EmpresaOrganismoSolicitante"
               :error-messages="errors"
-            ></v-text-field>
+              :items="companies"
+              item-text="Nombre"
+              item-value="Nombre"
+            ></v-autocomplete>
           </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
@@ -168,19 +171,24 @@ import Component from "vue-class-component";
 import Vue from "vue";
 import SyndicateService from "@/services/SyndicateService";
 import SyndicateSectionService from "@/services/SyndicateSectionService";
+import CompanyService from "@/services/CompanyService";
 import { ISyndicate } from "@/services/SyndicateService/types";
 import { ISyndicateSection } from "@/services/SyndicateSectionService/types";
 import { IEmploymentData, IPerson } from "@/store/people/types";
+import { ICompany } from "@/services/CompanyService/types";
 import { Watch } from "vue-property-decorator";
 
 @Component({})
 export default class EmploymentInformationForm extends Vue {
   protected syndicateService = new SyndicateService();
   protected syndicateSectionService = new SyndicateSectionService();
+  protected companyService = new CompanyService();
   public syndicates: Array<ISyndicate> = [];
   public syndicateSections: Array<ISyndicateSection> = [];
+  public companies: Array<ICompany> = [];
   public isLoadingSyndicates = false;
   public isLoadingSyndicateSections = false;
+  public isLoadingCompanies = false;
   public showSyndicates = false;
 
   get employmentData(): IEmploymentData {
@@ -217,6 +225,18 @@ export default class EmploymentInformationForm extends Vue {
       });
   }
 
+  getCompanies(): void {
+    this.isLoadingCompanies = true;
+    this.companyService
+      .getAll()
+      .then((response) => {
+        this.companies = response.Data;
+      })
+      .finally(() => {
+        this.isLoadingCompanies = false;
+      });
+  }
+
   @Watch("person.IdTipoEmpleado")
   selectedEmployeeType(employeeTypeId: number | null): void {
     if (employeeTypeId === 0) {
@@ -230,6 +250,7 @@ export default class EmploymentInformationForm extends Vue {
 
   mounted(): void {
     this.getSyndicates();
+    this.getCompanies();
   }
 }
 </script>
