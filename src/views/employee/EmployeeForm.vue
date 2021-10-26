@@ -3,7 +3,9 @@
     <div class="pa-4">
       <v-card>
         <v-toolbar flat>
-          <v-toolbar-title> Alta </v-toolbar-title>
+          <v-toolbar-title>
+            {{ $t("people.registration.title") }}
+          </v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
         </v-toolbar>
@@ -16,9 +18,13 @@
           <employment-information-form />
           <location-form />
           <v-container>
-            <v-btn color="success" @click="registerEmployee"
-              >Generar número de asignación</v-btn
-            >
+            <v-btn color="success" @click="registerEmployee">
+              {{
+                $t(
+                  "people.registration.registrationForm.generateAssignmentNumber"
+                )
+              }}
+            </v-btn>
           </v-container>
         </ValidationObserver>
       </v-card>
