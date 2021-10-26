@@ -40,6 +40,7 @@
               :items="companies"
               item-text="Nombre"
               item-value="Nombre"
+              @change="getWorkplaces"
             ></v-autocomplete>
           </ValidationProvider>
         </v-col>
@@ -49,8 +50,15 @@
             rules="required"
             v-slot="{ errors }"
           >
-            <v-text-field
+            <v-autocomplete
               dense
+              :disabled="
+                isLoadingWorkplaces ||
+                !employmentData.EmpresaOrganismoSolicitante
+              "
+              :items="workplaces"
+              item-text="Descripcion"
+              item-value="IdCentro"
               name="applicantWorkCenter"
               :label="
                 $t(
@@ -61,10 +69,10 @@
               required
               v-model="employmentData.CentroDeTrabajoSolicitante"
               :error-messages="errors"
-            ></v-text-field>
+            ></v-autocomplete>
           </ValidationProvider>
         </v-col>
-        <v-col cols="12" md="4">
+        <!--<v-col cols="12" md="4">
           <ValidationProvider
             name="descriptionOfWorkCenter"
             rules="required"
@@ -84,7 +92,7 @@
               :error-messages="errors"
             ></v-text-field>
           </ValidationProvider>
-        </v-col>
+        </v-col>-->
         <v-col cols="12" md="4">
           <ValidationProvider
             name="syndicate"
@@ -172,23 +180,28 @@ import Vue from "vue";
 import SyndicateService from "@/services/SyndicateService";
 import SyndicateSectionService from "@/services/SyndicateSectionService";
 import CompanyService from "@/services/CompanyService";
+import WorkplaceService from "@/services/WorkplaceService";
+import { Watch } from "vue-property-decorator";
 import { ISyndicate } from "@/services/SyndicateService/types";
 import { ISyndicateSection } from "@/services/SyndicateSectionService/types";
 import { IEmploymentData, IPerson } from "@/store/people/types";
 import { ICompany } from "@/services/CompanyService/types";
-import { Watch } from "vue-property-decorator";
+import { IWorkplace } from "@/services/WorkplaceService/types";
 
 @Component({})
 export default class EmploymentInformationForm extends Vue {
   protected syndicateService = new SyndicateService();
   protected syndicateSectionService = new SyndicateSectionService();
   protected companyService = new CompanyService();
+  protected workplaceService = new WorkplaceService();
   public syndicates: Array<ISyndicate> = [];
   public syndicateSections: Array<ISyndicateSection> = [];
   public companies: Array<ICompany> = [];
+  public workplaces: Array<IWorkplace> = [];
   public isLoadingSyndicates = false;
   public isLoadingSyndicateSections = false;
   public isLoadingCompanies = false;
+  public isLoadingWorkplaces = false;
   public showSyndicates = false;
 
   get employmentData(): IEmploymentData {
@@ -234,6 +247,18 @@ export default class EmploymentInformationForm extends Vue {
       })
       .finally(() => {
         this.isLoadingCompanies = false;
+      });
+  }
+
+  getWorkplaces(): void {
+    this.isLoadingWorkplaces = true;
+    this.workplaceService
+      .getByCompanyName(this.employmentData.EmpresaOrganismoSolicitante)
+      .then((response) => {
+        this.workplaces = response.Data;
+      })
+      .finally(() => {
+        this.isLoadingWorkplaces = false;
       });
   }
 
