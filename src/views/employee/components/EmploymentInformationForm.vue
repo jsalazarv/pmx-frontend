@@ -7,7 +7,11 @@
             <v-text-field
               dense
               name="reference"
-              label="Referencia"
+              :label="
+                $t(
+                  'people.registration.registrationForm.employmentInformationForm.reference'
+                )
+              "
               outlined
               required
               v-model="employmentData.Referencia"
@@ -24,7 +28,11 @@
             <v-text-field
               dense
               name="applicantCompany"
-              label="Empresa/Organismo solicitante"
+              :label="
+                $t(
+                  'people.registration.registrationForm.employmentInformationForm.applicantCompany'
+                )
+              "
               outlined
               required
               v-model="employmentData.EmpresaOrganismoSolicitante"
@@ -41,7 +49,11 @@
             <v-text-field
               dense
               name="applicantWorkCenter"
-              label="Centro de trabajo solicitante"
+              :label="
+                $t(
+                  'people.registration.registrationForm.employmentInformationForm.applicantWorkCenter'
+                )
+              "
               outlined
               required
               v-model="employmentData.CentroDeTrabajoSolicitante"
@@ -58,7 +70,11 @@
             <v-text-field
               dense
               name="descriptionOfWorkCenter"
-              label="Descripción del centro de trabajo solicitante"
+              :label="
+                $t(
+                  'people.registration.registrationForm.employmentInformationForm.descriptionOfWorkCenter'
+                )
+              "
               outlined
               required
               v-model="employmentData.DescripcionDelCentroDeTrabajoSolicitante"
@@ -80,7 +96,11 @@
               item-value="IdSindicato"
               dense
               name="syndicate"
-              label="Sindicato"
+              :label="
+                $t(
+                  'people.registration.registrationForm.employmentInformationForm.syndicate'
+                )
+              "
               outlined
               required
               v-model="employmentData.IdSindicato"
@@ -106,7 +126,11 @@
               :loading="isLoadingSyndicateSections"
               dense
               name="syndicateSection"
-              label="Sección sindical"
+              :label="
+                $t(
+                  'people.registration.registrationForm.employmentInformationForm.syndicateSection'
+                )
+              "
               outlined
               required
               v-model="employmentData.IdSeccionSindical"
@@ -118,7 +142,11 @@
         <v-col cols="12">
           <ValidationProvider name="observations" rules="" v-slot="{ errors }">
             <v-textarea
-              label="Observaciones"
+              :label="
+                $t(
+                  'people.registration.registrationForm.employmentInformationForm.observations'
+                )
+              "
               auto-grow
               outlined
               dense

@@ -14,7 +14,11 @@
               :items="employeeTypeList"
               item-text="Nombre"
               item-value="Id"
-              label="Tipo de empledo"
+              :label="
+                $t(
+                  'people.registration.registrationForm.peopleSearchForm.typeOfEmployee'
+                )
+              "
               outlined
               required
               :loading="isLoadingEmployeeList"
@@ -28,7 +32,9 @@
               clearable
               dense
               name="curp"
-              label="CURP"
+              :label="
+                $t('people.registration.registrationForm.peopleSearchForm.curp')
+              "
               outlined
               required
               v-model="person.Curp"
@@ -43,8 +49,9 @@
             @click="validateCurp"
             :disabled="isValidatingEmployee || !canValidate"
             :loading="isValidatingEmployee"
-            >VALIDAR</v-btn
           >
+            {{ $t("dictionary.validate") }}
+          </v-btn>
         </v-col>
         <v-col cols="12" md="6">
           <ValidationProvider
@@ -56,7 +63,11 @@
               dense
               name="assignmentNumber"
               disabled
-              label="Número de asignación"
+              :label="
+                $t(
+                  'people.registration.registrationForm.peopleSearchForm.assignmentNumber'
+                )
+              "
               outlined
               required
               :error-messages="errors"
@@ -71,7 +82,11 @@
               dense
               name="assignmentNumberStatus"
               disabled
-              label="Estado de número de asignación"
+              :label="
+                $t(
+                  'people.registration.registrationForm.peopleSearchForm.assignmentNumberStatus'
+                )
+              "
               outlined
               required
               :error-messages="errors"
@@ -86,7 +101,11 @@
               dense
               name="names"
               :disabled="canEditPersonalInfo"
-              label="Nombres"
+              :label="
+                $t(
+                  'people.registration.registrationForm.peopleSearchForm.names'
+                )
+              "
               outlined
               required
               v-model="person.Nombres"
@@ -104,7 +123,11 @@
               dense
               name="lastname"
               :disabled="canEditPersonalInfo"
-              label="Apellido paterno"
+              :label="
+                $t(
+                  'people.registration.registrationForm.peopleSearchForm.lastname'
+                )
+              "
               outlined
               required
               v-model="person.ApellidoPaterno"
@@ -122,7 +145,11 @@
               dense
               name="surname"
               :disabled="canEditPersonalInfo"
-              label="Apellido materno"
+              :label="
+                $t(
+                  'people.registration.registrationForm.peopleSearchForm.surname'
+                )
+              "
               outlined
               required
               v-model="person.ApellidoMaterno"
@@ -140,7 +167,11 @@
               dense
               name="birthday"
               :disabled="canEditPersonalInfo"
-              label="Fecha de nacimiento"
+              :label="
+                $t(
+                  'people.registration.registrationForm.peopleSearchForm.birthday'
+                )
+              "
               outlined
               required
               v-model="person.FechaNacimiento"
@@ -158,7 +189,11 @@
               dense
               name="birthday"
               :disabled="canEditPersonalInfo"
-              label="Sexo"
+              :label="
+                $t(
+                  'people.registration.registrationForm.peopleSearchForm.gender'
+                )
+              "
               outlined
               required
               v-model="person.Sexo"
@@ -171,7 +206,9 @@
             <v-text-field
               dense
               name="rfc"
-              label="RFC"
+              :label="
+                $t('people.registration.registrationForm.peopleSearchForm.rfc')
+              "
               outlined
               required
               :error-messages="errors"
@@ -189,49 +226,73 @@
       class="mx-2"
     >
       <v-card>
-        <v-card-title class="text-h6"> Lorem Ipsum </v-card-title>
+        <v-card-title class="text-h6"></v-card-title>
 
         <v-card-text>
           <v-row>
             <v-col cols="12" md="6">
               <v-card elevation="0" outlined>
                 <v-card-title class="subheading font-weight-bold">
-                  MFE
+                  {{ $t("dictionary.mfe") }}
                 </v-card-title>
                 <v-divider></v-divider>
                 <v-list dense>
                   <v-list-item>
-                    <v-list-item-content>Nombres: </v-list-item-content>
+                    <v-list-item-content>
+                      {{
+                        $t(
+                          "people.registration.registrationForm.peopleSearchForm.names"
+                        )
+                      }}:
+                    </v-list-item-content>
                     <v-list-item-content class="align-end">
                       {{ mfeData.Nombres }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
-                    <v-list-item-content
-                      >Apellido paterno:
+                    <v-list-item-content>
+                      {{
+                        $t(
+                          "people.registration.registrationForm.peopleSearchForm.lastname"
+                        )
+                      }}:
                     </v-list-item-content>
                     <v-list-item-content class="align-end">
                       {{ mfeData.ApellidoPaterno }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
-                    <v-list-item-content
-                      >Apellido materno:
+                    <v-list-item-content>
+                      {{
+                        $t(
+                          "people.registration.registrationForm.peopleSearchForm.surname"
+                        )
+                      }}:
                     </v-list-item-content>
                     <v-list-item-content class="align-end">
                       {{ mfeData.ApellidoMaterno }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
-                    <v-list-item-content
-                      >Fecha de nacimiento:
+                    <v-list-item-content>
+                      {{
+                        $t(
+                          "people.registration.registrationForm.peopleSearchForm.birthday"
+                        )
+                      }}:
                     </v-list-item-content>
                     <v-list-item-content class="align-end">
                       {{ mfeData.FechaNacimiento }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
-                    <v-list-item-content>Sexo: </v-list-item-content>
+                    <v-list-item-content>
+                      {{
+                        $t(
+                          "people.registration.registrationForm.peopleSearchForm.gender"
+                        )
+                      }}:
+                    </v-list-item-content>
                     <v-list-item-content class="align-end">
                       {{ mfeData.Sexo }}
                     </v-list-item-content>
@@ -245,7 +306,7 @@
                       @click="selectDataMFE"
                       :disabled="!mfeData.Nombres"
                     >
-                      SELECCIONAR
+                      {{ $t("dictionary.toSelect") }}
                     </v-btn>
                   </div>
                 </v-card-actions>
@@ -254,42 +315,66 @@
             <v-col cols="12" md="6">
               <v-card elevation="0" outlined>
                 <v-card-title class="subheading font-weight-bold">
-                  RENAPO
+                  {{ $t("dictionary.renapo") }}
                 </v-card-title>
                 <v-divider></v-divider>
                 <v-list dense>
                   <v-list-item>
-                    <v-list-item-content>Nombres: </v-list-item-content>
+                    <v-list-item-content>
+                      {{
+                        $t(
+                          "people.registration.registrationForm.peopleSearchForm.names"
+                        )
+                      }}:
+                    </v-list-item-content>
                     <v-list-item-content class="align-end">
                       {{ renapoData.Nombres }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
-                    <v-list-item-content
-                      >Apellido paterno:
+                    <v-list-item-content>
+                      {{
+                        $t(
+                          "people.registration.registrationForm.peopleSearchForm.lastname"
+                        )
+                      }}:
                     </v-list-item-content>
                     <v-list-item-content class="align-end">
                       {{ renapoData.ApellidoPaterno }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
-                    <v-list-item-content
-                      >Apellido materno:
+                    <v-list-item-content>
+                      {{
+                        $t(
+                          "people.registration.registrationForm.peopleSearchForm.surname"
+                        )
+                      }}:
                     </v-list-item-content>
                     <v-list-item-content class="align-end">
                       {{ renapoData.ApellidoMaterno }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
-                    <v-list-item-content
-                      >Fecha de nacimiento:
+                    <v-list-item-content>
+                      {{
+                        $t(
+                          "people.registration.registrationForm.peopleSearchForm.birthday"
+                        )
+                      }}:
                     </v-list-item-content>
                     <v-list-item-content class="align-end">
                       {{ renapoData.FechaNacimiento }}
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
-                    <v-list-item-content>Sexo: </v-list-item-content>
+                    <v-list-item-content>
+                      {{
+                        $t(
+                          "people.registration.registrationForm.peopleSearchForm.gender"
+                        )
+                      }}:
+                    </v-list-item-content>
                     <v-list-item-content class="align-end">
                       {{ renapoData.Sexo }}
                     </v-list-item-content>
@@ -303,7 +388,7 @@
                       @click="selectDataRenapo"
                       :disabled="!renapoData.Nombres"
                     >
-                      SELECCIONAR
+                      {{ $t("dictionary.toSelect") }}
                     </v-btn>
                   </div>
                 </v-card-actions>
@@ -315,7 +400,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="error darken-1" text @click="closeDialog">
-            CANCELAR
+            {{ $t("dictionary.cancel") }}
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -330,7 +415,7 @@
           v-bind="attrs"
           @click="snackbar.visible = false"
         >
-          Cerrar
+          {{ $t("dictionary.close") }}
         </v-btn>
       </template>
     </v-snackbar>

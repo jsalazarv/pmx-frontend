@@ -1,0 +1,41 @@
+export default {
+  registration: {
+    title: "Registration",
+    registrationForm: {
+      generateAssignmentNumber: "Generate assignment number",
+      peopleSearchForm: {
+        typeOfEmployee: "Type of employee",
+        curp: "CURP",
+        assignmentNumber: "Assignment number",
+        assignmentNumberStatus: "Assignment number status",
+        names: "Names",
+        lastname: "Lastname",
+        surname: "Surname",
+        birthday: "Birthday",
+        gender: "Gender",
+        rfc: "RFC",
+      },
+      employmentInformationForm: {
+        reference: "Reference",
+        applicantCompany: "Applicant company",
+        applicantWorkCenter: "Applicant work center",
+        descriptionOfWorkCenter: "Description of work center",
+        syndicate: "Syndicate",
+        syndicateSection: "Syndicate section",
+        observations: "Observations",
+      },
+      locationForm: {
+        country: "Country",
+        state: "State",
+        municipality: "Municipality",
+        postalCode: "Postal code",
+        suburb: "Suburb",
+        street: "Street",
+        interiorNumber: "Interior number",
+        exteriorNumber: "Exterior number",
+        block: "Block",
+        lot: "Lot",
+      },
+    },
+  },
+};

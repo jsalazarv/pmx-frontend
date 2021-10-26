@@ -16,7 +16,9 @@
               item-value="Id"
               :disabled="isLoadingCountries"
               :loading="isLoadingCountries"
-              label="País"
+              :label="
+                $t('people.registration.registrationForm.locationForm.country')
+              "
               outlined
               required
               v-model="address.IdPais"
@@ -39,7 +41,9 @@
               item-value="IdEstado"
               :disabled="isLoadingStates || !address.IdPais"
               :loading="isLoadingStates"
-              label="Estado"
+              :label="
+                $t('people.registration.registrationForm.locationForm.state')
+              "
               outlined
               required
               v-model="address.IdEstado"
@@ -62,7 +66,11 @@
               item-value="IdMunicipio"
               :disabled="isLoadingMunicipalities || !address.IdEstado"
               :loading="isLoadingMunicipalities"
-              label="Municipio/Localidad"
+              :label="
+                $t(
+                  'people.registration.registrationForm.locationForm.municipality'
+                )
+              "
               outlined
               required
               v-model="address.IdMunicipio"
@@ -80,7 +88,11 @@
               clearable
               dense
               name="postalCode"
-              label="Código postal"
+              :label="
+                $t(
+                  'people.registration.registrationForm.locationForm.postalCode'
+                )
+              "
               outlined
               required
               :error-messages="errors"
@@ -97,7 +109,9 @@
               clearable
               dense
               name="suburb"
-              label="Colonia"
+              :label="
+                $t('people.registration.registrationForm.locationForm.suburb')
+              "
               outlined
               required
               :error-messages="errors"
@@ -114,7 +128,9 @@
               clearable
               dense
               name="street"
-              label="Calle"
+              :label="
+                $t('people.registration.registrationForm.locationForm.street')
+              "
               outlined
               required
               :error-messages="errors"
@@ -131,7 +147,11 @@
               clearable
               dense
               name="interiorNumber"
-              label="Núm. interior"
+              :label="
+                $t(
+                  'people.registration.registrationForm.locationForm.interiorNumber'
+                )
+              "
               outlined
               required
               :error-messages="errors"
@@ -148,7 +168,11 @@
               clearable
               dense
               name="exteriorNumber"
-              label="Núm. exterior"
+              :label="
+                $t(
+                  'people.registration.registrationForm.locationForm.exteriorNumber'
+                )
+              "
               outlined
               required
               :error-messages="errors"
@@ -161,7 +185,9 @@
               clearable
               dense
               name="block"
-              label="Manzana"
+              :label="
+                $t('people.registration.registrationForm.locationForm.block')
+              "
               outlined
               required
               :error-messages="errors"
@@ -174,7 +200,9 @@
               clearable
               dense
               name="lot"
-              label="Lote"
+              :label="
+                $t('people.registration.registrationForm.locationForm.lot')
+              "
               outlined
               required
               :error-messages="errors"
