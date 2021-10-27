@@ -185,20 +185,24 @@
             rules="required"
             v-slot="{ errors }"
           >
-            <v-text-field
+            <v-autocomplete
               dense
-              name="birthday"
-              :disabled="canEditPersonalInfo"
+              name="gender"
+              outlined
+              required
+              v-model="person.Sexo"
+              item-text="Sigla"
+              item-value="Sigla"
+              :items="genders"
+              :disabled="canEditPersonalInfo || isLoadingGendersList"
+              :error-messages="errors"
               :label="
                 $t(
                   'people.registration.registrationForm.peopleSearchForm.gender'
                 )
               "
-              outlined
-              required
-              v-model="person.Sexo"
-              :error-messages="errors"
-            ></v-text-field>
+              :loading="isLoadingGendersList"
+            ></v-autocomplete>
           </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
@@ -227,7 +231,6 @@
     >
       <v-card>
         <v-card-title class="text-h6"></v-card-title>
-
         <v-card-text>
           <v-row>
             <v-col cols="12" md="6">
@@ -425,27 +428,32 @@
 <script lang="ts">
 import Component from "vue-class-component";
 import { Vue } from "vue-property-decorator";
-import { IPerson } from "@/store/people/types";
 import EmployeeTypeService from "@/services/EmployeeTypeService";
 import PersonService from "@/services/PersonService";
+import GenderService from "@/services/GenderService";
 import { IPersonValidationResponse } from "@/services/PersonService/types";
 import { IEmployeeType } from "@/services/EmployeeTypeService/types";
+import { IPerson } from "@/store/people/types";
+import { IGender } from "@/services/GenderService/types";
 import { ISnackbarProps } from "@/components/types";
 
 @Component({})
 export default class EmployeeSearchForm extends Vue {
   protected employeeTypesService = new EmployeeTypeService();
   protected personService = new PersonService();
+  protected genderService = new GenderService();
   public employeeTypeList: Array<IEmployeeType> = [];
-  public isLoadingEmployeeList = false;
+  public genders: Array<IGender> = [];
   public personValidationData: IPersonValidationResponse | null = null;
-  public isValidatingEmployee = false;
-  public isDialogOpen = false;
   public snackbar: ISnackbarProps = {
     visible: false,
     message: null,
     color: null,
   };
+  public isLoadingEmployeeList = false;
+  public isLoadingGendersList = false;
+  public isValidatingEmployee = false;
+  public isDialogOpen = false;
   public infoSelected = false;
 
   get person(): IPerson {
@@ -542,6 +550,18 @@ export default class EmployeeSearchForm extends Vue {
       });
   }
 
+  getGenders(): void {
+    this.isLoadingGendersList = true;
+    this.genderService
+      .getAll()
+      .then((response) => {
+        this.genders = response.Data;
+      })
+      .finally(() => {
+        this.isLoadingGendersList = false;
+      });
+  }
+
   showSnackbar(visible: boolean, message: string, color: string): void {
     this.snackbar.visible = visible;
     this.snackbar.message = message;
@@ -555,6 +575,7 @@ export default class EmployeeSearchForm extends Vue {
 
   mounted(): void {
     this.getEmployeeTypes();
+    this.getGenders();
   }
 }
 </script>
