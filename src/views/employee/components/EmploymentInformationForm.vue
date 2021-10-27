@@ -3,79 +3,171 @@
     <v-container>
       <v-row>
         <v-col cols="12" md="4">
-          <v-text-field
-            dense
-            label="Referencia"
-            outlined
-            required
-            v-model="employmentData.referencia"
-          ></v-text-field>
+          <ValidationProvider name="reference" rules="" v-slot="{ errors }">
+            <v-text-field
+              dense
+              name="reference"
+              :label="
+                $t(
+                  'people.registration.registrationForm.employmentInformationForm.reference'
+                )
+              "
+              outlined
+              required
+              v-model="employmentData.Referencia"
+              :error-messages="errors"
+            ></v-text-field>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
-          <v-text-field
-            dense
-            label="Empresa/Organismo solicitante"
-            outlined
-            required
-            v-model="employmentData.empresaOrganismoSolicitante"
-          ></v-text-field>
+          <ValidationProvider
+            name="applicantCompany"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-autocomplete
+              dense
+              name="applicantCompany"
+              :label="
+                $t(
+                  'people.registration.registrationForm.employmentInformationForm.applicantCompany'
+                )
+              "
+              outlined
+              required
+              v-model="employmentData.EmpresaOrganismoSolicitante"
+              :error-messages="errors"
+              :items="companies"
+              item-text="Nombre"
+              item-value="Nombre"
+              @change="getWorkplaces"
+            ></v-autocomplete>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
-          <v-text-field
-            dense
-            label="Centro de trabajo solicitante"
-            outlined
-            required
-            v-model="employmentData.centroDeTrabajoSolicitante"
-          ></v-text-field>
+          <ValidationProvider
+            name="applicantWorkCenter"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-autocomplete
+              dense
+              :disabled="
+                isLoadingWorkplaces ||
+                !employmentData.EmpresaOrganismoSolicitante
+              "
+              :items="workplaces"
+              item-text="Descripcion"
+              item-value="IdCentro"
+              name="applicantWorkCenter"
+              :label="
+                $t(
+                  'people.registration.registrationForm.employmentInformationForm.applicantWorkCenter'
+                )
+              "
+              outlined
+              required
+              v-model="employmentData.CentroDeTrabajoSolicitante"
+              :error-messages="errors"
+            ></v-autocomplete>
+          </ValidationProvider>
+        </v-col>
+        <!--<v-col cols="12" md="4">
+          <ValidationProvider
+            name="descriptionOfWorkCenter"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-text-field
+              dense
+              name="descriptionOfWorkCenter"
+              :label="
+                $t(
+                  'people.registration.registrationForm.employmentInformationForm.descriptionOfWorkCenter'
+                )
+              "
+              outlined
+              required
+              v-model="employmentData.DescripcionDelCentroDeTrabajoSolicitante"
+              :error-messages="errors"
+            ></v-text-field>
+          </ValidationProvider>
+        </v-col>-->
+        <v-col cols="12" md="4">
+          <ValidationProvider
+            name="syndicate"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-autocomplete
+              :disabled="isLoadingSyndicates"
+              :loading="isLoadingSyndicates"
+              :items="syndicates"
+              item-text="Nombre"
+              item-value="IdSindicato"
+              dense
+              name="syndicate"
+              :label="
+                $t(
+                  'people.registration.registrationForm.employmentInformationForm.syndicate'
+                )
+              "
+              outlined
+              required
+              v-model="employmentData.IdSindicato"
+              @change="getSyndicateSections"
+              v-if="showSyndicates === true"
+              :error-messages="errors"
+            ></v-autocomplete>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
-          <v-text-field
-            dense
-            label="Descripción del centro de trabajo solicitante"
-            outlined
-            required
-            v-model="employmentData.descripcionDelCentroDeTrabajoSolicitante"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="4">
-          <v-autocomplete
-            :disabled="isLoadingSyndicates"
-            :loading="isLoadingSyndicates"
-            :items="syndicates"
-            item-text="nombre"
-            item-value="idSindicato"
-            dense
-            label="Sindicato"
-            outlined
-            required
-            v-model="employmentData.idSindicato"
-            @change="getSyndicateSections"
-          ></v-autocomplete>
-        </v-col>
-        <v-col cols="12" md="4">
-          <v-autocomplete
-            :items="syndicateSections"
-            item-text="nombre"
-            item-value="idSeccionSindicato"
-            :disabled="isLoadingSyndicateSections"
-            :loading="isLoadingSyndicateSections"
-            dense
-            label="Sección sindical"
-            outlined
-            required
-            v-model="employmentData.idSeccionSindical"
-          ></v-autocomplete>
+          <ValidationProvider
+            name="syndicateSection"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-autocomplete
+              :items="syndicateSections"
+              item-text="Nombre"
+              item-value="IdSeccionSindicato"
+              :disabled="
+                isLoadingSyndicateSections || !employmentData.IdSindicato
+              "
+              :loading="isLoadingSyndicateSections"
+              dense
+              name="syndicateSection"
+              :label="
+                $t(
+                  'people.registration.registrationForm.employmentInformationForm.syndicateSection'
+                )
+              "
+              outlined
+              required
+              v-model="employmentData.IdSeccionSindical"
+              v-if="showSyndicates === true"
+              :error-messages="errors"
+            ></v-autocomplete>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12">
-          <v-textarea
-            label="Observaciones"
-            auto-grow
-            outlined
-            rows="5"
-            row-height="20"
-            v-model="employmentData.observaciones"
-          ></v-textarea>
+          <ValidationProvider name="observations" rules="" v-slot="{ errors }">
+            <v-textarea
+              :label="
+                $t(
+                  'people.registration.registrationForm.employmentInformationForm.observations'
+                )
+              "
+              auto-grow
+              outlined
+              dense
+              name="observations"
+              rows="5"
+              row-height="20"
+              v-model="employmentData.Observaciones"
+              :error-messages="errors"
+            ></v-textarea>
+          </ValidationProvider>
         </v-col>
       </v-row>
     </v-container>
@@ -86,22 +178,38 @@
 import Component from "vue-class-component";
 import Vue from "vue";
 import SyndicateService from "@/services/SyndicateService";
-import { ISyndicate } from "@/services/SyndicateService/types";
 import SyndicateSectionService from "@/services/SyndicateSectionService";
+import CompanyService from "@/services/CompanyService";
+import WorkplaceService from "@/services/WorkplaceService";
+import { Watch } from "vue-property-decorator";
+import { ISyndicate } from "@/services/SyndicateService/types";
 import { ISyndicateSection } from "@/services/SyndicateSectionService/types";
-import { IEmploymentData } from "@/store/people/types";
+import { IEmploymentData, IPerson } from "@/store/people/types";
+import { ICompany } from "@/services/CompanyService/types";
+import { IWorkplace } from "@/services/WorkplaceService/types";
 
 @Component({})
 export default class EmploymentInformationForm extends Vue {
   protected syndicateService = new SyndicateService();
   protected syndicateSectionService = new SyndicateSectionService();
+  protected companyService = new CompanyService();
+  protected workplaceService = new WorkplaceService();
   public syndicates: Array<ISyndicate> = [];
   public syndicateSections: Array<ISyndicateSection> = [];
+  public companies: Array<ICompany> = [];
+  public workplaces: Array<IWorkplace> = [];
   public isLoadingSyndicates = false;
   public isLoadingSyndicateSections = false;
+  public isLoadingCompanies = false;
+  public isLoadingWorkplaces = false;
+  public showSyndicates = false;
 
   get employmentData(): IEmploymentData {
     return this.$store.state.people.employmentData;
+  }
+
+  get person(): IPerson {
+    return this.$store.state.people.person;
   }
 
   getSyndicates(): void {
@@ -109,7 +217,7 @@ export default class EmploymentInformationForm extends Vue {
     this.syndicateService
       .getAll()
       .then((response) => {
-        this.syndicates = response.data;
+        this.syndicates = response.Data;
       })
       .finally(() => {
         this.isLoadingSyndicates = false;
@@ -117,21 +225,57 @@ export default class EmploymentInformationForm extends Vue {
   }
 
   getSyndicateSections(): void {
-    if (!this.employmentData.idSindicato) return;
+    if (!this.employmentData.IdSindicato) return;
 
     this.isLoadingSyndicateSections = true;
     this.syndicateSectionService
-      .getBySyndicateId(this.employmentData.idSindicato)
+      .getBySyndicateId(this.employmentData.IdSindicato)
       .then((response) => {
-        this.syndicateSections = response.data;
+        this.syndicateSections = response.Data;
       })
       .finally(() => {
         this.isLoadingSyndicateSections = false;
       });
   }
 
+  getCompanies(): void {
+    this.isLoadingCompanies = true;
+    this.companyService
+      .getAll()
+      .then((response) => {
+        this.companies = response.Data;
+      })
+      .finally(() => {
+        this.isLoadingCompanies = false;
+      });
+  }
+
+  getWorkplaces(): void {
+    this.isLoadingWorkplaces = true;
+    this.workplaceService
+      .getByCompanyName(this.employmentData.EmpresaOrganismoSolicitante)
+      .then((response) => {
+        this.workplaces = response.Data;
+      })
+      .finally(() => {
+        this.isLoadingWorkplaces = false;
+      });
+  }
+
+  @Watch("person.IdTipoEmpleado")
+  selectedEmployeeType(employeeTypeId: number | null): void {
+    if (employeeTypeId === 0) {
+      this.showSyndicates = true;
+    } else {
+      this.showSyndicates = false;
+      this.employmentData.IdSindicato = null;
+      this.employmentData.IdSeccionSindical = null;
+    }
+  }
+
   mounted(): void {
     this.getSyndicates();
+    this.getCompanies();
   }
 }
 </script>

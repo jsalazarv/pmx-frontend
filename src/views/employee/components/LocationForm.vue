@@ -3,110 +3,211 @@
     <v-container>
       <v-row>
         <v-col cols="12" md="4">
-          <v-autocomplete
-            dense
-            :items="countries"
-            item-text="nombre"
-            item-value="id"
-            :disabled="isLoadingCountries"
-            :loading="isLoadingCountries"
-            label="País"
-            outlined
-            required
-            v-model="address.idPais"
-            @change="getStates"
-          ></v-autocomplete>
+          <ValidationProvider
+            name="countries"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-autocomplete
+              dense
+              name="countries"
+              :items="countries"
+              item-text="Nombre"
+              item-value="Id"
+              :disabled="isLoadingCountries"
+              :loading="isLoadingCountries"
+              :label="
+                $t('people.registration.registrationForm.locationForm.country')
+              "
+              outlined
+              required
+              v-model="address.IdPais"
+              @change="getStates"
+              :error-messages="errors"
+            ></v-autocomplete>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
-          <v-autocomplete
-            dense
-            :items="states"
-            item-text="nombre"
-            item-value="id"
-            :disabled="isLoadingStates || !address.idPais"
-            :loading="isLoadingStates"
-            label="Estado"
-            outlined
-            required
-            v-model="address.idEstado"
-            @change="getMunicipality"
-          ></v-autocomplete>
+          <ValidationProvider
+            name="states"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-autocomplete
+              dense
+              name="states"
+              :items="states"
+              item-text="Nombre"
+              item-value="IdEstado"
+              :disabled="isLoadingStates || !address.IdPais"
+              :loading="isLoadingStates"
+              :label="
+                $t('people.registration.registrationForm.locationForm.state')
+              "
+              outlined
+              required
+              v-model="address.IdEstado"
+              @change="getMunicipality"
+              :error-messages="errors"
+            ></v-autocomplete>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
-          <v-autocomplete
-            dense
-            :items="municipalities"
-            item-text="nombre"
-            item-value="id"
-            :disabled="isLoadingMunicipalities || !address.idEstado"
-            :loading="isLoadingMunicipalities"
-            label="Municipio/Localidad"
-            outlined
-            required
-          ></v-autocomplete>
+          <ValidationProvider
+            name="municipalities"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-autocomplete
+              dense
+              name="municipalities"
+              :items="municipalities"
+              item-text="Nombre"
+              item-value="IdMunicipio"
+              :disabled="isLoadingMunicipalities || !address.IdEstado"
+              :loading="isLoadingMunicipalities"
+              :label="
+                $t(
+                  'people.registration.registrationForm.locationForm.municipality'
+                )
+              "
+              outlined
+              required
+              v-model="address.IdMunicipio"
+              :error-messages="errors"
+            ></v-autocomplete>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
-          <v-text-field
-            clearable
-            dense
-            label="Código postal"
-            outlined
-            required
-          ></v-text-field>
+          <ValidationProvider
+            name="postalCode"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-text-field
+              clearable
+              dense
+              name="postalCode"
+              :label="
+                $t(
+                  'people.registration.registrationForm.locationForm.postalCode'
+                )
+              "
+              outlined
+              required
+              :error-messages="errors"
+            ></v-text-field>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
-          <v-text-field
-            clearable
-            dense
-            label="Colonia"
-            outlined
-            required
-          ></v-text-field>
+          <ValidationProvider
+            name="suburb"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-text-field
+              clearable
+              dense
+              name="suburb"
+              :label="
+                $t('people.registration.registrationForm.locationForm.suburb')
+              "
+              outlined
+              required
+              :error-messages="errors"
+            ></v-text-field>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
-          <v-text-field
-            clearable
-            dense
-            label="Calle"
-            outlined
-            required
-          ></v-text-field>
+          <ValidationProvider
+            name="street"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-text-field
+              clearable
+              dense
+              name="street"
+              :label="
+                $t('people.registration.registrationForm.locationForm.street')
+              "
+              outlined
+              required
+              :error-messages="errors"
+            ></v-text-field>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12" md="2">
-          <v-text-field
-            clearable
-            dense
-            label="Núm. interior"
-            outlined
-            required
-          ></v-text-field>
+          <ValidationProvider
+            name="interiorNumber"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-text-field
+              clearable
+              dense
+              name="interiorNumber"
+              :label="
+                $t(
+                  'people.registration.registrationForm.locationForm.interiorNumber'
+                )
+              "
+              outlined
+              required
+              :error-messages="errors"
+            ></v-text-field>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12" md="2">
-          <v-text-field
-            clearable
-            dense
-            label="Núm. exterior"
-            outlined
-            required
-          ></v-text-field>
+          <ValidationProvider
+            name="exteriorNumber"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-text-field
+              clearable
+              dense
+              name="exteriorNumber"
+              :label="
+                $t(
+                  'people.registration.registrationForm.locationForm.exteriorNumber'
+                )
+              "
+              outlined
+              required
+              :error-messages="errors"
+            ></v-text-field>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
-          <v-text-field
-            clearable
-            dense
-            label="Manzana"
-            outlined
-            required
-          ></v-text-field>
+          <ValidationProvider name="block" rules="required" v-slot="{ errors }">
+            <v-text-field
+              clearable
+              dense
+              name="block"
+              :label="
+                $t('people.registration.registrationForm.locationForm.block')
+              "
+              outlined
+              required
+              :error-messages="errors"
+            ></v-text-field>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
-          <v-text-field
-            clearable
-            dense
-            label="Lote"
-            outlined
-            required
-          ></v-text-field>
+          <ValidationProvider name="lot" rules="required" v-slot="{ errors }">
+            <v-text-field
+              clearable
+              dense
+              name="lot"
+              :label="
+                $t('people.registration.registrationForm.locationForm.lot')
+              "
+              outlined
+              required
+              :error-messages="errors"
+            ></v-text-field>
+          </ValidationProvider>
         </v-col>
       </v-row>
     </v-container>
@@ -145,7 +246,7 @@ export default class LocationForm extends Vue {
     this.countryService
       .getAll()
       .then((response) => {
-        this.countries = response.data;
+        this.countries = response.Data;
       })
       .finally(() => {
         this.isLoadingCountries = false;
@@ -153,13 +254,13 @@ export default class LocationForm extends Vue {
   }
 
   getStates(): void {
-    if (!this.address.idPais) return;
-
+    if (!this.address.IdPais) return;
+    console.log(this.address.IdPais);
     this.isLoadingStates = true;
     this.stateService
-      .getByCountryId(this.address.idPais)
+      .getByCountryId(this.address.IdPais)
       .then((response) => {
-        this.states = response.data;
+        this.states = response.Data;
       })
       .finally(() => {
         this.isLoadingStates = false;
@@ -167,13 +268,13 @@ export default class LocationForm extends Vue {
   }
 
   getMunicipality(): void {
-    if (!this.address.idEstado) return;
+    if (!this.address.IdEstado) return;
 
     this.isLoadingMunicipalities = true;
     this.municipalityService
-      .getByStateId(this.address.idEstado)
+      .getByStateId(this.address.IdEstado)
       .then((response) => {
-        this.municipalities = response.data;
+        this.municipalities = response.Data;
       })
       .finally(() => {
         this.isLoadingMunicipalities = false;

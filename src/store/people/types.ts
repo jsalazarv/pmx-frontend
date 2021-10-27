@@ -1,38 +1,39 @@
 export interface IPerson {
-  curp: string;
-  nombres: string;
-  apellidoPaterno: string;
-  apellidoMaterno: string;
-  sexo: string;
-  fechaNacimiento: string;
-  nacionalidad: string;
-  anioRegistro: number | null;
-  idMunicipioRegistro: number | null;
-  idEntidadNacional: string;
-  idEntidadEmisora: string;
-  idTipoEmpleado: number | null;
+  Curp: string;
+  Nombres: string;
+  ApellidoPaterno: string;
+  ApellidoMaterno: string;
+  Sexo: string;
+  FechaNacimiento: string;
+  Nacionalidad: string;
+  AnioRegistro: number | null;
+  IdMunicipioRegistro: number | null;
+  IdEntidadNacional: string;
+  IdEntidadEmisora: string;
+  IdTipoEmpleado: number | null;
+  EstadoCivil: string;
 }
 
 export interface IEmploymentData {
-  referencia: string;
-  empresaOrganismoSolicitante: string;
-  centroDeTrabajoSolicitante: string;
-  descripcionDelCentroDeTrabajoSolicitante: string;
-  idSindicato: number | null;
-  idSeccionSindical: number | null;
-  observaciones: string;
+  Referencia: string;
+  EmpresaOrganismoSolicitante: string;
+  CentroDeTrabajoSolicitante: string;
+  DescripcionDelCentroDeTrabajoSolicitante: string;
+  IdSindicato: number | null;
+  IdSeccionSindical: number | null;
+  Observaciones: string;
 }
 
 export interface IAddress {
-  idPais: number | null;
-  idEstado: number | null;
-  idMunicipio: number | null;
-  codigoPostal: string;
-  colonia: string;
-  numeroInterior: string;
-  numeroExterior: string;
-  manzana: string;
-  lote: string;
+  IdPais: number | null;
+  IdEstado: number | null;
+  IdMunicipio: number | null;
+  CodigoPostal: string;
+  Colonia: string;
+  NumeroInterior: string;
+  NumeroExterior: string;
+  Manzana: string;
+  Lote: string;
 }
 
 export interface IPeopleState {
