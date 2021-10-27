@@ -3,95 +3,132 @@
     <v-container>
       <v-row>
         <v-col cols="12" md="6">
-          <ValidationProvider
-            name="typeOfEmployee"
-            rules="required"
-            v-slot="{ errors }"
-          >
-            <v-autocomplete
-              dense
-              name="typeOfEmployee"
-              :items="employeeTypeList"
-              item-text="Nombre"
-              item-value="Id"
-              :label="
-                $t(
-                  'people.registration.registrationForm.peopleSearchForm.typeOfEmployee'
-                )
-              "
-              outlined
-              required
-              :loading="isLoadingEmployeeList"
-              :disabled="isLoadingEmployeeList || isValidatingEmployee"
-              v-model="person.IdTipoEmpleado"
-              :error-messages="errors"
-            ></v-autocomplete>
-          </ValidationProvider>
-          <ValidationProvider name="curp" rules="required" v-slot="{ errors }">
-            <v-text-field
-              clearable
-              dense
-              name="curp"
-              :label="
-                $t('people.registration.registrationForm.peopleSearchForm.curp')
-              "
-              outlined
-              required
-              v-model="person.Curp"
-              :disabled="isValidatingEmployee"
-              :loading="isValidatingEmployee"
-              @click:clear="resetForm"
-              :error-messages="errors"
-            ></v-text-field>
-          </ValidationProvider>
-          <v-btn
-            color="success"
-            @click="validateCurp"
-            :disabled="isValidatingEmployee || !canValidate"
-            :loading="isValidatingEmployee"
-          >
-            {{ $t("dictionary.validate") }}
-          </v-btn>
+          <v-row>
+            <v-col cols="12">
+              <ValidationProvider
+                name="typeOfEmployee"
+                rules="required"
+                v-slot="{ errors }"
+              >
+                <v-autocomplete
+                  dense
+                  name="typeOfEmployee"
+                  :items="employeeTypeList"
+                  item-text="Nombre"
+                  item-value="Id"
+                  :label="
+                    $t(
+                      'people.registration.registrationForm.peopleSearchForm.typeOfEmployee'
+                    )
+                  "
+                  outlined
+                  required
+                  :loading="isLoadingEmployeeList"
+                  :disabled="isLoadingEmployeeList || isValidatingEmployee"
+                  v-model="person.IdTipoEmpleado"
+                  :error-messages="errors"
+                ></v-autocomplete>
+              </ValidationProvider>
+            </v-col>
+            <v-col cols="12">
+              <ValidationProvider
+                name="curp"
+                rules="required"
+                v-slot="{ errors }"
+              >
+                <v-text-field
+                  clearable
+                  dense
+                  name="curp"
+                  :label="
+                    $t(
+                      'people.registration.registrationForm.peopleSearchForm.curp'
+                    )
+                  "
+                  outlined
+                  required
+                  v-model="person.Curp"
+                  :disabled="isValidatingEmployee"
+                  :loading="isValidatingEmployee"
+                  @click:clear="resetForm"
+                  :error-messages="errors"
+                ></v-text-field>
+              </ValidationProvider>
+            </v-col>
+            <v-col cols="12">
+              <v-btn
+                color="success"
+                @click="validateCurp"
+                :disabled="isValidatingEmployee || !canValidate"
+                :loading="isValidatingEmployee"
+              >
+                {{ $t("dictionary.validate") }}
+              </v-btn>
+            </v-col>
+          </v-row>
         </v-col>
         <v-col cols="12" md="6">
-          <ValidationProvider
-            name="assignmentNumber"
-            rules=""
-            v-slot="{ errors }"
-          >
-            <v-text-field
-              dense
-              name="assignmentNumber"
-              disabled
-              :label="
-                $t(
-                  'people.registration.registrationForm.peopleSearchForm.assignmentNumber'
-                )
-              "
-              outlined
-              required
-              :error-messages="errors"
-            ></v-text-field>
-          </ValidationProvider>
-          <ValidationProvider
-            name="assignmentNumberStatus"
-            rules=""
-            v-slot="{ errors }"
-          >
-            <v-text-field
-              dense
-              name="assignmentNumberStatus"
-              disabled
-              :label="
-                $t(
-                  'people.registration.registrationForm.peopleSearchForm.assignmentNumberStatus'
-                )
-              "
-              outlined
-              required
-              :error-messages="errors"
-            ></v-text-field>
-          </ValidationProvider>
+          <v-row>
+            <v-col cols="12" md="6">
+              <ValidationProvider
+                name="assignmentNumber"
+                rules=""
+                v-slot="{ errors }"
+              >
+                <v-text-field
+                  dense
+                  name="assignmentNumber"
+                  disabled
+                  :label="
+                    $t(
+                      'people.registration.registrationForm.peopleSearchForm.assignmentNumber'
+                    )
+                  "
+                  outlined
+                  required
+                  :error-messages="errors"
+                ></v-text-field>
+              </ValidationProvider>
+            </v-col>
+            <v-col cols="12" md="6">
+              <ValidationProvider
+                name="assignmentNumberStatus"
+                rules=""
+                v-slot="{ errors }"
+              >
+                <v-text-field
+                  dense
+                  name="assignmentNumberStatus"
+                  disabled
+                  :label="
+                    $t(
+                      'people.registration.registrationForm.peopleSearchForm.assignmentNumberStatus'
+                    )
+                  "
+                  outlined
+                  required
+                  :error-messages="errors"
+                ></v-text-field>
+              </ValidationProvider>
+            </v-col>
+            <v-col cols="12">
+              <ValidationProvider name="invoice" rules="" v-slot="{ errors }">
+                <v-text-field
+                  dense
+                  name="invoice"
+                  disabled
+                  :label="
+                    $t(
+                      'people.registration.registrationForm.peopleSearchForm.invoice'
+                    )
+                  "
+                  outlined
+                  required
+                  :error-messages="errors"
+                ></v-text-field>
+              </ValidationProvider>
+            </v-col>
+          </v-row>
         </v-col>
       </v-row>
       <v-row>
@@ -157,7 +194,7 @@
             ></v-text-field>
           </ValidationProvider>
         </v-col>
-        <v-col cols="12" md="4">
+        <v-col cols="12" md="2">
           <ValidationProvider
             name="birthday"
             rules="required"
@@ -177,6 +214,27 @@
               v-model="person.FechaNacimiento"
               :error-messages="errors"
             ></v-text-field>
+          </ValidationProvider>
+        </v-col>
+        <v-col cols="12" md="2">
+          <ValidationProvider
+            name="photography"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-file-input
+              dense
+              name="photography"
+              :label="
+                $t(
+                  'people.registration.registrationForm.peopleSearchForm.photography'
+                )
+              "
+              prepend-icon="mdi-camera"
+              outlined
+              required
+              :error-messages="errors"
+            ></v-file-input>
           </ValidationProvider>
         </v-col>
         <v-col cols="12" md="2">
