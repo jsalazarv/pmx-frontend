@@ -179,7 +179,7 @@
             ></v-text-field>
           </ValidationProvider>
         </v-col>
-        <v-col cols="12" md="4">
+        <v-col cols="12" md="2">
           <ValidationProvider
             name="gender"
             rules="required"
@@ -193,7 +193,7 @@
               v-model="person.Sexo"
               item-text="Sigla"
               item-value="Sigla"
-              :items="genders"
+              :items="gendersList"
               :disabled="canEditPersonalInfo || isLoadingGendersList"
               :error-messages="errors"
               :label="
@@ -202,6 +202,32 @@
                 )
               "
               :loading="isLoadingGendersList"
+            ></v-autocomplete>
+          </ValidationProvider>
+        </v-col>
+        <v-col cols="12" md="2">
+          <ValidationProvider
+            name="maritalStatus"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-autocomplete
+              dense
+              name="maritalStatus"
+              outlined
+              required
+              v-model="person.EstadoCivil"
+              item-text="Nombre"
+              item-value="Sigla"
+              :items="maritalStatusesList"
+              :disabled="isLoadingMaritalStatusesList"
+              :error-messages="errors"
+              :label="
+                $t(
+                  'people.registration.registrationForm.peopleSearchForm.maritalStatus'
+                )
+              "
+              :loading="isLoadingMaritalStatusesList"
             ></v-autocomplete>
           </ValidationProvider>
         </v-col>
@@ -431,10 +457,12 @@ import { Vue } from "vue-property-decorator";
 import EmployeeTypeService from "@/services/EmployeeTypeService";
 import PersonService from "@/services/PersonService";
 import GenderService from "@/services/GenderService";
+import MaritalStatusService from "@/services/MaritalStatusService";
 import { IPersonValidationResponse } from "@/services/PersonService/types";
 import { IEmployeeType } from "@/services/EmployeeTypeService/types";
 import { IPerson } from "@/store/people/types";
 import { IGender } from "@/services/GenderService/types";
+import { IMaritalStatus } from "@/services/MaritalStatusService/types";
 import { ISnackbarProps } from "@/components/types";
 
 @Component({})
@@ -442,8 +470,10 @@ export default class EmployeeSearchForm extends Vue {
   protected employeeTypesService = new EmployeeTypeService();
   protected personService = new PersonService();
   protected genderService = new GenderService();
+  protected maritalStatusService = new MaritalStatusService();
   public employeeTypeList: Array<IEmployeeType> = [];
-  public genders: Array<IGender> = [];
+  public gendersList: Array<IGender> = [];
+  public maritalStatusesList: Array<IMaritalStatus> = [];
   public personValidationData: IPersonValidationResponse | null = null;
   public snackbar: ISnackbarProps = {
     visible: false,
@@ -452,6 +482,7 @@ export default class EmployeeSearchForm extends Vue {
   };
   public isLoadingEmployeeList = false;
   public isLoadingGendersList = false;
+  public isLoadingMaritalStatusesList = false;
   public isValidatingEmployee = false;
   public isDialogOpen = false;
   public infoSelected = false;
@@ -555,10 +586,22 @@ export default class EmployeeSearchForm extends Vue {
     this.genderService
       .getAll()
       .then((response) => {
-        this.genders = response.Data;
+        this.gendersList = response.Data;
       })
       .finally(() => {
         this.isLoadingGendersList = false;
+      });
+  }
+
+  getMaritalStatuses(): void {
+    this.isLoadingMaritalStatusesList = true;
+    this.maritalStatusService
+      .getAll()
+      .then((response) => {
+        this.maritalStatusesList = response.Data;
+      })
+      .finally(() => {
+        this.isLoadingMaritalStatusesList = false;
       });
   }
 
@@ -576,6 +619,7 @@ export default class EmployeeSearchForm extends Vue {
   mounted(): void {
     this.getEmployeeTypes();
     this.getGenders();
+    this.getMaritalStatuses();
   }
 }
 </script>

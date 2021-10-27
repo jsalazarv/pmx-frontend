@@ -21,6 +21,7 @@ const initialState: IPeopleState = {
     IdEntidadNacional: "",
     IdEntidadEmisora: "",
     IdTipoEmpleado: null,
+    EstadoCivil: "",
   },
   employmentData: {
     Referencia: "",
