@@ -11,6 +11,7 @@ export interface IPerson {
   IdEntidadNacional: string;
   IdEntidadEmisora: string;
   IdTipoEmpleado: number | null;
+  EstadoCivil: string;
 }
 
 export interface IEmploymentData {

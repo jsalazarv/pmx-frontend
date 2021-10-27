@@ -14,6 +14,7 @@ export default {
         birthday: "Fecha de nacimiento",
         gender: "Sexo",
         rfc: "RFC",
+        maritalStatus: "Estado civil",
       },
       employmentInformationForm: {
         reference: "Referencia",
