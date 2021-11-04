@@ -14,7 +14,7 @@
                   dense
                   name="typeOfEmployee"
                   :items="employeeTypeList"
-                  item-text="Nombre"
+                  item-text="Id"
                   item-value="Id"
                   :label="
                     $t(
@@ -112,11 +112,14 @@
               </ValidationProvider>
             </v-col>
             <v-col cols="12">
-              <ValidationProvider name="invoice" rules="" v-slot="{ errors }">
+              <ValidationProvider
+                name="invoice"
+                rules="required"
+                v-slot="{ errors }"
+              >
                 <v-text-field
                   dense
                   name="invoice"
-                  disabled
                   :label="
                     $t(
                       'people.registration.registrationForm.peopleSearchForm.invoice'
@@ -124,6 +127,7 @@
                   "
                   outlined
                   required
+                  v-model="employmentData.Folio"
                   :error-messages="errors"
                 ></v-text-field>
               </ValidationProvider>
@@ -274,7 +278,7 @@
               name="maritalStatus"
               outlined
               required
-              v-model="person.EstadoCivil"
+              v-model="person.EdoCivil"
               item-text="Nombre"
               item-value="Sigla"
               :items="maritalStatusesList"
@@ -518,7 +522,7 @@ import GenderService from "@/services/GenderService";
 import MaritalStatusService from "@/services/MaritalStatusService";
 import { IPersonValidationResponse } from "@/services/PersonService/types";
 import { IEmployeeType } from "@/services/EmployeeTypeService/types";
-import { IPerson } from "@/store/people/types";
+import { IEmploymentData, IPerson } from "@/store/people/types";
 import { IGender } from "@/services/GenderService/types";
 import { IMaritalStatus } from "@/services/MaritalStatusService/types";
 import { ISnackbarProps } from "@/components/types";
@@ -549,17 +553,21 @@ export default class EmployeeSearchForm extends Vue {
     return this.$store.state.people.person;
   }
 
+  get employmentData(): IEmploymentData {
+    return this.$store.state.people.employmentData;
+  }
+
   get dataTypesOfEmployee(): IEmployeeType {
     return this.$store.state.people.typesOfEmployees;
   }
 
   get mfeData(): Partial<IPerson> {
     return {
-      Nombres: this.personValidationData?.Mfe?.Nombres,
-      ApellidoPaterno: this.personValidationData?.Mfe?.ApellidoPaterno,
-      ApellidoMaterno: this.personValidationData?.Mfe?.ApellidoMaterno,
-      FechaNacimiento: this.personValidationData?.Mfe?.FechaNacimiento,
-      Sexo: this.personValidationData?.Mfe?.Sexo,
+      Nombres: this.personValidationData?.MFE?.Nombres,
+      ApellidoPaterno: this.personValidationData?.MFE?.ApellidoPaterno,
+      ApellidoMaterno: this.personValidationData?.MFE?.ApellidoMaterno,
+      FechaNacimiento: this.personValidationData?.MFE?.FechaNacimiento,
+      Sexo: this.personValidationData?.MFE?.Sexo,
     };
   }
 

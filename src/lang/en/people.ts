@@ -31,6 +31,7 @@ export default {
         country: "Country",
         state: "State",
         municipality: "Municipality",
+        location: "Location",
         postalCode: "Postal code",
         suburb: "Suburb",
         street: "Street",

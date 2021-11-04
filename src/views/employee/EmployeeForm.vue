@@ -39,7 +39,7 @@ import Component from "vue-class-component";
 import EmployeeSearchForm from "@/views/employee/components/EmployeeSearchForm.vue";
 import EmploymentInformationForm from "@/views/employee/components/EmploymentInformationForm.vue";
 import LocationForm from "@/views/employee/components/LocationForm.vue";
-import { IValidationObserver } from "@/components/types";
+import PersonService from "@/services/PersonService";
 
 @Component({
   components: {
@@ -49,13 +49,80 @@ import { IValidationObserver } from "@/components/types";
   },
 })
 export default class PeopleCreate extends Vue {
+  protected personService = new PersonService();
+
   get isLoading(): boolean {
     // TODO Refactor this form is submitting
     return false;
   }
 
+  createEmployee(): void {
+    const {
+      IdTipoEmpleado,
+      Curp,
+      Nombres,
+      ApellidoPaterno,
+      ApellidoMaterno,
+      FechaNacimiento,
+      Sexo,
+      EstadoCivil,
+    } = this.$store.state.people.person;
+
+    const {
+      Folio,
+      Referencia,
+      IdCentro,
+      IdSeccionSindicato,
+      Observaciones,
+    } = this.$store.state.people.employmentData;
+
+    const {
+      IdMunicipio,
+      Localidad,
+      CodigoPostal,
+      Colonia,
+      Calle,
+      NumeroInterior,
+      NumeroExterior,
+      Manzana,
+      Lote,
+    } = this.$store.state.people.address;
+
+    const data = {
+      IdTipoEmpleado,
+      Curp,
+      Nombres,
+      ApellidoPaterno,
+      ApellidoMaterno,
+      FechaNacimiento,
+      Sexo,
+      EstadoCivil,
+      Folio,
+      Referencia,
+      IdCentro,
+      IdSeccionSindicato,
+      Observaciones,
+      IdMunicipio,
+      Localidad,
+      CodigoPostal,
+      Colonia,
+      Calle,
+      NumeroInterior,
+      NumeroExterior,
+      Manzana,
+      Lote,
+    };
+    this.personService
+      .create(data)
+      .then((response) => {
+        console.log("Data POST: ", response);
+      })
+      .finally();
+  }
+
   async registerEmployee(): Promise<void> {
-    await (this.$refs.form as IValidationObserver).validate();
+    //await (this.$refs.form as IValidationObserver).validate();
+    this.createEmployee();
   }
 }
 </script>

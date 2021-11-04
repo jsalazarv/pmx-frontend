@@ -1,3 +1,5 @@
+import { IAddress, IEmploymentData, IPerson } from "@/store/people/types";
+
 export interface IRenapoData {
   Curp: string;
   Nombres: string;
@@ -54,5 +56,10 @@ export interface IMfeData {
 
 export interface IPersonValidationResponse {
   Renapo: IRenapoData;
-  Mfe: IMfeData;
+  MFE: IMfeData;
 }
+
+export interface ICreatePersonRequest
+  extends IPerson,
+    IAddress,
+    IEmploymentData {}

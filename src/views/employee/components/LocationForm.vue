@@ -80,12 +80,30 @@
         </v-col>
         <v-col cols="12" md="4">
           <ValidationProvider
+            name="location"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-text-field
+              dense
+              name="location"
+              :label="
+                $t('people.registration.registrationForm.locationForm.location')
+              "
+              outlined
+              required
+              v-model="address.Localidad"
+              :error-messages="errors"
+            ></v-text-field>
+          </ValidationProvider>
+        </v-col>
+        <v-col cols="12" md="4">
+          <ValidationProvider
             name="postalCode"
             rules="required"
             v-slot="{ errors }"
           >
             <v-text-field
-              clearable
               dense
               name="postalCode"
               :label="
@@ -95,6 +113,7 @@
               "
               outlined
               required
+              v-model="address.CodigoPostal"
               :error-messages="errors"
             ></v-text-field>
           </ValidationProvider>
@@ -106,7 +125,6 @@
             v-slot="{ errors }"
           >
             <v-text-field
-              clearable
               dense
               name="suburb"
               :label="
@@ -114,6 +132,7 @@
               "
               outlined
               required
+              v-model="address.Colonia"
               :error-messages="errors"
             ></v-text-field>
           </ValidationProvider>
@@ -125,7 +144,6 @@
             v-slot="{ errors }"
           >
             <v-text-field
-              clearable
               dense
               name="street"
               :label="
@@ -133,6 +151,7 @@
               "
               outlined
               required
+              v-model="address.Calle"
               :error-messages="errors"
             ></v-text-field>
           </ValidationProvider>
@@ -144,7 +163,6 @@
             v-slot="{ errors }"
           >
             <v-text-field
-              clearable
               dense
               name="interiorNumber"
               :label="
@@ -154,6 +172,7 @@
               "
               outlined
               required
+              v-model="address.NumeroInterior"
               :error-messages="errors"
             ></v-text-field>
           </ValidationProvider>
@@ -165,7 +184,6 @@
             v-slot="{ errors }"
           >
             <v-text-field
-              clearable
               dense
               name="exteriorNumber"
               :label="
@@ -175,6 +193,7 @@
               "
               outlined
               required
+              v-model="address.NumeroExterior"
               :error-messages="errors"
             ></v-text-field>
           </ValidationProvider>
@@ -182,7 +201,6 @@
         <v-col cols="12" md="4">
           <ValidationProvider name="block" rules="required" v-slot="{ errors }">
             <v-text-field
-              clearable
               dense
               name="block"
               :label="
@@ -190,6 +208,7 @@
               "
               outlined
               required
+              v-model="address.Manzana"
               :error-messages="errors"
             ></v-text-field>
           </ValidationProvider>
@@ -197,7 +216,6 @@
         <v-col cols="12" md="4">
           <ValidationProvider name="lot" rules="required" v-slot="{ errors }">
             <v-text-field
-              clearable
               dense
               name="lot"
               :label="
@@ -205,6 +223,7 @@
               "
               outlined
               required
+              v-model="address.Lote"
               :error-messages="errors"
             ></v-text-field>
           </ValidationProvider>
@@ -255,7 +274,6 @@ export default class LocationForm extends Vue {
 
   getStates(): void {
     if (!this.address.IdPais) return;
-    console.log(this.address.IdPais);
     this.isLoadingStates = true;
     this.stateService
       .getByCountryId(this.address.IdPais)

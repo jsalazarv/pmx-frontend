@@ -67,32 +67,11 @@
               "
               outlined
               required
-              v-model="employmentData.CentroDeTrabajoSolicitante"
+              v-model="employmentData.IdCentro"
               :error-messages="errors"
             ></v-autocomplete>
           </ValidationProvider>
         </v-col>
-        <!--<v-col cols="12" md="4">
-          <ValidationProvider
-            name="descriptionOfWorkCenter"
-            rules="required"
-            v-slot="{ errors }"
-          >
-            <v-text-field
-              dense
-              name="descriptionOfWorkCenter"
-              :label="
-                $t(
-                  'people.registration.registrationForm.employmentInformationForm.descriptionOfWorkCenter'
-                )
-              "
-              outlined
-              required
-              v-model="employmentData.DescripcionDelCentroDeTrabajoSolicitante"
-              :error-messages="errors"
-            ></v-text-field>
-          </ValidationProvider>
-        </v-col>-->
         <v-col cols="12" md="4">
           <ValidationProvider
             name="syndicate"
@@ -144,7 +123,7 @@
               "
               outlined
               required
-              v-model="employmentData.IdSeccionSindical"
+              v-model="employmentData.IdSeccionSindicato"
               v-if="showSyndicates === true"
               :error-messages="errors"
             ></v-autocomplete>
@@ -269,7 +248,7 @@ export default class EmploymentInformationForm extends Vue {
     } else {
       this.showSyndicates = false;
       this.employmentData.IdSindicato = null;
-      this.employmentData.IdSeccionSindical = null;
+      this.employmentData.IdSeccionSindicato = null;
     }
   }
 
