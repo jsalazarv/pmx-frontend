@@ -64,6 +64,11 @@ export interface IMfeData {
   DpTomo: number;
 }
 
+export interface IMessage {
+  Regla: string;
+  Texto: string;
+}
+
 export interface IEmployeeValidationResponse {
   Renapo: IRenapoData;
   MFE: IMfeData;

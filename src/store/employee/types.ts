@@ -118,8 +118,14 @@ export interface IAddressForm {
   Lote: string;
 }
 
+export interface IConfirmForm {
+  Justificacion: string;
+  confirmar: null | boolean;
+}
+
 export interface IEmployeeState {
   employee: IEmployeeForm;
   employmentData: IEmploymentDataForm;
   address: IAddressForm;
+  confirmation: IConfirmForm;
 }

@@ -5,6 +5,7 @@ import {
   ICreateEmployeeResponse,
   ICreateEmployeeRequest,
   IEmployeeValidationResponse,
+  IMessage,
 } from "@/services/EmployeeService/types";
 
 export default class EmployeeService extends BaseService {
@@ -12,7 +13,7 @@ export default class EmployeeService extends BaseService {
     curp: string,
     idEmployeeType: number | null,
     params = {}
-  ): IServiceResponse<IEmployeeValidationResponse> {
+  ): IServiceResponse<IEmployeeValidationResponse, IMessage> {
     return this.client.get(
       `/Empleados/${curp}/Curp/TipoEmpleado/${idEmployeeType}`,
       params

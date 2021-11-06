@@ -312,192 +312,21 @@
       </v-row>
     </v-container>
 
-    <v-dialog
-      v-model="isDialogOpen"
-      persistent
-      max-width="750"
-      scrollable
-      class="mx-2"
-    >
-      <v-card>
-        <v-card-title class="text-h6"></v-card-title>
-        <v-card-text>
-          <v-row>
-            <v-col cols="12" md="6">
-              <v-card elevation="0" outlined>
-                <v-card-title class="subheading font-weight-bold">
-                  {{ $t("dictionary.mfe") }}
-                </v-card-title>
-                <v-divider></v-divider>
-                <v-list dense>
-                  <v-list-item>
-                    <v-list-item-content>
-                      {{
-                        $t(
-                          "employee.registration.registrationForm.peopleSearchForm.names"
-                        )
-                      }}:
-                    </v-list-item-content>
-                    <v-list-item-content class="align-end">
-                      {{ mfeData.Nombres }}
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item>
-                    <v-list-item-content>
-                      {{
-                        $t(
-                          "employee.registration.registrationForm.peopleSearchForm.lastname"
-                        )
-                      }}:
-                    </v-list-item-content>
-                    <v-list-item-content class="align-end">
-                      {{ mfeData.ApellidoPaterno }}
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item>
-                    <v-list-item-content>
-                      {{
-                        $t(
-                          "employee.registration.registrationForm.peopleSearchForm.surname"
-                        )
-                      }}:
-                    </v-list-item-content>
-                    <v-list-item-content class="align-end">
-                      {{ mfeData.ApellidoMaterno }}
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item>
-                    <v-list-item-content>
-                      {{
-                        $t(
-                          "employee.registration.registrationForm.peopleSearchForm.birthday"
-                        )
-                      }}:
-                    </v-list-item-content>
-                    <v-list-item-content class="align-end">
-                      {{ mfeData.FechaNacimiento }}
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item>
-                    <v-list-item-content>
-                      {{
-                        $t(
-                          "employee.registration.registrationForm.peopleSearchForm.gender"
-                        )
-                      }}:
-                    </v-list-item-content>
-                    <v-list-item-content class="align-end">
-                      {{ mfeData.Sexo }}
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list>
-                <v-card-actions>
-                  <div class="text-right">
-                    <v-btn
-                      color="success"
-                      elevation="0"
-                      @click="selectDataMFE"
-                      :disabled="!mfeData.Nombres"
-                    >
-                      {{ $t("dictionary.toSelect") }}
-                    </v-btn>
-                  </div>
-                </v-card-actions>
-              </v-card>
-            </v-col>
-            <v-col cols="12" md="6">
-              <v-card elevation="0" outlined>
-                <v-card-title class="subheading font-weight-bold">
-                  {{ $t("dictionary.renapo") }}
-                </v-card-title>
-                <v-divider></v-divider>
-                <v-list dense>
-                  <v-list-item>
-                    <v-list-item-content>
-                      {{
-                        $t(
-                          "employee.registration.registrationForm.peopleSearchForm.names"
-                        )
-                      }}:
-                    </v-list-item-content>
-                    <v-list-item-content class="align-end">
-                      {{ renapoData.Nombres }}
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item>
-                    <v-list-item-content>
-                      {{
-                        $t(
-                          "employee.registration.registrationForm.peopleSearchForm.lastname"
-                        )
-                      }}:
-                    </v-list-item-content>
-                    <v-list-item-content class="align-end">
-                      {{ renapoData.ApellidoPaterno }}
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item>
-                    <v-list-item-content>
-                      {{
-                        $t(
-                          "employee.registration.registrationForm.peopleSearchForm.surname"
-                        )
-                      }}:
-                    </v-list-item-content>
-                    <v-list-item-content class="align-end">
-                      {{ renapoData.ApellidoMaterno }}
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item>
-                    <v-list-item-content>
-                      {{
-                        $t(
-                          "employee.registration.registrationForm.peopleSearchForm.birthday"
-                        )
-                      }}:
-                    </v-list-item-content>
-                    <v-list-item-content class="align-end">
-                      {{ renapoData.FechaNacimiento }}
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item>
-                    <v-list-item-content>
-                      {{
-                        $t(
-                          "employee.registration.registrationForm.peopleSearchForm.gender"
-                        )
-                      }}:
-                    </v-list-item-content>
-                    <v-list-item-content class="align-end">
-                      {{ renapoData.Sexo }}
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list>
-                <v-card-actions>
-                  <div class="text-right">
-                    <v-btn
-                      color="success"
-                      elevation="0"
-                      @click="selectDataRenapo"
-                      :disabled="!renapoData.Nombres"
-                    >
-                      {{ $t("dictionary.toSelect") }}
-                    </v-btn>
-                  </div>
-                </v-card-actions>
-              </v-card>
-            </v-col>
-          </v-row>
-        </v-card-text>
+    <renapo-dialog
+      :open.sync="isDialogOpen"
+      :mfe-data="mfeData"
+      :renapo-data="renapoData"
+      @onSelect="disableInputs"
+      @onCancel="resetForm"
+    />
 
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="error darken-1" text @click="closeDialog">
-            {{ $t("dictionary.cancel") }}
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <confirm-use-existing-employee-dialog
+      :open.sync="isConfirmDialogOpen"
+      :mfe-data="mfeData"
+      :renapo-data="renapoData"
+      @onConfirm="disableInputs"
+      @onReject="resetForm"
+    />
 
     <v-snackbar v-model="snackbar.visible" :top="true">
       {{ snackbar.message }}
@@ -522,14 +351,22 @@ import EmployeeTypeService from "@/services/EmployeeTypeService";
 import EmployeeService from "@/services/EmployeeService";
 import GenderService from "@/services/GenderService";
 import MaritalStatusService from "@/services/MaritalStatusService";
-import { IEmployeeValidationResponse } from "@/services/EmployeeService/types";
+import {
+  IEmployeeValidationResponse,
+  IMessage,
+} from "@/services/EmployeeService/types";
 import { IEmployeeType } from "@/services/EmployeeTypeService/types";
 import { IEmploymentDataForm, IEmployeeForm } from "@/store/employee/types";
 import { IGender } from "@/services/GenderService/types";
 import { IMaritalStatus } from "@/services/MaritalStatusService/types";
 import { ISnackbarProps } from "@/components/types";
+import RenapoDialog from "@/views/employee/components/RenapoDialog.vue";
+import ConfirmUseExistingEmployeeDialog from "@/views/employee/components/ConfirmUseExistingEmployeeDialog.vue";
+import { IApiResponse } from "@/services/types";
 
-@Component({})
+@Component({
+  components: { ConfirmUseExistingEmployeeDialog, RenapoDialog },
+})
 export default class EmployeeSearchForm extends Vue {
   protected employeeTypesService = new EmployeeTypeService();
   protected employeeService = new EmployeeService();
@@ -539,6 +376,7 @@ export default class EmployeeSearchForm extends Vue {
   public gendersList: Array<IGender> = [];
   public maritalStatusesList: Array<IMaritalStatus> = [];
   public employeeValidationData: IEmployeeValidationResponse | null = null;
+  public validationMessage: IMessage | null = null;
   public snackbar: ISnackbarProps = {
     visible: false,
     message: null,
@@ -549,6 +387,7 @@ export default class EmployeeSearchForm extends Vue {
   public isLoadingMaritalStatusesList = false;
   public isValidatingEmployee = false;
   public isDialogOpen = false;
+  public isConfirmDialogOpen = false;
   public infoSelected = false;
 
   get employee(): IEmployeeForm {
@@ -595,10 +434,7 @@ export default class EmployeeSearchForm extends Vue {
     this.isValidatingEmployee = true;
     this.employeeService
       .findByCurp(this.employee.Curp, this.employee.IdTipoEmpleado)
-      .then((response) => {
-        this.employeeValidationData = response.Data;
-        this.openDialog();
-      })
+      .then(this.handleValidationResponse)
       .catch((error) => {
         if (error.response.data.success === false) {
           this.showSnackbar(true, error.response.data.message, "error");
@@ -615,26 +451,31 @@ export default class EmployeeSearchForm extends Vue {
       });
   }
 
-  closeDialog(): void {
-    this.isDialogOpen = false;
+  disableInputs(): void {
+    this.employeeValidationData = null;
+    this.infoSelected = true;
   }
 
   openDialog(): void {
     this.isDialogOpen = true;
   }
 
-  selectDataRenapo(): void {
-    this.$store.dispatch("employees/setEmployeeData", this.renapoData);
-    this.closeDialog();
-    this.employeeValidationData = null;
-    this.infoSelected = true;
+  openConfirmDialog(): void {
+    this.isConfirmDialogOpen = true;
   }
 
-  selectDataMFE(): void {
-    this.$store.dispatch("employees/setEmployeeData", this.mfeData);
-    this.closeDialog();
-    this.employeeValidationData = null;
-    this.infoSelected = true;
+  handleValidationResponse(
+    response: IApiResponse<IEmployeeValidationResponse, IMessage>
+  ): void {
+    this.employeeValidationData = response.Data;
+    this.validationMessage = response.Message;
+    //TODO: Do something when person doesn't exist in Renapo or Mfe data
+
+    //TODO: Validate this using rules in response and add switch case
+    if (!response.Data.MFE) {
+      return this.openDialog();
+    }
+    return this.openConfirmDialog();
   }
 
   getEmployeeTypes(): void {

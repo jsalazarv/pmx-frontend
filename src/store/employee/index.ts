@@ -44,6 +44,10 @@ const initialState: IEmployeeState = {
     Manzana: "",
     Lote: "",
   },
+  confirmation: {
+    Justificacion: "",
+    confirmar: null,
+  },
 };
 
 const employeeModule: Module<IEmployeeState, IRootState> = {
