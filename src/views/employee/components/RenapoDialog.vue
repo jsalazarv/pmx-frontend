@@ -190,7 +190,7 @@ export default class RenapoDialog extends Vue {
   public renapoData!: Partial<IEmployeeForm>;
 
   @PropSync("open")
-  public isDialogOpen = false;
+  public isDialogOpen!: boolean;
 
   public onSelectData!: () => void;
   public onCancel!: () => void;
