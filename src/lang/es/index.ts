@@ -1,7 +1,7 @@
 import dictionary from "@/lang/es/dictionary";
-import people from "@/lang/es/people";
+import employee from "@/lang/es/employee";
 
 export default {
   dictionary,
-  people,
+  employee,
 };

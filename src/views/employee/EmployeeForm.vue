@@ -4,7 +4,7 @@
       <v-card>
         <v-toolbar flat>
           <v-toolbar-title>
-            {{ $t("people.registration.title") }}
+            {{ $t("employee.registration.title") }}
           </v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
@@ -21,7 +21,7 @@
             <v-btn color="success" @click="registerEmployee">
               {{
                 $t(
-                  "people.registration.registrationForm.generateAssignmentNumber"
+                  "employee.registration.registrationForm.generateAssignmentNumber"
                 )
               }}
             </v-btn>
@@ -39,7 +39,7 @@ import Component from "vue-class-component";
 import EmployeeSearchForm from "@/views/employee/components/EmployeeSearchForm.vue";
 import EmploymentInformationForm from "@/views/employee/components/EmploymentInformationForm.vue";
 import LocationForm from "@/views/employee/components/LocationForm.vue";
-import PersonService from "@/services/PersonService";
+import EmployeeService from "@/services/EmployeeService";
 
 @Component({
   components: {
@@ -49,7 +49,7 @@ import PersonService from "@/services/PersonService";
   },
 })
 export default class PeopleCreate extends Vue {
-  protected personService = new PersonService();
+  protected employeeService = new EmployeeService();
 
   get isLoading(): boolean {
     // TODO Refactor this form is submitting
@@ -57,62 +57,13 @@ export default class PeopleCreate extends Vue {
   }
 
   createEmployee(): void {
-    const {
-      IdTipoEmpleado,
-      Curp,
-      Nombres,
-      ApellidoPaterno,
-      ApellidoMaterno,
-      FechaNacimiento,
-      Sexo,
-      EstadoCivil,
-    } = this.$store.state.people.person;
-
-    const {
-      Folio,
-      Referencia,
-      IdCentro,
-      IdSeccionSindicato,
-      Observaciones,
-    } = this.$store.state.people.employmentData;
-
-    const {
-      IdMunicipio,
-      Localidad,
-      CodigoPostal,
-      Colonia,
-      Calle,
-      NumeroInterior,
-      NumeroExterior,
-      Manzana,
-      Lote,
-    } = this.$store.state.people.address;
-
     const data = {
-      IdTipoEmpleado,
-      Curp,
-      Nombres,
-      ApellidoPaterno,
-      ApellidoMaterno,
-      FechaNacimiento,
-      Sexo,
-      EstadoCivil,
-      Folio,
-      Referencia,
-      IdCentro,
-      IdSeccionSindicato,
-      Observaciones,
-      IdMunicipio,
-      Localidad,
-      CodigoPostal,
-      Colonia,
-      Calle,
-      NumeroInterior,
-      NumeroExterior,
-      Manzana,
-      Lote,
+      ...this.$store.state.employees.employee,
+      ...this.$store.state.employees.employmentData,
+      ...this.$store.state.employees.address,
     };
-    this.personService
+
+    this.employeeService
       .create(data)
       .then((response) => {
         console.log("Data POST: ", response);

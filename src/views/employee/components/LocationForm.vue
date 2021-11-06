@@ -17,7 +17,9 @@
               :disabled="isLoadingCountries"
               :loading="isLoadingCountries"
               :label="
-                $t('people.registration.registrationForm.locationForm.country')
+                $t(
+                  'employee.registration.registrationForm.locationForm.country'
+                )
               "
               outlined
               required
@@ -42,7 +44,7 @@
               :disabled="isLoadingStates || !address.IdPais"
               :loading="isLoadingStates"
               :label="
-                $t('people.registration.registrationForm.locationForm.state')
+                $t('employee.registration.registrationForm.locationForm.state')
               "
               outlined
               required
@@ -68,7 +70,7 @@
               :loading="isLoadingMunicipalities"
               :label="
                 $t(
-                  'people.registration.registrationForm.locationForm.municipality'
+                  'employee.registration.registrationForm.locationForm.municipality'
                 )
               "
               outlined
@@ -88,7 +90,9 @@
               dense
               name="location"
               :label="
-                $t('people.registration.registrationForm.locationForm.location')
+                $t(
+                  'employee.registration.registrationForm.locationForm.location'
+                )
               "
               outlined
               required
@@ -108,7 +112,7 @@
               name="postalCode"
               :label="
                 $t(
-                  'people.registration.registrationForm.locationForm.postalCode'
+                  'employee.registration.registrationForm.locationForm.postalCode'
                 )
               "
               outlined
@@ -128,7 +132,7 @@
               dense
               name="suburb"
               :label="
-                $t('people.registration.registrationForm.locationForm.suburb')
+                $t('employee.registration.registrationForm.locationForm.suburb')
               "
               outlined
               required
@@ -147,7 +151,7 @@
               dense
               name="street"
               :label="
-                $t('people.registration.registrationForm.locationForm.street')
+                $t('employee.registration.registrationForm.locationForm.street')
               "
               outlined
               required
@@ -167,7 +171,7 @@
               name="interiorNumber"
               :label="
                 $t(
-                  'people.registration.registrationForm.locationForm.interiorNumber'
+                  'employee.registration.registrationForm.locationForm.interiorNumber'
                 )
               "
               outlined
@@ -188,7 +192,7 @@
               name="exteriorNumber"
               :label="
                 $t(
-                  'people.registration.registrationForm.locationForm.exteriorNumber'
+                  'employee.registration.registrationForm.locationForm.exteriorNumber'
                 )
               "
               outlined
@@ -204,7 +208,7 @@
               dense
               name="block"
               :label="
-                $t('people.registration.registrationForm.locationForm.block')
+                $t('employee.registration.registrationForm.locationForm.block')
               "
               outlined
               required
@@ -219,7 +223,7 @@
               dense
               name="lot"
               :label="
-                $t('people.registration.registrationForm.locationForm.lot')
+                $t('employee.registration.registrationForm.locationForm.lot')
               "
               outlined
               required
@@ -241,7 +245,7 @@ import StateService from "@/services/StateService";
 import MunicipalityService from "@/services/MunicipalityService";
 import { ICountry } from "@/services/CountryService/types";
 import { IState } from "@/services/StateService/types";
-import { IAddress } from "@/store/people/types";
+import { IAddressForm } from "@/store/employee/types";
 import { IMunicipality } from "@/services/MunicipalityService/types";
 
 @Component({})
@@ -256,8 +260,8 @@ export default class LocationForm extends Vue {
   public municipalities: Array<IMunicipality> = [];
   public isLoadingMunicipalities = false;
 
-  get address(): IAddress {
-    return this.$store.state.people.address;
+  get address(): IAddressForm {
+    return this.$store.state.employees.address;
   }
 
   getCountries(): void {

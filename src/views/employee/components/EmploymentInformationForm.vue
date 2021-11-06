@@ -9,7 +9,7 @@
               name="reference"
               :label="
                 $t(
-                  'people.registration.registrationForm.employmentInformationForm.reference'
+                  'employee.registration.registrationForm.employmentInformationForm.reference'
                 )
               "
               outlined
@@ -30,7 +30,7 @@
               name="applicantCompany"
               :label="
                 $t(
-                  'people.registration.registrationForm.employmentInformationForm.applicantCompany'
+                  'employee.registration.registrationForm.employmentInformationForm.applicantCompany'
                 )
               "
               outlined
@@ -62,7 +62,7 @@
               name="applicantWorkCenter"
               :label="
                 $t(
-                  'people.registration.registrationForm.employmentInformationForm.applicantWorkCenter'
+                  'employee.registration.registrationForm.employmentInformationForm.applicantWorkCenter'
                 )
               "
               outlined
@@ -88,7 +88,7 @@
               name="syndicate"
               :label="
                 $t(
-                  'people.registration.registrationForm.employmentInformationForm.syndicate'
+                  'employee.registration.registrationForm.employmentInformationForm.syndicate'
                 )
               "
               outlined
@@ -118,7 +118,7 @@
               name="syndicateSection"
               :label="
                 $t(
-                  'people.registration.registrationForm.employmentInformationForm.syndicateSection'
+                  'employee.registration.registrationForm.employmentInformationForm.syndicateSection'
                 )
               "
               outlined
@@ -134,7 +134,7 @@
             <v-textarea
               :label="
                 $t(
-                  'people.registration.registrationForm.employmentInformationForm.observations'
+                  'employee.registration.registrationForm.employmentInformationForm.observations'
                 )
               "
               auto-grow
@@ -163,7 +163,7 @@ import WorkplaceService from "@/services/WorkplaceService";
 import { Watch } from "vue-property-decorator";
 import { ISyndicate } from "@/services/SyndicateService/types";
 import { ISyndicateSection } from "@/services/SyndicateSectionService/types";
-import { IEmploymentData, IPerson } from "@/store/people/types";
+import { IEmploymentDataForm, IEmployeeForm } from "@/store/employee/types";
 import { ICompany } from "@/services/CompanyService/types";
 import { IWorkplace } from "@/services/WorkplaceService/types";
 
@@ -183,12 +183,12 @@ export default class EmploymentInformationForm extends Vue {
   public isLoadingWorkplaces = false;
   public showSyndicates = false;
 
-  get employmentData(): IEmploymentData {
-    return this.$store.state.people.employmentData;
+  get employmentData(): IEmploymentDataForm {
+    return this.$store.state.employees.employmentData;
   }
 
-  get person(): IPerson {
-    return this.$store.state.people.person;
+  get employee(): IEmployeeForm {
+    return this.$store.state.employees.employee;
   }
 
   getSyndicates(): void {
@@ -241,7 +241,7 @@ export default class EmploymentInformationForm extends Vue {
       });
   }
 
-  @Watch("person.IdTipoEmpleado")
+  @Watch("employee.IdTipoEmpleado")
   selectedEmployeeType(employeeTypeId: number | null): void {
     if (employeeTypeId === 0) {
       this.showSyndicates = true;
