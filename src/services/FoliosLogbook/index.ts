@@ -6,4 +6,8 @@ export default class FoliosLogbook extends BaseService {
   getAll(): IServiceResponse<Array<IFoliosLogbook>> {
     return this.client.get("/BitacoraFolios");
   }
+
+  findById(id: number | null, params = {}): IServiceResponse<IFoliosLogbook> {
+    return this.client.get(`/BitacoraFolios/${id}`, params);
+  }
 }

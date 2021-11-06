@@ -10,15 +10,22 @@
           <div>
             <v-text-field
               dense
-              append-icon="fa fa-search"
               :label="$t('assignmentFolios.labels.search')"
+              :disabled="isLoadingFoliosLogbookList"
+              clearable
+              @click:clear="getFoliosLogBook"
               single-line
               hide-details
               outlined
+              v-model="foliosLogbookId"
             ></v-text-field>
           </div>
           <v-divider class="mx-1" inset vertical></v-divider>
-          <v-btn color="primary">
+          <v-btn
+            color="primary"
+            :disabled="isLoadingFoliosLogbookList || !foliosLogbookId"
+            @click="searchFolioLogBookById"
+          >
             {{ $t("assignmentFolios.labels.search") }}
           </v-btn>
         </v-toolbar>
@@ -32,6 +39,7 @@
           :items="foliosLogbookList"
         >
         </v-data-table>
+        <v-pagination></v-pagination>
       </v-card>
     </div>
   </div>
@@ -48,7 +56,7 @@ export default class AssignmentFolios extends Vue {
   protected foliosLogbookService = new FoliosLogbook();
   public foliosLogbookList: Array<IFoliosLogbook> = [];
   public isLoadingFoliosLogbookList = false;
-
+  public foliosLogbookId = null;
   public headers = [
     {
       text: this.$t("assignmentFolios.attributes.folio"),
@@ -78,6 +86,18 @@ export default class AssignmentFolios extends Vue {
       .getAll()
       .then((response) => {
         this.foliosLogbookList = response.Data;
+      })
+      .finally(() => {
+        this.isLoadingFoliosLogbookList = false;
+      });
+  }
+
+  searchFolioLogBookById(): void {
+    this.isLoadingFoliosLogbookList = true;
+    this.foliosLogbookService
+      .findById(this.foliosLogbookId)
+      .then((response) => {
+        this.foliosLogbookList = [response.Data];
       })
       .finally(() => {
         this.isLoadingFoliosLogbookList = false;
