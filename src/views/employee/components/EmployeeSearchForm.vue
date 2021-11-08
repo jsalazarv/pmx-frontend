@@ -5,30 +5,25 @@
         <v-col cols="12" md="6">
           <v-row>
             <v-col cols="12">
-              <ValidationProvider
+              {{person}}
+              <v-autocomplete
+                dense
                 name="typeOfEmployee"
-                rules="required"
-                v-slot="{ errors }"
-              >
-                <v-autocomplete
-                  dense
-                  name="typeOfEmployee"
-                  :items="employeeTypeList"
-                  item-text="Nombre"
-                  item-value="Id"
-                  :label="
-                    $t(
-                      'people.registration.registrationForm.peopleSearchForm.typeOfEmployee'
-                    )
-                  "
-                  outlined
-                  required
-                  :loading="isLoadingEmployeeList"
-                  :disabled="isLoadingEmployeeList || isValidatingEmployee"
-                  v-model="person.IdTipoEmpleado"
-                  :error-messages="errors"
-                ></v-autocomplete>
-              </ValidationProvider>
+                :items="employeeTypeList"
+                item-text="Nombre"
+                item-value="Id"
+                :label="
+                  $t(
+                    'people.registration.registrationForm.peopleSearchForm.typeOfEmployee'
+                  )
+                "
+                outlined
+                required
+                :loading="isLoadingEmployeeList"
+                :disabled="isLoadingEmployeeList || isValidatingEmployee"
+                v-model="person.IdTipoEmpleado"
+                :error-messages="errors"
+              ></v-autocomplete>
             </v-col>
             <v-col cols="12">
               <ValidationProvider

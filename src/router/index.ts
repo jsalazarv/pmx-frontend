@@ -22,6 +22,12 @@ const routes: Array<RouteConfig> = [
     component: () => import("@/views/employee/EmployeeForm.vue"),
     meta: { requiresAuth: true },
   },
+  {
+    path: "/empleados/busqueda",
+    name: "people:searchEmployee",
+    component: () => import("@/views/searchEmployee/SearchEmployee.vue"),
+    meta: { requiresAuth: true },
+  },
 ];
 
 const router = new VueRouter({
