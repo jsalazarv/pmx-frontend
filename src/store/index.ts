@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import app from "./app";
 import user from "./user";
 import people from "./people";
+import search from "./search";
 import VuexPersistence from "vuex-persist";
 import { IRootState } from "@/store/types";
 
@@ -21,6 +22,7 @@ export default new Vuex.Store({
     app,
     user,
     people,
+    search
   },
   plugins: [vuexPersist.plugin],
 });

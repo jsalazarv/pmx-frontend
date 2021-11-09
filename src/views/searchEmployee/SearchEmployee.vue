@@ -15,86 +15,89 @@
         ></v-progress-linear>
 
         <v-container>
-          <ValidationObserver ref="form">
-            <form @submit.prevent="onSubmit">
-              <v-row>
-                <ValidationObserver>
-                  <ValidationProvider
-                    name="email"
-                    rules="required|email"
-                    v-slot="{ errors }"
-                  >
-                    <input v-model="email" type="text" placeholder="email" />
-                    <span>{{ errors[0] }}</span>
-                  </ValidationProvider>
-                </ValidationObserver>
-                <v-col cols="12" sm="12" md="3">
-                  <v-autocomplete
-                    dense
-                    name="typeOfEmployee"
-                    :items="employeeTypeList"
-                    item-text="Nombre"
-                    item-value="Id"
-                    :label="$t('searchEmployee.search.searchForm.employeeType')"
-                    outlined
-                    required
-                  ></v-autocomplete>
-                </v-col>
+          {{ serachData }}
+          <p></p>
+          <v-row>
+            <v-col cols="12" sm="12" md="3">
+              <v-autocomplete
+                dense
+                name="typeOfEmployee"
+                :items="employeeTypeList"
+                item-text="Nombre"
+                item-value="Id"
+                :label="$t('searchEmployee.search.searchForm.employeeType')"
+                outlined
+                v-model="search.IdTipoEmpleado"
+                required
+              ></v-autocomplete>
+            </v-col>
 
-                <v-col cols="12" sm="12" md="5" offset-md="2">
-                  <v-text-field
-                    :label="$t('searchEmployee.search.searchForm.names')"
-                    dense
-                    outlined
-                  >
-                  </v-text-field>
-                </v-col>
-              </v-row>
+            <v-col cols="12" sm="12" md="5" offset-md="2">
+              <v-text-field
+                :label="$t('searchEmployee.search.searchForm.names')"
+                dense
+                outlined
+                v-model="search.Nombres"
+              >
+              </v-text-field>
+            </v-col>
+          </v-row>
 
-              <v-row>
-                <v-col cols="12" sm="12" md="3">
-                  <v-text-field label="CURP" dense outlined> </v-text-field>
-                </v-col>
-                <v-col cols="12" sm="12" md="5" offset-md="2">
-                  <v-text-field
-                    :label="$t('searchEmployee.search.searchForm.lastname')"
-                    dense
-                    outlined
-                  >
-                  </v-text-field>
-                </v-col>
-              </v-row>
+          <v-row>
+            <v-col cols="12" sm="12" md="3">
+              <v-text-field
+                :label="$t('searchEmployee.search.searchForm.curp')"
+                dense
+                outlined
+                v-model="search.Curp"
+              >
+              </v-text-field>
+            </v-col>
+            <v-col cols="12" sm="12" md="5" offset-md="2">
+              <v-text-field
+                :label="$t('searchEmployee.search.searchForm.lastname')"
+                dense
+                outlined
+                v-model="search.ApellidoPaterno"
+              >
+              </v-text-field>
+            </v-col>
+          </v-row>
 
-              <v-row>
-                <v-col cols="12" sm="12" md="3">
-                  <v-text-field label="Número de asignación" dense outlined>
-                  </v-text-field>
-                </v-col>
-                <v-col cols="12" sm="12" md="5" offset-md="2">
-                  <v-text-field
-                    :label="$t('searchEmployee.search.searchForm.surname')"
-                    dense
-                    outlined
-                  >
-                  </v-text-field>
-                </v-col>
+          <v-row>
+            <v-col cols="12" sm="12" md="3">
+              <v-text-field
+                :label="$t('searchEmployee.search.searchForm.assignmentNumber')"
+                dense
+                outlined
+              >
+              </v-text-field>
+            </v-col>
+            <v-col cols="12" sm="12" md="5" offset-md="2">
+              <v-text-field
+                :label="$t('searchEmployee.search.searchForm.surname')"
+                dense
+                outlined
+                v-model="search.ApellidoMaterno"
+              >
+              </v-text-field>
+            </v-col>
 
-                <v-col cols="12" sm="12" md="2">
-                  <div class="my-2">
-                    <v-btn
-                     type="submit"
-                      color="success"
-                      dark
-                      large
-                      dense
-                    >
-                      Buscar
-                    </v-btn>
-                  </div>
-                </v-col>
-              </v-row>
-            </form>
-          </ValidationObserver>
+            <v-col cols="12" sm="12" md="2">
+              <div class="my-2">
+                <v-btn
+                  @click="obtenerArreglo"
+                  type="button"
+                  color="success"
+                  dark
+                  large
+                  dense
+                >
+                  Buscar
+                </v-btn>
+              </div>
+            </v-col>
+          </v-row>
 
           <v-row>
             <v-col cols="12" sm="12" md="12">
@@ -122,8 +125,6 @@
               </v-data-table>
             </v-col>
           </v-row>
-
-          
         </v-container>
       </v-card>
     </div>
@@ -133,6 +134,7 @@
 <script lang="ts">
 import EmployeeTypeService from "@/services/EmployeeTypeService";
 import { IEmployeeType } from "@/services/EmployeeTypeService/types";
+import { ISearch } from "@/store/search/types";
 import Vue from "vue";
 import Component from "vue-class-component";
 
@@ -140,6 +142,14 @@ import Component from "vue-class-component";
 export default class SearchEmployee extends Vue {
   protected employeeTypesService = new EmployeeTypeService();
   public employeeTypeList: Array<IEmployeeType> = [];
+  public search = {
+    Nombres: "",
+    IdTipoEmpleado: 0,
+    Curp: "",
+    ApellidoPaterno: "",
+    ApellidoMaterno: "",
+    NumeroAsignacion: 0,
+  } as ISearch;
 
   public headers: Array<any> = [
     { text: "", value: "actions", sortable: false },
@@ -182,6 +192,10 @@ export default class SearchEmployee extends Vue {
   }
 
   obtenerArreglo(): void {
+    console.log(this.search);
+    this.$store.dispatch("search/setSearchData", this.search);
+
+    console.log(this.$store.state.search)
     this.desserts = [
       {
         employeeType: "Trabajador PEMEX",
@@ -234,7 +248,13 @@ export default class SearchEmployee extends Vue {
     ];
   }
 
+  get serachData(): ISearch {
+    return this.$store.state.search;
+  }
+
   mounted() {
+    // console.log(this.searchData);
+
     this.getEmployeeTypes();
   }
 
