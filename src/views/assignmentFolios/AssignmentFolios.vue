@@ -34,12 +34,12 @@
           :indeterminate="isLoadingFoliosLogbookList"
         ></v-progress-linear>
         <v-data-table
-          hide-default-footer
           :headers="headers"
           :items="foliosLogbookList"
+          :items-per-page="5"
+          class="elevation-1"
         >
         </v-data-table>
-        <v-pagination></v-pagination>
       </v-card>
     </div>
   </div>
@@ -75,7 +75,7 @@ export default class AssignmentFolios extends Vue {
     },
     {
       text: this.$t("assignmentFolios.attributes.status"),
-      value: "Estatus",
+      value: "EstatusDescripcion",
       sortable: false,
     },
   ];
