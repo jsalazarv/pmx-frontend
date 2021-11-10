@@ -52,7 +52,7 @@
           @click="confirmData"
           :disabled="!confirmation.Justificacion"
         >
-          {{ $t("dictionary.toConfirm") }}
+          {{ $t("dictionary.confirm") }}
         </v-btn>
         <v-btn color="error darken-1" text @click="rejectData">
           {{ $t("dictionary.reject") }}
