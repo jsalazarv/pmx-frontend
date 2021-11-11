@@ -1,6 +1,6 @@
 export default {
   search: {
-    title: "Búsqueda empleado",
+    title: "Employee search",
     searchForm: {
       names: "Names",
       lastname: "Lastname",
@@ -17,5 +17,10 @@ export default {
       curp: "CURP",
       assignmentNumber: "Assignment number",
     },
+    validationsForm:{
+      isRequired: "is required",
+      isNumeric: "must be numeric",
+      max:"must not be greater than"
+    }
   },
 };

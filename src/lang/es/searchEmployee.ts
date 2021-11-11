@@ -17,5 +17,10 @@ export default {
       curp: "CURP",
       assignmentNumber: "Número de asignación",
     },
+    validationsForm:{
+      isRequired: "es requerido",
+      isNumeric: "debe ser númerico",
+      max:"no debe se mayor que"
+    }
   },
 };
