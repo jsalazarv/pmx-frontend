@@ -4,7 +4,7 @@
       <v-card>
         <v-toolbar flat>
           <v-toolbar-title>
-            {{ $t("people.registration.title") }}
+            {{ $t("employee.registration.title") }}
           </v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
@@ -21,7 +21,7 @@
             <v-btn color="success" @click="registerEmployee">
               {{
                 $t(
-                  "people.registration.registrationForm.generateAssignmentNumber"
+                  "employee.registration.registrationForm.generateAssignmentNumber"
                 )
               }}
             </v-btn>
@@ -39,7 +39,7 @@ import Component from "vue-class-component";
 import EmployeeSearchForm from "@/views/employee/components/EmployeeSearchForm.vue";
 import EmploymentInformationForm from "@/views/employee/components/EmploymentInformationForm.vue";
 import LocationForm from "@/views/employee/components/LocationForm.vue";
-import { IValidationObserver } from "@/components/types";
+import EmployeeService from "@/services/EmployeeService";
 
 @Component({
   components: {
@@ -49,13 +49,31 @@ import { IValidationObserver } from "@/components/types";
   },
 })
 export default class PeopleCreate extends Vue {
+  protected employeeService = new EmployeeService();
+
   get isLoading(): boolean {
     // TODO Refactor this form is submitting
     return false;
   }
 
+  createEmployee(): void {
+    const data = {
+      ...this.$store.state.employees.employee,
+      ...this.$store.state.employees.employmentData,
+      ...this.$store.state.employees.address,
+    };
+
+    this.employeeService
+      .create(data)
+      .then((response) => {
+        console.log("Data POST: ", response);
+      })
+      .finally();
+  }
+
   async registerEmployee(): Promise<void> {
-    await (this.$refs.form as IValidationObserver).validate();
+    //await (this.$refs.form as IValidationObserver).validate();
+    this.createEmployee();
   }
 }
 </script>

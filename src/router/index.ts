@@ -23,6 +23,18 @@ const routes: Array<RouteConfig> = [
     meta: { requiresAuth: true },
   },
   {
+    path: "/folios/asignacion",
+    name: "folios:list",
+    component: () => import("@/views/assignmentFolios/AssignmentFolios.vue"),
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/bitacora/asignacion",
+    name: "affiliationLog:list",
+    component: () => import("@/views/affiliationLog/AffiliationLog.vue"),
+    meta: { requiresAuth: true },
+  },
+  {
     path: "/empleados/busqueda",
     name: "people:searchEmployee",
     component: () => import("@/views/searchEmployee/SearchEmployee.vue"),
@@ -31,7 +43,8 @@ const routes: Array<RouteConfig> = [
   {
     path: "/empleados/consulta",
     name: "people:employeeConsultation",
-    component: () => import("@/views/employeeConsultation/EmployeeConsultation.vue"),
+    component: () =>
+      import("@/views/employeeConsultation/EmployeeConsultation.vue"),
     meta: { requiresAuth: true },
   },
 ];

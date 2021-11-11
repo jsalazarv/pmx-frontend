@@ -1,3 +1,15 @@
+import {
+  IEmploymentDataForm,
+  IEmployeeForm,
+  IAddressForm,
+  IEmployee,
+  IFiliation,
+} from "@/store/employee/types";
+import { IEmployeeType } from "@/services/EmployeeTypeService/types";
+import { ISyndicate } from "@/services/SyndicateService/types";
+import { ISyndicateSection } from "@/services/SyndicateSectionService/types";
+import { IWorkplace } from "@/services/WorkplaceService/types";
+
 export interface IRenapoData {
   Curp: string;
   Nombres: string;
@@ -52,7 +64,29 @@ export interface IMfeData {
   DpTomo: number;
 }
 
-export interface IPersonValidationResponse {
+export interface IMessage {
+  Regla: string;
+  Texto: string;
+}
+
+export interface IEmployeeValidationResponse {
   Renapo: IRenapoData;
-  Mfe: IMfeData;
+  MFE: IMfeData;
+}
+
+export interface ICreateEmployeeRequest
+  extends IEmployeeForm,
+    IAddressForm,
+    IEmploymentDataForm {}
+
+export interface ICreateEmployeeResponse {
+  IdEmpleado: number;
+  Estado: unknown; //TODO: Verify with backend
+  Baja: boolean;
+  TipoEmpleado: IEmployeeType;
+  Persona: IEmployee; //TODO: Check if it should be renamed with "Employee"
+  Filiacion: IFiliation;
+  Sindicato: ISyndicate;
+  SeccionSindical: ISyndicateSection;
+  CentroTrabajo: IWorkplace;
 }

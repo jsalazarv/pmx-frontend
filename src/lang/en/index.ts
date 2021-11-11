@@ -1,9 +1,13 @@
-import dictionary from "@/lang/en/dictionary";
-import people from "@/lang/en/people";
-import searchEmployee from "@/lang/en/searchEmployee";
+import dictionary from "./dictionary";
+import employee from "./employee";
+import assignmentFolios from "./assignmentFolios";
+import affiliationLog from "./affiliationLog";
+import searchEmployee from "./searchEmployee";
 
 export default {
   dictionary,
-  people,
-  searchEmployee
+  employee,
+  assignmentFolios,
+  affiliationLog,
+  searchEmployee,
 };

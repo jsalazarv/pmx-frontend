@@ -5,25 +5,30 @@
         <v-col cols="12" md="6">
           <v-row>
             <v-col cols="12">
-              {{person}}
-              <v-autocomplete
-                dense
+              <ValidationProvider
                 name="typeOfEmployee"
-                :items="employeeTypeList"
-                item-text="Nombre"
-                item-value="Id"
-                :label="
-                  $t(
-                    'people.registration.registrationForm.peopleSearchForm.typeOfEmployee'
-                  )
-                "
-                outlined
-                required
-                :loading="isLoadingEmployeeList"
-                :disabled="isLoadingEmployeeList || isValidatingEmployee"
-                v-model="person.IdTipoEmpleado"
-                :error-messages="errors"
-              ></v-autocomplete>
+                rules="required"
+                v-slot="{ errors }"
+              >
+                <v-autocomplete
+                  dense
+                  name="typeOfEmployee"
+                  :items="employeeTypeList"
+                  item-text="Nombre"
+                  item-value="Id"
+                  :label="
+                    $t(
+                      'employee.registration.registrationForm.peopleSearchForm.typeOfEmployee'
+                    )
+                  "
+                  outlined
+                  required
+                  :loading="isLoadingEmployeeList"
+                  :disabled="isLoadingEmployeeList || isValidatingEmployee"
+                  v-model="employee.IdTipoEmpleado"
+                  :error-messages="errors"
+                ></v-autocomplete>
+              </ValidationProvider>
             </v-col>
             <v-col cols="12">
               <ValidationProvider
@@ -37,12 +42,12 @@
                   name="curp"
                   :label="
                     $t(
-                      'people.registration.registrationForm.peopleSearchForm.curp'
+                      'employee.registration.registrationForm.peopleSearchForm.curp'
                     )
                   "
                   outlined
                   required
-                  v-model="person.Curp"
+                  v-model="employee.Curp"
                   :disabled="isValidatingEmployee"
                   :loading="isValidatingEmployee"
                   @click:clear="resetForm"
@@ -76,7 +81,7 @@
                   disabled
                   :label="
                     $t(
-                      'people.registration.registrationForm.peopleSearchForm.assignmentNumber'
+                      'employee.registration.registrationForm.peopleSearchForm.assignmentNumber'
                     )
                   "
                   outlined
@@ -97,7 +102,7 @@
                   disabled
                   :label="
                     $t(
-                      'people.registration.registrationForm.peopleSearchForm.assignmentNumberStatus'
+                      'employee.registration.registrationForm.peopleSearchForm.assignmentNumberStatus'
                     )
                   "
                   outlined
@@ -107,18 +112,22 @@
               </ValidationProvider>
             </v-col>
             <v-col cols="12">
-              <ValidationProvider name="invoice" rules="" v-slot="{ errors }">
+              <ValidationProvider
+                name="invoice"
+                rules="required"
+                v-slot="{ errors }"
+              >
                 <v-text-field
                   dense
                   name="invoice"
-                  disabled
                   :label="
                     $t(
-                      'people.registration.registrationForm.peopleSearchForm.invoice'
+                      'employee.registration.registrationForm.peopleSearchForm.invoice'
                     )
                   "
                   outlined
                   required
+                  v-model="employmentData.Folio"
                   :error-messages="errors"
                 ></v-text-field>
               </ValidationProvider>
@@ -135,12 +144,12 @@
               :disabled="canEditPersonalInfo"
               :label="
                 $t(
-                  'people.registration.registrationForm.peopleSearchForm.names'
+                  'employee.registration.registrationForm.peopleSearchForm.names'
                 )
               "
               outlined
               required
-              v-model="person.Nombres"
+              v-model="employee.Nombres"
               :error-messages="errors"
             ></v-text-field>
           </ValidationProvider>
@@ -157,12 +166,12 @@
               :disabled="canEditPersonalInfo"
               :label="
                 $t(
-                  'people.registration.registrationForm.peopleSearchForm.lastname'
+                  'employee.registration.registrationForm.peopleSearchForm.lastname'
                 )
               "
               outlined
               required
-              v-model="person.ApellidoPaterno"
+              v-model="employee.ApellidoPaterno"
               :error-messages="errors"
             ></v-text-field>
           </ValidationProvider>
@@ -179,12 +188,12 @@
               :disabled="canEditPersonalInfo"
               :label="
                 $t(
-                  'people.registration.registrationForm.peopleSearchForm.surname'
+                  'employee.registration.registrationForm.peopleSearchForm.surname'
                 )
               "
               outlined
               required
-              v-model="person.ApellidoMaterno"
+              v-model="employee.ApellidoMaterno"
               :error-messages="errors"
             ></v-text-field>
           </ValidationProvider>
@@ -201,12 +210,12 @@
               :disabled="canEditPersonalInfo"
               :label="
                 $t(
-                  'people.registration.registrationForm.peopleSearchForm.birthday'
+                  'employee.registration.registrationForm.peopleSearchForm.birthday'
                 )
               "
               outlined
               required
-              v-model="person.FechaNacimiento"
+              v-model="employee.FechaNacimiento"
               :error-messages="errors"
             ></v-text-field>
           </ValidationProvider>
@@ -222,7 +231,7 @@
               name="photography"
               :label="
                 $t(
-                  'people.registration.registrationForm.peopleSearchForm.photography'
+                  'employee.registration.registrationForm.peopleSearchForm.photography'
                 )
               "
               prepend-icon="mdi-camera"
@@ -243,7 +252,7 @@
               name="gender"
               outlined
               required
-              v-model="person.Sexo"
+              v-model="employee.Sexo"
               item-text="Sigla"
               item-value="Sigla"
               :items="gendersList"
@@ -251,7 +260,7 @@
               :error-messages="errors"
               :label="
                 $t(
-                  'people.registration.registrationForm.peopleSearchForm.gender'
+                  'employee.registration.registrationForm.peopleSearchForm.gender'
                 )
               "
               :loading="isLoadingGendersList"
@@ -269,7 +278,7 @@
               name="maritalStatus"
               outlined
               required
-              v-model="person.EstadoCivil"
+              v-model="employee.EdoCivil"
               item-text="Nombre"
               item-value="Sigla"
               :items="maritalStatusesList"
@@ -277,7 +286,7 @@
               :error-messages="errors"
               :label="
                 $t(
-                  'people.registration.registrationForm.peopleSearchForm.maritalStatus'
+                  'employee.registration.registrationForm.peopleSearchForm.maritalStatus'
                 )
               "
               :loading="isLoadingMaritalStatusesList"
@@ -290,7 +299,9 @@
               dense
               name="rfc"
               :label="
-                $t('people.registration.registrationForm.peopleSearchForm.rfc')
+                $t(
+                  'employee.registration.registrationForm.peopleSearchForm.rfc'
+                )
               "
               outlined
               required
@@ -301,192 +312,21 @@
       </v-row>
     </v-container>
 
-    <v-dialog
-      v-model="isDialogOpen"
-      persistent
-      max-width="750"
-      scrollable
-      class="mx-2"
-    >
-      <v-card>
-        <v-card-title class="text-h6"></v-card-title>
-        <v-card-text>
-          <v-row>
-            <v-col cols="12" md="6">
-              <v-card elevation="0" outlined>
-                <v-card-title class="subheading font-weight-bold">
-                  {{ $t("dictionary.mfe") }}
-                </v-card-title>
-                <v-divider></v-divider>
-                <v-list dense>
-                  <v-list-item>
-                    <v-list-item-content>
-                      {{
-                        $t(
-                          "people.registration.registrationForm.peopleSearchForm.names"
-                        )
-                      }}:
-                    </v-list-item-content>
-                    <v-list-item-content class="align-end">
-                      {{ mfeData.Nombres }}
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item>
-                    <v-list-item-content>
-                      {{
-                        $t(
-                          "people.registration.registrationForm.peopleSearchForm.lastname"
-                        )
-                      }}:
-                    </v-list-item-content>
-                    <v-list-item-content class="align-end">
-                      {{ mfeData.ApellidoPaterno }}
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item>
-                    <v-list-item-content>
-                      {{
-                        $t(
-                          "people.registration.registrationForm.peopleSearchForm.surname"
-                        )
-                      }}:
-                    </v-list-item-content>
-                    <v-list-item-content class="align-end">
-                      {{ mfeData.ApellidoMaterno }}
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item>
-                    <v-list-item-content>
-                      {{
-                        $t(
-                          "people.registration.registrationForm.peopleSearchForm.birthday"
-                        )
-                      }}:
-                    </v-list-item-content>
-                    <v-list-item-content class="align-end">
-                      {{ mfeData.FechaNacimiento }}
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item>
-                    <v-list-item-content>
-                      {{
-                        $t(
-                          "people.registration.registrationForm.peopleSearchForm.gender"
-                        )
-                      }}:
-                    </v-list-item-content>
-                    <v-list-item-content class="align-end">
-                      {{ mfeData.Sexo }}
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list>
-                <v-card-actions>
-                  <div class="text-right">
-                    <v-btn
-                      color="success"
-                      elevation="0"
-                      @click="selectDataMFE"
-                      :disabled="!mfeData.Nombres"
-                    >
-                      {{ $t("dictionary.toSelect") }}
-                    </v-btn>
-                  </div>
-                </v-card-actions>
-              </v-card>
-            </v-col>
-            <v-col cols="12" md="6">
-              <v-card elevation="0" outlined>
-                <v-card-title class="subheading font-weight-bold">
-                  {{ $t("dictionary.renapo") }}
-                </v-card-title>
-                <v-divider></v-divider>
-                <v-list dense>
-                  <v-list-item>
-                    <v-list-item-content>
-                      {{
-                        $t(
-                          "people.registration.registrationForm.peopleSearchForm.names"
-                        )
-                      }}:
-                    </v-list-item-content>
-                    <v-list-item-content class="align-end">
-                      {{ renapoData.Nombres }}
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item>
-                    <v-list-item-content>
-                      {{
-                        $t(
-                          "people.registration.registrationForm.peopleSearchForm.lastname"
-                        )
-                      }}:
-                    </v-list-item-content>
-                    <v-list-item-content class="align-end">
-                      {{ renapoData.ApellidoPaterno }}
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item>
-                    <v-list-item-content>
-                      {{
-                        $t(
-                          "people.registration.registrationForm.peopleSearchForm.surname"
-                        )
-                      }}:
-                    </v-list-item-content>
-                    <v-list-item-content class="align-end">
-                      {{ renapoData.ApellidoMaterno }}
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item>
-                    <v-list-item-content>
-                      {{
-                        $t(
-                          "people.registration.registrationForm.peopleSearchForm.birthday"
-                        )
-                      }}:
-                    </v-list-item-content>
-                    <v-list-item-content class="align-end">
-                      {{ renapoData.FechaNacimiento }}
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item>
-                    <v-list-item-content>
-                      {{
-                        $t(
-                          "people.registration.registrationForm.peopleSearchForm.gender"
-                        )
-                      }}:
-                    </v-list-item-content>
-                    <v-list-item-content class="align-end">
-                      {{ renapoData.Sexo }}
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list>
-                <v-card-actions>
-                  <div class="text-right">
-                    <v-btn
-                      color="success"
-                      elevation="0"
-                      @click="selectDataRenapo"
-                      :disabled="!renapoData.Nombres"
-                    >
-                      {{ $t("dictionary.toSelect") }}
-                    </v-btn>
-                  </div>
-                </v-card-actions>
-              </v-card>
-            </v-col>
-          </v-row>
-        </v-card-text>
+    <renapo-dialog
+      :open.sync="isDialogOpen"
+      :mfe-data="mfeData"
+      :renapo-data="renapoData"
+      @onSelect="disableInputs"
+      @onCancel="resetForm"
+    />
 
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="error darken-1" text @click="closeDialog">
-            {{ $t("dictionary.cancel") }}
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <confirm-use-existing-employee-dialog
+      :open.sync="isConfirmDialogOpen"
+      :mfe-data="mfeData"
+      :renapo-data="renapoData"
+      @onConfirm="disableInputs"
+      @onReject="resetForm"
+    />
 
     <v-snackbar v-model="snackbar.visible" :top="true">
       {{ snackbar.message }}
@@ -508,26 +348,35 @@
 import Component from "vue-class-component";
 import { Vue } from "vue-property-decorator";
 import EmployeeTypeService from "@/services/EmployeeTypeService";
-import PersonService from "@/services/PersonService";
+import EmployeeService from "@/services/EmployeeService";
 import GenderService from "@/services/GenderService";
 import MaritalStatusService from "@/services/MaritalStatusService";
-import { IPersonValidationResponse } from "@/services/PersonService/types";
+import {
+  IEmployeeValidationResponse,
+  IMessage,
+} from "@/services/EmployeeService/types";
 import { IEmployeeType } from "@/services/EmployeeTypeService/types";
-import { IPerson } from "@/store/people/types";
+import { IEmploymentDataForm, IEmployeeForm } from "@/store/employee/types";
 import { IGender } from "@/services/GenderService/types";
 import { IMaritalStatus } from "@/services/MaritalStatusService/types";
 import { ISnackbarProps } from "@/components/types";
+import RenapoDialog from "@/views/employee/components/RenapoDialog.vue";
+import ConfirmUseExistingEmployeeDialog from "@/views/employee/components/ConfirmUseExistingEmployeeDialog.vue";
+import { IApiResponse } from "@/services/types";
 
-@Component({})
+@Component({
+  components: { ConfirmUseExistingEmployeeDialog, RenapoDialog },
+})
 export default class EmployeeSearchForm extends Vue {
   protected employeeTypesService = new EmployeeTypeService();
-  protected personService = new PersonService();
+  protected employeeService = new EmployeeService();
   protected genderService = new GenderService();
   protected maritalStatusService = new MaritalStatusService();
   public employeeTypeList: Array<IEmployeeType> = [];
   public gendersList: Array<IGender> = [];
   public maritalStatusesList: Array<IMaritalStatus> = [];
-  public personValidationData: IPersonValidationResponse | null = null;
+  public employeeValidationData: IEmployeeValidationResponse | null = null;
+  public validationMessage: IMessage | null = null;
   public snackbar: ISnackbarProps = {
     visible: false,
     message: null,
@@ -538,33 +387,38 @@ export default class EmployeeSearchForm extends Vue {
   public isLoadingMaritalStatusesList = false;
   public isValidatingEmployee = false;
   public isDialogOpen = false;
+  public isConfirmDialogOpen = false;
   public infoSelected = false;
 
-  get person(): IPerson {
-    return this.$store.state.people.person;
+  get employee(): IEmployeeForm {
+    return this.$store.state.employees.employee;
+  }
+
+  get employmentData(): IEmploymentDataForm {
+    return this.$store.state.employees.employmentData;
   }
 
   get dataTypesOfEmployee(): IEmployeeType {
-    return this.$store.state.people.typesOfEmployees;
+    return this.$store.state.employees.typesOfEmployees;
   }
 
-  get mfeData(): Partial<IPerson> {
+  get mfeData(): Partial<IEmployeeForm> {
     return {
-      Nombres: this.personValidationData?.Mfe?.Nombres,
-      ApellidoPaterno: this.personValidationData?.Mfe?.ApellidoPaterno,
-      ApellidoMaterno: this.personValidationData?.Mfe?.ApellidoMaterno,
-      FechaNacimiento: this.personValidationData?.Mfe?.FechaNacimiento,
-      Sexo: this.personValidationData?.Mfe?.Sexo,
+      Nombres: this.employeeValidationData?.MFE?.Nombres,
+      ApellidoPaterno: this.employeeValidationData?.MFE?.ApellidoPaterno,
+      ApellidoMaterno: this.employeeValidationData?.MFE?.ApellidoMaterno,
+      FechaNacimiento: this.employeeValidationData?.MFE?.FechaNacimiento,
+      Sexo: this.employeeValidationData?.MFE?.Sexo,
     };
   }
 
-  get renapoData(): Partial<IPerson> {
+  get renapoData(): Partial<IEmployeeForm> {
     return {
-      Nombres: this.personValidationData?.Renapo?.Nombres,
-      ApellidoPaterno: this.personValidationData?.Renapo?.ApellidoPaterno,
-      ApellidoMaterno: this.personValidationData?.Renapo?.ApellidoMaterno,
-      FechaNacimiento: this.personValidationData?.Renapo?.FechaNacimiento,
-      Sexo: this.personValidationData?.Renapo?.Sexo,
+      Nombres: this.employeeValidationData?.Renapo?.Nombres,
+      ApellidoPaterno: this.employeeValidationData?.Renapo?.ApellidoPaterno,
+      ApellidoMaterno: this.employeeValidationData?.Renapo?.ApellidoMaterno,
+      FechaNacimiento: this.employeeValidationData?.Renapo?.FechaNacimiento,
+      Sexo: this.employeeValidationData?.Renapo?.Sexo,
     };
   }
 
@@ -573,23 +427,20 @@ export default class EmployeeSearchForm extends Vue {
   }
 
   get canValidate(): number | boolean {
-    return this.person.IdTipoEmpleado !== null && this.person.Curp?.length;
+    return this.employee.IdTipoEmpleado !== null && this.employee.Curp?.length;
   }
 
   validateCurp(): void {
     this.isValidatingEmployee = true;
-    this.personService
-      .findByCurp(this.person.Curp, this.person.IdTipoEmpleado)
-      .then((response) => {
-        this.personValidationData = response.Data;
-        this.openDialog();
-      })
+    this.employeeService
+      .findByCurp(this.employee.Curp, this.employee.IdTipoEmpleado)
+      .then(this.handleValidationResponse)
       .catch((error) => {
         if (error.response.data.success === false) {
           this.showSnackbar(true, error.response.data.message, "error");
           this.infoSelected = false;
-          const { Curp, IdTipoEmpleado } = this.person;
-          this.$store.dispatch("people/clear", {
+          const { Curp, IdTipoEmpleado } = this.employee;
+          this.$store.dispatch("employees/clear", {
             Curp: Curp,
             IdTipoEmpleado: IdTipoEmpleado,
           });
@@ -600,26 +451,54 @@ export default class EmployeeSearchForm extends Vue {
       });
   }
 
-  closeDialog(): void {
-    this.isDialogOpen = false;
+  disableInputs(): void {
+    this.employeeValidationData = null;
+    this.infoSelected = true;
   }
 
   openDialog(): void {
     this.isDialogOpen = true;
   }
 
-  selectDataRenapo(): void {
-    this.$store.dispatch("people/setPersonData", this.renapoData);
-    this.closeDialog();
-    this.personValidationData = null;
-    this.infoSelected = true;
+  openConfirmDialog(): void {
+    this.isConfirmDialogOpen = true;
   }
 
-  selectDataMFE(): void {
-    this.$store.dispatch("people/setPersonData", this.mfeData);
-    this.closeDialog();
-    this.personValidationData = null;
-    this.infoSelected = true;
+  handleValidationResponse(
+    response: IApiResponse<IEmployeeValidationResponse, IMessage>
+  ): void {
+    this.employeeValidationData = response.Data;
+    this.validationMessage = response.Message;
+    //TODO: Do something when person doesn't exist in Renapo or Mfe data
+
+    //TODO: Validate this using rules in response and add switch case
+    //console.log("Respuesta:", response.Message.Regla);
+
+    /*switch (response.Message.Regla) {
+      case "PERSONA_TIPOS_EMPLEADO_NO_EXISTE":
+        console.log("Modal de datos renapo");
+        if (!response.Data.MFE) {
+          this.openDialog();
+        }
+        break;
+      case "PERSONA_OTROS_TIPO_EMPLEADO_EXISTE":
+        console.log("Modal de seleccion RENAPO/MFE");
+        this.openDialog();
+        break;
+      case "PERSONA_TIPO_EMPLEADO_EXISTE":
+        console.log("Modal de confirmacion");
+        this.openConfirmDialog();
+        break;
+      default:
+        if (!response.Data.MFE && !response.Data.Renapo) {
+          console.log("No hay registros en mfe y renapo");
+        }
+        break;
+    }*/
+    if (!response.Data.MFE) {
+      return this.openDialog();
+    }
+    return this.openConfirmDialog();
   }
 
   getEmployeeTypes(): void {
@@ -665,7 +544,7 @@ export default class EmployeeSearchForm extends Vue {
   }
 
   resetForm(): void {
-    this.$store.dispatch("people/clear");
+    this.$store.dispatch("employees/clear");
     this.infoSelected = false;
   }
 

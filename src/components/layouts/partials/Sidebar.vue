@@ -93,6 +93,18 @@ export default class Sidebar extends Vue {
     },
     {
       icon: "mdi-keyboard-f2",
+      text: "Folios asignación",
+      message: null,
+      link: "/folios/asignacion",
+    },
+    {
+      icon: "mdi-keyboard-f2",
+      text: "Bitácora",
+      message: null,
+      link: "/bitacora/asignacion",
+    },
+    {
+      icon: "mdi-keyboard-f2",
       text: "Consulta",
       message: null,
       link: "/empleados/busqueda",

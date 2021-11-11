@@ -1,7 +1,9 @@
-export interface IApiResponse<T> {
+export interface IApiResponse<T, M = string> {
   Data: T;
-  Message: string;
+  Message: M;
   Success: boolean;
 }
 
-export type IServiceResponse<T = unknown> = Promise<IApiResponse<T>>;
+export type IServiceResponse<T = unknown, M = string> = Promise<
+  IApiResponse<T, M>
+>;
