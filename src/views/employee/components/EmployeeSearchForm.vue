@@ -14,7 +14,7 @@
                   dense
                   name="typeOfEmployee"
                   :items="employeeTypeList"
-                  item-text="Id"
+                  item-text="Nombre"
                   item-value="Id"
                   :label="
                     $t(
@@ -472,6 +472,29 @@ export default class EmployeeSearchForm extends Vue {
     //TODO: Do something when person doesn't exist in Renapo or Mfe data
 
     //TODO: Validate this using rules in response and add switch case
+    //console.log("Respuesta:", response.Message.Regla);
+
+    /*switch (response.Message.Regla) {
+      case "PERSONA_TIPOS_EMPLEADO_NO_EXISTE":
+        console.log("Modal de datos renapo");
+        if (!response.Data.MFE) {
+          this.openDialog();
+        }
+        break;
+      case "PERSONA_OTROS_TIPO_EMPLEADO_EXISTE":
+        console.log("Modal de seleccion RENAPO/MFE");
+        this.openDialog();
+        break;
+      case "PERSONA_TIPO_EMPLEADO_EXISTE":
+        console.log("Modal de confirmacion");
+        this.openConfirmDialog();
+        break;
+      default:
+        if (!response.Data.MFE && !response.Data.Renapo) {
+          console.log("No hay registros en mfe y renapo");
+        }
+        break;
+    }*/
     if (!response.Data.MFE) {
       return this.openDialog();
     }

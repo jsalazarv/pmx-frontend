@@ -91,6 +91,18 @@ export default class Sidebar extends Vue {
       message: null,
       link: "/empleados/alta",
     },
+    {
+      icon: "mdi-keyboard-f2",
+      text: "Folios asignación",
+      message: null,
+      link: "/folios/asignacion",
+    },
+    {
+      icon: "mdi-keyboard-f2",
+      text: "Bitácora",
+      message: null,
+      link: "/bitacora/asignacion",
+    },
   ];
 
   get sidebar(): ISidebar {
