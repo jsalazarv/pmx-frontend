@@ -31,7 +31,8 @@ export default {
       locationForm: {
         country: "País",
         state: "Estado",
-        municipality: "Municipio/Localidad",
+        municipality: "Municipio",
+        location: "Localidad",
         postalCode: "Código postal",
         suburb: "Colonia",
         street: "Calle",

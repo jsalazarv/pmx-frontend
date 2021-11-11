@@ -6,4 +6,6 @@ export default {
   toSelect: "Select",
   cancel: "Cancel",
   close: "Close",
+  confirm: "Confirm",
+  reject: "Reject",
 };

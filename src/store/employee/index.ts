@@ -1,59 +1,64 @@
 import { Module } from "vuex";
 import {
-  IPerson,
-  IPeopleState,
-  IEmploymentData,
+  IEmployeeForm,
+  IEmployeeState,
+  IEmploymentDataForm,
   IAddress,
-} from "@/store/people/types";
+} from "@/store/employee/types";
 import { IRootState } from "@/store/types";
 
-const initialState: IPeopleState = {
-  person: {
+const initialState: IEmployeeState = {
+  employee: {
+    IdTipoEmpleado: null,
     Curp: "",
     Nombres: "",
     ApellidoPaterno: "",
     ApellidoMaterno: "",
-    Sexo: "",
     FechaNacimiento: "",
-    Nacionalidad: "",
-    AnioRegistro: null,
-    IdMunicipioRegistro: null,
-    IdEntidadNacional: "",
-    IdEntidadEmisora: "",
-    IdTipoEmpleado: null,
-    EstadoCivil: "",
+    Sexo: "",
+    RFC: "",
+    EdoCivil: "",
+    Fotografia: "",
   },
   employmentData: {
+    Folio: "",
     Referencia: "",
+    IdCentro: "",
+    IdSeccionSindicato: null,
+    Observaciones: "",
     EmpresaOrganismoSolicitante: "",
     CentroDeTrabajoSolicitante: "",
     DescripcionDelCentroDeTrabajoSolicitante: "",
     IdSindicato: null,
-    IdSeccionSindical: null,
-    Observaciones: "",
   },
   address: {
     IdPais: null,
     IdEstado: null,
     IdMunicipio: null,
+    Localidad: "",
     CodigoPostal: "",
     Colonia: "",
+    Calle: "",
     NumeroInterior: "",
     NumeroExterior: "",
     Manzana: "",
     Lote: "",
   },
+  confirmation: {
+    Justificacion: "",
+    confirmar: null,
+  },
 };
 
-const peopleModule: Module<IPeopleState, IRootState> = {
+const employeeModule: Module<IEmployeeState, IRootState> = {
   namespaced: true,
   state: { ...initialState },
 
   mutations: {
-    SET_EMPLOYEE_DATA(state, employee: Partial<IPerson>) {
-      state.person = { ...state.person, ...employee };
+    SET_EMPLOYEE_DATA(state, employee: Partial<IEmployeeForm>) {
+      state.employee = { ...state.employee, ...employee };
     },
-    SET_EMPLOYMENT_DATA(state, employmentData: Partial<IEmploymentData>) {
+    SET_EMPLOYMENT_DATA(state, employmentData: Partial<IEmploymentDataForm>) {
       state.employmentData = { ...state.employmentData, ...employmentData };
     },
     SET_ADDRESS(state, address: Partial<IAddress>) {
@@ -62,15 +67,15 @@ const peopleModule: Module<IPeopleState, IRootState> = {
   },
 
   actions: {
-    setPersonData({ commit }, employee: Partial<IPerson>) {
+    setEmployeeData({ commit }, employee: Partial<IEmployeeForm>) {
       commit("SET_EMPLOYEE_DATA", employee);
     },
-    clear({ commit }, employee: Partial<IPerson>) {
-      commit("SET_EMPLOYEE_DATA", { ...initialState.person, ...employee });
+    clear({ commit }, employee: Partial<IEmployeeForm>) {
+      commit("SET_EMPLOYEE_DATA", { ...initialState.employee, ...employee });
       commit("SET_EMPLOYMENT_DATA", { ...initialState.employmentData });
       commit("SET_ADDRESS", { ...initialState.address });
     },
   },
 };
 
-export default peopleModule;
+export default employeeModule;

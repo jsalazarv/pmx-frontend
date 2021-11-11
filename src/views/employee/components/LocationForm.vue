@@ -17,7 +17,9 @@
               :disabled="isLoadingCountries"
               :loading="isLoadingCountries"
               :label="
-                $t('people.registration.registrationForm.locationForm.country')
+                $t(
+                  'employee.registration.registrationForm.locationForm.country'
+                )
               "
               outlined
               required
@@ -42,7 +44,7 @@
               :disabled="isLoadingStates || !address.IdPais"
               :loading="isLoadingStates"
               :label="
-                $t('people.registration.registrationForm.locationForm.state')
+                $t('employee.registration.registrationForm.locationForm.state')
               "
               outlined
               required
@@ -68,7 +70,7 @@
               :loading="isLoadingMunicipalities"
               :label="
                 $t(
-                  'people.registration.registrationForm.locationForm.municipality'
+                  'employee.registration.registrationForm.locationForm.municipality'
                 )
               "
               outlined
@@ -80,21 +82,42 @@
         </v-col>
         <v-col cols="12" md="4">
           <ValidationProvider
+            name="location"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-text-field
+              dense
+              name="location"
+              :label="
+                $t(
+                  'employee.registration.registrationForm.locationForm.location'
+                )
+              "
+              outlined
+              required
+              v-model="address.Localidad"
+              :error-messages="errors"
+            ></v-text-field>
+          </ValidationProvider>
+        </v-col>
+        <v-col cols="12" md="4">
+          <ValidationProvider
             name="postalCode"
             rules="required"
             v-slot="{ errors }"
           >
             <v-text-field
-              clearable
               dense
               name="postalCode"
               :label="
                 $t(
-                  'people.registration.registrationForm.locationForm.postalCode'
+                  'employee.registration.registrationForm.locationForm.postalCode'
                 )
               "
               outlined
               required
+              v-model="address.CodigoPostal"
               :error-messages="errors"
             ></v-text-field>
           </ValidationProvider>
@@ -106,14 +129,14 @@
             v-slot="{ errors }"
           >
             <v-text-field
-              clearable
               dense
               name="suburb"
               :label="
-                $t('people.registration.registrationForm.locationForm.suburb')
+                $t('employee.registration.registrationForm.locationForm.suburb')
               "
               outlined
               required
+              v-model="address.Colonia"
               :error-messages="errors"
             ></v-text-field>
           </ValidationProvider>
@@ -125,14 +148,14 @@
             v-slot="{ errors }"
           >
             <v-text-field
-              clearable
               dense
               name="street"
               :label="
-                $t('people.registration.registrationForm.locationForm.street')
+                $t('employee.registration.registrationForm.locationForm.street')
               "
               outlined
               required
+              v-model="address.Calle"
               :error-messages="errors"
             ></v-text-field>
           </ValidationProvider>
@@ -144,16 +167,16 @@
             v-slot="{ errors }"
           >
             <v-text-field
-              clearable
               dense
               name="interiorNumber"
               :label="
                 $t(
-                  'people.registration.registrationForm.locationForm.interiorNumber'
+                  'employee.registration.registrationForm.locationForm.interiorNumber'
                 )
               "
               outlined
               required
+              v-model="address.NumeroInterior"
               :error-messages="errors"
             ></v-text-field>
           </ValidationProvider>
@@ -165,16 +188,16 @@
             v-slot="{ errors }"
           >
             <v-text-field
-              clearable
               dense
               name="exteriorNumber"
               :label="
                 $t(
-                  'people.registration.registrationForm.locationForm.exteriorNumber'
+                  'employee.registration.registrationForm.locationForm.exteriorNumber'
                 )
               "
               outlined
               required
+              v-model="address.NumeroExterior"
               :error-messages="errors"
             ></v-text-field>
           </ValidationProvider>
@@ -182,14 +205,14 @@
         <v-col cols="12" md="4">
           <ValidationProvider name="block" rules="required" v-slot="{ errors }">
             <v-text-field
-              clearable
               dense
               name="block"
               :label="
-                $t('people.registration.registrationForm.locationForm.block')
+                $t('employee.registration.registrationForm.locationForm.block')
               "
               outlined
               required
+              v-model="address.Manzana"
               :error-messages="errors"
             ></v-text-field>
           </ValidationProvider>
@@ -197,14 +220,14 @@
         <v-col cols="12" md="4">
           <ValidationProvider name="lot" rules="required" v-slot="{ errors }">
             <v-text-field
-              clearable
               dense
               name="lot"
               :label="
-                $t('people.registration.registrationForm.locationForm.lot')
+                $t('employee.registration.registrationForm.locationForm.lot')
               "
               outlined
               required
+              v-model="address.Lote"
               :error-messages="errors"
             ></v-text-field>
           </ValidationProvider>
@@ -222,7 +245,7 @@ import StateService from "@/services/StateService";
 import MunicipalityService from "@/services/MunicipalityService";
 import { ICountry } from "@/services/CountryService/types";
 import { IState } from "@/services/StateService/types";
-import { IAddress } from "@/store/people/types";
+import { IAddressForm } from "@/store/employee/types";
 import { IMunicipality } from "@/services/MunicipalityService/types";
 
 @Component({})
@@ -237,8 +260,8 @@ export default class LocationForm extends Vue {
   public municipalities: Array<IMunicipality> = [];
   public isLoadingMunicipalities = false;
 
-  get address(): IAddress {
-    return this.$store.state.people.address;
+  get address(): IAddressForm {
+    return this.$store.state.employees.address;
   }
 
   getCountries(): void {
@@ -255,7 +278,6 @@ export default class LocationForm extends Vue {
 
   getStates(): void {
     if (!this.address.IdPais) return;
-    console.log(this.address.IdPais);
     this.isLoadingStates = true;
     this.stateService
       .getByCountryId(this.address.IdPais)

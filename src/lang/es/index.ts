@@ -1,11 +1,11 @@
 import dictionary from "./dictionary";
-import people from "@/lang/es/people";
-import assignmentFolios from "@/lang/es/assignmentFolios";
-import affiliationLog from "@/lang/es/affiliationLog";
+import employee from "./employee";
+import assignmentFolios from "./assignmentFolios";
+import affiliationLog from "./affiliationLog";
 
 export default {
   dictionary,
-  people,
+  employee,
   assignmentFolios,
   affiliationLog,
 };
