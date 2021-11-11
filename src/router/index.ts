@@ -28,6 +28,12 @@ const routes: Array<RouteConfig> = [
     component: () => import("@/views/assignmentFolios/AssignmentFolios.vue"),
     meta: { requiresAuth: true },
   },
+  {
+    path: "/bitacora/asignacion",
+    name: "affiliationLog:list",
+    component: () => import("@/views/affiliationLog/AffiliationLog.vue"),
+    meta: { requiresAuth: true },
+  },
 ];
 
 const router = new VueRouter({
