@@ -1,14 +1,11 @@
 import { Module } from "vuex";
-import {
-  IConsultation,
-  IConsultationStore
-} from "@/store/consultation/types";
+import { IConsultation, IConsultationStore } from "@/store/consultation/types";
 import { IRootState } from "@/store/types";
 
 const initialState: IConsultationStore = {
-    consultation:{
-        assigmentNumber :0
-    }
+  consultation: {
+    assigmentNumber: 0,
+  },
 };
 
 const peopleModule: Module<IConsultationStore, IRootState> = {

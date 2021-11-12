@@ -74,6 +74,13 @@ export interface IEmployeeValidationResponse {
   MFE: IMfeData;
 }
 
+export enum EmployeeValidationRule {
+  PERSONA_TIPOS_EMPLEADO_NO_EXISTE = "PERSONA_TIPOS_EMPLEADO_NO_EXISTE",
+  PERSONA_OTROS_TIPO_EMPLEADO_EXISTE = "PERSONA_OTROS_TIPO_EMPLEADO_EXISTE",
+  PERSONA_TIPO_EMPLEADO_EXISTE = "PERSONA_TIPO_EMPLEADO_EXISTE",
+  NO_REGISTRO_RENAPO_Y_MFE = "NO_REGISTRO_RENAPO_Y_MFE",
+}
+
 export interface ICreateEmployeeRequest
   extends IEmployeeForm,
     IAddressForm,

@@ -7,21 +7,42 @@
     class="mx-2"
   >
     <v-card>
+      <v-card-title class="text-h6" v-if="title">
+        {{ title }}
+      </v-card-title>
       <v-simple-table>
         <template v-slot:default>
           <thead>
             <tr>
-              <th>Ficha</th>
-              <th>Nombres</th>
-              <th>Apellido paterno</th>
-              <th>Apellido materno</th>
-              <th>Sexo</th>
-              <th>Fecha de nacimiento</th>
+              <th>
+                {{ $t("employee.labels.dialogs.existingEmployee.record") }}
+              </th>
+              <th>
+                {{ $t("employee.labels.dialogs.existingEmployee.names") }}
+              </th>
+              <th>
+                {{ $t("employee.labels.dialogs.existingEmployee.lastname") }}
+              </th>
+              <th>
+                {{ $t("employee.labels.dialogs.existingEmployee.surname") }}
+              </th>
+              <th>
+                {{ $t("employee.labels.dialogs.existingEmployee.gender") }}
+              </th>
+              <th>
+                {{ $t("employee.labels.dialogs.existingEmployee.birthday") }}
+              </th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>CONFIRMAR DATO</td>
+              <td>
+                {{
+                  $t(
+                    "employee.labels.dialogs.existingEmployee.labels.confirmData"
+                  )
+                }}
+              </td>
               <td>{{ mfeData.Nombres }}</td>
               <td>{{ mfeData.ApellidoPaterno }}</td>
               <td>{{ mfeData.ApellidoPaterno }}</td>
@@ -32,12 +53,15 @@
         </template>
       </v-simple-table>
       <v-card-text>
-        Debe proporcionar la información que de soporte al rechazo o aceptación.
-        Se generará de asignación al momento de Genera número de asignación.
+        {{
+          $t("employee.labels.dialogs.existingEmployee.labels.informationText")
+        }}
 
         <v-textarea
           name="justification"
-          label="Justificacion"
+          :label="
+            $t('employee.labels.dialogs.existingEmployee.labels.justification')
+          "
           dense
           outlined
           required
@@ -52,10 +76,10 @@
           @click="confirmData"
           :disabled="!confirmation.Justificacion"
         >
-          {{ $t("dictionary.confirm") }}
+          {{ $t("employee.labels.dialogs.existingEmployee.labels.confirm") }}
         </v-btn>
         <v-btn color="error darken-1" text @click="rejectData">
-          {{ $t("dictionary.reject") }}
+          {{ $t("employee.labels.dialogs.existingEmployee.labels.reject") }}
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -71,6 +95,10 @@ import { IConfirmForm, IEmployeeForm } from "@/store/employee/types";
 
 @Component({})
 export default class ConfirmUseExistingEmployeeDialog extends Vue {
+  get confirmationLog(): IConfirmForm {
+    return this.$store.state.employees.confirmation;
+  }
+
   @Prop()
   public title?: string;
 
@@ -102,6 +130,9 @@ export default class ConfirmUseExistingEmployeeDialog extends Vue {
   @Emit("onConfirm")
   confirmData(): void {
     this.selectDataRenapo();
+    this.$store.dispatch("employees/setConfirmation", {
+      confirmar: true,
+    });
     if (this.onConfirm) {
       this.onConfirm();
     }

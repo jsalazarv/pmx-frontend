@@ -1,10 +1,10 @@
 export interface ISearch {
   id_tipo_emp: string | null;
-  nombres : string | null;
+  nombres: string | null;
   ap_paterno: string | null;
   curp: string | null;
   ap_materno: string | null;
-  num_empleado : string | null;
+  num_empleado: string | null;
 }
 
 export interface ISearchResult {
@@ -15,4 +15,3 @@ export interface ISearchResult {
   curp: string;
   num_empleado: number;
 }
-

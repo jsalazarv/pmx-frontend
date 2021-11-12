@@ -268,7 +268,7 @@ export default class SearchEmployee extends Vue {
       "consultation/setAssigmentNumberData",
       this.consultation
     );
-    this.$router.push({ path: '/empleados/consulta' })
+    this.$router.push({ path: "/empleados/consulta" });
   }
 
   mounted() {

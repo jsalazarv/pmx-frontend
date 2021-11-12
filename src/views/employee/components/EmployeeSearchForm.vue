@@ -6,7 +6,7 @@
           <v-row>
             <v-col cols="12">
               <ValidationProvider
-                name="typeOfEmployee"
+                :name="$t('employee.attributes.typeOfEmployee')"
                 rules="required"
                 v-slot="{ errors }"
               >
@@ -16,11 +16,7 @@
                   :items="employeeTypeList"
                   item-text="Nombre"
                   item-value="Id"
-                  :label="
-                    $t(
-                      'employee.registration.registrationForm.peopleSearchForm.typeOfEmployee'
-                    )
-                  "
+                  :label="$t('employee.attributes.typeOfEmployee')"
                   outlined
                   required
                   :loading="isLoadingEmployeeList"
@@ -32,7 +28,7 @@
             </v-col>
             <v-col cols="12">
               <ValidationProvider
-                name="curp"
+                :name="$t('employee.attributes.curp')"
                 rules="required"
                 v-slot="{ errors }"
               >
@@ -40,11 +36,7 @@
                   clearable
                   dense
                   name="curp"
-                  :label="
-                    $t(
-                      'employee.registration.registrationForm.peopleSearchForm.curp'
-                    )
-                  "
+                  :label="$t('employee.attributes.curp')"
                   outlined
                   required
                   v-model="employee.Curp"
@@ -62,7 +54,7 @@
                 :disabled="isValidatingEmployee || !canValidate"
                 :loading="isValidatingEmployee"
               >
-                {{ $t("dictionary.validate") }}
+                {{ $t("employee.labels.validate") }}
               </v-btn>
             </v-col>
           </v-row>
@@ -71,7 +63,7 @@
           <v-row>
             <v-col cols="12" md="6">
               <ValidationProvider
-                name="assignmentNumber"
+                :name="$t('employee.attributes.assignmentNumber')"
                 rules=""
                 v-slot="{ errors }"
               >
@@ -79,11 +71,7 @@
                   dense
                   name="assignmentNumber"
                   disabled
-                  :label="
-                    $t(
-                      'employee.registration.registrationForm.peopleSearchForm.assignmentNumber'
-                    )
-                  "
+                  :label="$t('employee.attributes.assignmentNumber')"
                   outlined
                   required
                   :error-messages="errors"
@@ -92,7 +80,7 @@
             </v-col>
             <v-col cols="12" md="6">
               <ValidationProvider
-                name="assignmentNumberStatus"
+                :name="$t('employee.attributes.assignmentNumberStatus')"
                 rules=""
                 v-slot="{ errors }"
               >
@@ -100,11 +88,7 @@
                   dense
                   name="assignmentNumberStatus"
                   disabled
-                  :label="
-                    $t(
-                      'employee.registration.registrationForm.peopleSearchForm.assignmentNumberStatus'
-                    )
-                  "
+                  :label="$t('employee.attributes.assignmentNumberStatus')"
                   outlined
                   required
                   :error-messages="errors"
@@ -113,18 +97,14 @@
             </v-col>
             <v-col cols="12">
               <ValidationProvider
-                name="invoice"
+                :name="$t('employee.attributes.invoice')"
                 rules="required"
                 v-slot="{ errors }"
               >
                 <v-text-field
                   dense
                   name="invoice"
-                  :label="
-                    $t(
-                      'employee.registration.registrationForm.peopleSearchForm.invoice'
-                    )
-                  "
+                  :label="$t('employee.attributes.invoice')"
                   outlined
                   required
                   v-model="employmentData.Folio"
@@ -137,16 +117,16 @@
       </v-row>
       <v-row>
         <v-col cols="12" md="4">
-          <ValidationProvider name="names" rules="required" v-slot="{ errors }">
+          <ValidationProvider
+            :name="$t('employee.attributes.names')"
+            rules="required"
+            v-slot="{ errors }"
+          >
             <v-text-field
               dense
               name="names"
               :disabled="canEditPersonalInfo"
-              :label="
-                $t(
-                  'employee.registration.registrationForm.peopleSearchForm.names'
-                )
-              "
+              :label="$t('employee.attributes.names')"
               outlined
               required
               v-model="employee.Nombres"
@@ -156,7 +136,7 @@
         </v-col>
         <v-col cols="12" md="4">
           <ValidationProvider
-            name="lastname"
+            :name="$t('employee.attributes.lastname')"
             rules="required"
             v-slot="{ errors }"
           >
@@ -164,11 +144,7 @@
               dense
               name="lastname"
               :disabled="canEditPersonalInfo"
-              :label="
-                $t(
-                  'employee.registration.registrationForm.peopleSearchForm.lastname'
-                )
-              "
+              :label="$t('employee.attributes.lastname')"
               outlined
               required
               v-model="employee.ApellidoPaterno"
@@ -178,7 +154,7 @@
         </v-col>
         <v-col cols="12" md="4">
           <ValidationProvider
-            name="surname"
+            :name="$t('employee.attributes.surname')"
             rules="required"
             v-slot="{ errors }"
           >
@@ -186,11 +162,7 @@
               dense
               name="surname"
               :disabled="canEditPersonalInfo"
-              :label="
-                $t(
-                  'employee.registration.registrationForm.peopleSearchForm.surname'
-                )
-              "
+              :label="$t('employee.attributes.surname')"
               outlined
               required
               v-model="employee.ApellidoMaterno"
@@ -200,7 +172,7 @@
         </v-col>
         <v-col cols="12" md="2">
           <ValidationProvider
-            name="birthday"
+            :name="$t('employee.attributes.birthday')"
             rules="required"
             v-slot="{ errors }"
           >
@@ -208,11 +180,7 @@
               dense
               name="birthday"
               :disabled="canEditPersonalInfo"
-              :label="
-                $t(
-                  'employee.registration.registrationForm.peopleSearchForm.birthday'
-                )
-              "
+              :label="$t('employee.attributes.birthday')"
               outlined
               required
               v-model="employee.FechaNacimiento"
@@ -222,18 +190,14 @@
         </v-col>
         <v-col cols="12" md="2">
           <ValidationProvider
-            name="photography"
+            :name="$t('employee.attributes.photography')"
             rules="required"
             v-slot="{ errors }"
           >
             <v-file-input
               dense
               name="photography"
-              :label="
-                $t(
-                  'employee.registration.registrationForm.peopleSearchForm.photography'
-                )
-              "
+              :label="$t('employee.attributes.photography')"
               prepend-icon="mdi-camera"
               outlined
               required
@@ -243,7 +207,7 @@
         </v-col>
         <v-col cols="12" md="2">
           <ValidationProvider
-            name="gender"
+            :name="$t('employee.attributes.gender')"
             rules="required"
             v-slot="{ errors }"
           >
@@ -258,18 +222,14 @@
               :items="gendersList"
               :disabled="canEditPersonalInfo || isLoadingGendersList"
               :error-messages="errors"
-              :label="
-                $t(
-                  'employee.registration.registrationForm.peopleSearchForm.gender'
-                )
-              "
+              :label="$t('employee.attributes.gender')"
               :loading="isLoadingGendersList"
             ></v-autocomplete>
           </ValidationProvider>
         </v-col>
         <v-col cols="12" md="2">
           <ValidationProvider
-            name="maritalStatus"
+            :name="$t('employee.attributes.maritalStatus')"
             rules="required"
             v-slot="{ errors }"
           >
@@ -284,27 +244,24 @@
               :items="maritalStatusesList"
               :disabled="isLoadingMaritalStatusesList"
               :error-messages="errors"
-              :label="
-                $t(
-                  'employee.registration.registrationForm.peopleSearchForm.maritalStatus'
-                )
-              "
+              :label="$t('employee.attributes.maritalStatus')"
               :loading="isLoadingMaritalStatusesList"
             ></v-autocomplete>
           </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
-          <ValidationProvider name="rfc" rules="required" v-slot="{ errors }">
+          <ValidationProvider
+            :name="$t('employee.attributes.rfc')"
+            rules="required"
+            v-slot="{ errors }"
+          >
             <v-text-field
               dense
               name="rfc"
-              :label="
-                $t(
-                  'employee.registration.registrationForm.peopleSearchForm.rfc'
-                )
-              "
+              :label="$t('employee.attributes.rfc')"
               outlined
               required
+              v-model="employee.RFC"
               :error-messages="errors"
             ></v-text-field>
           </ValidationProvider>
@@ -316,6 +273,7 @@
       :open.sync="isDialogOpen"
       :mfe-data="mfeData"
       :renapo-data="renapoData"
+      :title="validationMessage"
       @onSelect="disableInputs"
       @onCancel="resetForm"
     />
@@ -324,6 +282,7 @@
       :open.sync="isConfirmDialogOpen"
       :mfe-data="mfeData"
       :renapo-data="renapoData"
+      :title="validationMessage"
       @onConfirm="disableInputs"
       @onReject="resetForm"
     />
@@ -352,6 +311,7 @@ import EmployeeService from "@/services/EmployeeService";
 import GenderService from "@/services/GenderService";
 import MaritalStatusService from "@/services/MaritalStatusService";
 import {
+  EmployeeValidationRule,
   IEmployeeValidationResponse,
   IMessage,
 } from "@/services/EmployeeService/types";
@@ -376,7 +336,7 @@ export default class EmployeeSearchForm extends Vue {
   public gendersList: Array<IGender> = [];
   public maritalStatusesList: Array<IMaritalStatus> = [];
   public employeeValidationData: IEmployeeValidationResponse | null = null;
-  public validationMessage: IMessage | null = null;
+  public validationMessage: string | null = null;
   public snackbar: ISnackbarProps = {
     visible: false,
     message: null,
@@ -468,37 +428,25 @@ export default class EmployeeSearchForm extends Vue {
     response: IApiResponse<IEmployeeValidationResponse, IMessage>
   ): void {
     this.employeeValidationData = response.Data;
-    this.validationMessage = response.Message;
-    //TODO: Do something when person doesn't exist in Renapo or Mfe data
+    this.validationMessage = response.Message.Texto;
 
-    //TODO: Validate this using rules in response and add switch case
-    //console.log("Respuesta:", response.Message.Regla);
-
-    /*switch (response.Message.Regla) {
-      case "PERSONA_TIPOS_EMPLEADO_NO_EXISTE":
-        console.log("Modal de datos renapo");
-        if (!response.Data.MFE) {
-          this.openDialog();
-        }
-        break;
-      case "PERSONA_OTROS_TIPO_EMPLEADO_EXISTE":
-        console.log("Modal de seleccion RENAPO/MFE");
+    switch (response.Message.Regla) {
+      case EmployeeValidationRule.PERSONA_TIPOS_EMPLEADO_NO_EXISTE:
         this.openDialog();
         break;
-      case "PERSONA_TIPO_EMPLEADO_EXISTE":
-        console.log("Modal de confirmacion");
+      case EmployeeValidationRule.PERSONA_OTROS_TIPO_EMPLEADO_EXISTE:
+        this.openDialog();
+        break;
+      case EmployeeValidationRule.PERSONA_TIPO_EMPLEADO_EXISTE:
         this.openConfirmDialog();
         break;
       default:
         if (!response.Data.MFE && !response.Data.Renapo) {
+          //TODO: Send message
           console.log("No hay registros en mfe y renapo");
         }
         break;
-    }*/
-    if (!response.Data.MFE) {
-      return this.openDialog();
     }
-    return this.openConfirmDialog();
   }
 
   getEmployeeTypes(): void {
