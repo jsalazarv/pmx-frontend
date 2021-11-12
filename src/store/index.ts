@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import app from "./app";
 import user from "./user";
-import consultation from "./consultation"
+import consultation from "./consultation";
 import employees from "./employee";
 import VuexPersistence from "vuex-persist";
 import { IRootState } from "@/store/types";
@@ -17,6 +17,12 @@ const vuexPersist = new VuexPersistence({
   }),
 });
 
+const vuexPersist2 = new VuexPersistence({
+  key: "xx",
+  storage: window.localStorage,
+  reducer: (state: IRootState) => ({ consultation: state.consultation }),
+});
+
 export default new Vuex.Store({
   modules: {
     app,
@@ -24,5 +30,5 @@ export default new Vuex.Store({
     consultation,
     employees,
   },
-  plugins: [vuexPersist.plugin],
+  plugins: [vuexPersist.plugin, vuexPersist2.plugin],
 });

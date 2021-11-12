@@ -4,7 +4,7 @@
       <v-card>
         <v-toolbar flat>
           <v-toolbar-title>
-            {{ $t("searchEmployee.search.title") }}
+            {{ $t("employeeConsultation.consultation.title") }}
           </v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
@@ -13,8 +13,281 @@
           :active="isLoading"
           :indeterminate="isLoading"
         ></v-progress-linear>
-
-        <v-container> prueba de la vista </v-container>
+        <v-container>
+          <v-row>
+            <v-col cols="12" sm="12" md="6">
+              <v-text-field
+                :label="
+                  $t(
+                    'employeeConsultation.consultation.employeeConsultationForm.employeeType'
+                  )
+                "
+                :name="
+                  $t(
+                    'employeeConsultation.consultation.employeeConsultationForm.employeeType'
+                  )
+                "
+                dense
+                outlined
+                disabled
+                :value="consultationEmployee.consultation.employeeType"
+              >
+              </v-text-field>
+            </v-col>
+            <v-col cols="12" sm="12" md="6">
+              <v-text-field
+                :label="
+                  $t(
+                    'employeeConsultation.consultation.employeeConsultationForm.assignmentNumber'
+                  )
+                "
+                :name="
+                  $t(
+                    'employeeConsultation.consultation.employeeConsultationForm.assignmentNumber'
+                  )
+                "
+                dense
+                outlined
+                disabled
+                :value="consultationEmployee.consultation.assigmentNumber"
+              >
+              </v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12" sm="12" md="6">
+              <v-text-field
+                :label="
+                  $t(
+                    'employeeConsultation.consultation.employeeConsultationForm.rc'
+                  )
+                "
+                :name="
+                  $t(
+                    'employeeConsultation.consultation.employeeConsultationForm.rc'
+                  )
+                "
+                dense
+                outlined
+                disabled
+              >
+              </v-text-field>
+            </v-col>
+            <v-col cols="12" sm="12" md="6">
+              <v-text-field
+                :label="
+                  $t(
+                    'employeeConsultation.consultation.employeeConsultationForm.fullname'
+                  )
+                "
+                :name="
+                  $t(
+                    'employeeConsultation.consultation.employeeConsultationForm.fullname'
+                  )
+                "
+                dense
+                outlined
+                disabled
+                :value="consultationEmployee.consultation.fullname"
+              >
+              </v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12" sm="12" md="4">
+              <v-text-field
+                :label="
+                  $t(
+                    'employeeConsultation.consultation.employeeConsultationForm.department'
+                  )
+                "
+                :name="
+                  $t(
+                    'employeeConsultation.consultation.employeeConsultationForm.department'
+                  )
+                "
+                dense
+                outlined
+                disabled
+              >
+              </v-text-field>
+            </v-col>
+            <v-col cols="12" sm="12" md="8">
+              <v-text-field
+                :label="
+                  $t(
+                    'employeeConsultation.consultation.employeeConsultationForm.departmentDescription'
+                  )
+                "
+                :name="
+                  $t(
+                    'employeeConsultation.consultation.employeeConsultationForm.departmentDescription'
+                  )
+                "
+                dense
+                outlined
+                disabled
+              >
+              </v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12" sm="12" md="6">
+              <v-text-field
+                :label="
+                  $t(
+                    'employeeConsultation.consultation.employeeConsultationForm.validity'
+                  )
+                "
+                :name="
+                  $t(
+                    'employeeConsultation.consultation.employeeConsultationForm.validity'
+                  )
+                "
+                dense
+                outlined
+                disabled
+              >
+              </v-text-field>
+            </v-col>
+            <v-col cols="12" sm="12" md="6">
+              <v-text-field
+                :label="
+                  $t(
+                    'employeeConsultation.consultation.employeeConsultationForm.validityStatus'
+                  )
+                "
+                :name="
+                  $t(
+                    'employeeConsultation.consultation.employeeConsultationForm.validityStatus'
+                  )
+                "
+                dense
+                outlined
+                disabled
+              >
+              </v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12" sm="6" md="3">
+              <v-btn
+                class="sizeTextButton"
+                type="submit"
+                color="success"
+                dark
+                large
+                dense
+              >
+                {{
+                  $t(
+                    "employeeConsultation.consultation.actionsButtons.manageAddresses"
+                  )
+                }}
+              </v-btn>
+            </v-col>
+            <v-col cols="12" sm="6" md="3">
+              <v-btn
+                class="sizeTextButton"
+                type="submit"
+                color="success"
+                dark
+                large
+                dense
+              >
+                {{
+                  $t(
+                    "employeeConsultation.consultation.actionsButtons.assignAddress"
+                  )
+                }}
+              </v-btn>
+            </v-col>
+            <v-col cols="12" sm="6" md="3">
+              <v-btn
+                class="sizeTextButton"
+                type="submit"
+                color="success"
+                large
+                dark
+                dense
+              >
+                {{
+                  $t(
+                    "employeeConsultation.consultation.actionsButtons.assignMedicalUnit"
+                  )
+                }}
+              </v-btn>
+            </v-col>
+            <v-col cols="12" sm="6" md="3">
+              <v-btn
+                class="colorCredentialButton sizeTextButton"
+                type="submit"
+                dark
+                dense
+                large
+              >
+                {{
+                  $t(
+                    "employeeConsultation.consultation.actionsButtons.credential"
+                  )
+                }}
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-container>
+        <v-divider></v-divider>
+        <v-toolbar flat>
+          <v-toolbar-title>
+            {{ $t("employeeConsultation.consultation.secondTitle") }}
+          </v-toolbar-title>
+          <v-divider class="mx-4" inset vertical></v-divider>
+          <v-spacer></v-spacer>
+        </v-toolbar>
+        <v-container>
+          <v-row>
+            <v-col cols="12" sm="6" md="3" offset="9">
+              <v-btn
+                class="sizeTextButton"
+                type="submit"
+                dark
+                dense
+                large
+                color="success"
+                @click="onBtnAddBeneficiary"
+              >
+                + Agregar derechohabiente
+              </v-btn>
+            </v-col>
+            <v-col cols="12" sm="12" md="12">
+              <v-data-table
+                :headers="headers"
+                :items="beneficiaries"
+                :items-per-page="5"
+                class="elevation-1"
+              >
+                <template v-slot:item="row">
+                  <tr>
+                    <td>
+                      <v-btn class="mx-2">
+                        <v-icon dark>mdi-pencil</v-icon>
+                      </v-btn>
+                    </td>
+                    <td>
+                      <v-btn class="mx-2">
+                        <v-icon dark>mdi-delete</v-icon>
+                      </v-btn>
+                    </td>
+                    <td>{{ row.item.nombres }}</td>
+                    <td>{{ row.item.ap_paterno }}</td>
+                    <td>{{ row.item.ap_materno }}</td>
+                    <td>{{ row.item.curp }}</td>
+                    <td>{{ row.item.parentesco }}</td>
+                  </tr>
+                </template>
+              </v-data-table>
+            </v-col>
+          </v-row>
+        </v-container>
       </v-card>
     </div>
   </div>
@@ -27,9 +300,80 @@ import { IConsultation } from "@/store/consultation/types";
 
 @Component({})
 export default class EmployeeConsultation extends Vue {
+  public headers: Array<any> = [
+    { text: "", value: "edit", sortable: false },
+    { text: "", value: "delete", sortable: false },
+    {
+      text: this.$t(
+        "employeeConsultation.consultation.beneficiariesTable.names"
+      ),
+      value: "nombres",
+    },
+    {
+      text: this.$t(
+        "employeeConsultation.consultation.beneficiariesTable.lastname"
+      ),
+      value: "ap_paterno",
+    },
+    {
+      text: this.$t(
+        "employeeConsultation.consultation.beneficiariesTable.surname"
+      ),
+      value: "ap_materno",
+    },
+    {
+      text: this.$t(
+        "employeeConsultation.consultation.beneficiariesTable.curp"
+      ),
+      value: "curp",
+    },
+    {
+      text: this.$t(
+        "employeeConsultation.consultation.beneficiariesTable.relationship"
+      ),
+      value: "parentesco",
+    },
+  ];
+  public beneficiaries: Array<any> = [
+    {
+      nombres: "GABRIELA",
+      ap_paterno: "SANDOVAL",
+      ap_materno: "URBAN",
+      curp: "MALA700306HQTRND07",
+      parentesco: "Hija",
+    },
+    {
+      nombres: "GABRIELA",
+      ap_paterno: "SANDOVAL",
+      ap_materno: "URBAN",
+      curp: "MALA700306HQTRND07",
+      parentesco: "Hija",
+    },
+    {
+      nombres: "GABRIELA",
+      ap_paterno: "SANDOVAL",
+      ap_materno: "URBAN",
+      curp: "MALA700306HQTRND07",
+      parentesco: "Hija",
+    },
+
+    {
+      nombres: "GABRIELA",
+      ap_paterno: "SANDOVAL",
+      ap_materno: "URBAN",
+      curp: "MALA700306HQTRND07",
+      parentesco: "Hija",
+    },
+  ];
+
   get consultationEmployee(): IConsultation {
     return this.$store.state.consultation;
   }
+
+  onBtnAddBeneficiary(){
+    this.$router.push({ path: "/derechohabiente/alta" });
+  }
+
 
   get isLoading(): boolean {
     // TODO Refactor this form is submitting
@@ -37,3 +381,14 @@ export default class EmployeeConsultation extends Vue {
   }
 }
 </script>
+
+<style scoped>
+.colorCredentialButton {
+  background-color: #660033 !important;
+}
+
+.sizeTextButton {
+  font-size: 11px !important;
+  width:240px !important;
+}
+</style>

@@ -43,8 +43,13 @@ const routes: Array<RouteConfig> = [
   {
     path: "/empleados/consulta",
     name: "people:employeeConsultation",
-    component: () =>
-      import("@/views/employeeConsultation/EmployeeConsultation.vue"),
+    component: () => import("@/views/employeeConsultation/EmployeeConsultation.vue"),
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/derechohabiente/alta",
+    name: "beneficiary:newBeneficiary",
+    component: () => import("@/views/beneficiary/Beneficiary.vue"),
     meta: { requiresAuth: true },
   },
 ];
