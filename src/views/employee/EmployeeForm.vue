@@ -61,11 +61,13 @@ export default class PeopleCreate extends Vue {
       ...this.$store.state.employees.employee,
       ...this.$store.state.employees.employmentData,
       ...this.$store.state.employees.address,
+      ...this.$store.state.employees.confirmation,
     };
 
     this.employeeService
       .create(data)
       .then((response) => {
+        //TODO: Success message
         console.log("Data POST: ", response);
       })
       .finally();

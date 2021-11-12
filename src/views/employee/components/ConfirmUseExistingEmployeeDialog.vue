@@ -7,6 +7,10 @@
     class="mx-2"
   >
     <v-card>
+      {{ confirmation }}
+      <v-card-title class="text-h6" v-if="title">
+        {{ title }}
+      </v-card-title>
       <v-simple-table>
         <template v-slot:default>
           <thead>
@@ -71,6 +75,10 @@ import { IConfirmForm, IEmployeeForm } from "@/store/employee/types";
 
 @Component({})
 export default class ConfirmUseExistingEmployeeDialog extends Vue {
+  get confirmationLog(): IConfirmForm {
+    return this.$store.state.employees.confirmation;
+  }
+
   @Prop()
   public title?: string;
 
@@ -102,6 +110,9 @@ export default class ConfirmUseExistingEmployeeDialog extends Vue {
   @Emit("onConfirm")
   confirmData(): void {
     this.selectDataRenapo();
+    this.$store.dispatch("employees/setConfirmation", {
+      confirmar: true,
+    });
     if (this.onConfirm) {
       this.onConfirm();
     }

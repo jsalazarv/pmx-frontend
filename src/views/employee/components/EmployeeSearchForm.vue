@@ -316,6 +316,7 @@
       :open.sync="isDialogOpen"
       :mfe-data="mfeData"
       :renapo-data="renapoData"
+      :title="validationMessage"
       @onSelect="disableInputs"
       @onCancel="resetForm"
     />
@@ -324,6 +325,7 @@
       :open.sync="isConfirmDialogOpen"
       :mfe-data="mfeData"
       :renapo-data="renapoData"
+      :title="validationMessage"
       @onConfirm="disableInputs"
       @onReject="resetForm"
     />
@@ -352,6 +354,7 @@ import EmployeeService from "@/services/EmployeeService";
 import GenderService from "@/services/GenderService";
 import MaritalStatusService from "@/services/MaritalStatusService";
 import {
+  EmployeeValidationRule,
   IEmployeeValidationResponse,
   IMessage,
 } from "@/services/EmployeeService/types";
@@ -376,7 +379,7 @@ export default class EmployeeSearchForm extends Vue {
   public gendersList: Array<IGender> = [];
   public maritalStatusesList: Array<IMaritalStatus> = [];
   public employeeValidationData: IEmployeeValidationResponse | null = null;
-  public validationMessage: IMessage | null = null;
+  public validationMessage: string | null = null;
   public snackbar: ISnackbarProps = {
     visible: false,
     message: null,
@@ -468,37 +471,25 @@ export default class EmployeeSearchForm extends Vue {
     response: IApiResponse<IEmployeeValidationResponse, IMessage>
   ): void {
     this.employeeValidationData = response.Data;
-    this.validationMessage = response.Message;
-    //TODO: Do something when person doesn't exist in Renapo or Mfe data
+    this.validationMessage = response.Message.Texto;
 
-    //TODO: Validate this using rules in response and add switch case
-    //console.log("Respuesta:", response.Message.Regla);
-
-    /*switch (response.Message.Regla) {
-      case "PERSONA_TIPOS_EMPLEADO_NO_EXISTE":
-        console.log("Modal de datos renapo");
-        if (!response.Data.MFE) {
-          this.openDialog();
-        }
-        break;
-      case "PERSONA_OTROS_TIPO_EMPLEADO_EXISTE":
-        console.log("Modal de seleccion RENAPO/MFE");
+    switch (response.Message.Regla) {
+      case EmployeeValidationRule.PERSONA_TIPOS_EMPLEADO_NO_EXISTE:
         this.openDialog();
         break;
-      case "PERSONA_TIPO_EMPLEADO_EXISTE":
-        console.log("Modal de confirmacion");
+      case EmployeeValidationRule.PERSONA_OTROS_TIPO_EMPLEADO_EXISTE:
+        this.openDialog();
+        break;
+      case EmployeeValidationRule.PERSONA_TIPO_EMPLEADO_EXISTE:
         this.openConfirmDialog();
         break;
       default:
         if (!response.Data.MFE && !response.Data.Renapo) {
+          //TODO: Send message
           console.log("No hay registros en mfe y renapo");
         }
         break;
-    }*/
-    if (!response.Data.MFE) {
-      return this.openDialog();
     }
-    return this.openConfirmDialog();
   }
 
   getEmployeeTypes(): void {
