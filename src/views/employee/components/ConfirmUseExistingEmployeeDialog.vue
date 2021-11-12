@@ -78,7 +78,12 @@
         >
           {{ $t("employee.labels.dialogs.existingEmployee.labels.confirm") }}
         </v-btn>
-        <v-btn color="error darken-1" text @click="rejectData">
+        <v-btn
+          color="error darken-1"
+          text
+          @click="rejectData"
+          :disabled="!confirmation.Justificacion"
+        >
           {{ $t("employee.labels.dialogs.existingEmployee.labels.reject") }}
         </v-btn>
       </v-card-actions>
@@ -92,12 +97,11 @@ import Component from "vue-class-component";
 import { Emit, Prop, PropSync } from "vue-property-decorator";
 import { IMfeData } from "@/services/EmployeeService/types";
 import { IConfirmForm, IEmployeeForm } from "@/store/employee/types";
+import EmployeeService from "@/services/EmployeeService";
 
 @Component({})
 export default class ConfirmUseExistingEmployeeDialog extends Vue {
-  get confirmationLog(): IConfirmForm {
-    return this.$store.state.employees.confirmation;
-  }
+  protected employeeService = new EmployeeService();
 
   @Prop()
   public title?: string;
@@ -117,6 +121,10 @@ export default class ConfirmUseExistingEmployeeDialog extends Vue {
 
   get confirmation(): IConfirmForm {
     return this.$store.state.employees.confirmation;
+  }
+
+  get employee(): IEmployeeForm {
+    return this.$store.state.employees.employee;
   }
 
   @Emit("onCancel")
@@ -157,7 +165,22 @@ export default class ConfirmUseExistingEmployeeDialog extends Vue {
   }
 
   saveTryInLogbook(): void {
-    // TODO: REQUEST TO SAVE IN LOGBOOK
+    const data = {
+      ...{ IdTipoEmpleado: this.employee.IdTipoEmpleado },
+      ...{ Curp: this.employee.Curp },
+      ...{ Justificacion: this.confirmation.Justificacion },
+    };
+
+    this.employeeService
+      .reject(data)
+      .then((response) => {
+        //TODO: Success action
+        console.log("Success action", response);
+      })
+      .finally(() => {
+        //TODO: Final action
+        console.log("Final action");
+      });
   }
 }
 </script>

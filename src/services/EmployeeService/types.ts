@@ -97,3 +97,9 @@ export interface ICreateEmployeeResponse {
   SeccionSindical: ISyndicateSection;
   CentroTrabajo: IWorkplace;
 }
+
+export interface IRejectEmployeeRequest {
+  IdTipoEmpleado: number | null;
+  Curp: string;
+  Justificacion: string;
+}

@@ -6,6 +6,7 @@ import {
   ICreateEmployeeRequest,
   IEmployeeValidationResponse,
   IMessage,
+  IRejectEmployeeRequest,
 } from "@/services/EmployeeService/types";
 
 export default class EmployeeService extends BaseService {
@@ -32,5 +33,12 @@ export default class EmployeeService extends BaseService {
     };
 
     return this.client.post(`/Empleados/Alta`, body, config);
+  }
+
+  async reject(
+    data: IRejectEmployeeRequest,
+    params = {}
+  ): IServiceResponse<IRejectEmployeeRequest> {
+    return this.client.post(`/Empleados/Rechazo`, data, { params });
   }
 }
