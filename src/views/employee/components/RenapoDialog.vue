@@ -15,17 +15,13 @@
           <v-col cols="12" md="6" v-if="mfeData.Nombres">
             <v-card elevation="0" outlined>
               <v-card-title class="subheading font-weight-bold">
-                {{ $t("dictionary.mfe") }}
+                {{ $t("employee.labels.dialogs.renapo.subtitles.mfe") }}
               </v-card-title>
               <v-divider></v-divider>
               <v-list dense>
                 <v-list-item>
                   <v-list-item-content>
-                    {{
-                      $t(
-                        "employee.registration.registrationForm.peopleSearchForm.names"
-                      )
-                    }}:
+                    {{ $t("employee.labels.dialogs.renapo.names") }}:
                   </v-list-item-content>
                   <v-list-item-content class="align-end">
                     {{ mfeData.Nombres }}
@@ -33,11 +29,7 @@
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-content>
-                    {{
-                      $t(
-                        "employee.registration.registrationForm.peopleSearchForm.lastname"
-                      )
-                    }}:
+                    {{ $t("employee.labels.dialogs.renapo.lastname") }}:
                   </v-list-item-content>
                   <v-list-item-content class="align-end">
                     {{ mfeData.ApellidoPaterno }}
@@ -45,11 +37,7 @@
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-content>
-                    {{
-                      $t(
-                        "employee.registration.registrationForm.peopleSearchForm.surname"
-                      )
-                    }}:
+                    {{ $t("employee.labels.dialogs.renapo.surname") }}:
                   </v-list-item-content>
                   <v-list-item-content class="align-end">
                     {{ mfeData.ApellidoMaterno }}
@@ -57,11 +45,7 @@
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-content>
-                    {{
-                      $t(
-                        "employee.registration.registrationForm.peopleSearchForm.birthday"
-                      )
-                    }}:
+                    {{ $t("employee.labels.dialogs.renapo.birthday") }}:
                   </v-list-item-content>
                   <v-list-item-content class="align-end">
                     {{ mfeData.FechaNacimiento }}
@@ -69,11 +53,7 @@
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-content>
-                    {{
-                      $t(
-                        "employee.registration.registrationForm.peopleSearchForm.gender"
-                      )
-                    }}:
+                    {{ $t("employee.labels.dialogs.renapo.gender") }}:
                   </v-list-item-content>
                   <v-list-item-content class="align-end">
                     {{ mfeData.Sexo }}
@@ -85,17 +65,13 @@
           <v-col cols="12" md="6">
             <v-card elevation="0" outlined>
               <v-card-title class="subheading font-weight-bold">
-                {{ $t("dictionary.renapo") }}
+                {{ $t("employee.labels.dialogs.renapo.subtitles.renapo") }}
               </v-card-title>
               <v-divider></v-divider>
               <v-list dense>
                 <v-list-item>
                   <v-list-item-content>
-                    {{
-                      $t(
-                        "employee.registration.registrationForm.peopleSearchForm.names"
-                      )
-                    }}:
+                    {{ $t("employee.labels.dialogs.renapo.names") }}:
                   </v-list-item-content>
                   <v-list-item-content class="align-end">
                     {{ renapoData.Nombres }}
@@ -103,11 +79,7 @@
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-content>
-                    {{
-                      $t(
-                        "employee.registration.registrationForm.peopleSearchForm.lastname"
-                      )
-                    }}:
+                    {{ $t("employee.labels.dialogs.renapo.lastname") }}:
                   </v-list-item-content>
                   <v-list-item-content class="align-end">
                     {{ renapoData.ApellidoPaterno }}
@@ -115,11 +87,7 @@
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-content>
-                    {{
-                      $t(
-                        "employee.registration.registrationForm.peopleSearchForm.surname"
-                      )
-                    }}:
+                    {{ $t("employee.labels.dialogs.renapo.surname") }}:
                   </v-list-item-content>
                   <v-list-item-content class="align-end">
                     {{ renapoData.ApellidoMaterno }}
@@ -127,11 +95,7 @@
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-content>
-                    {{
-                      $t(
-                        "employee.registration.registrationForm.peopleSearchForm.birthday"
-                      )
-                    }}:
+                    {{ $t("employee.labels.dialogs.renapo.birthday") }}:
                   </v-list-item-content>
                   <v-list-item-content class="align-end">
                     {{ renapoData.FechaNacimiento }}
@@ -139,11 +103,7 @@
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-content>
-                    {{
-                      $t(
-                        "employee.registration.registrationForm.peopleSearchForm.gender"
-                      )
-                    }}:
+                    {{ $t("employee.labels.dialogs.renapo.gender") }}:
                   </v-list-item-content>
                   <v-list-item-content class="align-end">
                     {{ renapoData.Sexo }}
@@ -158,7 +118,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="error darken-1" text @click="cancel">
-          {{ $t("dictionary.cancel") }}
+          {{ $t("employee.labels.dialogs.renapo.labels.cancel") }}
         </v-btn>
         <v-btn
           color="success"
@@ -166,7 +126,7 @@
           @click="selectData"
           :disabled="!renapoData.Nombres"
         >
-          {{ $t("dictionary.toSelect") }}
+          {{ $t("employee.labels.dialogs.renapo.labels.select") }}:
         </v-btn>
       </v-card-actions>
     </v-card>

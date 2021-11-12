@@ -4,22 +4,14 @@
       <v-row>
         <v-col cols="12" md="4">
           <ValidationProvider
-            :name="
-              $t(
-                'employee.registration.registrationForm.employmentInformationForm.reference'
-              )
-            "
+            :name="$t('employee.attributes.reference')"
             rules=""
             v-slot="{ errors }"
           >
             <v-text-field
               dense
               name="reference"
-              :label="
-                $t(
-                  'employee.registration.registrationForm.employmentInformationForm.reference'
-                )
-              "
+              :label="$t('employee.attributes.reference')"
               outlined
               required
               v-model="employmentData.Referencia"
@@ -29,22 +21,14 @@
         </v-col>
         <v-col cols="12" md="4">
           <ValidationProvider
-            :name="
-              $t(
-                'employee.registration.registrationForm.employmentInformationForm.applicantCompany'
-              )
-            "
+            :name="$t('employee.attributes.applicantCompany')"
             rules="required"
             v-slot="{ errors }"
           >
             <v-autocomplete
               dense
               name="applicantCompany"
-              :label="
-                $t(
-                  'employee.registration.registrationForm.employmentInformationForm.applicantCompany'
-                )
-              "
+              :label="$t('employee.attributes.applicantCompany')"
               outlined
               required
               v-model="employmentData.EmpresaOrganismoSolicitante"
@@ -58,11 +42,7 @@
         </v-col>
         <v-col cols="12" md="4">
           <ValidationProvider
-            :name="
-              $t(
-                'employee.registration.registrationForm.employmentInformationForm.applicantWorkCenter'
-              )
-            "
+            :name="$t('employee.attributes.applicantWorkCenter')"
             rules="required"
             v-slot="{ errors }"
           >
@@ -76,11 +56,7 @@
               item-text="Descripcion"
               item-value="IdCentro"
               name="applicantWorkCenter"
-              :label="
-                $t(
-                  'employee.registration.registrationForm.employmentInformationForm.applicantWorkCenter'
-                )
-              "
+              :label="$t('employee.attributes.applicantWorkCenter')"
               outlined
               required
               v-model="employmentData.IdCentro"
@@ -90,11 +66,7 @@
         </v-col>
         <v-col cols="12" md="4">
           <ValidationProvider
-            :name="
-              $t(
-                'employee.registration.registrationForm.employmentInformationForm.syndicate'
-              )
-            "
+            :name="$t('employee.attributes.syndicate')"
             rules="required"
             v-slot="{ errors }"
           >
@@ -106,11 +78,7 @@
               item-value="IdSindicato"
               dense
               name="syndicate"
-              :label="
-                $t(
-                  'employee.registration.registrationForm.employmentInformationForm.syndicate'
-                )
-              "
+              :label="$t('employee.attributes.syndicate')"
               outlined
               required
               v-model="employmentData.IdSindicato"
@@ -122,11 +90,7 @@
         </v-col>
         <v-col cols="12" md="4">
           <ValidationProvider
-            :name="
-              $t(
-                'employee.registration.registrationForm.employmentInformationForm.syndicateSection'
-              )
-            "
+            :name="$t('employee.attributes.syndicateSection')"
             rules="required"
             v-slot="{ errors }"
           >
@@ -140,11 +104,7 @@
               :loading="isLoadingSyndicateSections"
               dense
               name="syndicateSection"
-              :label="
-                $t(
-                  'employee.registration.registrationForm.employmentInformationForm.syndicateSection'
-                )
-              "
+              :label="$t('employee.attributes.syndicateSection')"
               outlined
               required
               v-model="employmentData.IdSeccionSindicato"
@@ -155,20 +115,12 @@
         </v-col>
         <v-col cols="12">
           <ValidationProvider
-            :name="
-              $t(
-                'employee.registration.registrationForm.employmentInformationForm.observations'
-              )
-            "
+            :name="$t('employee.attributes.observations')"
             rules=""
             v-slot="{ errors }"
           >
             <v-textarea
-              :label="
-                $t(
-                  'employee.registration.registrationForm.employmentInformationForm.observations'
-                )
-              "
+              :label="$t('employee.attributes.observations')"
               auto-grow
               outlined
               dense

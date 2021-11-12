@@ -4,7 +4,7 @@
       <v-card>
         <v-toolbar flat>
           <v-toolbar-title>
-            {{ $t("employee.registration.title") }}
+            {{ $t("employee.create.title") }}
           </v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
@@ -19,11 +19,7 @@
           <location-form />
           <v-container>
             <v-btn color="success" @click="registerEmployee">
-              {{
-                $t(
-                  "employee.registration.registrationForm.generateAssignmentNumber"
-                )
-              }}
+              {{ $t("employee.labels.generateAssignmentNumber") }}
             </v-btn>
           </v-container>
         </ValidationObserver>

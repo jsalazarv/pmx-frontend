@@ -6,11 +6,7 @@
           <v-row>
             <v-col cols="12">
               <ValidationProvider
-                :name="
-                  $t(
-                    'employee.registration.registrationForm.peopleSearchForm.typeOfEmployee'
-                  )
-                "
+                :name="$t('employee.attributes.typeOfEmployee')"
                 rules="required"
                 v-slot="{ errors }"
               >
@@ -20,11 +16,7 @@
                   :items="employeeTypeList"
                   item-text="Nombre"
                   item-value="Id"
-                  :label="
-                    $t(
-                      'employee.registration.registrationForm.peopleSearchForm.typeOfEmployee'
-                    )
-                  "
+                  :label="$t('employee.attributes.typeOfEmployee')"
                   outlined
                   required
                   :loading="isLoadingEmployeeList"
@@ -36,11 +28,7 @@
             </v-col>
             <v-col cols="12">
               <ValidationProvider
-                :name="
-                  $t(
-                    'employee.registration.registrationForm.peopleSearchForm.curp'
-                  )
-                "
+                :name="$t('employee.attributes.curp')"
                 rules="required"
                 v-slot="{ errors }"
               >
@@ -48,11 +36,7 @@
                   clearable
                   dense
                   name="curp"
-                  :label="
-                    $t(
-                      'employee.registration.registrationForm.peopleSearchForm.curp'
-                    )
-                  "
+                  :label="$t('employee.attributes.curp')"
                   outlined
                   required
                   v-model="employee.Curp"
@@ -70,7 +54,7 @@
                 :disabled="isValidatingEmployee || !canValidate"
                 :loading="isValidatingEmployee"
               >
-                {{ $t("dictionary.validate") }}
+                {{ $t("employee.labels.validate") }}
               </v-btn>
             </v-col>
           </v-row>
@@ -79,11 +63,7 @@
           <v-row>
             <v-col cols="12" md="6">
               <ValidationProvider
-                :name="
-                  $t(
-                    'employee.registration.registrationForm.peopleSearchForm.assignmentNumber'
-                  )
-                "
+                :name="$t('employee.attributes.assignmentNumber')"
                 rules=""
                 v-slot="{ errors }"
               >
@@ -91,11 +71,7 @@
                   dense
                   name="assignmentNumber"
                   disabled
-                  :label="
-                    $t(
-                      'employee.registration.registrationForm.peopleSearchForm.assignmentNumber'
-                    )
-                  "
+                  :label="$t('employee.attributes.assignmentNumber')"
                   outlined
                   required
                   :error-messages="errors"
@@ -104,11 +80,7 @@
             </v-col>
             <v-col cols="12" md="6">
               <ValidationProvider
-                :name="
-                  $t(
-                    'employee.registration.registrationForm.peopleSearchForm.assignmentNumberStatus'
-                  )
-                "
+                :name="$t('employee.attributes.assignmentNumberStatus')"
                 rules=""
                 v-slot="{ errors }"
               >
@@ -116,11 +88,7 @@
                   dense
                   name="assignmentNumberStatus"
                   disabled
-                  :label="
-                    $t(
-                      'employee.registration.registrationForm.peopleSearchForm.assignmentNumberStatus'
-                    )
-                  "
+                  :label="$t('employee.attributes.assignmentNumberStatus')"
                   outlined
                   required
                   :error-messages="errors"
@@ -129,22 +97,14 @@
             </v-col>
             <v-col cols="12">
               <ValidationProvider
-                :name="
-                  $t(
-                    'employee.registration.registrationForm.peopleSearchForm.invoice'
-                  )
-                "
+                :name="$t('employee.attributes.invoice')"
                 rules="required"
                 v-slot="{ errors }"
               >
                 <v-text-field
                   dense
                   name="invoice"
-                  :label="
-                    $t(
-                      'employee.registration.registrationForm.peopleSearchForm.invoice'
-                    )
-                  "
+                  :label="$t('employee.attributes.invoice')"
                   outlined
                   required
                   v-model="employmentData.Folio"
@@ -158,11 +118,7 @@
       <v-row>
         <v-col cols="12" md="4">
           <ValidationProvider
-            :name="
-              $t(
-                'employee.registration.registrationForm.peopleSearchForm.names'
-              )
-            "
+            :name="$t('employee.attributes.names')"
             rules="required"
             v-slot="{ errors }"
           >
@@ -170,11 +126,7 @@
               dense
               name="names"
               :disabled="canEditPersonalInfo"
-              :label="
-                $t(
-                  'employee.registration.registrationForm.peopleSearchForm.names'
-                )
-              "
+              :label="$t('employee.attributes.names')"
               outlined
               required
               v-model="employee.Nombres"
@@ -184,11 +136,7 @@
         </v-col>
         <v-col cols="12" md="4">
           <ValidationProvider
-            :name="
-              $t(
-                'employee.registration.registrationForm.peopleSearchForm.lastname'
-              )
-            "
+            :name="$t('employee.attributes.lastname')"
             rules="required"
             v-slot="{ errors }"
           >
@@ -196,11 +144,7 @@
               dense
               name="lastname"
               :disabled="canEditPersonalInfo"
-              :label="
-                $t(
-                  'employee.registration.registrationForm.peopleSearchForm.lastname'
-                )
-              "
+              :label="$t('employee.attributes.lastname')"
               outlined
               required
               v-model="employee.ApellidoPaterno"
@@ -210,11 +154,7 @@
         </v-col>
         <v-col cols="12" md="4">
           <ValidationProvider
-            :name="
-              $t(
-                'employee.registration.registrationForm.peopleSearchForm.surname'
-              )
-            "
+            :name="$t('employee.attributes.surname')"
             rules="required"
             v-slot="{ errors }"
           >
@@ -222,11 +162,7 @@
               dense
               name="surname"
               :disabled="canEditPersonalInfo"
-              :label="
-                $t(
-                  'employee.registration.registrationForm.peopleSearchForm.surname'
-                )
-              "
+              :label="$t('employee.attributes.surname')"
               outlined
               required
               v-model="employee.ApellidoMaterno"
@@ -236,11 +172,7 @@
         </v-col>
         <v-col cols="12" md="2">
           <ValidationProvider
-            :name="
-              $t(
-                'employee.registration.registrationForm.peopleSearchForm.birthday'
-              )
-            "
+            :name="$t('employee.attributes.birthday')"
             rules="required"
             v-slot="{ errors }"
           >
@@ -248,11 +180,7 @@
               dense
               name="birthday"
               :disabled="canEditPersonalInfo"
-              :label="
-                $t(
-                  'employee.registration.registrationForm.peopleSearchForm.birthday'
-                )
-              "
+              :label="$t('employee.attributes.birthday')"
               outlined
               required
               v-model="employee.FechaNacimiento"
@@ -262,22 +190,14 @@
         </v-col>
         <v-col cols="12" md="2">
           <ValidationProvider
-            :name="
-              $t(
-                'employee.registration.registrationForm.peopleSearchForm.photography'
-              )
-            "
+            :name="$t('employee.attributes.photography')"
             rules="required"
             v-slot="{ errors }"
           >
             <v-file-input
               dense
               name="photography"
-              :label="
-                $t(
-                  'employee.registration.registrationForm.peopleSearchForm.photography'
-                )
-              "
+              :label="$t('employee.attributes.photography')"
               prepend-icon="mdi-camera"
               outlined
               required
@@ -287,11 +207,7 @@
         </v-col>
         <v-col cols="12" md="2">
           <ValidationProvider
-            :name="
-              $t(
-                'employee.registration.registrationForm.peopleSearchForm.gender'
-              )
-            "
+            :name="$t('employee.attributes.gender')"
             rules="required"
             v-slot="{ errors }"
           >
@@ -306,22 +222,14 @@
               :items="gendersList"
               :disabled="canEditPersonalInfo || isLoadingGendersList"
               :error-messages="errors"
-              :label="
-                $t(
-                  'employee.registration.registrationForm.peopleSearchForm.gender'
-                )
-              "
+              :label="$t('employee.attributes.gender')"
               :loading="isLoadingGendersList"
             ></v-autocomplete>
           </ValidationProvider>
         </v-col>
         <v-col cols="12" md="2">
           <ValidationProvider
-            :name="
-              $t(
-                'employee.registration.registrationForm.peopleSearchForm.maritalStatus'
-              )
-            "
+            :name="$t('employee.attributes.maritalStatus')"
             rules="required"
             v-slot="{ errors }"
           >
@@ -336,31 +244,21 @@
               :items="maritalStatusesList"
               :disabled="isLoadingMaritalStatusesList"
               :error-messages="errors"
-              :label="
-                $t(
-                  'employee.registration.registrationForm.peopleSearchForm.maritalStatus'
-                )
-              "
+              :label="$t('employee.attributes.maritalStatus')"
               :loading="isLoadingMaritalStatusesList"
             ></v-autocomplete>
           </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
           <ValidationProvider
-            :name="
-              $t('employee.registration.registrationForm.peopleSearchForm.rfc')
-            "
+            :name="$t('employee.attributes.rfc')"
             rules="required"
             v-slot="{ errors }"
           >
             <v-text-field
               dense
               name="rfc"
-              :label="
-                $t(
-                  'employee.registration.registrationForm.peopleSearchForm.rfc'
-                )
-              "
+              :label="$t('employee.attributes.rfc')"
               outlined
               required
               v-model="employee.RFC"

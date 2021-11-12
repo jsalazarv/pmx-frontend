@@ -4,9 +4,7 @@
       <v-row>
         <v-col cols="12" md="4">
           <ValidationProvider
-            :name="
-              $t('employee.registration.registrationForm.locationForm.country')
-            "
+            :name="$t('employee.attributes.country')"
             rules="required"
             v-slot="{ errors }"
           >
@@ -18,11 +16,7 @@
               item-value="Id"
               :disabled="isLoadingCountries"
               :loading="isLoadingCountries"
-              :label="
-                $t(
-                  'employee.registration.registrationForm.locationForm.country'
-                )
-              "
+              :label="$t('employee.attributes.country')"
               outlined
               required
               v-model="address.IdPais"
@@ -33,9 +27,7 @@
         </v-col>
         <v-col cols="12" md="4">
           <ValidationProvider
-            :name="
-              $t('employee.registration.registrationForm.locationForm.state')
-            "
+            :name="$t('employee.attributes.state')"
             rules="required"
             v-slot="{ errors }"
           >
@@ -47,9 +39,7 @@
               item-value="IdEstado"
               :disabled="isLoadingStates || !address.IdPais"
               :loading="isLoadingStates"
-              :label="
-                $t('employee.registration.registrationForm.locationForm.state')
-              "
+              :label="$t('employee.attributes.state')"
               outlined
               required
               v-model="address.IdEstado"
@@ -60,11 +50,7 @@
         </v-col>
         <v-col cols="12" md="4">
           <ValidationProvider
-            :name="
-              $t(
-                'employee.registration.registrationForm.locationForm.municipality'
-              )
-            "
+            :name="$t('employee.attributes.municipality')"
             rules="required"
             v-slot="{ errors }"
           >
@@ -76,11 +62,7 @@
               item-value="IdMunicipio"
               :disabled="isLoadingMunicipalities || !address.IdEstado"
               :loading="isLoadingMunicipalities"
-              :label="
-                $t(
-                  'employee.registration.registrationForm.locationForm.municipality'
-                )
-              "
+              :label="$t('employee.attributes.municipality')"
               outlined
               required
               v-model="address.IdMunicipio"
@@ -90,20 +72,14 @@
         </v-col>
         <v-col cols="12" md="4">
           <ValidationProvider
-            :name="
-              $t('employee.registration.registrationForm.locationForm.location')
-            "
+            :name="$t('employee.attributes.location')"
             rules="required"
             v-slot="{ errors }"
           >
             <v-text-field
               dense
               name="location"
-              :label="
-                $t(
-                  'employee.registration.registrationForm.locationForm.location'
-                )
-              "
+              :label="$t('employee.attributes.location')"
               outlined
               required
               v-model="address.Localidad"
@@ -113,22 +89,14 @@
         </v-col>
         <v-col cols="12" md="4">
           <ValidationProvider
-            :name="
-              $t(
-                'employee.registration.registrationForm.locationForm.postalCode'
-              )
-            "
+            :name="$t('employee.attributes.postalCode')"
             rules="required"
             v-slot="{ errors }"
           >
             <v-text-field
               dense
               name="postalCode"
-              :label="
-                $t(
-                  'employee.registration.registrationForm.locationForm.postalCode'
-                )
-              "
+              :label="$t('employee.attributes.postalCode')"
               outlined
               required
               v-model="address.CodigoPostal"
@@ -138,18 +106,14 @@
         </v-col>
         <v-col cols="12" md="4">
           <ValidationProvider
-            :name="
-              $t('employee.registration.registrationForm.locationForm.suburb')
-            "
+            :name="$t('employee.attributes.suburb')"
             rules="required"
             v-slot="{ errors }"
           >
             <v-text-field
               dense
               name="suburb"
-              :label="
-                $t('employee.registration.registrationForm.locationForm.suburb')
-              "
+              :label="$t('employee.attributes.suburb')"
               outlined
               required
               v-model="address.Colonia"
@@ -159,18 +123,14 @@
         </v-col>
         <v-col cols="12" md="4">
           <ValidationProvider
-            :name="
-              $t('employee.registration.registrationForm.locationForm.street')
-            "
+            :name="$t('employee.attributes.street')"
             rules="required"
             v-slot="{ errors }"
           >
             <v-text-field
               dense
               name="street"
-              :label="
-                $t('employee.registration.registrationForm.locationForm.street')
-              "
+              :label="$t('employee.attributes.street')"
               outlined
               required
               v-model="address.Calle"
@@ -180,22 +140,14 @@
         </v-col>
         <v-col cols="12" md="2">
           <ValidationProvider
-            :name="
-              $t(
-                'employee.registration.registrationForm.locationForm.interiorNumber'
-              )
-            "
+            :name="$t('employee.attributes.interiorNumber')"
             rules="required"
             v-slot="{ errors }"
           >
             <v-text-field
               dense
               name="interiorNumber"
-              :label="
-                $t(
-                  'employee.registration.registrationForm.locationForm.interiorNumber'
-                )
-              "
+              :label="$t('employee.attributes.interiorNumber')"
               outlined
               required
               v-model="address.NumeroInterior"
@@ -205,22 +157,14 @@
         </v-col>
         <v-col cols="12" md="2">
           <ValidationProvider
-            :name="
-              $t(
-                'employee.registration.registrationForm.locationForm.exteriorNumber'
-              )
-            "
+            :name="$t('employee.attributes.exteriorNumber')"
             rules="required"
             v-slot="{ errors }"
           >
             <v-text-field
               dense
               name="exteriorNumber"
-              :label="
-                $t(
-                  'employee.registration.registrationForm.locationForm.exteriorNumber'
-                )
-              "
+              :label="$t('employee.attributes.exteriorNumber')"
               outlined
               required
               v-model="address.NumeroExterior"
@@ -230,18 +174,14 @@
         </v-col>
         <v-col cols="12" md="4">
           <ValidationProvider
-            :name="
-              $t('employee.registration.registrationForm.locationForm.block')
-            "
+            :name="$t('employee.attributes.block')"
             rules="required"
             v-slot="{ errors }"
           >
             <v-text-field
               dense
               name="block"
-              :label="
-                $t('employee.registration.registrationForm.locationForm.block')
-              "
+              :label="$t('employee.attributes.block')"
               outlined
               required
               v-model="address.Manzana"
@@ -251,18 +191,14 @@
         </v-col>
         <v-col cols="12" md="4">
           <ValidationProvider
-            :name="
-              $t('employee.registration.registrationForm.locationForm.lot')
-            "
+            :name="$t('employee.attributes.lot')"
             rules="required"
             v-slot="{ errors }"
           >
             <v-text-field
               dense
               name="lot"
-              :label="
-                $t('employee.registration.registrationForm.locationForm.lot')
-              "
+              :label="$t('employee.attributes.lot')"
               outlined
               required
               v-model="address.Lote"
