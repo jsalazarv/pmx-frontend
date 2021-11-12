@@ -3,7 +3,15 @@
     <v-container>
       <v-row>
         <v-col cols="12" md="4">
-          <ValidationProvider name="reference" rules="" v-slot="{ errors }">
+          <ValidationProvider
+            :name="
+              $t(
+                'employee.registration.registrationForm.employmentInformationForm.reference'
+              )
+            "
+            rules=""
+            v-slot="{ errors }"
+          >
             <v-text-field
               dense
               name="reference"
@@ -21,7 +29,11 @@
         </v-col>
         <v-col cols="12" md="4">
           <ValidationProvider
-            name="applicantCompany"
+            :name="
+              $t(
+                'employee.registration.registrationForm.employmentInformationForm.applicantCompany'
+              )
+            "
             rules="required"
             v-slot="{ errors }"
           >
@@ -46,7 +58,11 @@
         </v-col>
         <v-col cols="12" md="4">
           <ValidationProvider
-            name="applicantWorkCenter"
+            :name="
+              $t(
+                'employee.registration.registrationForm.employmentInformationForm.applicantWorkCenter'
+              )
+            "
             rules="required"
             v-slot="{ errors }"
           >
@@ -74,7 +90,11 @@
         </v-col>
         <v-col cols="12" md="4">
           <ValidationProvider
-            name="syndicate"
+            :name="
+              $t(
+                'employee.registration.registrationForm.employmentInformationForm.syndicate'
+              )
+            "
             rules="required"
             v-slot="{ errors }"
           >
@@ -102,7 +122,11 @@
         </v-col>
         <v-col cols="12" md="4">
           <ValidationProvider
-            name="syndicateSection"
+            :name="
+              $t(
+                'employee.registration.registrationForm.employmentInformationForm.syndicateSection'
+              )
+            "
             rules="required"
             v-slot="{ errors }"
           >
@@ -130,7 +154,15 @@
           </ValidationProvider>
         </v-col>
         <v-col cols="12">
-          <ValidationProvider name="observations" rules="" v-slot="{ errors }">
+          <ValidationProvider
+            :name="
+              $t(
+                'employee.registration.registrationForm.employmentInformationForm.observations'
+              )
+            "
+            rules=""
+            v-slot="{ errors }"
+          >
             <v-textarea
               :label="
                 $t(

@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import app from "./app";
 import user from "./user";
-import consultation from "./consultation"
+import consultation from "./consultation";
 import employees from "./employee";
 import VuexPersistence from "vuex-persist";
 import { IRootState } from "@/store/types";

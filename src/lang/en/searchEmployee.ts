@@ -17,10 +17,10 @@ export default {
       curp: "CURP",
       assignmentNumber: "Assignment number",
     },
-    validationsForm:{
+    validationsForm: {
       isRequired: "is required",
       isNumeric: "must be numeric",
-      max:"must not be greater than"
-    }
+      max: "must not be greater than",
+    },
   },
 };

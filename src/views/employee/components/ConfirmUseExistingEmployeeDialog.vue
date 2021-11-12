@@ -7,7 +7,6 @@
     class="mx-2"
   >
     <v-card>
-      {{ confirmation }}
       <v-card-title class="text-h6" v-if="title">
         {{ title }}
       </v-card-title>

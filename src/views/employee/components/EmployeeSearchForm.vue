@@ -6,7 +6,11 @@
           <v-row>
             <v-col cols="12">
               <ValidationProvider
-                name="typeOfEmployee"
+                :name="
+                  $t(
+                    'employee.registration.registrationForm.peopleSearchForm.typeOfEmployee'
+                  )
+                "
                 rules="required"
                 v-slot="{ errors }"
               >
@@ -32,7 +36,11 @@
             </v-col>
             <v-col cols="12">
               <ValidationProvider
-                name="curp"
+                :name="
+                  $t(
+                    'employee.registration.registrationForm.peopleSearchForm.curp'
+                  )
+                "
                 rules="required"
                 v-slot="{ errors }"
               >
@@ -71,7 +79,11 @@
           <v-row>
             <v-col cols="12" md="6">
               <ValidationProvider
-                name="assignmentNumber"
+                :name="
+                  $t(
+                    'employee.registration.registrationForm.peopleSearchForm.assignmentNumber'
+                  )
+                "
                 rules=""
                 v-slot="{ errors }"
               >
@@ -92,7 +104,11 @@
             </v-col>
             <v-col cols="12" md="6">
               <ValidationProvider
-                name="assignmentNumberStatus"
+                :name="
+                  $t(
+                    'employee.registration.registrationForm.peopleSearchForm.assignmentNumberStatus'
+                  )
+                "
                 rules=""
                 v-slot="{ errors }"
               >
@@ -113,7 +129,11 @@
             </v-col>
             <v-col cols="12">
               <ValidationProvider
-                name="invoice"
+                :name="
+                  $t(
+                    'employee.registration.registrationForm.peopleSearchForm.invoice'
+                  )
+                "
                 rules="required"
                 v-slot="{ errors }"
               >
@@ -137,7 +157,15 @@
       </v-row>
       <v-row>
         <v-col cols="12" md="4">
-          <ValidationProvider name="names" rules="required" v-slot="{ errors }">
+          <ValidationProvider
+            :name="
+              $t(
+                'employee.registration.registrationForm.peopleSearchForm.names'
+              )
+            "
+            rules="required"
+            v-slot="{ errors }"
+          >
             <v-text-field
               dense
               name="names"
@@ -156,7 +184,11 @@
         </v-col>
         <v-col cols="12" md="4">
           <ValidationProvider
-            name="lastname"
+            :name="
+              $t(
+                'employee.registration.registrationForm.peopleSearchForm.lastname'
+              )
+            "
             rules="required"
             v-slot="{ errors }"
           >
@@ -178,7 +210,11 @@
         </v-col>
         <v-col cols="12" md="4">
           <ValidationProvider
-            name="surname"
+            :name="
+              $t(
+                'employee.registration.registrationForm.peopleSearchForm.surname'
+              )
+            "
             rules="required"
             v-slot="{ errors }"
           >
@@ -200,7 +236,11 @@
         </v-col>
         <v-col cols="12" md="2">
           <ValidationProvider
-            name="birthday"
+            :name="
+              $t(
+                'employee.registration.registrationForm.peopleSearchForm.birthday'
+              )
+            "
             rules="required"
             v-slot="{ errors }"
           >
@@ -222,7 +262,11 @@
         </v-col>
         <v-col cols="12" md="2">
           <ValidationProvider
-            name="photography"
+            :name="
+              $t(
+                'employee.registration.registrationForm.peopleSearchForm.photography'
+              )
+            "
             rules="required"
             v-slot="{ errors }"
           >
@@ -243,7 +287,11 @@
         </v-col>
         <v-col cols="12" md="2">
           <ValidationProvider
-            name="gender"
+            :name="
+              $t(
+                'employee.registration.registrationForm.peopleSearchForm.gender'
+              )
+            "
             rules="required"
             v-slot="{ errors }"
           >
@@ -269,7 +317,11 @@
         </v-col>
         <v-col cols="12" md="2">
           <ValidationProvider
-            name="maritalStatus"
+            :name="
+              $t(
+                'employee.registration.registrationForm.peopleSearchForm.maritalStatus'
+              )
+            "
             rules="required"
             v-slot="{ errors }"
           >
@@ -294,7 +346,13 @@
           </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
-          <ValidationProvider name="rfc" rules="required" v-slot="{ errors }">
+          <ValidationProvider
+            :name="
+              $t('employee.registration.registrationForm.peopleSearchForm.rfc')
+            "
+            rules="required"
+            v-slot="{ errors }"
+          >
             <v-text-field
               dense
               name="rfc"
@@ -305,6 +363,7 @@
               "
               outlined
               required
+              v-model="employee.RFC"
               :error-messages="errors"
             ></v-text-field>
           </ValidationProvider>

@@ -4,7 +4,9 @@
       <v-row>
         <v-col cols="12" md="4">
           <ValidationProvider
-            name="countries"
+            :name="
+              $t('employee.registration.registrationForm.locationForm.country')
+            "
             rules="required"
             v-slot="{ errors }"
           >
@@ -31,7 +33,9 @@
         </v-col>
         <v-col cols="12" md="4">
           <ValidationProvider
-            name="states"
+            :name="
+              $t('employee.registration.registrationForm.locationForm.state')
+            "
             rules="required"
             v-slot="{ errors }"
           >
@@ -56,7 +60,11 @@
         </v-col>
         <v-col cols="12" md="4">
           <ValidationProvider
-            name="municipalities"
+            :name="
+              $t(
+                'employee.registration.registrationForm.locationForm.municipality'
+              )
+            "
             rules="required"
             v-slot="{ errors }"
           >
@@ -82,7 +90,9 @@
         </v-col>
         <v-col cols="12" md="4">
           <ValidationProvider
-            name="location"
+            :name="
+              $t('employee.registration.registrationForm.locationForm.location')
+            "
             rules="required"
             v-slot="{ errors }"
           >
@@ -103,7 +113,11 @@
         </v-col>
         <v-col cols="12" md="4">
           <ValidationProvider
-            name="postalCode"
+            :name="
+              $t(
+                'employee.registration.registrationForm.locationForm.postalCode'
+              )
+            "
             rules="required"
             v-slot="{ errors }"
           >
@@ -124,7 +138,9 @@
         </v-col>
         <v-col cols="12" md="4">
           <ValidationProvider
-            name="suburb"
+            :name="
+              $t('employee.registration.registrationForm.locationForm.suburb')
+            "
             rules="required"
             v-slot="{ errors }"
           >
@@ -143,7 +159,9 @@
         </v-col>
         <v-col cols="12" md="4">
           <ValidationProvider
-            name="street"
+            :name="
+              $t('employee.registration.registrationForm.locationForm.street')
+            "
             rules="required"
             v-slot="{ errors }"
           >
@@ -162,7 +180,11 @@
         </v-col>
         <v-col cols="12" md="2">
           <ValidationProvider
-            name="interiorNumber"
+            :name="
+              $t(
+                'employee.registration.registrationForm.locationForm.interiorNumber'
+              )
+            "
             rules="required"
             v-slot="{ errors }"
           >
@@ -183,7 +205,11 @@
         </v-col>
         <v-col cols="12" md="2">
           <ValidationProvider
-            name="exteriorNumber"
+            :name="
+              $t(
+                'employee.registration.registrationForm.locationForm.exteriorNumber'
+              )
+            "
             rules="required"
             v-slot="{ errors }"
           >
@@ -203,7 +229,13 @@
           </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
-          <ValidationProvider name="block" rules="required" v-slot="{ errors }">
+          <ValidationProvider
+            :name="
+              $t('employee.registration.registrationForm.locationForm.block')
+            "
+            rules="required"
+            v-slot="{ errors }"
+          >
             <v-text-field
               dense
               name="block"
@@ -218,7 +250,13 @@
           </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
-          <ValidationProvider name="lot" rules="required" v-slot="{ errors }">
+          <ValidationProvider
+            :name="
+              $t('employee.registration.registrationForm.locationForm.lot')
+            "
+            rules="required"
+            v-slot="{ errors }"
+          >
             <v-text-field
               dense
               name="lot"
