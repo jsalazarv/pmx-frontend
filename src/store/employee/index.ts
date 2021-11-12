@@ -4,6 +4,7 @@ import {
   IEmployeeState,
   IEmploymentDataForm,
   IAddress,
+  IConfirmForm,
 } from "@/store/employee/types";
 import { IRootState } from "@/store/types";
 
@@ -64,16 +65,23 @@ const employeeModule: Module<IEmployeeState, IRootState> = {
     SET_ADDRESS(state, address: Partial<IAddress>) {
       state.address = { ...state.address, ...address };
     },
+    SET_CONFIRMATION(state, confirmationLogData: Partial<IConfirmForm>) {
+      state.confirmation = { ...state.confirmation, ...confirmationLogData };
+    },
   },
 
   actions: {
     setEmployeeData({ commit }, employee: Partial<IEmployeeForm>) {
       commit("SET_EMPLOYEE_DATA", employee);
     },
+    setConfirmation({ commit }, confirmation: Partial<IConfirmForm>) {
+      commit("SET_CONFIRMATION", confirmation);
+    },
     clear({ commit }, employee: Partial<IEmployeeForm>) {
       commit("SET_EMPLOYEE_DATA", { ...initialState.employee, ...employee });
       commit("SET_EMPLOYMENT_DATA", { ...initialState.employmentData });
       commit("SET_ADDRESS", { ...initialState.address });
+      commit("SET_CONFIRMATION", { ...initialState.confirmation });
     },
   },
 };

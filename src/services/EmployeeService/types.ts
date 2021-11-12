@@ -74,6 +74,13 @@ export interface IEmployeeValidationResponse {
   MFE: IMfeData;
 }
 
+export enum EmployeeValidationRule {
+  PERSONA_TIPOS_EMPLEADO_NO_EXISTE = "PERSONA_TIPOS_EMPLEADO_NO_EXISTE",
+  PERSONA_OTROS_TIPO_EMPLEADO_EXISTE = "PERSONA_OTROS_TIPO_EMPLEADO_EXISTE",
+  PERSONA_TIPO_EMPLEADO_EXISTE = "PERSONA_TIPO_EMPLEADO_EXISTE",
+  NO_REGISTRO_RENAPO_Y_MFE = "NO_REGISTRO_RENAPO_Y_MFE",
+}
+
 export interface ICreateEmployeeRequest
   extends IEmployeeForm,
     IAddressForm,
@@ -90,3 +97,28 @@ export interface ICreateEmployeeResponse {
   SeccionSindical: ISyndicateSection;
   CentroTrabajo: IWorkplace;
 }
+
+export interface IRejectEmployeeRequest {
+  IdTipoEmpleado: number | null;
+  Curp: string;
+  Justificacion: string;
+}
+
+export interface ISearch {
+  id_tipo_emp: string | null;
+  nombres: string | null;
+  ap_paterno: string | null;
+  curp: string | null;
+  ap_materno: string | null;
+  num_empleado: string | null;
+}
+
+export interface ISearchResult {
+  tipo_emp_desc: string;
+  Nombres: string;
+  ap_paterno: string;
+  ap_materno: string;
+  curp: string;
+  num_empleado: number;
+}
+

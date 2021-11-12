@@ -21,7 +21,7 @@
                 <v-col cols="12" sm="12" md="4">
                   <v-autocomplete
                     dense
-                    :name="$t('searchEmployee.search.searchForm.employeeType')"
+                    name="employeeType"
                     :items="employeeTypeList"
                     item-text="Nombre"
                     item-value="Id"
@@ -41,7 +41,7 @@
                   >
                     <v-text-field
                       :label="$t('searchEmployee.search.searchForm.names')"
-                      :name="$t('searchEmployee.search.searchForm.names')"
+                      name="names"
                       dense
                       outlined
                       v-model="search.nombres"
@@ -61,7 +61,7 @@
                   >
                     <v-text-field
                       :label="$t('searchEmployee.search.searchForm.curp')"
-                      :name="$t('searchEmployee.search.searchForm.curp')"
+                      name="curp"
                       dense
                       outlined
                       v-model="search.curp"
@@ -78,7 +78,7 @@
                   >
                     <v-text-field
                       :label="$t('searchEmployee.search.searchForm.lastname')"
-                      :name="$t('searchEmployee.search.searchForm.lastname')"
+                      name="lastname"
                       dense
                       outlined
                       v-model="search.ap_paterno"
@@ -102,9 +102,7 @@
                       :label="
                         $t('searchEmployee.search.searchForm.assignmentNumber')
                       "
-                      :name="
-                        $t('searchEmployee.search.searchForm.assignmentNumber')
-                      "
+                      name="assignmentNumber"
                       dense
                       outlined
                       v-model="search.num_empleado"
@@ -121,7 +119,7 @@
                   >
                     <v-text-field
                       :label="$t('searchEmployee.search.searchForm.surname')"
-                      :name="$t('searchEmployee.search.searchForm.surname')"
+                      name="surname"
                       dense
                       outlined
                       v-model="search.ap_materno"
@@ -192,16 +190,18 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import EmployeeTypeService from "@/services/EmployeeTypeService";
 import { IEmployeeType } from "@/services/EmployeeTypeService/types";
-import SearchEmployeeService from "@/services/SearchEmployeeService";
-import { ISearch, ISearchResult } from "@/services/SearchEmployeeService/types";
+// import SearchEmployeeService from "@/services/SearchEmployeeService";
+// import { ISearch, ISearchResult } from "@/services/SearchEmployeeService/types";
+import EmployeeService from "@/services/EmployeeService";
+import { ISearch, ISearchResult } from "@/services/EmployeeService/types";
 import { IConsultation } from "@/store/consultation/types";
-import { extend } from "vee-validate";
-import { numeric } from "vee-validate/dist/rules";
+// import { extend } from "vee-validate";
+// import { numeric } from "vee-validate/dist/rules";
 
 @Component({})
 export default class SearchEmployee extends Vue {
   protected employeeTypesService = new EmployeeTypeService();
-  protected searchEmployeeService = new SearchEmployeeService();
+  protected employeeService = new EmployeeService();
   public employeeTypeList: Array<IEmployeeType> = [];
   public searchData: Array<any> = [];
   public isLoadingEmployeeList = false;
@@ -266,8 +266,8 @@ export default class SearchEmployee extends Vue {
   onSubmit() {
     this.searchResult = [];
     this.isLoadingEmployeeSearch = true;
-    this.searchEmployeeService
-      .getSearch(this.search)
+    this.employeeService
+      .search(this.search)
       .then((response) => {
         this.searchResult = response.Data;
       })
@@ -296,21 +296,21 @@ export default class SearchEmployee extends Vue {
     this.getEmployeeTypes();
 
     // Validaciones personalizadas
-    extend("numeric", {
-      ...numeric,
-      message: `{_field_} ${this.$t(
-        "searchEmployee.search.validationsForm.isNumeric"
-      )}`,
-    });
+    // extend("numeric", {
+    //   ...numeric,
+    //   message: `{_field_} ${this.$t(
+    //     "searchEmployee.search.validationsForm.isNumeric"
+    //   )}`,
+    // });
 
-    extend("max", (value, args: any) => {
-      if (value.length <= args[0]) {
-        return true;
-      }
-      return `{_field_} ${this.$t(
-        "searchEmployee.search.validationsForm.max"
-      )} ${args[0]}`;
-    });
+    // extend("max", (value, args: any) => {
+    //   if (value.length <= args[0]) {
+    //     return true;
+    //   }
+    //   return `{_field_} ${this.$t(
+    //     "searchEmployee.search.validationsForm.max"
+    //   )} ${args[0]}`;
+    // });
   }
 
   get isLoading(): boolean {
