@@ -1,4 +1,4 @@
-import { ValidationObserver, ValidationProvider } from "vee-validate";
+import { ValidationObserver, ValidationProvider} from "vee-validate";;
 
 export interface ISnackbarProps {
   visible: boolean;
@@ -8,3 +8,4 @@ export interface ISnackbarProps {
 
 export type IValidationObserver = InstanceType<typeof ValidationObserver>;
 export type IValidationProvider = InstanceType<typeof ValidationProvider>;
+

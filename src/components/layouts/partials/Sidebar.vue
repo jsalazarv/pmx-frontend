@@ -103,6 +103,12 @@ export default class Sidebar extends Vue {
       message: null,
       link: "/bitacora/asignacion",
     },
+    {
+      icon: "mdi-keyboard-f2",
+      text: "Consulta",
+      message: null,
+      link: "/empleados/busqueda",
+    },
   ];
 
   get sidebar(): ISidebar {
