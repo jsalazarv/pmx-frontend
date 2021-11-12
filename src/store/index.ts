@@ -17,6 +17,12 @@ const vuexPersist = new VuexPersistence({
   }),
 });
 
+const vuexPersist2 = new VuexPersistence({
+  key: "xx",
+  storage: window.localStorage,
+  reducer: (state: IRootState) => ({ consultation: state.consultation }),
+});
+
 export default new Vuex.Store({
   modules: {
     app,
@@ -24,5 +30,5 @@ export default new Vuex.Store({
     consultation,
     employees,
   },
-  plugins: [vuexPersist.plugin],
+  plugins: [vuexPersist.plugin, vuexPersist2.plugin],
 });

@@ -7,6 +7,7 @@ import {
   IEmployeeValidationResponse,
   IMessage,
   IRejectEmployeeRequest,
+  ISearchResult,
 } from "@/services/EmployeeService/types";
 
 export default class EmployeeService extends BaseService {
@@ -40,5 +41,9 @@ export default class EmployeeService extends BaseService {
     params = {}
   ): IServiceResponse<IRejectEmployeeRequest> {
     return this.client.post(`/Empleados/Rechazo`, data, { params });
+  }
+
+  search(params = {}): IServiceResponse<ISearchResult[]> {
+    return this.client.post("/Empleados/Buscar/", params);
   }
 }

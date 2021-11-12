@@ -1,33 +1,31 @@
+import { IConsultation, IConsultationState } from "@/store/consultation/types";
 import { Module } from "vuex";
-import { IConsultation, IConsultationStore } from "@/store/consultation/types";
 import { IRootState } from "@/store/types";
 
-const initialState: IConsultationStore = {
-  consultation: {
-    assigmentNumber: 0,
-  },
-};
-
-const peopleModule: Module<IConsultationStore, IRootState> = {
+const consultationStore: Module<IConsultationState, IRootState> = {
   namespaced: true,
-  state: { ...initialState },
+  state: {
+    consultation: {
+      assigmentNumber: null,
+      employeeType: null,
+      fullname: null,
+    },
+  },
 
   mutations: {
-    SET_ASSIGMENTNUMBER_DATA(state, params: IConsultation) {
-      state.consultation = { ...state.consultation, ...params };
+    SET_CONSULTATION_DATA(state, params: IConsultation) {
+      state.consultation.assigmentNumber = params.assigmentNumber;
+      state.consultation.employeeType = params.employeeType;
+      state.consultation.fullname = params.fullname;
+
     },
   },
 
   actions: {
-    setAssigmentNumberData({ commit }, params: IConsultation) {
-      commit("SET_ASSIGMENTNUMBER_DATA", params);
+    setConsultationData({ commit }, params: IConsultation) {
+      commit("SET_CONSULTATION_DATA", params);
     },
-    // clear({ commit }, employee: Partial<IPerson>) {
-    //   commit("SET_EMPLOYEE_DATA", { ...initialState.person, ...employee });
-    //   commit("SET_EMPLOYMENT_DATA", { ...initialState.employmentData });
-    //   commit("SET_ADDRESS", { ...initialState.address });
-    // },
   },
 };
 
-export default peopleModule;
+export default consultationStore;

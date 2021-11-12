@@ -18,10 +18,10 @@
           <ValidationObserver v-slot="{ handleSubmit }">
             <form @submit.prevent="handleSubmit(onSubmit)">
               <v-row>
-                <v-col cols="12" sm="12" md="3">
+                <v-col cols="12" sm="12" md="4">
                   <v-autocomplete
                     dense
-                    :name="$t('searchEmployee.search.searchForm.employeeType')"
+                    name="employeeType"
                     :items="employeeTypeList"
                     item-text="Nombre"
                     item-value="Id"
@@ -33,7 +33,7 @@
                   ></v-autocomplete>
                 </v-col>
 
-                <v-col cols="12" sm="12" md="5" offset-md="2">
+                <v-col cols="12" sm="12" md="6">
                   <ValidationProvider
                     :name="$t('searchEmployee.search.searchForm.names')"
                     v-slot="{ errors }"
@@ -41,7 +41,7 @@
                   >
                     <v-text-field
                       :label="$t('searchEmployee.search.searchForm.names')"
-                      :name="$t('searchEmployee.search.searchForm.names')"
+                      name="names"
                       dense
                       outlined
                       v-model="search.nombres"
@@ -53,7 +53,7 @@
               </v-row>
 
               <v-row>
-                <v-col cols="12" sm="12" md="3">
+                <v-col cols="12" sm="12" md="4">
                   <ValidationProvider
                     :name="$t('searchEmployee.search.searchForm.curp')"
                     v-slot="{ errors }"
@@ -61,7 +61,7 @@
                   >
                     <v-text-field
                       :label="$t('searchEmployee.search.searchForm.curp')"
-                      :name="$t('searchEmployee.search.searchForm.curp')"
+                      name="curp"
                       dense
                       outlined
                       v-model="search.curp"
@@ -70,7 +70,7 @@
                     </v-text-field>
                   </ValidationProvider>
                 </v-col>
-                <v-col cols="12" sm="12" md="5" offset-md="2">
+                <v-col cols="12" sm="12" md="6">
                   <ValidationProvider
                     :name="$t('searchEmployee.search.searchForm.lastname')"
                     v-slot="{ errors }"
@@ -78,7 +78,7 @@
                   >
                     <v-text-field
                       :label="$t('searchEmployee.search.searchForm.lastname')"
-                      :name="$t('searchEmployee.search.searchForm.lastname')"
+                      name="lastname"
                       dense
                       outlined
                       v-model="search.ap_paterno"
@@ -90,7 +90,7 @@
               </v-row>
 
               <v-row>
-                <v-col cols="12" sm="12" md="3">
+                <v-col cols="12" sm="12" md="4">
                   <ValidationProvider
                     :name="
                       $t('searchEmployee.search.searchForm.assignmentNumber')
@@ -102,9 +102,7 @@
                       :label="
                         $t('searchEmployee.search.searchForm.assignmentNumber')
                       "
-                      :name="
-                        $t('searchEmployee.search.searchForm.assignmentNumber')
-                      "
+                      name="assignmentNumber"
                       dense
                       outlined
                       v-model="search.num_empleado"
@@ -113,7 +111,7 @@
                     </v-text-field>
                   </ValidationProvider>
                 </v-col>
-                <v-col cols="12" sm="12" md="5" offset-md="2">
+                <v-col cols="12" sm="12" md="6">
                   <ValidationProvider
                     :name="$t('searchEmployee.search.searchForm.surname')"
                     v-slot="{ errors }"
@@ -121,7 +119,7 @@
                   >
                     <v-text-field
                       :label="$t('searchEmployee.search.searchForm.surname')"
-                      :name="$t('searchEmployee.search.searchForm.surname')"
+                      name="surname"
                       dense
                       outlined
                       v-model="search.ap_materno"
@@ -132,11 +130,9 @@
                 </v-col>
 
                 <v-col cols="12" sm="12" md="2">
-                  <div class="my-2">
-                    <v-btn type="submit" color="success" dark large dense>
-                      Buscar
-                    </v-btn>
-                  </div>
+                  <v-btn type="submit" color="success" dark large dense>
+                    Buscar
+                  </v-btn>
                 </v-col>
               </v-row>
             </form>
@@ -144,6 +140,10 @@
 
           <v-row>
             <v-col cols="12" sm="12" md="12">
+              <v-progress-linear
+                :active="isLoadingEmployeeSearch"
+                :indeterminate="isLoadingEmployeeSearch"
+              ></v-progress-linear>
               <v-data-table
                 :headers="headers"
                 :items="searchResult"
@@ -155,7 +155,15 @@
                     <td>
                       <v-btn
                         class="mx-2"
-                        @click="onButtonClick(row.item.num_empleado)"
+                        @click="
+                          onButtonClick(
+                            row.item.num_empleado,
+                            row.item.nombres,
+                            row.item.ap_paterno,
+                            row.item.ap_materno,
+                            row.item.tipo_emp_desc
+                          )
+                        "
                       >
                         <v-icon dark>mdi-eye</v-icon>
                       </v-btn>
@@ -182,19 +190,22 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import EmployeeTypeService from "@/services/EmployeeTypeService";
 import { IEmployeeType } from "@/services/EmployeeTypeService/types";
-import SearchEmployeeService from "@/services/SearchEmployeeService";
-import { ISearch, ISearchResult } from "@/services/SearchEmployeeService/types";
+// import SearchEmployeeService from "@/services/SearchEmployeeService";
+// import { ISearch, ISearchResult } from "@/services/SearchEmployeeService/types";
+import EmployeeService from "@/services/EmployeeService";
+import { ISearch, ISearchResult } from "@/services/EmployeeService/types";
 import { IConsultation } from "@/store/consultation/types";
-import { extend } from "vee-validate";
-import { numeric } from "vee-validate/dist/rules";
+// import { extend } from "vee-validate";
+// import { numeric } from "vee-validate/dist/rules";
 
 @Component({})
 export default class SearchEmployee extends Vue {
   protected employeeTypesService = new EmployeeTypeService();
-  protected searchEmployeeService = new SearchEmployeeService();
+  protected employeeService = new EmployeeService();
   public employeeTypeList: Array<IEmployeeType> = [];
   public searchData: Array<any> = [];
   public isLoadingEmployeeList = false;
+  public isLoadingEmployeeSearch = false;
   public search: ISearch = {
     nombres: null,
     id_tipo_emp: null,
@@ -204,7 +215,9 @@ export default class SearchEmployee extends Vue {
     num_empleado: null,
   };
   public consultation: IConsultation = {
-    assigmentNumber: 0,
+    assigmentNumber: null,
+    employeeType: null,
+    fullname: null,
   };
   public searchResult: Array<ISearchResult> = [];
   public headers: Array<any> = [
@@ -215,7 +228,10 @@ export default class SearchEmployee extends Vue {
       sortable: false,
       value: "tipo_emp_desc",
     },
-    { text: this.$t("searchEmployee.search.searchForm.names"), value: "names" },
+    {
+      text: this.$t("searchEmployee.search.searchForm.names"),
+      value: "nombres",
+    },
     {
       text: this.$t("searchEmployee.search.searchForm.lastname"),
       value: "ap_paterno",
@@ -249,25 +265,29 @@ export default class SearchEmployee extends Vue {
 
   onSubmit() {
     this.searchResult = [];
-    this.searchEmployeeService
-      .getSearch(this.search)
+    this.isLoadingEmployeeSearch = true;
+    this.employeeService
+      .search(this.search)
       .then((response) => {
         this.searchResult = response.Data;
       })
-      .catch((error) => {
-        console.log(error);
-      })
       .finally(() => {
-        console.log("entra");
+        this.isLoadingEmployeeSearch = false;
       });
   }
 
-  onButtonClick(assignmentNumber: number) {
+  onButtonClick(
+    assignmentNumber: number,
+    names: string,
+    lastname: string,
+    surname: string,
+    employeeType: string
+  ) {
     this.consultation.assigmentNumber = assignmentNumber;
-    this.$store.dispatch(
-      "consultation/setAssigmentNumberData",
-      this.consultation
-    );
+    this.consultation.fullname = names + " " + lastname + " " + surname;
+    this.consultation.employeeType = employeeType;
+
+    this.$store.dispatch("consultation/setConsultationData", this.consultation);
     this.$router.push({ path: "/empleados/consulta" });
   }
 
@@ -276,21 +296,21 @@ export default class SearchEmployee extends Vue {
     this.getEmployeeTypes();
 
     // Validaciones personalizadas
-    extend("numeric", {
-      ...numeric,
-      message: `{_field_} ${this.$t(
-        "searchEmployee.search.validationsForm.isNumeric"
-      )}`,
-    });
+    // extend("numeric", {
+    //   ...numeric,
+    //   message: `{_field_} ${this.$t(
+    //     "searchEmployee.search.validationsForm.isNumeric"
+    //   )}`,
+    // });
 
-    extend("max", (value, args: any) => {
-      if (value.length <= args[0]) {
-        return true;
-      }
-      return `{_field_} ${this.$t(
-        "searchEmployee.search.validationsForm.max"
-      )} ${args[0]}`;
-    });
+    // extend("max", (value, args: any) => {
+    //   if (value.length <= args[0]) {
+    //     return true;
+    //   }
+    //   return `{_field_} ${this.$t(
+    //     "searchEmployee.search.validationsForm.max"
+    //   )} ${args[0]}`;
+    // });
   }
 
   get isLoading(): boolean {
