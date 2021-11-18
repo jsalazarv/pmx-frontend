@@ -17,7 +17,6 @@ const consultationStore: Module<IConsultationState, IRootState> = {
       state.consultation.assigmentNumber = params.assigmentNumber;
       state.consultation.employeeType = params.employeeType;
       state.consultation.fullname = params.fullname;
-
     },
   },
 

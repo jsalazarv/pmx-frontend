@@ -5,12 +5,11 @@ import affiliationLog from "./affiliationLog";
 import searchEmployee from "./searchEmployee";
 import employeeConsutation from "./employeeConsultation";
 
-
 export default {
   dictionary,
   employee,
   assignmentFolios,
   affiliationLog,
   searchEmployee,
-  employeeConsutation
+  employeeConsutation,
 };

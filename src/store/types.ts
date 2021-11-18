@@ -6,6 +6,6 @@ import { IEmployeeState } from "@/store/employee/types";
 export interface IRootState {
   app: IAppState;
   user: IUserStore;
-  consultation : IConsultationState;
+  consultation: IConsultationState;
   empleados: IEmployeeState;
 }

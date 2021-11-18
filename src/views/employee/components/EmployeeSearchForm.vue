@@ -396,8 +396,15 @@ export default class EmployeeSearchForm extends Vue {
       .findByCurp(this.employee.Curp, this.employee.IdTipoEmpleado)
       .then(this.handleValidationResponse)
       .catch((error) => {
-        if (error.response.data.success === false) {
-          this.showSnackbar(true, error.response.data.message, "error");
+        if (
+          error.response.data.Message.Regla ===
+          EmployeeValidationRule.NO_REGISTRO_RENAPO_Y_MFE
+        ) {
+          this.showSnackbar(
+            true,
+            this.$t("employee.labels.dialogs.searchNotFound.message") as string,
+            "error"
+          );
           this.infoSelected = false;
           const { Curp, IdTipoEmpleado } = this.employee;
           this.$store.dispatch("employees/clear", {
@@ -441,10 +448,7 @@ export default class EmployeeSearchForm extends Vue {
         this.openConfirmDialog();
         break;
       default:
-        if (!response.Data.MFE && !response.Data.Renapo) {
-          //TODO: Send message
-          console.log("No hay registros en mfe y renapo");
-        }
+        //TODO: default case
         break;
     }
   }

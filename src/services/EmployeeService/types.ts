@@ -121,4 +121,3 @@ export interface ISearchResult {
   curp: string;
   num_empleado: number;
 }
-

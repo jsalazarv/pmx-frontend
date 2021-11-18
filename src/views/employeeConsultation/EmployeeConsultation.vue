@@ -370,10 +370,9 @@ export default class EmployeeConsultation extends Vue {
     return this.$store.state.consultation;
   }
 
-  onBtnAddBeneficiary(){
+  onBtnAddBeneficiary() {
     this.$router.push({ path: "/derechohabiente/alta" });
   }
-
 
   get isLoading(): boolean {
     // TODO Refactor this form is submitting
@@ -389,6 +388,6 @@ export default class EmployeeConsultation extends Vue {
 
 .sizeTextButton {
   font-size: 11px !important;
-  width:240px !important;
+  width: 240px !important;
 }
 </style>
