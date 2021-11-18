@@ -82,6 +82,9 @@ export default {
           reject: "Rechazar",
         },
       },
+      searchNotFound: {
+        message: "No se encontraron registros en MFE y RENAPO",
+      },
       confirmDelete: {},
       successDelete: {},
       errorDelete: {},
