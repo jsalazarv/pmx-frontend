@@ -22,11 +22,7 @@
                     'employeeConsultation.consultation.employeeConsultationForm.employeeType'
                   )
                 "
-                :name="
-                  $t(
-                    'employeeConsultation.consultation.employeeConsultationForm.employeeType'
-                  )
-                "
+                name="employeeType"
                 dense
                 outlined
                 disabled
@@ -41,11 +37,7 @@
                     'employeeConsultation.consultation.employeeConsultationForm.assignmentNumber'
                   )
                 "
-                :name="
-                  $t(
-                    'employeeConsultation.consultation.employeeConsultationForm.assignmentNumber'
-                  )
-                "
+                name="assignmentNumber"
                 dense
                 outlined
                 disabled
@@ -62,11 +54,7 @@
                     'employeeConsultation.consultation.employeeConsultationForm.rc'
                   )
                 "
-                :name="
-                  $t(
-                    'employeeConsultation.consultation.employeeConsultationForm.rc'
-                  )
-                "
+                name="rc"
                 dense
                 outlined
                 disabled
@@ -80,11 +68,7 @@
                     'employeeConsultation.consultation.employeeConsultationForm.fullname'
                   )
                 "
-                :name="
-                  $t(
-                    'employeeConsultation.consultation.employeeConsultationForm.fullname'
-                  )
-                "
+                name="fullname"
                 dense
                 outlined
                 disabled
@@ -101,11 +85,7 @@
                     'employeeConsultation.consultation.employeeConsultationForm.department'
                   )
                 "
-                :name="
-                  $t(
-                    'employeeConsultation.consultation.employeeConsultationForm.department'
-                  )
-                "
+                name="department"
                 dense
                 outlined
                 disabled
@@ -119,11 +99,7 @@
                     'employeeConsultation.consultation.employeeConsultationForm.departmentDescription'
                   )
                 "
-                :name="
-                  $t(
-                    'employeeConsultation.consultation.employeeConsultationForm.departmentDescription'
-                  )
-                "
+                name="departmentDescription"
                 dense
                 outlined
                 disabled
@@ -139,11 +115,7 @@
                     'employeeConsultation.consultation.employeeConsultationForm.validity'
                   )
                 "
-                :name="
-                  $t(
-                    'employeeConsultation.consultation.employeeConsultationForm.validity'
-                  )
-                "
+                name="validity"
                 dense
                 outlined
                 disabled
@@ -157,11 +129,7 @@
                     'employeeConsultation.consultation.employeeConsultationForm.validityStatus'
                   )
                 "
-                :name="
-                  $t(
-                    'employeeConsultation.consultation.employeeConsultationForm.validityStatus'
-                  )
-                "
+                name="validityStatus"
                 dense
                 outlined
                 disabled
@@ -268,7 +236,7 @@
                 <template v-slot:item="row">
                   <tr>
                     <td>
-                      <v-btn class="mx-2">
+                      <v-btn class="mx-2" @click="onBtnEdit">
                         <v-icon dark>mdi-pencil</v-icon>
                       </v-btn>
                     </td>
@@ -278,10 +246,10 @@
                       </v-btn>
                     </td>
                     <td>{{ row.item.nombres }}</td>
-                    <td>{{ row.item.ap_paterno }}</td>
-                    <td>{{ row.item.ap_materno }}</td>
+                    <td>{{ row.item.apellido_paterno }}</td>
+                    <td>{{ row.item.apellido_materno }}</td>
                     <td>{{ row.item.curp }}</td>
-                    <td>{{ row.item.parentesco }}</td>
+                    <td>{{ row.item.codificacion }}</td>
                   </tr>
                 </template>
               </v-data-table>
@@ -296,10 +264,24 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { IConsultation } from "@/store/consultation/types";
+import { IConsultationState } from "@/store/consultation/types";
+import { IConsultationResult } from "@/services/EmployeeService/types";
+import BeneficiaryService from "@/services/BeneficiaryService/";
+import EmployeeService from "@/services/EmployeeService";
+import { params } from "vee-validate/dist/types/rules/alpha";
 
 @Component({})
 export default class EmployeeConsultation extends Vue {
+  protected beneficiaryService = new BeneficiaryService();
+  protected employeeService = new EmployeeService();
+  public consultationResult: IConsultationResult = {
+    RC: "",
+    descripcion: "",
+    centro_depto: "",
+    vigencia: "",
+    estado_vigencia: "",
+  };
+
   public headers: Array<any> = [
     { text: "", value: "edit", sortable: false },
     { text: "", value: "delete", sortable: false },
@@ -334,46 +316,40 @@ export default class EmployeeConsultation extends Vue {
       value: "parentesco",
     },
   ];
-  public beneficiaries: Array<any> = [
-    {
-      nombres: "GABRIELA",
-      ap_paterno: "SANDOVAL",
-      ap_materno: "URBAN",
-      curp: "MALA700306HQTRND07",
-      parentesco: "Hija",
-    },
-    {
-      nombres: "GABRIELA",
-      ap_paterno: "SANDOVAL",
-      ap_materno: "URBAN",
-      curp: "MALA700306HQTRND07",
-      parentesco: "Hija",
-    },
-    {
-      nombres: "GABRIELA",
-      ap_paterno: "SANDOVAL",
-      ap_materno: "URBAN",
-      curp: "MALA700306HQTRND07",
-      parentesco: "Hija",
-    },
+  public beneficiaries: Array<any> = [];
 
-    {
-      nombres: "GABRIELA",
-      ap_paterno: "SANDOVAL",
-      ap_materno: "URBAN",
-      curp: "MALA700306HQTRND07",
-      parentesco: "Hija",
-    },
-  ];
-
-  get consultationEmployee(): IConsultation {
+  get consultationEmployee(): IConsultationState {
     return this.$store.state.consultation;
   }
 
-  onBtnAddBeneficiary(){
+  onBtnAddBeneficiary() {
     this.$router.push({ path: "/derechohabiente/alta" });
   }
 
+  getAllBeneficiaries(assigmentNumber: number | null): void {
+    // this.employeeTypesService .getAll() .then((response) => { this.employeeTypeList
+    // = response.Data; }) .finally(() => { this.isLoadingEmployeeList = false; });
+    this.beneficiaries = this.beneficiaryService.getAll(assigmentNumber);
+  }
+
+  getEmployeeConsultation(assigmentNumber: number | null): void {
+    this.consultationResult = this.employeeService.consultation(
+      assigmentNumber
+    );
+  }
+
+  onBtnEdit() {
+    this.$router.push({
+      path: "/derechohabiente/editar/",
+      query: { id: "1" },
+    });
+  }
+
+  mounted() {
+    this.getAllBeneficiaries(
+      this.consultationEmployee.consultation.assigmentNumber
+    );
+  }
 
   get isLoading(): boolean {
     // TODO Refactor this form is submitting
@@ -389,6 +365,6 @@ export default class EmployeeConsultation extends Vue {
 
 .sizeTextButton {
   font-size: 11px !important;
-  width:240px !important;
+  width: 240px !important;
 }
 </style>

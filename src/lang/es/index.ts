@@ -4,6 +4,8 @@ import assignmentFolios from "./assignmentFolios";
 import affiliationLog from "./affiliationLog";
 import searchEmployee from "./searchEmployee";
 import employeeConsultation from "./employeeConsultation";
+import beneficiary from "./beneficiary";
+
 
 
 export default {
@@ -12,5 +14,6 @@ export default {
   assignmentFolios,
   affiliationLog,
   searchEmployee,
-  employeeConsultation
+  employeeConsultation,
+  beneficiary
 };

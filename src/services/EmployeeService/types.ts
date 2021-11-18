@@ -122,3 +122,11 @@ export interface ISearchResult {
   num_empleado: number;
 }
 
+export interface IConsultationResult{
+  RC : string;
+  centro_depto : string;
+  descripcion : string;
+  vigencia:string;
+  estado_vigencia: string;
+} 
+

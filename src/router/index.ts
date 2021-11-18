@@ -52,6 +52,12 @@ const routes: Array<RouteConfig> = [
     component: () => import("@/views/beneficiary/Beneficiary.vue"),
     meta: { requiresAuth: true },
   },
+  {
+    path: "/derechohabiente/editar/:id",
+    name: "beneficiary:editBeneficiary",
+    component: () => import("@/views/beneficiary/Beneficiary.vue"),
+    meta: { requiresAuth: true },
+  },
 ];
 
 const router = new VueRouter({

@@ -194,7 +194,7 @@ import { IEmployeeType } from "@/services/EmployeeTypeService/types";
 // import { ISearch, ISearchResult } from "@/services/SearchEmployeeService/types";
 import EmployeeService from "@/services/EmployeeService";
 import { ISearch, ISearchResult } from "@/services/EmployeeService/types";
-import { IConsultation } from "@/store/consultation/types";
+import { IConsultation, IConsultationState } from "@/store/consultation/types";
 // import { extend } from "vee-validate";
 // import { numeric } from "vee-validate/dist/rules";
 
@@ -247,7 +247,7 @@ export default class SearchEmployee extends Vue {
     },
   ];
 
-  get consultationEmployee(): IConsultation {
+  get consultationEmployee(): IConsultationState {
     return this.$store.state.consultation;
   }
 

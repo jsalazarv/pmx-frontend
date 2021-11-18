@@ -16,6 +16,8 @@ export default {
       surname: "Surname",
       curp: "CURP",
       assignmentNumber: "Assignment number",
+      medicalUnit: "Medical unit",
+      observations: "Observations"
     },
   },
 };
