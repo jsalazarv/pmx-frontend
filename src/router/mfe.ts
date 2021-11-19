@@ -8,19 +8,19 @@ export default [
   {
     path: "/empleados/alta",
     name: "people:create",
-    component: () => import("@/views/employee/EmployeeForm.vue"),
+    component: () => import("@/views/mfe/employee/EmployeeForm.vue"),
     meta: { requiresAuth: true },
   },
   {
     path: "/folios/asignacion",
     name: "folios:list",
-    component: () => import("@/views/assignmentFolios/AssignmentFolios.vue"),
+    component: () => import("@/views/mfe/assignmentFolios/AssignmentFolios.vue"),
     meta: { requiresAuth: true },
   },
   {
     path: "/bitacora/asignacion",
     name: "affiliationLog:list",
-    component: () => import("@/views/affiliationLog/AffiliationLog.vue"),
+    component: () => import("@/views/mfe/affiliationLog/AffiliationLog.vue"),
     meta: { requiresAuth: true },
   },
 ];
