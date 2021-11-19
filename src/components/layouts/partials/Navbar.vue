@@ -68,7 +68,7 @@ export default class Navbar extends Vue {
     this.$store
       .dispatch("user/logout")
       .then(() => {
-        this.$router.push({ name: "Login" });
+        this.$router.push({ name: "login" });
       })
       .catch((err) => {
         console.log(err);

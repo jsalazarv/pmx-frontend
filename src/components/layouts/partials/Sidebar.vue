@@ -1,13 +1,18 @@
 <template>
-  <v-navigation-drawer
-    v-model="sidebar.open"
-    clipped
-    app
-    :mini-variant="sidebar.miniVariant"
-    dark
-  >
+  <v-navigation-drawer v-model="sidebar.open" clipped app dark>
+    <v-col cols="12">
+      <v-select
+        :items="modulesMenu"
+        :value="menu.name"
+        item-text="name"
+        :return-object="true"
+        solo
+        @change="switchMenu"
+      ></v-select>
+    </v-col>
+    <v-divider class="mx-5"></v-divider>
     <v-list dense>
-      <template v-for="item in menu">
+      <template v-for="item in menu.children">
         <v-list-group
           v-if="item.children"
           :key="item.text"
@@ -23,7 +28,7 @@
             v-for="(child, i) in item.children"
             :key="i"
             link
-            :to="child.link"
+            :to="{ name: item.route }"
           >
             <v-list-item-action v-if="child.icon">
               <v-icon>{{ child.icon }}</v-icon>
@@ -33,7 +38,7 @@
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
-        <v-list-item v-else :key="item.text" link :to="item.link">
+        <v-list-item v-else :key="item.text" link :to="{ name: item.route }">
           <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-action>
@@ -60,59 +65,26 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { ISidebar } from "@/store/app/types";
-
-interface menu {
-  icon?: string;
-  "icon-alt"?: string;
-  text?: string;
-  model?: boolean;
-  message?: null | number | string;
-  link?: string;
-  children?: Array<unknown>;
-}
-
-type MenuObjeto = menu;
+import { IModuleMenu, ISidebar } from "@/store/app/types";
+import appMenu from "@/components/layouts/partials/menu";
 
 @Component({
   name: "Sidebar",
 })
 export default class Sidebar extends Vue {
-  menu: Array<MenuObjeto> = [
-    {
-      icon: "mdi-keyboard-f1",
-      text: "Dashboard",
-      message: null,
-      link: "/inicio",
-    },
-    {
-      icon: "mdi-keyboard-f2",
-      text: "Alta",
-      message: null,
-      link: "/empleados/alta",
-    },
-    {
-      icon: "mdi-keyboard-f2",
-      text: "Folios asignación",
-      message: null,
-      link: "/folios/asignacion",
-    },
-    {
-      icon: "mdi-keyboard-f2",
-      text: "Bitácora",
-      message: null,
-      link: "/bitacora/asignacion",
-    },
-    {
-      icon: "mdi-keyboard-f2",
-      text: "Consulta",
-      message: null,
-      link: "/empleados/busqueda",
-    },
-  ];
+  modulesMenu: Array<IModuleMenu> = appMenu;
+
+  get menu(): IModuleMenu {
+    return this.$store.state.app.sidebar.currentMenu;
+  }
 
   get sidebar(): ISidebar {
     return this.$store.state.app.sidebar;
+  }
+
+  switchMenu(selectedMenu: IModuleMenu): void {
+    this.$store.dispatch("app/setCurrentMenu", selectedMenu);
+    this.$router.push({ name: selectedMenu.defaultRoute });
   }
 }
 </script>
