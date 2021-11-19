@@ -13,6 +13,7 @@
           :active="isLoading"
           :indeterminate="isLoading"
         ></v-progress-linear>
+        {{consultationEmployee}}
         <v-container>
           <v-row>
             <v-col cols="12" sm="12" md="6">
@@ -146,6 +147,7 @@
                 dark
                 large
                 dense
+                @click="onBtnAddAddress"
               >
                 {{
                   $t(
@@ -213,7 +215,7 @@
         </v-toolbar>
         <v-container>
           <v-row>
-            <v-col cols="12" sm="6" md="3" offset="9">
+            <v-col cols="12" sm="6" md="3" offset-md="9">
               <v-btn
                 class="sizeTextButton"
                 type="submit"
@@ -324,6 +326,10 @@ export default class EmployeeConsultation extends Vue {
 
   onBtnAddBeneficiary() {
     this.$router.push({ path: "/derechohabiente/alta" });
+  }
+
+  onBtnAddAddress() {
+    this.$router.push({ path: "/domicilio/alta" });
   }
 
   getAllBeneficiaries(assigmentNumber: number | null): void {

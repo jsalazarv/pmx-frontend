@@ -58,6 +58,12 @@ const routes: Array<RouteConfig> = [
     component: () => import("@/views/beneficiary/Beneficiary.vue"),
     meta: { requiresAuth: true },
   },
+  {
+    path: "/domicilio/alta/",
+    name: "address:newAdress",
+    component: () => import("@/views/address/Address.vue"),
+    meta: { requiresAuth: true },
+  },
 ];
 
 const router = new VueRouter({

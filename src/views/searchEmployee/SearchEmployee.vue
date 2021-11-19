@@ -161,7 +161,8 @@
                             row.item.nombres,
                             row.item.ap_paterno,
                             row.item.ap_materno,
-                            row.item.tipo_emp_desc
+                            row.item.tipo_emp_desc,
+                            row.item.tipo_empleado
                           )
                         "
                       >
@@ -218,6 +219,7 @@ export default class SearchEmployee extends Vue {
     assigmentNumber: null,
     employeeType: null,
     fullname: null,
+    employeeTypeId :null
   };
   public searchResult: Array<ISearchResult> = [];
   public headers: Array<any> = [
@@ -281,11 +283,14 @@ export default class SearchEmployee extends Vue {
     names: string,
     lastname: string,
     surname: string,
-    employeeType: string
+    employeeType: string,
+    employeeTypeId:number
   ) {
+    console.log(employeeTypeId)
     this.consultation.assigmentNumber = assignmentNumber;
     this.consultation.fullname = names + " " + lastname + " " + surname;
     this.consultation.employeeType = employeeType;
+    this.consultation.employeeTypeId = employeeTypeId;
 
     this.$store.dispatch("consultation/setConsultationData", this.consultation);
     this.$router.push({ path: "/empleados/consulta" });

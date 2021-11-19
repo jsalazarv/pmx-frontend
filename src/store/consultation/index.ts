@@ -9,6 +9,7 @@ const consultationStore: Module<IConsultationState, IRootState> = {
       assigmentNumber: null,
       employeeType: null,
       fullname: null,
+      employeeTypeId:null
     },
   },
 
@@ -17,7 +18,7 @@ const consultationStore: Module<IConsultationState, IRootState> = {
       state.consultation.assigmentNumber = params.assigmentNumber;
       state.consultation.employeeType = params.employeeType;
       state.consultation.fullname = params.fullname;
-
+      state.consultation.employeeTypeId = params.employeeTypeId;
     },
   },
 

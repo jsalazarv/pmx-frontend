@@ -14,6 +14,7 @@
           :indeterminate="isLoading"
         ></v-progress-linear>
         <v-container>
+          {{ consultationEmployee }}
           <ValidationObserver v-slot="{ handleSubmit }">
             <form @submit.prevent="handleSubmit(onSubmit)">
               <v-row>
@@ -37,7 +38,6 @@
                       dense
                       outlined
                       disabled
-                      :value="consultationEmployee.consultation.assigmentNumber"
                       :error-messages="errors"
                       v-model="beneficiary.assigmentNumber"
                     >
@@ -69,7 +69,7 @@
                   <ValidationProvider
                     :name="$t('beneficiary.beneficiary.beneficiaryForm.curp')"
                     v-slot="{ errors }"
-                    rules="min:18|max:18"
+                    rules="required|min:18|max:18"
                   >
                     <v-text-field
                       :label="
@@ -382,7 +382,7 @@ export default class Beneficiary extends Vue {
   public showPickerValidity: any = false;
   //public selectedDate: any = null;
   public beneficiary = {
-    assignmentNumber: "",
+    assigmentNumber: 0,
     coding: "",
     curp: "",
     names: "",
@@ -429,6 +429,10 @@ export default class Beneficiary extends Vue {
   }
 
   mounted() {
+    this.beneficiary.assigmentNumber =
+      this.consultationEmployee.consultation.assigmentNumber == null
+        ? 0
+        : this.consultationEmployee.consultation.assigmentNumber;
     this.getGenders();
   }
 
@@ -436,13 +440,17 @@ export default class Beneficiary extends Vue {
     console.log("entra");
   }
 
-  // created() {
-  //   window.addEventListener("beforeunload", (event) => {
-  //     // Cancel the event as stated by the standard. event.preventDefault(); // Chrome requires
-  //     //returnValue to be set.
-  //     event.returnValue = "";
-  //   });
-  // }
+  created() {
+    // window.addEventListener("beforeunload", (event) => {
+    //   console.log(event)
+    //   // Cancel the event as stated by the standard. event.preventDefault(); // Chrome requires
+    //   //returnValue to be set.
+    //   event.returnValue = "";
+    // });
+    // window.addEventListener("unload", (event) => {
+    //   console.log(event)
+    // });
+  }
 
   get isLoading(): boolean {
     // TODO Refactor this form is submitting

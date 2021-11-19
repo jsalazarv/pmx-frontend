@@ -5,7 +5,7 @@ import affiliationLog from "./affiliationLog";
 import searchEmployee from "./searchEmployee";
 import employeeConsultation from "./employeeConsultation";
 import beneficiary from "./beneficiary";
-
+import address from "./address";
 
 
 export default {
@@ -15,5 +15,6 @@ export default {
   affiliationLog,
   searchEmployee,
   employeeConsultation,
-  beneficiary
+  beneficiary,
+  address
 };
