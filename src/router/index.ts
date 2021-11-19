@@ -1,58 +1,19 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import store from "../store/index";
+import mfe from "./mfe";
+import mvd from "./mvd";
 
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
     path: "/",
-    name: "Login",
+    name: "login",
     component: () => import("@/views/Login.vue"),
   },
-  {
-    path: "/inicio",
-    name: "Inicio",
-    component: () => import("@/views/Dashboard.vue"),
-    meta: { requiresAuth: true },
-  },
-  {
-    path: "/empleados/alta",
-    name: "people:create",
-    component: () => import("@/views/employee/EmployeeForm.vue"),
-    meta: { requiresAuth: true },
-  },
-  {
-    path: "/folios/asignacion",
-    name: "folios:list",
-    component: () => import("@/views/assignmentFolios/AssignmentFolios.vue"),
-    meta: { requiresAuth: true },
-  },
-  {
-    path: "/bitacora/asignacion",
-    name: "affiliationLog:list",
-    component: () => import("@/views/affiliationLog/AffiliationLog.vue"),
-    meta: { requiresAuth: true },
-  },
-  {
-    path: "/empleados/busqueda",
-    name: "people:searchEmployee",
-    component: () => import("@/views/searchEmployee/SearchEmployee.vue"),
-    meta: { requiresAuth: true },
-  },
-  {
-    path: "/empleados/consulta",
-    name: "people:employeeConsultation",
-    component: () =>
-      import("@/views/employeeConsultation/EmployeeConsultation.vue"),
-    meta: { requiresAuth: true },
-  },
-  {
-    path: "/derechohabiente/alta",
-    name: "beneficiary:newBeneficiary",
-    component: () => import("@/views/beneficiary/Beneficiary.vue"),
-    meta: { requiresAuth: true },
-  },
+  ...mfe,
+  ...mvd,
 ];
 
 const router = new VueRouter({

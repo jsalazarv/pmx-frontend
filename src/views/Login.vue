@@ -98,7 +98,7 @@ export default class Login extends Vue {
         })
         .then(() => {
           this.cargando = false;
-          this.$router.push({ name: "Inicio" });
+          this.$router.push({ name: "dashboard" });
         })
         .catch(() => {
           this.error = "Error interno. Favor de verificar";
