@@ -23,5 +23,3 @@ extend("required", required);
 extend("min", min);
 extend("max", max);
 extend("numeric", numeric);
-
-

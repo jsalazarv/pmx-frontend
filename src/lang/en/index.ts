@@ -8,7 +8,6 @@ import beneficiary from "./beneficiary";
 import address from "./address";
 
 
-
 export default {
   dictionary,
   employee,
