@@ -2,7 +2,7 @@ export default [
   {
     path: "/inicio",
     name: "dashboard",
-    component: () => import("@/views/Dashboard.vue"),
+    component: () => import("@/views/dashboard.vue"),
     meta: { requiresAuth: true },
   },
   {
