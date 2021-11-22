@@ -10,6 +10,12 @@ const mvd: IModuleMenu = {
       message: null,
       route: "people:searchEmployee",
     },
+    {
+      icon: "mdi-keyboard-f2",
+      text: "Reportes",
+      message: null,
+      route: "report:list",
+    }
   ],
   defaultRoute: "people:searchEmployee",
 };

@@ -32,9 +32,9 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 
-import EmployeeSearchForm from "@/views/employee/components/EmployeeSearchForm.vue";
-import EmploymentInformationForm from "@/views/employee/components/EmploymentInformationForm.vue";
-import LocationForm from "@/views/employee/components/LocationForm.vue";
+import EmployeeSearchForm from "@/views/mfe/employee/components/EmployeeSearchForm.vue";
+import EmploymentInformationForm from "@/views/mfe/employee/components/EmploymentInformationForm.vue";
+import LocationForm from "@/views/mfe/employee/components/LocationForm.vue";
 import EmployeeService from "@/services/EmployeeService";
 
 @Component({

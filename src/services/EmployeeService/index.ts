@@ -8,6 +8,7 @@ import {
   IMessage,
   IRejectEmployeeRequest,
   ISearchResult,
+  IConsultationResult,
 } from "@/services/EmployeeService/types";
 
 export default class EmployeeService extends BaseService {
@@ -45,5 +46,15 @@ export default class EmployeeService extends BaseService {
 
   search(params = {}): IServiceResponse<ISearchResult[]> {
     return this.client.post("/Empleados/Buscar/", params);
+  }
+
+  consultation(assigmentNumber: number | null): IConsultationResult {
+    return {
+      RC: "RC",
+      centro_depto: "centro-depto",
+      descripcion: "descripcion",
+      vigencia: "17/11/2021",
+      estado_vigencia: "estado_vigencia",
+    };
   }
 }

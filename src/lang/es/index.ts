@@ -4,6 +4,8 @@ import assignmentFolios from "./assignmentFolios";
 import affiliationLog from "./affiliationLog";
 import searchEmployee from "./searchEmployee";
 import employeeConsultation from "./employeeConsultation";
+import beneficiary from "./beneficiary";
+import address from "./address";
 
 export default {
   dictionary,
@@ -12,4 +14,6 @@ export default {
   affiliationLog,
   searchEmployee,
   employeeConsultation,
+  beneficiary,
+  address
 };

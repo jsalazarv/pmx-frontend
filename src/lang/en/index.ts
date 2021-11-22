@@ -3,7 +3,10 @@ import employee from "./employee";
 import assignmentFolios from "./assignmentFolios";
 import affiliationLog from "./affiliationLog";
 import searchEmployee from "./searchEmployee";
-import employeeConsutation from "./employeeConsultation";
+import employeeConsultation from "./employeeConsultation";
+import beneficiary from "./beneficiary";
+import address from "./address";
+
 
 export default {
   dictionary,
@@ -11,5 +14,7 @@ export default {
   assignmentFolios,
   affiliationLog,
   searchEmployee,
-  employeeConsutation,
+  employeeConsultation,
+  beneficiary,
+  address
 };

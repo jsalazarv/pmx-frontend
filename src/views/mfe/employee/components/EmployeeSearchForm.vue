@@ -320,8 +320,8 @@ import { IEmploymentDataForm, IEmployeeForm } from "@/store/employee/types";
 import { IGender } from "@/services/GenderService/types";
 import { IMaritalStatus } from "@/services/MaritalStatusService/types";
 import { ISnackbarProps } from "@/components/types";
-import RenapoDialog from "@/views/employee/components/RenapoDialog.vue";
-import ConfirmUseExistingEmployeeDialog from "@/views/employee/components/ConfirmUseExistingEmployeeDialog.vue";
+import RenapoDialog from "@/views/mfe/employee/components/RenapoDialog.vue";
+import ConfirmUseExistingEmployeeDialog from "@/views/mfe/employee/components/ConfirmUseExistingEmployeeDialog.vue";
 import { IApiResponse } from "@/services/types";
 
 @Component({

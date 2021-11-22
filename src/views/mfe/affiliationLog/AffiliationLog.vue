@@ -27,8 +27,8 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import AffiliationLogService from "../../services/AffiliationLogService";
 import { IAffiliationLog } from "@/services/AffiliationLogService/types";
+import AffiliationLogService from "@/services/AffiliationLogService";
 
 @Component({})
 export default class AffiliationLog extends Vue {
