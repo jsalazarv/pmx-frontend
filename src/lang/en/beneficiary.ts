@@ -3,7 +3,7 @@ export default {
     title: "New beneficiary",
     beneficiaryForm: {
       assignmentNumber: "Assignment number",
-      coding:"Coding",
+      coding: "Coding",
       names: "Names",
       lastname: "Lastname",
       surname: "Surname",

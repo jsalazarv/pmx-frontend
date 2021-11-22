@@ -7,7 +7,6 @@ import employeeConsultation from "./employeeConsultation";
 import beneficiary from "./beneficiary";
 import address from "./address";
 
-
 export default {
   dictionary,
   employee,
@@ -16,5 +15,5 @@ export default {
   searchEmployee,
   employeeConsultation,
   beneficiary,
-  address
+  address,
 };

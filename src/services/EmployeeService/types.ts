@@ -120,14 +120,13 @@ export interface ISearchResult {
   ap_materno: string;
   curp: string;
   num_empleado: number;
-  tipo_empleado:number;
+  tipo_empleado: number;
 }
 
-export interface IConsultationResult{
-  RC : string;
-  centro_depto : string;
-  descripcion : string;
-  vigencia:string;
+export interface IConsultationResult {
+  RC: string;
+  centro_depto: string;
+  descripcion: string;
+  vigencia: string;
   estado_vigencia: string;
-} 
-
+}

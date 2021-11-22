@@ -12,9 +12,17 @@ export default [
     meta: { requiresAuth: true },
   },
   {
+    path: "/empleados/consulta",
+    name: "people:consultation",
+    component: () =>
+      import("@/views/mfe/employeeConsultation/employeeConsultation.vue"),
+    meta: { requiresAuth: true },
+  },
+  {
     path: "/folios/asignacion",
     name: "folios:list",
-    component: () => import("@/views/mfe/assignmentFolios/AssignmentFolios.vue"),
+    component: () =>
+      import("@/views/mfe/assignmentFolios/AssignmentFolios.vue"),
     meta: { requiresAuth: true },
   },
   {

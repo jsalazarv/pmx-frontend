@@ -17,7 +17,7 @@ export default {
       curp: "CURP",
       assignmentNumber: "Assignment number",
       medicalUnit: "Medical unit",
-      observations: "Observations"
+      observations: "Observations",
     },
   },
 };

@@ -10,7 +10,7 @@ export default {
       country: "Pais",
       state: "Estado",
       municipality: "Municipio",
-      locality:"Localidad",
+      locality: "Localidad",
       zipcode: "Código postal",
       suburb: "Colonia",
       street: "Calle",
