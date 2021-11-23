@@ -20,6 +20,9 @@ export default {
     assignmentNumber: "Número de asignación",
   },
   labels: {
+    add: "Agregar",
+    export: "Exportar",
+    search: "Buscar",
     dialogs: {
       searchNotFound: {
         message: "",
