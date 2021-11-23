@@ -91,7 +91,7 @@
               ></v-text-field>
             </v-col>
             <v-col class="pb-0" cols="12" md="3">
-              <v-btn color="success">
+              <v-btn color="success" :disabled="isLoadingEmployeeList">
                 {{ $t("employeeConsultationMFE.labels.search") }}
               </v-btn>
             </v-col>
