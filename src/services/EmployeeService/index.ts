@@ -12,6 +12,10 @@ import {
 } from "@/services/EmployeeService/types";
 
 export default class EmployeeService extends BaseService {
+  getAll(): IServiceResponse<ICreateEmployeeResponse> {
+    return this.client.get(`/Empleados`);
+  }
+
   findByCurp(
     curp: string,
     idEmployeeType: number | null,

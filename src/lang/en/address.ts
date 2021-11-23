@@ -10,14 +10,14 @@ export default {
       country: "Country",
       state: "State",
       municipality: "Municipality",
-      locality:"locality",
+      locality: "locality",
       zipcode: "Zip code",
       suburb: "Suburb",
       street: "Street",
       outdoorNumber: "Outdoor number",
       interiorNumber: "Interior number",
-      block:"Block",
-      lot:"Lot"
+      block: "Block",
+      lot: "Lot",
     },
   },
 };

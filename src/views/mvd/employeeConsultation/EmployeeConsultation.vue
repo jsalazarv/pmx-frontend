@@ -13,7 +13,7 @@
           :active="isLoading"
           :indeterminate="isLoading"
         ></v-progress-linear>
-        {{consultationEmployee}}
+        {{ consultationEmployee }}
         <v-container>
           <v-row>
             <v-col cols="12" sm="12" md="6">

@@ -18,12 +18,18 @@ const mfe: IModuleMenu = {
     },
     {
       icon: "mdi-keyboard-f3",
+      text: "Consulta",
+      message: null,
+      route: "people:consultation",
+    },
+    {
+      icon: "mdi-keyboard-f4",
       text: "Folios asignación",
       message: null,
       route: "folios:list",
     },
     {
-      icon: "mdi-keyboard-f4",
+      icon: "mdi-keyboard-f5",
       text: "Bitácora",
       message: null,
       route: "affiliationLog:list",

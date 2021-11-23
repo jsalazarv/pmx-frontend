@@ -8,7 +8,8 @@ export default [
   {
     path: "/empleados/consulta",
     name: "people:employeeConsultation",
-    component: () => import("@/views/mvd/employeeConsultation/EmployeeConsultation.vue"),
+    component: () =>
+      import("@/views/mvd/employeeConsultation/EmployeeConsultation.vue"),
     meta: { requiresAuth: true },
   },
   {
@@ -29,7 +30,7 @@ export default [
     component: () => import("@/views/mvd/address/Address.vue"),
     meta: { requiresAuth: true },
   },
-   {
+  {
     path: "/reportes/",
     name: "report:list",
     component: () => import("@/views/mvd/report/Report.vue"),

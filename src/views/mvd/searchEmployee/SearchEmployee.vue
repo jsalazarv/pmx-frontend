@@ -219,7 +219,7 @@ export default class SearchEmployee extends Vue {
     assigmentNumber: null,
     employeeType: null,
     fullname: null,
-    employeeTypeId :null
+    employeeTypeId: null,
   };
   public searchResult: Array<ISearchResult> = [];
   public headers: Array<any> = [
@@ -284,9 +284,9 @@ export default class SearchEmployee extends Vue {
     lastname: string,
     surname: string,
     employeeType: string,
-    employeeTypeId:number
+    employeeTypeId: number
   ) {
-    console.log(employeeTypeId)
+    console.log(employeeTypeId);
     this.consultation.assigmentNumber = assignmentNumber;
     this.consultation.fullname = names + " " + lastname + " " + surname;
     this.consultation.employeeType = employeeType;

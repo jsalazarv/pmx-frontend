@@ -3,7 +3,7 @@ export default {
     title: "Alta derechohabiente",
     beneficiaryForm: {
       assignmentNumber: "Número de asignación",
-      coding:"Codificación",
+      coding: "Codificación",
       names: "Nombres",
       lastname: "Apellido paterno",
       surname: "Apellido materno",
