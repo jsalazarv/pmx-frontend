@@ -7,14 +7,75 @@
             {{ $t("affiliationLog.list.title") }}
           </v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
+          <v-spacer></v-spacer>
+          <v-btn color="primary">
+            {{ $t("affiliationLog.labels.export") }}
+          </v-btn>
         </v-toolbar>
+        <v-container fluid>
+          <v-row class="mt-0">
+            <v-col class="pb-0" cols="12" md="3">
+              <v-autocomplete
+                dense
+                name="typeOfEmployee"
+                :items="employeeTypeList"
+                item-text="Nombre"
+                item-value="Id"
+                :label="$t('affiliationLog.attributes.typeOfEmployee')"
+                outlined
+                required
+                :loading="isLoadingAffiliationLogList"
+                :disabled="isLoadingAffiliationLogList"
+              ></v-autocomplete>
+            </v-col>
+            <v-col class="pb-0" cols="12" md="3">
+              <v-text-field
+                clearable
+                dense
+                name="curp"
+                :label="$t('affiliationLog.attributes.curp')"
+                outlined
+                required
+                :disabled="isLoadingAffiliationLogList"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row class="mt-0">
+            <v-col class="pb-0" cols="12" md="3">
+              <v-text-field
+                dense
+                clearable
+                name="assignmentNumber"
+                :label="$t('affiliationLog.attributes.assignmentNumber')"
+                outlined
+                required
+                :disabled="isLoadingAffiliationLogList"
+              ></v-text-field>
+            </v-col>
+            <v-col class="pb-0" cols="12" md="3">
+              <v-text-field
+                dense
+                clearable
+                name="movementDate"
+                :label="$t('affiliationLog.attributes.movementDate')"
+                outlined
+                required
+                :disabled="isLoadingAffiliationLogList"
+              ></v-text-field>
+            </v-col>
+            <v-col class="pb-0" cols="12" md="3">
+              <v-btn color="success" :disabled="isLoadingAffiliationLogList">
+                {{ $t("affiliationLog.labels.search") }}
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-container>
         <v-progress-linear
           :active="isLoadingAffiliationLogList"
           :indeterminate="isLoadingAffiliationLogList"
         ></v-progress-linear>
         <v-data-table
           :items-per-page="5"
-          class="elevation-1"
           :headers="headers"
           :items="affiliationLogList"
         >
@@ -28,12 +89,16 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { IAffiliationLog } from "@/services/AffiliationLogService/types";
+import { IEmployeeType } from "@/services/EmployeeTypeService/types";
 import AffiliationLogService from "@/services/AffiliationLogService";
+import EmployeeTypeService from "@/services/EmployeeTypeService";
 
 @Component({})
 export default class AffiliationLog extends Vue {
   protected affiliationLogService = new AffiliationLogService();
+  protected employeeTypesService = new EmployeeTypeService();
   public affiliationLogList: Array<IAffiliationLog> = [];
+  public employeeTypeList: Array<IEmployeeType> = [];
   public isLoadingAffiliationLogList = false;
   public headers = [
     {
@@ -95,8 +160,21 @@ export default class AffiliationLog extends Vue {
       });
   }
 
+  getEmployeeTypes(): void {
+    this.isLoadingAffiliationLogList = true;
+    this.employeeTypesService
+      .getAll()
+      .then((response) => {
+        this.employeeTypeList = response.Data;
+      })
+      .finally(() => {
+        this.isLoadingAffiliationLogList = false;
+      });
+  }
+
   mounted(): void {
     this.getAffiliationLogList();
+    this.getEmployeeTypes();
   }
 }
 </script>
