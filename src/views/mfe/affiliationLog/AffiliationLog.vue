@@ -16,6 +16,8 @@
           <v-row class="mt-0">
             <v-col class="pb-0" cols="12" md="3">
               <v-autocomplete
+                clearable
+                @click:clear="getAffiliationLogList"
                 dense
                 name="typeOfEmployee"
                 :items="employeeTypeList"
@@ -26,45 +28,62 @@
                 required
                 :loading="isLoadingAffiliationLogList"
                 :disabled="isLoadingAffiliationLogList"
+                v-model="params.IdTipoEmpleado"
               ></v-autocomplete>
             </v-col>
             <v-col class="pb-0" cols="12" md="3">
               <v-text-field
                 clearable
+                @click:clear="getAffiliationLogList"
                 dense
                 name="curp"
                 :label="$t('affiliationLog.attributes.curp')"
                 outlined
                 required
                 :disabled="isLoadingAffiliationLogList"
+                v-model="params.Curp"
               ></v-text-field>
             </v-col>
           </v-row>
           <v-row class="mt-0">
             <v-col class="pb-0" cols="12" md="3">
               <v-text-field
-                dense
                 clearable
+                @click:clear="getAffiliationLogList"
+                dense
                 name="assignmentNumber"
                 :label="$t('affiliationLog.attributes.assignmentNumber')"
                 outlined
                 required
                 :disabled="isLoadingAffiliationLogList"
+                v-model="params.IdEmpleado"
               ></v-text-field>
             </v-col>
             <v-col class="pb-0" cols="12" md="3">
               <v-text-field
-                dense
                 clearable
+                @click:clear="getAffiliationLogList"
+                dense
                 name="movementDate"
                 :label="$t('affiliationLog.attributes.movementDate')"
                 outlined
                 required
                 :disabled="isLoadingAffiliationLogList"
+                v-model="params.FechaRealizacion"
               ></v-text-field>
             </v-col>
             <v-col class="pb-0" cols="12" md="3">
-              <v-btn color="success" :disabled="isLoadingAffiliationLogList">
+              <v-btn
+                color="success"
+                :disabled="
+                  isLoadingAffiliationLogList ||
+                  (params.IdTipoEmpleado === null &&
+                    !params.Curp &&
+                    !params.IdEmpleado &&
+                    !params.FechaRealizacion)
+                "
+                @click="search"
+              >
                 {{ $t("affiliationLog.labels.search") }}
               </v-btn>
             </v-col>
@@ -147,8 +166,36 @@ export default class AffiliationLog extends Vue {
       sortable: false,
     },
   ];
+  public params = {
+    IdTipoEmpleado: null,
+    Curp: "",
+    IdEmpleado: "",
+    FechaRealizacion: "",
+  };
 
-  getAffiliationLogList(): void {
+  filters() {
+    return {
+      ...this.params,
+    };
+  }
+
+  search(): void {
+    this.getAffiliationLogList(this.filters());
+  }
+
+  getAffiliationLogList(filters = {}): void {
+    this.isLoadingAffiliationLogList = true;
+    this.affiliationLogService
+      .search(filters)
+      .then((response) => {
+        this.affiliationLogList = response.Data;
+      })
+      .finally(() => {
+        this.isLoadingAffiliationLogList = false;
+      });
+  }
+
+  /*getAffiliationLogList(): void {
     this.isLoadingAffiliationLogList = true;
     this.affiliationLogService
       .getAll()
@@ -158,7 +205,7 @@ export default class AffiliationLog extends Vue {
       .finally(() => {
         this.isLoadingAffiliationLogList = false;
       });
-  }
+  }*/
 
   getEmployeeTypes(): void {
     this.isLoadingAffiliationLogList = true;
@@ -173,7 +220,7 @@ export default class AffiliationLog extends Vue {
   }
 
   mounted(): void {
-    this.getAffiliationLogList();
+    this.search();
     this.getEmployeeTypes();
   }
 }

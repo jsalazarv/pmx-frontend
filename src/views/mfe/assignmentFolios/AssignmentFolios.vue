@@ -13,7 +13,7 @@
               :label="$t('assignmentFolios.labels.search')"
               :disabled="isLoadingFoliosLogbookList"
               clearable
-              @click:clear="getFoliosLogBook"
+              @click:clear="search"
               single-line
               hide-details
               outlined
