@@ -67,3 +67,7 @@ export interface IFoliosLogbook {
     };
   };
 }
+
+export interface IFoliosLogbookQueryFilter {
+  IdFolioAsignacion: string;
+}

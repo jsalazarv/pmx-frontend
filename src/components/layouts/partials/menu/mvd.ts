@@ -15,7 +15,7 @@ const mvd: IModuleMenu = {
       text: "Reportes",
       message: null,
       route: "report:list",
-    }
+    },
   ],
   defaultRoute: "people:searchEmployee",
 };

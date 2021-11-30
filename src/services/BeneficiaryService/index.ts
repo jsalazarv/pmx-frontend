@@ -8,6 +8,8 @@ export default class BeneficiaryService extends BaseService {
   //   }
 
   getAll(assigmentNumber: number | null): IBeneficiaryResult[] {
+    console.log(assigmentNumber);
+
     return [
       {
         id_derechohabiente: "1",

@@ -213,8 +213,8 @@ export default class SearchEmployee extends Vue {
   };
   public consultation: IConsultation = {
     assigmentNumber: null,
-    employeeType: "",
-    fullname: "",
+    employeeType: null,
+    fullname: null,
     employeeTypeId: null,
     rc: "",
     id_person: null,
@@ -312,7 +312,7 @@ export default class SearchEmployee extends Vue {
           "consultation/setConsultationData",
           this.consultation
         );
-        this.$router.push({ path: "/empleados/consulta" });
+        this.$router.push({ name: "mvd:people:employeeConsultation" });
       });
   }
 

@@ -17,14 +17,14 @@
               single-line
               hide-details
               outlined
-              v-model="foliosLogbookId"
+              v-model="params.IdFolioAsignacion"
             ></v-text-field>
           </div>
           <v-divider class="mx-1" inset vertical></v-divider>
           <v-btn
-            color="primary"
-            :disabled="isLoadingFoliosLogbookList || !foliosLogbookId"
-            @click="searchFolioLogBookById"
+            color="success"
+            :disabled="isLoadingFoliosLogbookList || !params.IdFolioAsignacion"
+            @click="search"
           >
             {{ $t("assignmentFolios.labels.search") }}
           </v-btn>
@@ -49,14 +49,16 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import FoliosLogbook from "@/services/FoliosLogbook";
-import { IFoliosLogbook } from "@/services/FoliosLogbook/types";
+import {
+  IFoliosLogbook,
+  IFoliosLogbookQueryFilter,
+} from "@/services/FoliosLogbook/types";
 
 @Component({})
 export default class AssignmentFolios extends Vue {
   protected foliosLogbookService = new FoliosLogbook();
   public foliosLogbookList: Array<IFoliosLogbook> = [];
   public isLoadingFoliosLogbookList = false;
-  public foliosLogbookId = null;
   public headers = [
     {
       text: this.$t("assignmentFolios.attributes.folio"),
@@ -79,11 +81,24 @@ export default class AssignmentFolios extends Vue {
       sortable: false,
     },
   ];
+  public params = {
+    IdFolioAsignacion: "",
+  };
 
-  getFoliosLogBook(): void {
+  filters(): IFoliosLogbookQueryFilter {
+    return {
+      ...this.params,
+    };
+  }
+
+  search(): void {
+    this.getFoliosLogBook(this.filters());
+  }
+
+  getFoliosLogBook(filters = {}): void {
     this.isLoadingFoliosLogbookList = true;
     this.foliosLogbookService
-      .getAll()
+      .search(filters)
       .then((response) => {
         this.foliosLogbookList = response.Data;
       })
@@ -92,20 +107,8 @@ export default class AssignmentFolios extends Vue {
       });
   }
 
-  searchFolioLogBookById(): void {
-    this.isLoadingFoliosLogbookList = true;
-    this.foliosLogbookService
-      .findById(this.foliosLogbookId)
-      .then((response) => {
-        this.foliosLogbookList = [response.Data];
-      })
-      .finally(() => {
-        this.isLoadingFoliosLogbookList = false;
-      });
-  }
-
   mounted(): void {
-    this.getFoliosLogBook();
+    this.search();
   }
 }
 </script>
