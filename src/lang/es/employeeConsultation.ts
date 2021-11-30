@@ -16,6 +16,9 @@ export default {
       assignAddress: "Asignar domicilio empleado",
       assignMedicalUnit: "Asignar unidad médica empleado",
       credential: "Credencial empleado",
+      addBeneficiary: "Agregar derechohabiente",
+      assign: "Asignar",
+       close:"Cerrar"
     },
     secondTitle: "Derechohabientes",
     beneficiariesTable: {
@@ -25,5 +28,9 @@ export default {
       curp: "CURP",
       relationship: "Parentesco/Codificación",
     },
+    addressTable:{
+      address:"Domicilio",
+      status:"Estatus"
+    }
   },
 };

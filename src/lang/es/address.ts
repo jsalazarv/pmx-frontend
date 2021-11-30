@@ -10,7 +10,7 @@ export default {
       country: "Pais",
       state: "Estado",
       municipality: "Municipio",
-      locality:"Localidad",
+      locality: "Localidad",
       zipcode: "Código postal",
       suburb: "Colonia",
       street: "Calle",
@@ -18,6 +18,13 @@ export default {
       interiorNumber: "Número interior",
       block: "Manzana",
       lot: "Lote",
+    },
+    messages: {
+      success: "Se ha guardado el domicilio correctamente",
+      error: "Ha ocurrido un problema",
+    },
+    buttons: {
+      save: "Guardar"
     },
   },
 };

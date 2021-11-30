@@ -8,7 +8,7 @@ export default class MunicipalityService extends BaseService {
   }
 
   getByStateId(
-    stateId: number,
+    stateId: number |null,
     params = {}
   ): IServiceResponse<Array<IMunicipality>> {
     return this.client.get(`/Municipios/${stateId}/Estado`, params);

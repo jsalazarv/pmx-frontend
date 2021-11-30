@@ -13,7 +13,6 @@
           :active="isLoading"
           :indeterminate="isLoading"
         ></v-progress-linear>
-
         <v-container>
           <ValidationObserver v-slot="{ handleSubmit }">
             <form @submit.prevent="handleSubmit(onSubmit)">
@@ -131,7 +130,7 @@
 
                 <v-col cols="12" sm="12" md="2">
                   <v-btn type="submit" color="success" dark large dense>
-                    Buscar
+                    {{ $t("searchEmployee.search.buttons.search") }}
                   </v-btn>
                 </v-col>
               </v-row>
@@ -162,7 +161,8 @@
                             row.item.ap_paterno,
                             row.item.ap_materno,
                             row.item.tipo_emp_desc,
-                            row.item.tipo_empleado
+                            row.item.tipo_empleado,
+                            row.item.id_persona
                           )
                         "
                       >
@@ -191,13 +191,9 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import EmployeeTypeService from "@/services/EmployeeTypeService";
 import { IEmployeeType } from "@/services/EmployeeTypeService/types";
-// import SearchEmployeeService from "@/services/SearchEmployeeService";
-// import { ISearch, ISearchResult } from "@/services/SearchEmployeeService/types";
 import EmployeeService from "@/services/EmployeeService";
 import { ISearch, ISearchResult } from "@/services/EmployeeService/types";
 import { IConsultation, IConsultationState } from "@/store/consultation/types";
-// import { extend } from "vee-validate";
-// import { numeric } from "vee-validate/dist/rules";
 
 @Component({})
 export default class SearchEmployee extends Vue {
@@ -217,9 +213,15 @@ export default class SearchEmployee extends Vue {
   };
   public consultation: IConsultation = {
     assigmentNumber: null,
-    employeeType: null,
-    fullname: null,
-    employeeTypeId :null
+    employeeType: "",
+    fullname: "",
+    employeeTypeId: null,
+    rc: "",
+    id_person: null,
+    department: "",
+    departmentDescription: "",
+    validity: "",
+    ValidityStatus: "",
   };
   public searchResult: Array<ISearchResult> = [];
   public headers: Array<any> = [
@@ -265,7 +267,7 @@ export default class SearchEmployee extends Vue {
       });
   }
 
-  onSubmit() {
+  onSubmit(): void {
     this.searchResult = [];
     this.isLoadingEmployeeSearch = true;
     this.employeeService
@@ -284,38 +286,38 @@ export default class SearchEmployee extends Vue {
     lastname: string,
     surname: string,
     employeeType: string,
-    employeeTypeId:number
-  ) {
-    console.log(employeeTypeId)
+    employeeTypeId: number,
+    id_person: number
+  ): void {
     this.consultation.assigmentNumber = assignmentNumber;
     this.consultation.fullname = names + " " + lastname + " " + surname;
     this.consultation.employeeType = employeeType;
     this.consultation.employeeTypeId = employeeTypeId;
+    this.consultation.id_person = id_person;
 
-    this.$store.dispatch("consultation/setConsultationData", this.consultation);
-    this.$router.push({ path: "/empleados/consulta" });
+    this.employeeService
+      .consultation(
+        this.consultation.assigmentNumber,
+        this.consultation.employeeTypeId
+      )
+      .then((response) => {
+        this.consultation.rc = response.Data.RC;
+        this.consultation.department = response.Data.centro_depto;
+        this.consultation.departmentDescription = response.Data.descripcion;
+        this.consultation.validity = response.Data.vigencia;
+        this.consultation.ValidityStatus = response.Data.estado_vigencia;
+      })
+      .finally(() => {
+        this.$store.dispatch(
+          "consultation/setConsultationData",
+          this.consultation
+        );
+        this.$router.push({ path: "/empleados/consulta" });
+      });
   }
 
-  mounted() {
-    // Métodos
+  mounted(): void {
     this.getEmployeeTypes();
-
-    // Validaciones personalizadas
-    // extend("numeric", {
-    //   ...numeric,
-    //   message: `{_field_} ${this.$t(
-    //     "searchEmployee.search.validationsForm.isNumeric"
-    //   )}`,
-    // });
-
-    // extend("max", (value, args: any) => {
-    //   if (value.length <= args[0]) {
-    //     return true;
-    //   }
-    //   return `{_field_} ${this.$t(
-    //     "searchEmployee.search.validationsForm.max"
-    //   )} ${args[0]}`;
-    // });
   }
 
   get isLoading(): boolean {
