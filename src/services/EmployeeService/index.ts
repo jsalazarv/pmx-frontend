@@ -52,13 +52,12 @@ export default class EmployeeService extends BaseService {
     return this.client.post("/Empleados/Buscar/", params);
   }
 
-  consultation(assigmentNumber: number | null): IConsultationResult {
-    return {
-      RC: "RC",
-      centro_depto: "centro-depto",
-      descripcion: "descripcion",
-      vigencia: "17/11/2021",
-      estado_vigencia: "estado_vigencia",
-    };
+  consultation(
+    assigmentNumber: number | null,
+    employeeTypeId: number
+  ): IServiceResponse<IConsultationResult> {
+    return this.client.get(
+      `/Empleados/${assigmentNumber}/${employeeTypeId}/ObtenerVigenciaPorId`
+    );
   }
 }

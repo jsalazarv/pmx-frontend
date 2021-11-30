@@ -19,5 +19,8 @@ export default {
       medicalUnit: "Medical unit",
       observations: "Observations",
     },
+     buttons: {
+      search: "Search",
+    },
   },
 };

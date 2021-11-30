@@ -50,17 +50,21 @@
                     v-slot="{ errors }"
                     rules="required"
                   >
-                    <v-text-field
+                    <v-autocomplete
+                      dense
+                      name="coding"
+                      outlined
+                      v-model="beneficiary.coding"
+                      item-text="nombre"
+                      item-value="id"
+                      :items="codingList"
                       :label="
                         $t('beneficiary.beneficiary.beneficiaryForm.coding')
                       "
-                      name="coding"
-                      dense
-                      outlined
                       :error-messages="errors"
-                      v-model="beneficiary.coding"
-                    >
-                    </v-text-field>
+                      :disabled="isLoadingCodingList"
+                      :loading="isLoadingCodingList"
+                    ></v-autocomplete>
                   </ValidationProvider>
                 </v-col>
               </v-row>
@@ -85,7 +89,9 @@
                   </ValidationProvider>
                 </v-col>
                 <v-col cols="12" sm="12" md="6">
-                  <v-btn color="success" dark large dense> validar </v-btn>
+                  <v-btn color="success" dark large dense>
+                    {{ $t("beneficiary.beneficiary.buttons.validate") }}
+                  </v-btn>
                 </v-col>
               </v-row>
               <v-row>
@@ -309,19 +315,23 @@
                     v-slot="{ errors }"
                     rules="required"
                   >
-                    <v-text-field
+                    <v-autocomplete
+                      dense
+                      name="medicalUnit"
+                      outlined
+                      v-model="beneficiary.medicalUnit"
+                      item-text="nombre"
+                      item-value="id"
+                      :items="medicalUnitsList"
                       :label="
                         $t(
                           'beneficiary.beneficiary.beneficiaryForm.medicalUnit'
                         )
                       "
-                      name="medicalUnit"
-                      dense
-                      outlined
                       :error-messages="errors"
-                      v-model="beneficiary.medicalUnit"
-                    >
-                    </v-text-field>
+                      :disabled="isLoadingMedicalUnitsList"
+                      :loading="isLoadingMedicalUnitsList"
+                    ></v-autocomplete>
                   </ValidationProvider>
                 </v-col>
               </v-row>
@@ -353,7 +363,7 @@
               <v-row>
                 <v-col cols="12" sm="12" md="4" offset="5">
                   <v-btn type="submit" color="success" dark x-large dense>
-                    Guardar
+                    {{ $t("beneficiary.beneficiary.buttons.save") }}
                   </v-btn>
                 </v-col>
               </v-row>
@@ -371,12 +381,22 @@ import Component from "vue-class-component";
 import { IConsultationState } from "@/store/consultation/types";
 import GenderService from "@/services/GenderService";
 import { IGender } from "@/services/GenderService/types";
+import { IMedicalUnit } from "@/services/MedicalUnitService/types";
+import MedicalUnitService from "@/services/MedicalUnitService";
+import CodingService from "@/services/CodingService";
+import { ICoding } from "@/services/CodingService/types";
 
 @Component({})
 export default class Beneficiary extends Vue {
   protected genderService = new GenderService();
+  protected medicalUnitService = new MedicalUnitService();
+  protected codingService = new CodingService();
   public gendersList: Array<IGender> = [];
+  public medicalUnitsList: Array<IMedicalUnit> = [];
+  public codingList: Array<ICoding> = [];
   public isLoadingGendersList = false;
+  public isLoadingMedicalUnitsList = false;
+  public isLoadingCodingList = false;
 
   public showPickerBirthday: any = false;
   public showPickerValidity: any = false;
@@ -428,12 +448,38 @@ export default class Beneficiary extends Vue {
       });
   }
 
+  getMedicalUnits(): void {
+    this.isLoadingMedicalUnitsList = true;
+    this.medicalUnitService
+      .getAll()
+      .then((response) => {
+        this.medicalUnitsList = response.Data;
+      })
+      .finally(() => {
+        this.isLoadingMedicalUnitsList = false;
+      });
+  }
+
+  getCoding() {
+    this.isLoadingCodingList = true;
+    this.codingService
+      .getAll()
+      .then((response) => {
+        this.codingList = response.Data;
+      })
+      .finally(() => {
+        this.isLoadingCodingList = false;
+      });
+  }
+
   mounted() {
     this.beneficiary.assigmentNumber =
       this.consultationEmployee.consultation.assigmentNumber == null
         ? 0
         : this.consultationEmployee.consultation.assigmentNumber;
     this.getGenders();
+    this.getMedicalUnits();
+    this.getCoding();
   }
 
   onSubmit() {

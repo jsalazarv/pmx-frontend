@@ -17,5 +17,8 @@ export default {
       curp: "CURP",
       assignmentNumber: "Número de asignación",
     },
+    buttons: {
+      search: "Buscar",
+    },
   },
 };

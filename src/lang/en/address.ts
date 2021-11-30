@@ -1,6 +1,6 @@
 export default {
   address: {
-    title: "New address xxxx",
+    title: "New address",
     addressForm: {
       employeeType: "Employee type",
       assigmentNumber: "Assignment number",
@@ -18,6 +18,13 @@ export default {
       interiorNumber: "Interior number",
       block: "Block",
       lot: "Lot",
+    },
+     messages:{
+      success:"Address has been saved correctly",
+      error:"A problem has occurred"
+    },
+    buttons: {
+      save: "Save"
     },
   },
 };

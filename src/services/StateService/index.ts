@@ -8,7 +8,7 @@ export default class StateService extends BaseService {
   }
 
   getByCountryId(
-    countryId: number,
+    countryId: number | null,
     params = {}
   ): IServiceResponse<Array<IState>> {
     return this.client.get(`/Estados/${countryId}/Pais`, params);

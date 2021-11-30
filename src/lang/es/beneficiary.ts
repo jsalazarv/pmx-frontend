@@ -16,5 +16,9 @@ export default {
       medicalUnit: "Unidad médica",
       observations: "Observaciones",
     },
+    buttons: {
+      validate: "Validar",
+      save: "Guardar"
+    },
   },
 };
