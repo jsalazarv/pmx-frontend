@@ -12,6 +12,7 @@
               dense
               :label="$t('proofAssignment.labels.search')"
               clearable
+              @click:clear="clear"
               single-line
               hide-details
               outlined
@@ -21,14 +22,18 @@
           <v-divider class="mx-1" inset vertical></v-divider>
           <v-btn
             color="success"
-            :disabled="!employeeData"
+            :disabled="!assignmentNumber"
             @click="getEmployeeById"
           >
             {{ $t("proofAssignment.labels.search") }}
           </v-btn>
 
           <v-spacer></v-spacer>
-          <v-btn color="primary" :disabled="!employeeData">
+          <v-btn
+            color="primary"
+            :disabled="!employeeData.IdEmpleado"
+            @click="generateReport"
+          >
             {{ $t("proofAssignment.labels.export") }}
           </v-btn>
         </v-toolbar>
@@ -158,25 +163,27 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import EmployeeService from "@/services/EmployeeService";
 
+const initialEmployeeData = {
+  IdEmpleado: null,
+  Estado: "",
+  TipoEmpleado: {
+    Nombre: "",
+  },
+  Persona: {
+    Curp: "",
+    Nombres: "",
+    ApellidoPaterno: "",
+    ApellidoMaterno: "",
+    FechaNacimiento: "",
+    Sexo: "",
+    RFC: "",
+  },
+};
+
 @Component({})
 export default class ProofAssignment extends Vue {
   protected employeeService = new EmployeeService();
-  public employeeData = {
-    IdEmpleado: null,
-    Estado: "",
-    TipoEmpleado: {
-      Nombre: "",
-    },
-    Persona: {
-      Curp: "",
-      Nombres: "",
-      ApellidoPaterno: "",
-      ApellidoMaterno: "",
-      FechaNacimiento: "",
-      Sexo: "",
-      RFC: "",
-    },
-  };
+  public employeeData = { ...initialEmployeeData };
 
   public isLoadingEmployeeData = false;
   public assignmentNumber = "";
@@ -191,6 +198,14 @@ export default class ProofAssignment extends Vue {
       .finally(() => {
         this.isLoadingEmployeeData = false;
       });
+  }
+
+  generateReport(): void {
+    console.log("REPORT: ", this.employeeData);
+  }
+
+  clear(): void {
+    this.employeeData = { ...initialEmployeeData };
   }
 }
 </script>
