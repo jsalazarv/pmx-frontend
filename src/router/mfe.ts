@@ -26,6 +26,12 @@ export default [
     meta: { requiresAuth: true },
   },
   {
+    path: "/constancia/asignacion",
+    name: "proof:assignment",
+    component: () => import("@/views/mfe/proofAssignment/ProofAssignment.vue"),
+    meta: { requiresAuth: true },
+  },
+  {
     path: "/bitacora/asignacion",
     name: "affiliationLog:list",
     component: () => import("@/views/mfe/affiliationLog/AffiliationLog.vue"),

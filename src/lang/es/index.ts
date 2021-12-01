@@ -7,6 +7,7 @@ import employeeConsultation from "./employeeConsultation";
 import beneficiary from "./beneficiary";
 import address from "./address";
 import employeeConsultationMFE from "./mfe/employeeConsultation";
+import proofAssignment from "./mfe/proofAssignment";
 
 export default {
   dictionary,
@@ -18,4 +19,5 @@ export default {
   beneficiary,
   address,
   employeeConsultationMFE,
+  proofAssignment,
 };

@@ -27,6 +27,10 @@ export default class EmployeeService extends BaseService {
     );
   }
 
+  findById(id: string, params = {}) {
+    return this.client.get(`/Empleados/${id}/`, params);
+  }
+
   async create(
     data: ICreateEmployeeRequest
   ): IServiceResponse<ICreateEmployeeResponse> {
