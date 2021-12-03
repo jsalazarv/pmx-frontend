@@ -14,9 +14,7 @@
           :indeterminate="isLoading"
         ></v-progress-linear>
         <v-container>
-          {{ consultationEmployee }}
-          {{ address }}
-          <ValidationObserver v-slot="{ handleSubmit }">
+          <ValidationObserver v-slot="{ handleSubmit }" ref="form">
             <form @submit.prevent="handleSubmit(onSubmit)">
               <v-row>
                 <v-col cols="12" sm="12" md="6">
@@ -25,7 +23,7 @@
                     name="employeeType"
                     dense
                     outlined
-                    v-model="address.employeeType"
+                    :value="consultationEmployee.consultation.employeeType"
                     disabled
                   >
                   </v-text-field>
@@ -36,7 +34,7 @@
                     name="assigmentNumber"
                     dense
                     outlined
-                    v-model="address.assigmentNumber"
+                    :value="consultationEmployee.consultation.assigmentNumber"
                     disabled
                   >
                   </v-text-field>
@@ -49,6 +47,7 @@
                     name="rc"
                     dense
                     outlined
+                    :value="consultationEmployee.consultation.rc"
                     disabled
                   >
                   </v-text-field>
@@ -59,7 +58,7 @@
                     name="fullname"
                     dense
                     outlined
-                    v-model="address.fullname"
+                    :value="consultationEmployee.consultation.fullname"
                     disabled
                   >
                   </v-text-field>
@@ -67,14 +66,28 @@
               </v-row>
               <v-row>
                 <v-col cols="12" sm="12" md="6">
-                  <v-text-field
-                    :label="$t('address.address.addressForm.address')"
-                    name="address"
+                  <v-autocomplete
                     dense
+                    name="address"
+                    :items="selectAddresses"
+                    item-text="street"
+                    item-value="idAddress"
+                    :label="$t('address.address.addressForm.address')"
                     outlined
-                  >
-                  </v-text-field>
+                    :disabled="isLoadingAddress"
+                    :loading="isLoadingAddress"
+                    v-model="address.IdDomicilio"
+                    @change="getAddressById"
+                  ></v-autocomplete>
                 </v-col>
+              </v-row>
+              <v-row>
+                <alert
+                  :message="alert.message"
+                  :alert="alert.alert"
+                  :type="alert.type"
+                  @hideAlert="hideAlert"
+                ></alert>
               </v-row>
               <v-row>
                 <v-col cols="12" sm="12" md="4">
@@ -93,7 +106,7 @@
                       outlined
                       :disabled="isLoadingCountries"
                       :loading="isLoadingCountries"
-                      v-model="address.country"
+                      v-model="address.IdPais"
                       @change="getStates"
                       :error-messages="errors"
                     ></v-autocomplete>
@@ -112,11 +125,11 @@
                       item-text="Nombre"
                       item-value="IdEstado"
                       :label="$t('address.address.addressForm.state')"
-                      :disabled="isLoadingStates || !address.country"
+                      :disabled="isLoadingStates || !address.IdPais"
                       :loading="isLoadingStates"
                       outlined
                       required
-                      v-model="address.state"
+                      v-model="address.IdEstado"
                       @change="getMunicipalities"
                       :error-messages="errors"
                     ></v-autocomplete>
@@ -134,12 +147,12 @@
                       :items="municipalities"
                       item-text="Nombre"
                       item-value="IdMunicipio"
-                      :disabled="isLoadingMunicipalities || !address.state"
+                      :disabled="isLoadingMunicipalities || !address.IdEstado"
                       :loading="isLoadingMunicipalities"
                       :label="$t('address.address.addressForm.municipality')"
                       outlined
                       required
-                      v-model="address.municipality"
+                      v-model="address.IdMunicipio"
                       :error-messages="errors"
                     ></v-autocomplete>
                   </ValidationProvider>
@@ -158,7 +171,7 @@
                       dense
                       outlined
                       :error-messages="errors"
-                      v-model="address.zipcode"
+                      v-model="address.CodigoPostal"
                     >
                     </v-text-field>
                   </ValidationProvider>
@@ -175,7 +188,7 @@
                       dense
                       outlined
                       :error-messages="errors"
-                      v-model="address.suburb"
+                      v-model="address.Colonia"
                     >
                     </v-text-field>
                   </ValidationProvider>
@@ -192,7 +205,7 @@
                       dense
                       outlined
                       :error-messages="errors"
-                      v-model="address.locality"
+                      v-model="address.Localidad"
                     >
                     </v-text-field>
                   </ValidationProvider>
@@ -211,7 +224,7 @@
                       dense
                       outlined
                       :error-messages="errors"
-                      v-model="address.street"
+                      v-model="address.Calle"
                     >
                     </v-text-field>
                   </ValidationProvider>
@@ -229,7 +242,7 @@
                       dense
                       outlined
                       :error-messages="errors"
-                      v-model="address.outdoorNumber"
+                      v-model="address.NumeroExterior"
                     >
                     </v-text-field>
                   </ValidationProvider>
@@ -240,7 +253,7 @@
                     name="interiorNumber"
                     dense
                     outlined
-                    v-model="address.interiorNumber"
+                    v-model="address.NumeroInterior"
                   >
                   </v-text-field>
                 </v-col>
@@ -250,7 +263,7 @@
                     name="block"
                     dense
                     outlined
-                    v-model="address.block"
+                    v-model="address.Manzana"
                   >
                   </v-text-field>
                 </v-col>
@@ -262,7 +275,7 @@
                     name="lot"
                     dense
                     outlined
-                    v-model="address.lot"
+                    v-model="address.Lote"
                   >
                   </v-text-field>
                 </v-col>
@@ -270,7 +283,7 @@
               <v-row>
                 <v-col cols="12" sm="12" md="4" offset="5">
                   <v-btn type="submit" color="success" dark x-large dense>
-                    Guardar
+                    {{ $t("address.address.buttons.save") }}
                   </v-btn>
                 </v-col>
               </v-row>
@@ -292,35 +305,59 @@ import StateService from "@/services/StateService";
 import { IState } from "@/services/StateService/types";
 import MunicipalityService from "@/services/MunicipalityService";
 import { IMunicipality } from "@/services/MunicipalityService/types";
+import {
+  IAddress,
+  IAddressPerson,
+  IAddressPersonSave,
+  IAddressSelect,
+} from "@/services/AddressService/types";
+import AddressService from "@/services/AddressService/index";
+import Alert from "@/components/Alert.vue";
 
-@Component({})
+@Component({
+  components: { Alert },
+})
 export default class Address extends Vue {
   protected countryService = new CountryService();
   protected stateService = new StateService();
   protected municipalityService = new MunicipalityService();
+  protected addressService = new AddressService();
   public countries: Array<ICountry> = [];
   public isLoadingCountries = false;
   public states: Array<IState> = [];
   public isLoadingStates = false;
   public isLoadingMunicipalities = false;
   public municipalities: Array<IMunicipality> = [];
-  public address = {
-    employeeType: "",
-    assigmentNumber: 0,
-    rc: "",
-    fullname: "",
-    country: 0,
-    state: 0,
-    municipality: null,
-    locality: null,
-    zipcode: null,
-    suburb: null,
-    street: null,
-    outdoorNumber: null,
-    interiorNumber: null,
-    block: null,
-    lot: null,
+  public addressesPerson: Array<IAddressPerson> = [];
+  public addressPersonSave: IAddressPersonSave = {
+    id_domicilio_persona: null,
+    id_domicilio: null,
+    id_persona: null,
+    usuario_sesion: null,
+    baja: null,
   };
+  public alert = {
+    alert: false,
+    message: "",
+    type: false,
+  };
+  public address: IAddress = {
+    IdDomicilio: null,
+    IdPais: null,
+    IdEstado: null,
+    IdMunicipio: null,
+    Localidad: "",
+    CodigoPostal: "",
+    Colonia: "",
+    Calle: "",
+    NumeroInterior: "",
+    NumeroExterior: "",
+    Manzana: "",
+    Lote: "",
+    Baja: false,
+  };
+  public selectAddresses: Array<IAddressSelect> = [];
+  public isLoadingAddress = false;
 
   getCountries(): void {
     this.isLoadingCountries = true;
@@ -335,10 +372,10 @@ export default class Address extends Vue {
   }
 
   getStates(): void {
-    if (!this.address.country) return;
+    if (!this.address.IdPais) return;
     this.isLoadingStates = true;
     this.stateService
-      .getByCountryId(this.address.country)
+      .getByCountryId(this.address.IdPais)
       .then((response) => {
         this.states = response.Data;
       })
@@ -348,10 +385,10 @@ export default class Address extends Vue {
   }
 
   getMunicipalities(): void {
-    if (!this.address.state) return;
+    if (!this.address.IdEstado) return;
     this.isLoadingMunicipalities = true;
     this.municipalityService
-      .getByStateId(this.address.state)
+      .getByStateId(this.address.IdEstado)
       .then((response) => {
         this.municipalities = response.Data;
       })
@@ -364,25 +401,115 @@ export default class Address extends Vue {
     return this.$store.state.consultation;
   }
 
-  onSubmit() {
-    console.log("entra");
+  getAddressById(): void {
+    this.addressService
+      .get(this.address.IdDomicilio)
+      .then((response) => {
+        this.address = response.Data;
+      })
+      .finally(() => {
+        this.getStates();
+        this.getMunicipalities();
+      });
   }
 
-  mounted() {
-    this.address.assigmentNumber =
-      this.consultationEmployee.consultation.assigmentNumber == null
-        ? 0
-        : this.consultationEmployee.consultation.assigmentNumber;
-    this.address.fullname =
-      this.consultationEmployee.consultation.fullname == null
-        ? ""
-        : this.consultationEmployee.consultation.fullname;
-    this.address.employeeType =
-      this.consultationEmployee.consultation.employeeType == null
-        ? ""
-        : this.consultationEmployee.consultation.employeeType;
+  hideAlert(): void {
+    this.alert.message = "";
+    this.alert.alert = false;
+    this.alert.type = false;
+  }
 
+  getAddressesbyPerson(): void {
+    this.isLoadingAddress = true;
+    this.addressService
+      .getAddressesbyPerson(this.consultationEmployee.consultation.id_person)
+      .then((response) => {
+        for (let i = 0; i < response.Data.length; i++) {
+          const address = response.Data[i].domicilio_desc;
+          const arrayAddress = address.split("|");
+          const street = arrayAddress[0];
+          const select = {} as IAddressSelect;
+          select.street = street;
+          select.idAddress = response.Data[i].id_domicilio;
+          this.selectAddresses.push(select);
+        }
+      })
+      .finally(() => {
+        this.isLoadingAddress = false;
+      });
+  }
+
+  onSubmit(): void {
+    if (this.address.IdDomicilio == null) {
+      this.addressService
+        .create(this.address)
+        .then((response) => {
+          this.addressPersonSave.id_domicilio = response.Data.IdDomicilio;
+          this.addressPersonSave.id_persona = this.consultationEmployee.consultation.id_person;
+          this.addressPersonSave.usuario_sesion = 0; // TODO: Aquí va el usuario de la sesión
+
+          this.addressService
+            .createAddresPerson(this.addressPersonSave)
+            .then((r) => {
+              this.alert.message = this.$t(
+                "address.address.messages.success"
+              ) as string;
+              this.alert.alert = true;
+              this.alert.type = true;
+              this.cleanForm();
+              this.getAddressesbyPerson();
+            });
+        })
+        .catch((error) => {
+          this.alert.alert = true;
+          this.alert.message = this.$t(
+            "address.address.messages.error"
+          ) as string;
+          this.alert.type = false;
+        });
+    } else {
+      this.addressService
+        .edit(this.address)
+        .then((response) => {
+          this.alert.message = this.$t(
+            "address.address.messages.success"
+          ) as string;
+          this.alert.alert = true;
+          this.alert.type = true;
+          this.cleanForm();
+        })
+        .catch((error) => {
+          this.alert.alert = true;
+          this.alert.message = this.$t(
+            "address.address.messages.error"
+          ) as string;
+          this.alert.type = false;
+        });
+    }
+  }
+
+  cleanForm(): void {
+    this.address = {
+      IdDomicilio: null,
+      IdPais: null,
+      IdEstado: null,
+      IdMunicipio: null,
+      Localidad: "",
+      CodigoPostal: "",
+      Colonia: "",
+      Calle: "",
+      NumeroInterior: "",
+      NumeroExterior: "",
+      Manzana: "",
+      Lote: "",
+      Baja: false,
+    };
+    (this.$refs.form as HTMLFormElement).reset();
+  }
+
+  mounted(): void {
     this.getCountries();
+    this.getAddressesbyPerson();
   }
 
   get isLoading(): boolean {

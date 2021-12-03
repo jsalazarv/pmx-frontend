@@ -19,5 +19,12 @@ export default {
       block: "Manzana",
       lot: "Lote",
     },
+    messages: {
+      success: "Se ha guardado el domicilio correctamente",
+      error: "Ha ocurrido un problema",
+    },
+    buttons: {
+      save: "Guardar",
+    },
   },
 };

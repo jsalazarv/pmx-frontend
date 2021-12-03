@@ -162,17 +162,17 @@ export default class EmployeeConsultation extends Vue {
     },
   ];
 
-  getEmployeeList(): void {
-    this.isLoadingEmployeeList = true;
-    this.employeeService
-      .getAll()
-      .then((response) => {
-        this.employeeList = response.Data;
-      })
-      .finally(() => {
-        this.isLoadingEmployeeList = false;
-      });
-  }
+  // getEmployeeList(): void {
+  //   this.isLoadingEmployeeList = true;
+  //   this.employeeService
+  //     .getAll()
+  //     .then((response) => {
+  //       this.employeeList = response.Data;
+  //     })
+  //     .finally(() => {
+  //       this.isLoadingEmployeeList = false;
+  //     });
+  // }
 
   getEmployeeTypes(): void {
     this.isLoadingEmployeeList = true;
@@ -187,7 +187,7 @@ export default class EmployeeConsultation extends Vue {
   }
 
   mounted(): void {
-    this.getEmployeeList();
+    //this.getEmployeeList();
     this.getEmployeeTypes();
   }
 }

@@ -7,15 +7,17 @@ import beneficiary from "./beneficiary";
 import address from "./address";
 import employeeConsultationMFE from "./mfe/employeeConsultation";
 import affiliationLog from "./mfe/affiliationLog";
+import proofAssignment from "./mfe/proofAssignment";
 
 export default {
   dictionary,
   employee,
   assignmentFolios,
-  affiliationLog,
   searchEmployee,
   employeeConsultation,
   beneficiary,
   address,
   employeeConsultationMFE,
+  affiliationLog,
+  proofAssignment,
 };

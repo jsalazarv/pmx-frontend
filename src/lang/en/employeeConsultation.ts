@@ -16,6 +16,9 @@ export default {
       assignAddress: "Assign employee address",
       assignMedicalUnit: "Assign employee medical unit",
       credential: "Employee credential",
+      addBeneficiary: "Add beneficiary",
+      assign: "Assign",
+      close: "Close",
     },
     secondTitle: "Beneficiaries",
     beneficiariesTable: {
@@ -24,6 +27,10 @@ export default {
       surname: "Surname",
       curp: "CURP",
       relationship: "Relationship/Coding",
+    },
+    addressTable: {
+      address: "Address",
+      status: "Status",
     },
   },
 };

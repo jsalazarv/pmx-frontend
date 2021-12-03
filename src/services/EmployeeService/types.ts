@@ -121,6 +121,7 @@ export interface ISearchResult {
   curp: string;
   num_empleado: number;
   tipo_empleado: number;
+  id_persona: number;
 }
 
 export interface IConsultationResult {

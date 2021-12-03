@@ -30,6 +30,12 @@ const mfe: IModuleMenu = {
     },
     {
       icon: "mdi-keyboard-f5",
+      text: "Constancia de asignación",
+      message: null,
+      route: "proof:assignment",
+    },
+    {
+      icon: "mdi-keyboard-f6",
       text: "Bitácora",
       message: null,
       route: "affiliationLog:list",

@@ -180,13 +180,9 @@ export default class AffiliationLog extends Vue {
   }
 
   search(): void {
-    this.getAffiliationLogList(this.filters());
-  }
-
-  getAffiliationLogList(filters = {}): void {
     this.isLoadingAffiliationLogList = true;
     this.affiliationLogService
-      .search(filters)
+      .search(this.filters())
       .then((response) => {
         this.affiliationLogList = response.Data;
       })
@@ -195,7 +191,7 @@ export default class AffiliationLog extends Vue {
       });
   }
 
-  /*getAffiliationLogList(): void {
+  getAffiliationLogList(): void {
     this.isLoadingAffiliationLogList = true;
     this.affiliationLogService
       .getAll()
@@ -205,7 +201,7 @@ export default class AffiliationLog extends Vue {
       .finally(() => {
         this.isLoadingAffiliationLogList = false;
       });
-  }*/
+  }
 
   getEmployeeTypes(): void {
     this.isLoadingAffiliationLogList = true;
@@ -220,7 +216,7 @@ export default class AffiliationLog extends Vue {
   }
 
   mounted(): void {
-    this.search();
+    this.getAffiliationLogList();
     this.getEmployeeTypes();
   }
 }

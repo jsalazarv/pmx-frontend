@@ -6,8 +6,8 @@ export default [
     meta: { requiresAuth: true },
   },
   {
-    path: "/empleados/consulta",
-    name: "people:employeeConsultation",
+    path: "/mvd/empleados/consulta",
+    name: "mvd:people:employeeConsultation",
     component: () =>
       import("@/views/mvd/employeeConsultation/EmployeeConsultation.vue"),
     meta: { requiresAuth: true },

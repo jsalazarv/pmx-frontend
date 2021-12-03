@@ -27,6 +27,10 @@ export default class EmployeeService extends BaseService {
     );
   }
 
+  findById(id: string, params = {}) {
+    return this.client.get(`/Empleados/${id}/`, params);
+  }
+
   async create(
     data: ICreateEmployeeRequest
   ): IServiceResponse<ICreateEmployeeResponse> {
@@ -52,13 +56,12 @@ export default class EmployeeService extends BaseService {
     return this.client.post("/Empleados/Buscar/", params);
   }
 
-  consultation(assigmentNumber: number | null): IConsultationResult {
-    return {
-      RC: "RC",
-      centro_depto: "centro-depto",
-      descripcion: "descripcion",
-      vigencia: "17/11/2021",
-      estado_vigencia: "estado_vigencia",
-    };
+  consultation(
+    assigmentNumber: number | null,
+    employeeTypeId: number
+  ): IServiceResponse<IConsultationResult> {
+    return this.client.get(
+      `/Empleados/${assigmentNumber}/${employeeTypeId}/ObtenerVigenciaPorId`
+    );
   }
 }

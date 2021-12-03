@@ -65,16 +65,18 @@ class HttpClient {
   /**
    * Make a POST request
    * @param url
+   * @param params
    * @param data
    * @param conf {AxiosRequestConfig}
    * @returns {Promise<AxiosResponse<T> | never>}
    */
   post<T = unknown, R = AxiosResponse<T>>(
     url: string,
+    params: Record<string, unknown> = {},
     data: unknown | Record<string, unknown> = {},
     conf: AxiosRequestConfig = {}
   ): Promise<R> {
-    return this.http.post(url, data, conf);
+    return this.http.post(url, data, { ...conf, params });
   }
 
   /**
