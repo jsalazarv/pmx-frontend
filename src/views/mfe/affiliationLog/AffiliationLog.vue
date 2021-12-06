@@ -3,12 +3,16 @@
     <div class="pa-4">
       <v-card>
         <v-toolbar flat>
-          <v-toolbar-title>
+          <v-toolbar-title class="highlight">
             {{ $t("affiliationLog.list.title") }}
           </v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-btn color="primary">
+          <v-btn
+            color="primary"
+            :disabled="isLoadingAffiliationLogList"
+            @click="generateReport"
+          >
             {{ $t("affiliationLog.labels.export") }}
           </v-btn>
         </v-toolbar>
@@ -107,10 +111,14 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { IAffiliationLog } from "@/services/AffiliationLogService/types";
+import {
+  IAffiliationLog,
+  IIAffiliationLogReportProperties,
+} from "@/services/AffiliationLogService/types";
 import { IEmployeeType } from "@/services/EmployeeTypeService/types";
 import AffiliationLogService from "@/services/AffiliationLogService";
 import EmployeeTypeService from "@/services/EmployeeTypeService";
+import download from "downloadjs";
 
 @Component({})
 export default class AffiliationLog extends Vue {
@@ -128,11 +136,6 @@ export default class AffiliationLog extends Vue {
     {
       text: this.$t("affiliationLog.attributes.movementType"),
       value: "TipoMovimiento",
-      sortable: false,
-    },
-    {
-      text: this.$t("affiliationLog.attributes.user"),
-      value: "",
       sortable: false,
     },
     {
@@ -173,18 +176,45 @@ export default class AffiliationLog extends Vue {
     FechaRealizacion: "",
   };
 
-  filters() {
+  get filters() {
     return {
       ...this.params,
     };
   }
 
+  get reportHeaders(): Array<IIAffiliationLogReportProperties> {
+    return this.headers.map((header) => ({
+      Nombre: header.value,
+      Personalizado: header.text as string,
+    }));
+  }
+
   search(): void {
     this.isLoadingAffiliationLogList = true;
     this.affiliationLogService
-      .search(this.filters())
+      .search(this.filters)
       .then((response) => {
         this.affiliationLogList = response.Data;
+      })
+      .finally(() => {
+        this.isLoadingAffiliationLogList = false;
+      });
+  }
+
+  generateReport(): void {
+    this.isLoadingAffiliationLogList = true;
+    const data = {
+      NombreReporte: "Reporte",
+      Propiedades: this.reportHeaders,
+    };
+    this.affiliationLogService
+      .export(data, this.filters)
+      .then((response) => {
+        download(
+          response.data,
+          `${data.NombreReporte}.xlsx`,
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        );
       })
       .finally(() => {
         this.isLoadingAffiliationLogList = false;

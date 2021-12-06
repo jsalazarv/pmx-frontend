@@ -13,7 +13,8 @@ import { IResponseInterceptor } from "@/services/interceptors/types";
  * @constructor
  */
 const DataResponseInterceptor: IResponseInterceptor = (response) => {
-  return response.data;
+  const isBlob = response.data instanceof Blob;
+  return isBlob ? response : response.data;
 };
 
 export default DataResponseInterceptor;
