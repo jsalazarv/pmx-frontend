@@ -11,3 +11,13 @@ export interface IAffiliationLog {
   FechaRealizacion: string;
   Baja: boolean;
 }
+
+export interface IIAffiliationLogReportProperties {
+  Nombre: string;
+  Personalizado: string;
+}
+
+export interface IAffiliationLogReport {
+  NombreReporte: string;
+  Propiedades: Array<IIAffiliationLogReportProperties>;
+}

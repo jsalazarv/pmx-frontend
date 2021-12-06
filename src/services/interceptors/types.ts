@@ -5,4 +5,4 @@ export type IRequestInterceptor = (
 ) => AxiosRequestConfig | Promise<AxiosRequestConfig>;
 export type IResponseInterceptor<T = AxiosResponse> = (
   response: AxiosResponse
-) => T | Promise<T>;
+) => T | Promise<T> | AxiosResponse | Promise<AxiosResponse>;

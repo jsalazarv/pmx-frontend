@@ -18,7 +18,7 @@ export default {
       credential: "Credencial empleado",
       addBeneficiary: "Agregar derechohabiente",
       assign: "Asignar",
-       close:"Cerrar"
+      close: "Cerrar",
     },
     secondTitle: "Derechohabientes",
     beneficiariesTable: {
@@ -28,9 +28,9 @@ export default {
       curp: "CURP",
       relationship: "Parentesco/Codificación",
     },
-    addressTable:{
-      address:"Domicilio",
-      status:"Estatus"
-    }
+    addressTable: {
+      address: "Domicilio",
+      status: "Estatus",
+    },
   },
 };

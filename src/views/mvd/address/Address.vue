@@ -445,8 +445,7 @@ export default class Address extends Vue {
         .create(this.address)
         .then((response) => {
           this.addressPersonSave.id_domicilio = response.Data.IdDomicilio;
-          this.addressPersonSave.id_persona =
-            this.consultationEmployee.consultation.id_person;
+          this.addressPersonSave.id_persona = this.consultationEmployee.consultation.id_person;
           this.addressPersonSave.usuario_sesion = 0; // TODO: Aquí va el usuario de la sesión
 
           this.addressService

@@ -3,7 +3,7 @@
     <div class="pa-4">
       <v-card>
         <v-toolbar flat>
-          <v-toolbar-title>{{
+          <v-toolbar-title class="highlight">{{
             $t("assignmentFolios.list.title")
           }}</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
@@ -13,7 +13,7 @@
               :label="$t('assignmentFolios.labels.search')"
               :disabled="isLoadingFoliosLogbookList"
               clearable
-              @click:clear="getFoliosLogBook"
+              @click:clear="search"
               single-line
               hide-details
               outlined

@@ -19,12 +19,12 @@ export default {
       block: "Block",
       lot: "Lot",
     },
-     messages:{
-      success:"Address has been saved correctly",
-      error:"A problem has occurred"
+    messages: {
+      success: "Address has been saved correctly",
+      error: "A problem has occurred",
     },
     buttons: {
-      save: "Save"
+      save: "Save",
     },
   },
 };

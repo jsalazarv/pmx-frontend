@@ -24,7 +24,7 @@ export default {
       error: "Ha ocurrido un problema",
     },
     buttons: {
-      save: "Guardar"
+      save: "Guardar",
     },
   },
 };

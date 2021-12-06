@@ -18,7 +18,7 @@ export default {
     },
     buttons: {
       validate: "Validar",
-      save: "Guardar"
+      save: "Guardar",
     },
   },
 };

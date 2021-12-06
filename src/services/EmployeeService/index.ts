@@ -1,6 +1,6 @@
 import { serialize } from "object-to-formdata";
 import BaseService from "@/services/BaseService";
-import { IServiceResponse } from "@/services/types";
+import { IApiResponse, IServiceResponse } from "@/services/types";
 import {
   ICreateEmployeeResponse,
   ICreateEmployeeRequest,
@@ -27,7 +27,10 @@ export default class EmployeeService extends BaseService {
     );
   }
 
-  findById(id: string, params = {}) {
+  findById(
+    id: string,
+    params = {}
+  ): Promise<IApiResponse<ICreateEmployeeResponse>> {
     return this.client.get(`/Empleados/${id}/`, params);
   }
 

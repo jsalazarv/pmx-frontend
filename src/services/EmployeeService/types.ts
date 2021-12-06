@@ -120,7 +120,7 @@ export interface ISearchResult {
   ap_materno: string;
   curp: string;
   num_empleado: number;
-  tipo_empleado:number;
+  tipo_empleado: number;
   id_persona: number;
 }
 

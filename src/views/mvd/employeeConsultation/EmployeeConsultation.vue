@@ -468,8 +468,7 @@ export default class EmployeeConsultation extends Vue {
 
   onBtnAssign(idAddress: number, idAddressPerson: number): void {
     this.addressPersonSave.id_domicilio_persona = idAddressPerson;
-    this.addressPersonSave.id_persona =
-      this.consultationEmployee.consultation.id_person;
+    this.addressPersonSave.id_persona = this.consultationEmployee.consultation.id_person;
     this.addressPersonSave.usuario_sesion = 0; // TODO: Aquí va el usuario de la sesión
     this.addressPersonSave.baja = true;
     this.addressService

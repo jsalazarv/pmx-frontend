@@ -3,7 +3,7 @@
     <div class="pa-4">
       <v-card>
         <v-toolbar flat>
-          <v-toolbar-title>
+          <v-toolbar-title class="highlight">
             {{ $t("proofAssignment.list.title") }}
           </v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
@@ -162,9 +162,10 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import EmployeeService from "@/services/EmployeeService";
+import { IProofAssignmentReport } from "@/services/ProofAssignmentService/types";
 
-const initialEmployeeData = {
-  IdEmpleado: null,
+const initialEmployeeData: IProofAssignmentReport = {
+  IdEmpleado: undefined,
   Estado: "",
   TipoEmpleado: {
     Nombre: "",
