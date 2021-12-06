@@ -162,9 +162,10 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import EmployeeService from "@/services/EmployeeService";
+import { IProofAssignmentReport } from "@/services/ProofAssignmentService/types";
 
-const initialEmployeeData = {
-  IdEmpleado: null,
+const initialEmployeeData: IProofAssignmentReport = {
+  IdEmpleado: undefined,
   Estado: "",
   TipoEmpleado: {
     Nombre: "",
