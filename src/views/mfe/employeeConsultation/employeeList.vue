@@ -114,7 +114,10 @@
             >
               Ver
             </v-btn>
-            <v-btn x-small :to="{ name: '', params: { id: item.id } }">
+            <v-btn
+              x-small
+              :to="{ name: 'people:edit', params: { id: item.IdEmpleado } }"
+            >
               Editar
             </v-btn>
           </template>

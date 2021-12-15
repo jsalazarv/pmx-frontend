@@ -8,7 +8,7 @@
           </v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-btn color="primary">
+          <v-btn color="primary" :to="{ name: 'people:edit' }">
             {{ $t("employeeConsultationMFE.labels.edit") }}
           </v-btn>
         </v-toolbar>
