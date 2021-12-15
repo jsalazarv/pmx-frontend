@@ -107,6 +107,17 @@
           :headers="headers"
           :items="employeeList"
         >
+          <template v-slot:item.actions="{ item }">
+            <v-btn
+              x-small
+              :to="{ name: 'people:show', params: { id: item.IdEmpleado } }"
+            >
+              Ver
+            </v-btn>
+            <v-btn x-small :to="{ name: '', params: { id: item.id } }">
+              Editar
+            </v-btn>
+          </template>
         </v-data-table>
       </v-card>
     </div>
@@ -122,13 +133,12 @@ import { ICreateEmployeeResponse } from "@/services/EmployeeService/types";
 import { IEmployeeType } from "@/services/EmployeeTypeService/types";
 
 @Component({})
-export default class EmployeeConsultation extends Vue {
+export default class EmployeeList extends Vue {
   protected employeeService = new EmployeeService();
   protected employeeTypesService = new EmployeeTypeService();
   public employeeList: Array<ICreateEmployeeResponse> = [];
   public employeeTypeList: Array<IEmployeeType> = [];
   public isLoadingEmployeeList = false;
-
   public headers = [
     {
       text: this.$t("employeeConsultationMFE.attributes.typeOfEmployee"),
@@ -160,19 +170,20 @@ export default class EmployeeConsultation extends Vue {
       value: "IdEmpleado",
       sortable: false,
     },
+    { text: "", value: "actions", align: "end", sortable: false },
   ];
 
-  // getEmployeeList(): void {
-  //   this.isLoadingEmployeeList = true;
-  //   this.employeeService
-  //     .getAll()
-  //     .then((response) => {
-  //       this.employeeList = response.Data;
-  //     })
-  //     .finally(() => {
-  //       this.isLoadingEmployeeList = false;
-  //     });
-  // }
+  getEmployeeList(): void {
+    this.isLoadingEmployeeList = true;
+    this.employeeService
+      .getAll()
+      .then((response) => {
+        this.employeeList = response.Data;
+      })
+      .finally(() => {
+        this.isLoadingEmployeeList = false;
+      });
+  }
 
   getEmployeeTypes(): void {
     this.isLoadingEmployeeList = true;
@@ -187,7 +198,7 @@ export default class EmployeeConsultation extends Vue {
   }
 
   mounted(): void {
-    //this.getEmployeeList();
+    this.getEmployeeList();
     this.getEmployeeTypes();
   }
 }

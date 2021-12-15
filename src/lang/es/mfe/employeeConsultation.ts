@@ -2,6 +2,9 @@ export default {
   list: {
     title: "Búsqueda de empleado",
   },
+  show: {
+    title: "Consulta empleado",
+  },
   edit: {
     title: "",
   },
@@ -21,6 +24,7 @@ export default {
   },
   labels: {
     add: "Agregar",
+    edit: "Editar",
     export: "Exportar",
     search: "Buscar",
     dialogs: {
