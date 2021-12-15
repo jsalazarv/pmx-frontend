@@ -29,6 +29,7 @@
             :key="i"
             link
             :to="{ name: item.route }"
+            exact
           >
             <v-list-item-action v-if="child.icon">
               <v-icon>{{ child.icon }}</v-icon>
@@ -38,7 +39,13 @@
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
-        <v-list-item v-else :key="item.text" link :to="{ name: item.route }">
+        <v-list-item
+          v-else
+          :key="item.text"
+          link
+          :to="{ name: item.route }"
+          exact
+        >
           <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-action>

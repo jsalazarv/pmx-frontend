@@ -12,7 +12,7 @@ import {
 } from "@/services/EmployeeService/types";
 
 export default class EmployeeService extends BaseService {
-  getAll(): IServiceResponse<ICreateEmployeeResponse> {
+  getAll(): IServiceResponse<Array<ICreateEmployeeResponse>> {
     return this.client.get(`/Empleados`);
   }
 

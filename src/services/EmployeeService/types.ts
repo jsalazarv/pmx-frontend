@@ -98,6 +98,17 @@ export interface ICreateEmployeeResponse {
   CentroTrabajo: IWorkplace;
 }
 
+export interface IShowEmployee {
+  IdEmpleado?: number;
+  Estado?: unknown;
+  TipoEmpleado?: Partial<IEmployeeType>;
+  Persona?: Partial<IEmployee>;
+  Filiacion?: Partial<IFiliation>;
+  Sindicato?: Partial<ISyndicate>;
+  SeccionSindical?: Partial<ISyndicateSection>;
+  CentroTrabajo?: Partial<IWorkplace>;
+}
+
 export interface IRejectEmployeeRequest {
   IdTipoEmpleado: number | null;
   Curp: string;
