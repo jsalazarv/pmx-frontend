@@ -9,6 +9,7 @@ import {
   IRejectEmployeeRequest,
   ISearchResult,
   IConsultationResult,
+  IDeleteEmployeeRequest,
 } from "@/services/EmployeeService/types";
 
 export default class EmployeeService extends BaseService {
@@ -53,6 +54,12 @@ export default class EmployeeService extends BaseService {
     params = {}
   ): IServiceResponse<IRejectEmployeeRequest> {
     return this.client.post(`/Empleados/Rechazo`, data, { params });
+  }
+
+  async delete(
+    data: IDeleteEmployeeRequest
+  ): IServiceResponse<IDeleteEmployeeRequest> {
+    return this.client.post(`/Empleados/Cancelacion`, data);
   }
 
   search(params = {}): IServiceResponse<ISearchResult[]> {

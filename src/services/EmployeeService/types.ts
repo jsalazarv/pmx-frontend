@@ -115,6 +115,11 @@ export interface IRejectEmployeeRequest {
   Justificacion: string;
 }
 
+export interface IDeleteEmployeeRequest {
+  IdEmpleado: number;
+  Motivo: string;
+}
+
 export interface ISearch {
   id_tipo_emp: string | null;
   nombres: string | null;
