@@ -125,7 +125,11 @@
       </v-card>
     </div>
 
-    <delete-dialog :open.sync="confirmDialogOpen" :data="employeeData" />
+    <delete-dialog
+      :open.sync="confirmDialogOpen"
+      :data="employeeData"
+      @onDelete="updateList"
+    />
   </div>
 </template>
 
@@ -243,6 +247,12 @@ export default class EmployeeList extends Vue {
   requestDeleteConfirmation(employee: ICreateEmployeeResponse): void {
     this.confirmDialogOpen = true;
     this.employeeData = employee;
+  }
+
+  updateList(data: ICreateEmployeeResponse): void {
+    const index = this.employeeList.indexOf(data);
+
+    this.employeeList.splice(index, 1);
   }
 
   mounted(): void {

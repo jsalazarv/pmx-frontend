@@ -85,41 +85,41 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Prop, PropSync } from "vue-property-decorator";
+import { Component, Emit, Prop, PropSync } from "vue-property-decorator";
 import EmployeeService from "@/services/EmployeeService";
-import { IDeleteEmployeeRequest } from "@/services/EmployeeService/types";
+import { ICreateEmployeeResponse } from "@/services/EmployeeService/types";
 
 @Component({})
 export default class DeleteDialog extends Vue {
   protected employeeService = new EmployeeService();
-
-  @PropSync("open")
-  public isDialogOpen!: boolean;
-
-  @Prop({ type: Boolean, default: false })
-  isDeleting?: boolean;
-
-  @Prop({ type: Object, default: {} })
-  data?: Record<string, unknown>;
-
+  public isDeleting = false;
   public confirmation = {
     Motivo: "",
   };
 
-  closeDialog(): void {
-    this.isDialogOpen = false;
+  @PropSync("open")
+  public isDialogOpen!: boolean;
+
+  @Prop({ type: Object, default: {} })
+  data?: ICreateEmployeeResponse;
+
+  onDelete(data: ICreateEmployeeResponse): void {
+    this.isDeleting = false;
+    this.clear();
+    this.closeDialog();
+    this.$emit("onDelete", data);
   }
 
-  deleting(): void {
-    this.isDialogOpen = !this.isDialogOpen;
+  closeDialog(): void {
+    this.isDialogOpen = false;
   }
 
   clear(): void {
     this.confirmation.Motivo = "";
   }
 
-  destroy(data: IDeleteEmployeeRequest): void {
-    this.deleting();
+  destroy(data: ICreateEmployeeResponse): void {
+    this.isDeleting = true;
     const dataForDeletion = {
       ...{ IdEmpleado: data.IdEmpleado },
       ...{ Motivo: this.confirmation.Motivo },
@@ -128,9 +128,7 @@ export default class DeleteDialog extends Vue {
       .delete(dataForDeletion)
       .then()
       .finally(() => {
-        this.deleting();
-        this.clear();
-        this.closeDialog();
+        this.onDelete(data);
       });
   }
 }
