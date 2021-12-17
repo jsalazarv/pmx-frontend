@@ -120,10 +120,19 @@
             >
               Editar
             </v-btn>
+            <v-btn x-small @click="requestDeleteConfirmation(item)">
+              Eliminar
+            </v-btn>
           </template>
         </v-data-table>
       </v-card>
     </div>
+
+    <delete-dialog
+      :open.sync="confirmDialogOpen"
+      :data="employeeData"
+      @onDelete="updateList"
+    />
   </div>
 </template>
 
@@ -132,16 +141,54 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import EmployeeService from "@/services/EmployeeService";
 import EmployeeTypeService from "@/services/EmployeeTypeService";
-import { ICreateEmployeeResponse } from "@/services/EmployeeService/types";
+import {
+  ICreateEmployeeResponse,
+  IShowEmployee,
+} from "@/services/EmployeeService/types";
 import { IEmployeeType } from "@/services/EmployeeTypeService/types";
+import DeleteDialog from "@/views/mfe/employeeConsultation/components/deleteDialog.vue";
 
-@Component({})
+const initialEmployeeData: IShowEmployee = {
+  IdEmpleado: undefined,
+  Estado: "",
+  TipoEmpleado: {
+    Nombre: "",
+  },
+  Persona: {
+    Nombres: "",
+    ApellidoPaterno: "",
+    ApellidoMaterno: "",
+    FechaNacimiento: "",
+    Sexo: "",
+    RFC: "",
+    Curp: "",
+  },
+  Filiacion: {
+    Referencia: "",
+  },
+  Sindicato: {
+    Nombre: "",
+  },
+  SeccionSindical: {
+    Nombre: "",
+  },
+  CentroTrabajo: {
+    Empresa: "",
+    Descripcion: "",
+  },
+};
+
+@Component({
+  components: { DeleteDialog },
+})
 export default class EmployeeList extends Vue {
   protected employeeService = new EmployeeService();
   protected employeeTypesService = new EmployeeTypeService();
   public employeeList: Array<ICreateEmployeeResponse> = [];
   public employeeTypeList: Array<IEmployeeType> = [];
   public isLoadingEmployeeList = false;
+  public confirmDialogOpen = false;
+  public employeeData = { ...initialEmployeeData };
   public headers = [
     {
       text: this.$t("employeeConsultationMFE.attributes.typeOfEmployee"),
@@ -198,6 +245,17 @@ export default class EmployeeList extends Vue {
       .finally(() => {
         this.isLoadingEmployeeList = false;
       });
+  }
+
+  requestDeleteConfirmation(employee: ICreateEmployeeResponse): void {
+    this.confirmDialogOpen = true;
+    this.employeeData = employee;
+  }
+
+  updateList(data: ICreateEmployeeResponse): void {
+    const index = this.employeeList.indexOf(data);
+
+    this.employeeList.splice(index, 1);
   }
 
   mounted(): void {
