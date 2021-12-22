@@ -25,6 +25,7 @@ export default {
   labels: {
     add: "Agregar",
     edit: "Editar",
+    update: "Actualizar",
     export: "Exportar",
     search: "Buscar",
     delete: "Eliminar",

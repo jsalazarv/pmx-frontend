@@ -109,6 +109,25 @@ export interface IShowEmployee {
   CentroTrabajo?: Partial<IWorkplace>;
 }
 
+export interface IUpdateEmployeeRequest {
+  Id: number;
+  IdPersona: number;
+  Curp: string;
+  Nombres: string;
+  ApellidoPaterno: string;
+  ApellidoMaterno: string;
+  Sexo: string;
+  RFC: string;
+  Fotografia: string;
+  IdSolicitudFiliacion: number;
+  IdCentro: number;
+  IdSeccionSindicato?: number;
+  Referencia: string;
+  Observaciones: string;
+  IdTipoEmpleado: number;
+  IdEmpleado: number;
+}
+
 export interface IRejectEmployeeRequest {
   IdTipoEmpleado: number | null;
   Curp: string;
