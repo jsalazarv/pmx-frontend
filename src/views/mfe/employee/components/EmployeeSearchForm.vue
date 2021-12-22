@@ -369,6 +369,7 @@ export default class EmployeeSearchForm extends Vue {
       ApellidoMaterno: this.employeeValidationData?.MFE?.ApellidoMaterno,
       FechaNacimiento: this.employeeValidationData?.MFE?.FechaNacimiento,
       Sexo: this.employeeValidationData?.MFE?.Sexo,
+      Nacionalidad: this.employeeValidationData?.MFE?.Nacionalidad,
     };
   }
 
@@ -379,6 +380,7 @@ export default class EmployeeSearchForm extends Vue {
       ApellidoMaterno: this.employeeValidationData?.Renapo?.ApellidoMaterno,
       FechaNacimiento: this.employeeValidationData?.Renapo?.FechaNacimiento,
       Sexo: this.employeeValidationData?.Renapo?.Sexo,
+      Nacionalidad: this.employeeValidationData?.Renapo?.Nacionalidad,
     };
   }
 
