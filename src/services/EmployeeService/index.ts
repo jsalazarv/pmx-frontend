@@ -10,6 +10,7 @@ import {
   ISearchResult,
   IConsultationResult,
   IDeleteEmployeeRequest,
+  IUpdateEmployeeRequest,
 } from "@/services/EmployeeService/types";
 
 export default class EmployeeService extends BaseService {
@@ -47,6 +48,17 @@ export default class EmployeeService extends BaseService {
     };
 
     return this.client.post(`/Empleados/Alta`, body, config);
+  }
+
+  async update(id: number, data: IUpdateEmployeeRequest) {
+    const body = serialize(data);
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    return this.client.put(`/Empleados/${id}/Alta`, body, config);
   }
 
   async reject(

@@ -6,7 +6,7 @@ export default {
     title: "Consulta empleado",
   },
   edit: {
-    title: "",
+    title: "Editar empleado",
   },
   create: {
     title: "",
@@ -25,8 +25,10 @@ export default {
   labels: {
     add: "Agregar",
     edit: "Editar",
+    update: "Actualizar",
     export: "Exportar",
     search: "Buscar",
+    delete: "Eliminar",
     dialogs: {
       searchNotFound: {
         message: "",

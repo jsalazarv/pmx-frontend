@@ -26,6 +26,13 @@ export default [
     meta: { requiresAuth: true },
   },
   {
+    path: "/empleados/:id/editar",
+    name: "people:edit",
+    component: () =>
+      import("@/views/mfe/employeeConsultation/employeeEdit.vue"),
+    meta: { requiresAuth: true },
+  },
+  {
     path: "/folios/asignacion",
     name: "folios:list",
     component: () =>
