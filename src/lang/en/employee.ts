@@ -88,7 +88,12 @@ export default {
       errorUpdate: {},
       successUpdate: {},
       errorCreate: {},
-      successCreate: {},
+      successCreate: {
+        title: "",
+        message: "El empleado se registró correctamente",
+        dismiss: "",
+        accept: "",
+      },
     },
   },
 };
