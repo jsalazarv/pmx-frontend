@@ -12,10 +12,24 @@ export default [
     meta: { requiresAuth: true },
   },
   {
-    path: "/empleados/consulta",
-    name: "people:consultation",
+    path: "/empleados",
+    name: "people:list",
     component: () =>
-      import("@/views/mfe/employeeConsultation/employeeConsultation.vue"),
+      import("@/views/mfe/employeeConsultation/employeeList.vue"),
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/empleados/:id",
+    name: "people:show",
+    component: () =>
+      import("@/views/mfe/employeeConsultation/employeeShow.vue"),
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/empleados/:id/editar",
+    name: "people:edit",
+    component: () =>
+      import("@/views/mfe/employeeConsultation/employeeEdit.vue"),
     meta: { requiresAuth: true },
   },
   {

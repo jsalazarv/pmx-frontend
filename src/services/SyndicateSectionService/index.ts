@@ -8,7 +8,7 @@ export default class SyndicateSectionService extends BaseService {
     params = {}
   ): IServiceResponse<Array<ISyndicateSection>> {
     return this.client.get(
-      `/SeccionesSindicato/${syndicateId}/Sindicato`,
+      `/SeccionesSindical/${syndicateId}/Sindicato`,
       params
     );
   }

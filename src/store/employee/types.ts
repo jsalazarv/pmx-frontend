@@ -90,6 +90,7 @@ export interface IEmployeeForm {
   RFC: string;
   EdoCivil: string;
   Fotografia: string;
+  Nacionalidad: string;
 }
 
 export interface IEmploymentDataForm {

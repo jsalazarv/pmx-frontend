@@ -9,6 +9,7 @@ import VueAxios from "vue-axios";
 import "./directives";
 import "/src/plugins/veevalidate";
 import i18n from "@/lang";
+import "./filters/dataCleaner";
 
 Vue.use(VueAxios, Axios);
 

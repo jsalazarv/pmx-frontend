@@ -98,6 +98,36 @@ export interface ICreateEmployeeResponse {
   CentroTrabajo: IWorkplace;
 }
 
+export interface IShowEmployee {
+  IdEmpleado?: number;
+  Estado?: unknown;
+  TipoEmpleado?: Partial<IEmployeeType>;
+  Persona?: Partial<IEmployee>;
+  Filiacion?: Partial<IFiliation>;
+  Sindicato?: Partial<ISyndicate>;
+  SeccionSindical?: Partial<ISyndicateSection>;
+  CentroTrabajo?: Partial<IWorkplace>;
+}
+
+export interface IUpdateEmployeeRequest {
+  Id: number;
+  IdPersona: number;
+  Curp: string;
+  Nombres: string;
+  ApellidoPaterno: string;
+  ApellidoMaterno: string;
+  Sexo: string;
+  RFC: string;
+  Fotografia: string;
+  IdSolicitudFiliacion: number;
+  IdCentro: number;
+  IdSeccionSindicato?: number;
+  Referencia: string;
+  Observaciones: string;
+  IdTipoEmpleado: number;
+  IdEmpleado: number;
+}
+
 export interface IRejectEmployeeRequest {
   IdTipoEmpleado: number | null;
   Curp: string;
@@ -111,6 +141,11 @@ export interface ISearchRequest {
   Nombres: string | null;
   ApellidoPaterno: string | null;
   ApellidoMaterno: string | null;
+}
+
+export interface IDeleteEmployeeRequest {
+  IdEmpleado: number;
+  Motivo: string;
 }
 
 export interface ISearchResponse {

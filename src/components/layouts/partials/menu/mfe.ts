@@ -20,7 +20,7 @@ const mfe: IModuleMenu = {
       icon: "mdi-keyboard-f3",
       text: "Consulta",
       message: null,
-      route: "people:consultation",
+      route: "people:list",
     },
     {
       icon: "mdi-keyboard-f4",

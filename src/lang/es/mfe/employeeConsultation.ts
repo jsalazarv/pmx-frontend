@@ -2,8 +2,11 @@ export default {
   list: {
     title: "Búsqueda de empleado",
   },
+  show: {
+    title: "Consulta empleado",
+  },
   edit: {
-    title: "",
+    title: "Editar empleado",
   },
   create: {
     title: "",
@@ -21,13 +24,29 @@ export default {
   },
   labels: {
     add: "Agregar",
+    edit: "Editar",
+    update: "Actualizar",
     export: "Exportar",
     search: "Buscar",
+    delete: "Eliminar",
     dialogs: {
       searchNotFound: {
         message: "",
       },
-      confirmDelete: {},
+      confirmDelete: {
+        title: "",
+        body: {
+          label1: "Estas por eliminar a",
+          label2: "con el número de asignacion",
+          label3:
+            "Para continuar con esta acción ingresa el motivo de la cancelación",
+          justification: "Justificación",
+        },
+        actions: {
+          accept: "Aceptar",
+          dismiss: "Rechazar",
+        },
+      },
       successDelete: {},
       errorDelete: {},
       errorUpdate: {},
