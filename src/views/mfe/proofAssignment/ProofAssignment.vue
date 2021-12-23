@@ -195,7 +195,7 @@ export default class ProofAssignment extends Vue {
   public isLoadingEmployeeData = false;
   public assignmentNumber = "";
   public confirmDialogOpen = false;
-  public employeeId?: number;
+  public employeeId?: number | null = null;
 
   getEmployeeById(): void {
     this.isLoadingEmployeeData = true;
