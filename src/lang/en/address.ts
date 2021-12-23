@@ -1,10 +1,10 @@
 export default {
   address: {
-    title: "New address",
+    title: "Edit employee address",
+    titleSecondary: "New employee address",
     addressForm: {
       employeeType: "Employee type",
       assigmentNumber: "Assignment number",
-      rc: "RC",
       fullname: "Fullname",
       address: "Address",
       country: "Country",

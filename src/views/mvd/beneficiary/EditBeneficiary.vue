@@ -3,7 +3,7 @@
     <div class="pa-4">
       <v-card>
         <v-toolbar flat>
-          <v-toolbar-title>
+          <v-toolbar-title class="highlight">
             {{ $t("beneficiary.beneficiary.title") }}
           </v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
@@ -39,7 +39,9 @@
                       outlined
                       disabled
                       :error-messages="errors"
-                      v-model="beneficiary.assigmentNumber"
+                      v-model="
+                        consultationEmployee.consultation.assigmentNumber
+                      "
                     >
                     </v-text-field>
                   </ValidationProvider>
@@ -54,9 +56,9 @@
                       dense
                       name="coding"
                       outlined
-                      v-model="beneficiary.coding"
-                      item-text="nombre"
-                      item-value="id"
+                      v-model="beneficiary.IdFamiliar"
+                      item-text="Nombre"
+                      item-value="Id"
                       :items="codingList"
                       :label="
                         $t('beneficiary.beneficiary.beneficiaryForm.coding')
@@ -289,27 +291,6 @@
                 <v-col cols="12" sm="12" md="4">
                   <ValidationProvider
                     :name="
-                      $t('beneficiary.beneficiary.beneficiaryForm.address')
-                    "
-                    v-slot="{ errors }"
-                    rules="required"
-                  >
-                    <v-text-field
-                      :label="
-                        $t('beneficiary.beneficiary.beneficiaryForm.address')
-                      "
-                      name="address"
-                      dense
-                      outlined
-                      :error-messages="errors"
-                      v-model="beneficiary.address"
-                    >
-                    </v-text-field>
-                  </ValidationProvider>
-                </v-col>
-                <v-col cols="12" sm="12" md="4">
-                  <ValidationProvider
-                    :name="
                       $t('beneficiary.beneficiary.beneficiaryForm.medicalUnit')
                     "
                     v-slot="{ errors }"
@@ -320,8 +301,8 @@
                       name="medicalUnit"
                       outlined
                       v-model="beneficiary.medicalUnit"
-                      item-text="nombre"
-                      item-value="id"
+                      item-text="Nombre"
+                      item-value="Id"
                       :items="medicalUnitsList"
                       :label="
                         $t(
@@ -361,6 +342,263 @@
                 </v-col>
               </v-row>
               <v-row>
+                <v-col cols="12" sm="12" md="12">
+                  <v-select
+                    :menu-props="{
+                      closeOnClick: true,
+                      closeOnContentClick: true,
+                    }"
+                    :items="items"
+                    :label="
+                      $t('beneficiary.beneficiary.beneficiaryForm.address')
+                    "
+                    dense
+                    outlined
+                    @change="existingAddress"
+                  >
+                    <template v-slot:prepend-item>
+                      <v-list-item
+                        ripple
+                        @mousedown.prevent
+                        @click="newAddress"
+                      >
+                        <v-list-item-content>
+                          <v-list-item-title>
+                            {{
+                              $t(
+                                "beneficiary.beneficiary.selectText.newAddress"
+                              )
+                            }}
+                          </v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
+                      <v-divider class="mt-2"></v-divider>
+                    </template>
+                  </v-select>
+                </v-col>
+              </v-row>
+              <v-row v-if="useAddress">
+                <v-col cols="12" sm="12" md="4">
+                  <ValidationProvider
+                    :name="
+                      $t('beneficiary.beneficiary.beneficiaryForm.country')
+                    "
+                    v-slot="{ errors }"
+                    rules="required"
+                  >
+                    <v-autocomplete
+                      dense
+                      name="countries"
+                      :items="countries"
+                      item-text="Nombre"
+                      item-value="Id"
+                      :label="
+                        $t('beneficiary.beneficiary.beneficiaryForm.country')
+                      "
+                      outlined
+                      :disabled="isLoadingCountries"
+                      :loading="isLoadingCountries"
+                      @change="getStates"
+                      :error-messages="errors"
+                      v-model="beneficiary.Address.IdPais"
+                    ></v-autocomplete>
+                  </ValidationProvider>
+                </v-col>
+                <v-col cols="12" sm="12" md="4">
+                  <ValidationProvider
+                    :name="$t('beneficiary.beneficiary.beneficiaryForm.state')"
+                    v-slot="{ errors }"
+                    rules="required"
+                  >
+                    <v-autocomplete
+                      dense
+                      name="states"
+                      :items="states"
+                      item-text="Nombre"
+                      item-value="IdEstado"
+                      :label="
+                        $t('beneficiary.beneficiary.beneficiaryForm.state')
+                      "
+                      :disabled="isLoadingStates || !beneficiary.Address.IdPais"
+                      :loading="isLoadingStates"
+                      outlined
+                      required
+                      v-model="beneficiary.Address.IdEstado"
+                      @change="getMunicipalities"
+                      :error-messages="errors"
+                    ></v-autocomplete>
+                  </ValidationProvider>
+                </v-col>
+                <v-col cols="12" sm="12" md="4">
+                  <ValidationProvider
+                    :name="
+                      $t('beneficiary.beneficiary.beneficiaryForm.municipality')
+                    "
+                    v-slot="{ errors }"
+                    rules="required"
+                  >
+                    <v-autocomplete
+                      dense
+                      name="municipalities"
+                      :items="municipalities"
+                      item-text="Nombre"
+                      item-value="IdMunicipio"
+                      :disabled="
+                        isLoadingMunicipalities || !beneficiary.Address.IdEstado
+                      "
+                      :loading="isLoadingMunicipalities"
+                      :label="
+                        $t(
+                          'beneficiary.beneficiary.beneficiaryForm.municipality'
+                        )
+                      "
+                      outlined
+                      required
+                      v-model="beneficiary.Address.IdMunicipio"
+                      :error-messages="errors"
+                    ></v-autocomplete>
+                  </ValidationProvider>
+                </v-col>
+              </v-row>
+              <v-row v-if="useAddress">
+                <v-col cols="12" sm="12" md="4">
+                  <ValidationProvider
+                    :name="
+                      $t('beneficiary.beneficiary.beneficiaryForm.zipcode')
+                    "
+                    v-slot="{ errors }"
+                    rules="required|numeric|min:5|max:5"
+                  >
+                    <v-text-field
+                      :label="
+                        $t('beneficiary.beneficiary.beneficiaryForm.zipcode')
+                      "
+                      name="zipCode"
+                      dense
+                      outlined
+                      :error-messages="errors"
+                    >
+                    </v-text-field>
+                  </ValidationProvider>
+                </v-col>
+                <v-col cols="12" sm="12" md="4">
+                  <ValidationProvider
+                    :name="$t('beneficiary.beneficiary.beneficiaryForm.suburb')"
+                    v-slot="{ errors }"
+                    rules="required|max:150"
+                  >
+                    <v-text-field
+                      :label="
+                        $t('beneficiary.beneficiary.beneficiaryForm.suburb')
+                      "
+                      name="suburb"
+                      dense
+                      outlined
+                      :error-messages="errors"
+                    >
+                    </v-text-field>
+                  </ValidationProvider>
+                </v-col>
+                <v-col cols="12" sm="12" md="4">
+                  <ValidationProvider
+                    :name="
+                      $t('beneficiary.beneficiary.beneficiaryForm.locality')
+                    "
+                    v-slot="{ errors }"
+                    rules="required|max:150"
+                  >
+                    <v-text-field
+                      :label="
+                        $t('beneficiary.beneficiary.beneficiaryForm.locality')
+                      "
+                      name="suburb"
+                      dense
+                      outlined
+                      :error-messages="errors"
+                    >
+                    </v-text-field>
+                  </ValidationProvider>
+                </v-col>
+              </v-row>
+              <v-row v-if="useAddress">
+                <v-col cols="12" sm="12" md="4">
+                  <ValidationProvider
+                    :name="$t('beneficiary.beneficiary.beneficiaryForm.street')"
+                    v-slot="{ errors }"
+                    rules="required|max:150"
+                  >
+                    <v-text-field
+                      :label="
+                        $t('beneficiary.beneficiary.beneficiaryForm.street')
+                      "
+                      name="street"
+                      dense
+                      outlined
+                      :error-messages="errors"
+                    >
+                    </v-text-field>
+                  </ValidationProvider>
+                </v-col>
+
+                <v-col cols="12" sm="12" md="2">
+                  <ValidationProvider
+                    :name="
+                      $t(
+                        'beneficiary.beneficiary.beneficiaryForm.outdoorNumber'
+                      )
+                    "
+                    v-slot="{ errors }"
+                    rules="required|max:5"
+                  >
+                    <v-text-field
+                      :label="
+                        $t(
+                          'beneficiary.beneficiary.beneficiaryForm.outdoorNumber'
+                        )
+                      "
+                      name="outdoorNumber"
+                      dense
+                      outlined
+                      :error-messages="errors"
+                    >
+                    </v-text-field>
+                  </ValidationProvider>
+                </v-col>
+                <v-col cols="12" sm="12" md="2">
+                  <v-text-field
+                    :label="
+                      $t(
+                        'beneficiary.beneficiary.beneficiaryForm.interiorNumber'
+                      )
+                    "
+                    name="interiorNumber"
+                    dense
+                    outlined
+                  >
+                  </v-text-field>
+                </v-col>
+                <v-col cols="12" sm="12" md="4">
+                  <v-text-field
+                    :label="$t('beneficiary.beneficiary.beneficiaryForm.block')"
+                    name="block"
+                    dense
+                    outlined
+                  >
+                  </v-text-field>
+                </v-col>
+              </v-row>
+              <v-row v-if="useAddress">
+                <v-col cols="12" sm="12" md="4">
+                  <v-text-field
+                    :label="$t('beneficiary.beneficiary.beneficiaryForm.lot')"
+                    name="lot"
+                    dense
+                    outlined
+                  >
+                  </v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
                 <v-col cols="12" sm="12" md="4" offset="5">
                   <v-btn type="submit" color="success" dark x-large dense>
                     {{ $t("beneficiary.beneficiary.buttons.save") }}
@@ -385,48 +623,102 @@ import { IMedicalUnit } from "@/services/MedicalUnitService/types";
 import MedicalUnitService from "@/services/MedicalUnitService";
 import CodingService from "@/services/CodingService";
 import { ICoding } from "@/services/CodingService/types";
+import CountryService from "@/services/CountryService";
+import { ICountry } from "@/services/CountryService/types";
+import { IBeneficiaryRequest } from "@/services/BeneficiaryService/types";
+import StateService from "@/services/StateService";
+import MunicipalityService from "@/services/MunicipalityService";
+import { IState } from "@/services/StateService/types";
+import { IMunicipality } from "@/services/MunicipalityService/types";
 
 @Component({})
-export default class Beneficiary extends Vue {
+export default class EditBeneficiary extends Vue {
   protected genderService = new GenderService();
   protected medicalUnitService = new MedicalUnitService();
   protected codingService = new CodingService();
+  protected stateService = new StateService();
+  protected municipalityService = new MunicipalityService();
+  protected countryService = new CountryService();
   public gendersList: Array<IGender> = [];
   public medicalUnitsList: Array<IMedicalUnit> = [];
   public codingList: Array<ICoding> = [];
+  public states: Array<IState> = [];
+  public countries: Array<ICountry> = [];
+  public municipalities: Array<IMunicipality> = [];
   public isLoadingGendersList = false;
   public isLoadingMedicalUnitsList = false;
   public isLoadingCodingList = false;
-
+  public isLoadingCountries = false;
+  public isLoadingStates = false;
+  public isLoadingMunicipalities = false;
   public showPickerBirthday: any = false;
   public showPickerValidity: any = false;
-  //public selectedDate: any = null;
-  public beneficiary = {
-    assigmentNumber: 0,
-    coding: "",
-    curp: "",
-    names: "",
-    lastanme: "",
-    surname: "",
-    birthday: null,
-    age: "",
-    gender: "",
-    validity: null,
-    address: "",
-    medicalUnit: "",
-    observations: "",
+  public useAddress: any = false;
+  public beneficiary: IBeneficiaryRequest = {
+    IdDerechohabiente: null,
+    IdPersona: null,
+    IdDerTitular: null,
+    IdFamiliar: null,
+    IdUMedica: null,
+    TipoDer: null,
+    Vigencia: null,
+    Estado: null,
+    Observaciones: null,
+    UsuarioCrea: null,
+    IdCentro: null,
+    IdDepartamento: null,
+    FechaNacimiento: null,
+    Edad: null,
+    Person: {
+      Curp: "",
+      Nombres: "",
+      ApellidoPaterno: "",
+      ApellidoMaterno: "",
+      FechaNacimiento: "",
+      Sexo: "",
+      Rfc: "",
+      Edad: "",
+    },
+    Address: {
+      IdDomicilio: null,
+      IdPais: null,
+      IdEstado: null,
+      IdMunicipio: null,
+      Localidad: "",
+      CodigoPostal: "",
+      Colonia: "",
+      Calle: "",
+      NumeroInterior: "",
+      NumeroExterior: "",
+      Manzana: "",
+      Lote: "",
+    },
   };
+  public items: any = ["Foo", "Bar", "Fizz", "Buzz"];
+
+  get isLoading(): boolean {
+    // TODO Refactor this form is submitting
+    return false;
+  }
 
   get consultationEmployee(): IConsultationState {
     return this.$store.state.consultation;
   }
 
   get computedBirthdayFormatted() {
-    return this.formatted(this.beneficiary.birthday);
+    return this.formatted(this.beneficiary.FechaNacimiento);
   }
 
   get computedValidityFormatted() {
-    return this.formatted(this.beneficiary.validity);
+    return this.formatted(this.beneficiary.Vigencia);
+  }
+
+  newAddress() {
+    this.useAddress = true;
+  }
+
+  existingAddress() {
+    this.useAddress = false;
   }
 
   formatted(date: any): string | null {
@@ -435,13 +727,50 @@ export default class Beneficiary extends Vue {
     return arrayDate[2] + "/" + arrayDate[1] + "/" + arrayDate[0];
   }
 
+  getCountries(): void {
+    this.isLoadingCountries = true;
+    this.countryService
+      .getAll()
+      .then((response) => {
+        this.countries = response.Data;
+      })
+      .finally(() => {
+        this.isLoadingCountries = false;
+      });
+  }
+
+  getStates(): void {
+    if (!this.beneficiary.Address.IdPais) return;
+    this.isLoadingStates = true;
+    this.stateService
+      .getByCountryId(this.beneficiary.Address.IdPais)
+      .then((response) => {
+        this.states = response.Data;
+      })
+      .finally(() => {
+        this.isLoadingStates = false;
+      });
+  }
+
+  getMunicipalities(): void {
+    if (!this.beneficiary.Address.IdEstado) return;
+    this.isLoadingMunicipalities = true;
+    this.municipalityService
+      .getByStateId(this.beneficiary.Address.IdEstado)
+      .then((response) => {
+        this.municipalities = response.Data;
+      })
+      .finally(() => {
+        this.isLoadingMunicipalities = false;
+      });
+  }
+
   getGenders(): void {
     this.isLoadingGendersList = true;
     this.genderService
       .getAll()
       .then((response) => {
         this.gendersList = response.Data;
-        console.log(this.gendersList);
       })
       .finally(() => {
         this.isLoadingGendersList = false;
@@ -473,10 +802,7 @@ export default class Beneficiary extends Vue {
   }
 
   mounted() {
-    this.beneficiary.assigmentNumber =
-      this.consultationEmployee.consultation.assigmentNumber == null
-        ? 0
-        : this.consultationEmployee.consultation.assigmentNumber;
+    this.getCountries();
     this.getGenders();
     this.getMedicalUnits();
     this.getCoding();
@@ -486,22 +812,17 @@ export default class Beneficiary extends Vue {
     console.log("entra");
   }
 
-  created() {
-    // window.addEventListener("beforeunload", (event) => {
-    //   console.log(event)
-    //   // Cancel the event as stated by the standard. event.preventDefault(); // Chrome requires
-    //   //returnValue to be set.
-    //   event.returnValue = "";
-    // });
-    // window.addEventListener("unload", (event) => {
-    //   console.log(event)
-    // });
-  }
-
-  get isLoading(): boolean {
-    // TODO Refactor this form is submitting
-    return false;
-  }
+  // created() {
+  //   window.addEventListener("beforeunload", (event) => {
+  //     console.log(event)
+  //     // Cancel the event as stated by the standard. event.preventDefault(); // Chrome requires
+  //     //returnValue to be set.
+  //     event.returnValue = "";
+  //   });
+  //   window.addEventListener("unload", (event) => {
+  //     console.log(event)
+  //   });
+  // }
 }
 </script>
 

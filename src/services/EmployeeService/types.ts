@@ -104,30 +104,22 @@ export interface IRejectEmployeeRequest {
   Justificacion: string;
 }
 
-export interface ISearch {
-  id_tipo_emp: string | null;
-  nombres: string | null;
-  ap_paterno: string | null;
-  curp: string | null;
-  ap_materno: string | null;
-  num_empleado: string | null;
+export interface ISearchRequest {
+  IdEmpleado: string | null;
+  IdTipoEmpleado: number | null;
+  Curp: string | null;
+  Nombres: string | null;
+  ApellidoPaterno: string | null;
+  ApellidoMaterno: string | null;
 }
 
-export interface ISearchResult {
-  tipo_emp_desc: string;
+export interface ISearchResponse {
+  TipoEmpleadoDescripcion: string;
   Nombres: string;
-  ap_paterno: string;
-  ap_materno: string;
-  curp: string;
-  num_empleado: number;
-  tipo_empleado: number;
-  id_persona: number;
-}
-
-export interface IConsultationResult {
-  RC: string;
-  centro_depto: string;
-  descripcion: string;
-  vigencia: string;
-  estado_vigencia: string;
+  ApellidoPaterno: string;
+  ApellidoMaterno: string;
+  Curp: string;
+  IdEmpleado: number;
+  IdTipoEmpleado: number;
+  IdPersona: number;
 }

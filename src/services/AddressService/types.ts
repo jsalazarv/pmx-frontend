@@ -15,21 +15,14 @@ export interface IAddress {
 }
 
 export interface IAddressPerson {
-  id_domicilio_persona: number | null;
-  id_domicilio: number | null;
-  domicilio_desc: string;
-  baja: boolean | null;
+  IdDomicilioPersona: number | null;
+  IdDomicilio: number | null;
+  IdPersona: number | null;
 }
 
-export interface IAddressSelect {
-  street: string;
-  idAddress: number | null;
-}
+// export interface IAddressSelect {
+//   street: string;
+//   idAddress: number | null;
+// }
 
-export interface IAddressPersonSave {
-  id_domicilio_persona: number | null;
-  id_domicilio: number | null;
-  id_persona: number | null;
-  usuario_sesion: number | null;
-  baja: boolean | null;
-}
+

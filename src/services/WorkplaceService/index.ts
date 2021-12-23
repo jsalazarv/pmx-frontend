@@ -3,6 +3,10 @@ import { IServiceResponse } from "@/services/types";
 import { IWorkplace } from "@/services/WorkplaceService/types";
 
 export default class WorkplaceService extends BaseService {
+  getAll(): IServiceResponse<Array<IWorkplace>> {
+    return this.client.get("/CentrosTrabajo/");
+  }
+
   getByCompanyName(
     companyName: string,
     params = {}

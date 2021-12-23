@@ -3,7 +3,7 @@
     <div class="pa-4">
       <v-card>
         <v-toolbar flat>
-          <v-toolbar-title>
+          <v-toolbar-title class="highlight">
             {{ $t("searchEmployee.search.title") }}
           </v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
@@ -26,7 +26,7 @@
                     item-value="Id"
                     :label="$t('searchEmployee.search.searchForm.employeeType')"
                     outlined
-                    v-model="search.id_tipo_emp"
+                    v-model="searchRequest.IdTipoEmpleado"
                     :loading="isLoadingEmployeeList"
                     :disabled="isLoadingEmployeeList"
                   ></v-autocomplete>
@@ -43,7 +43,7 @@
                       name="names"
                       dense
                       outlined
-                      v-model="search.nombres"
+                      v-model="searchRequest.Nombres"
                       :error-messages="errors"
                     >
                     </v-text-field>
@@ -63,7 +63,7 @@
                       name="curp"
                       dense
                       outlined
-                      v-model="search.curp"
+                      v-model="searchRequest.Curp"
                       :error-messages="errors"
                     >
                     </v-text-field>
@@ -80,7 +80,7 @@
                       name="lastname"
                       dense
                       outlined
-                      v-model="search.ap_paterno"
+                      v-model="searchRequest.ApellidoPaterno"
                       :error-messages="errors"
                     >
                     </v-text-field>
@@ -104,7 +104,7 @@
                       name="assignmentNumber"
                       dense
                       outlined
-                      v-model="search.num_empleado"
+                      v-model="searchRequest.IdEmpleado"
                       :error-messages="errors"
                     >
                     </v-text-field>
@@ -121,7 +121,7 @@
                       name="surname"
                       dense
                       outlined
-                      v-model="search.ap_materno"
+                      v-model="searchRequest.ApellidoMaterno"
                       :error-messages="errors"
                     >
                     </v-text-field>
@@ -145,7 +145,7 @@
               ></v-progress-linear>
               <v-data-table
                 :headers="headers"
-                :items="searchResult"
+                :items="searchResponse"
                 :items-per-page="5"
                 class="elevation-1"
               >
@@ -156,25 +156,25 @@
                         class="mx-2"
                         @click="
                           onButtonClick(
-                            row.item.num_empleado,
-                            row.item.nombres,
-                            row.item.ap_paterno,
-                            row.item.ap_materno,
-                            row.item.tipo_emp_desc,
-                            row.item.tipo_empleado,
-                            row.item.id_persona
+                            row.item.IdEmpleado,
+                            row.item.Nombres,
+                            row.item.ApellidoPaterno,
+                            row.item.ApellidoMaterno,
+                            row.item.TipoEmpleadoDescripcion,
+                            row.item.IdTipoEmpleado,
+                            row.item.IdPersona
                           )
                         "
                       >
                         <v-icon dark>mdi-eye</v-icon>
                       </v-btn>
                     </td>
-                    <td>{{ row.item.tipo_emp_desc }}</td>
-                    <td>{{ row.item.nombres }}</td>
-                    <td>{{ row.item.ap_paterno }}</td>
-                    <td>{{ row.item.ap_materno }}</td>
-                    <td>{{ row.item.curp }}</td>
-                    <td>{{ row.item.num_empleado }}</td>
+                    <td>{{ row.item.TipoEmpleadoDescripcion }}</td>
+                    <td>{{ row.item.Nombres }}</td>
+                    <td>{{ row.item.ApellidoPaterno }}</td>
+                    <td>{{ row.item.ApellidoMaterno }}</td>
+                    <td>{{ row.item.Curp }}</td>
+                    <td>{{ row.item.IdEmpleado }}</td>
                   </tr>
                 </template>
               </v-data-table>
@@ -192,38 +192,44 @@ import Component from "vue-class-component";
 import EmployeeTypeService from "@/services/EmployeeTypeService";
 import { IEmployeeType } from "@/services/EmployeeTypeService/types";
 import EmployeeService from "@/services/EmployeeService";
-import { ISearch, ISearchResult } from "@/services/EmployeeService/types";
+import {
+  ISearchRequest,
+  ISearchResponse,
+} from "@/services/EmployeeService/types";
 import { IConsultation, IConsultationState } from "@/store/consultation/types";
+import BeneficiaryService from "@/services/BeneficiaryService";
 
 @Component({})
 export default class SearchEmployee extends Vue {
   protected employeeTypesService = new EmployeeTypeService();
   protected employeeService = new EmployeeService();
+  protected beneficiaryService = new BeneficiaryService();
   public employeeTypeList: Array<IEmployeeType> = [];
   public searchData: Array<any> = [];
   public isLoadingEmployeeList = false;
   public isLoadingEmployeeSearch = false;
-  public search: ISearch = {
-    nombres: null,
-    id_tipo_emp: null,
-    ap_paterno: null,
-    curp: null,
-    ap_materno: null,
-    num_empleado: null,
+  public searchRequest: ISearchRequest = {
+    IdEmpleado: null,
+    IdTipoEmpleado: null,
+    Curp: null,
+    Nombres: null,
+    ApellidoPaterno: null,
+    ApellidoMaterno: null,
   };
   public consultation: IConsultation = {
     assigmentNumber: null,
     employeeType: null,
     fullname: null,
     employeeTypeId: null,
-    rc: "",
-    id_person: null,
-    department: "",
+    groupPersonal: null,
+    areaPersonal: null,
+    idPerson: null,
+    departmentCenter: "",
     departmentDescription: "",
     validity: "",
-    ValidityStatus: "",
+    validityStatus: false,
   };
-  public searchResult: Array<ISearchResult> = [];
+  public searchResponse: Array<ISearchResponse> = [];
   public headers: Array<any> = [
     { text: "", value: "actions", sortable: false },
     {
@@ -251,6 +257,11 @@ export default class SearchEmployee extends Vue {
     },
   ];
 
+  get isLoading(): boolean {
+    // TODO Refactor this form is submitting
+    return false;
+  }
+
   get consultationEmployee(): IConsultationState {
     return this.$store.state.consultation;
   }
@@ -268,12 +279,11 @@ export default class SearchEmployee extends Vue {
   }
 
   onSubmit(): void {
-    this.searchResult = [];
     this.isLoadingEmployeeSearch = true;
     this.employeeService
-      .search(this.search)
+      .search(this.searchRequest)
       .then((response) => {
-        this.searchResult = response.Data;
+        this.searchResponse = response.Data;
       })
       .finally(() => {
         this.isLoadingEmployeeSearch = false;
@@ -287,42 +297,45 @@ export default class SearchEmployee extends Vue {
     surname: string,
     employeeType: string,
     employeeTypeId: number,
-    id_person: number
+    idPerson: number
   ): void {
     this.consultation.assigmentNumber = assignmentNumber;
     this.consultation.fullname = names + " " + lastname + " " + surname;
     this.consultation.employeeType = employeeType;
     this.consultation.employeeTypeId = employeeTypeId;
-    this.consultation.id_person = id_person;
+    this.consultation.idPerson = idPerson;
 
-    this.employeeService
-      .consultation(
-        this.consultation.assigmentNumber,
-        this.consultation.employeeTypeId
-      )
-      .then((response) => {
-        this.consultation.rc = response.Data.RC;
-        this.consultation.department = response.Data.centro_depto;
-        this.consultation.departmentDescription = response.Data.descripcion;
-        this.consultation.validity = response.Data.vigencia;
-        this.consultation.ValidityStatus = response.Data.estado_vigencia;
-      })
-      .finally(() => {
-        this.$store.dispatch(
-          "consultation/setConsultationData",
-          this.consultation
-        );
-        this.$router.push({ name: "mvd:people:employeeConsultation" });
-      });
+    if (this.consultation.employeeTypeId == 0) {
+      this.beneficiaryService
+        .getValidityRights(
+          this.consultation.assigmentNumber,
+          this.consultation.employeeTypeId
+        )
+        .then((response) => {
+          this.consultation.groupPersonal = response.Data.GrupoPersonal;
+          this.consultation.areaPersonal = response.Data.AreaPersonal;
+          this.consultation.departmentCenter = response.Data.CentroDepto;
+          this.consultation.departmentDescription =
+            response.Data.DepartamentoDescripcion;
+          this.consultation.validity = response.Data.Vigencia;
+          this.consultation.validityStatus = response.Data.EstadoVigencia;
+        })
+        .finally(() => {
+          this.setConsultationData(this.consultation);
+          this.$router.push({ name: "mvd:people:employeeConsultation" });
+        });
+    } else {
+      this.setConsultationData(this.consultation);
+      this.$router.push({ name: "mvd:people:employeeConsultation" });
+    }
+  }
+
+  setConsultationData(data: IConsultation): void {
+    this.$store.dispatch("consultation/setConsultationData", data);
   }
 
   mounted(): void {
     this.getEmployeeTypes();
-  }
-
-  get isLoading(): boolean {
-    // TODO Refactor this form is submitting
-    return false;
   }
 }
 </script>

@@ -3,12 +3,13 @@ export interface IConsultation {
   employeeType: string | null;
   fullname: string | null;
   employeeTypeId: number | null;
-  rc: string;
-  id_person: number | null;
-  department: string;
+  groupPersonal: string | null;
+  areaPersonal:string | null;
+  idPerson: number | null;
+  departmentCenter: string;
   departmentDescription: string;
   validity: string;
-  ValidityStatus: string;
+  validityStatus: boolean;
 }
 
 export interface IConsultationState {

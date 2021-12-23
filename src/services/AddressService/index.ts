@@ -3,7 +3,6 @@ import { IServiceResponse } from "@/services/types";
 import {
   IAddress,
   IAddressPerson,
-  IAddressPersonSave,
 } from "@/services/AddressService/types";
 
 export default class AddressService extends BaseService {
@@ -19,29 +18,24 @@ export default class AddressService extends BaseService {
     return this.client.put(`/Domicilios/${address.IdDomicilio}`, address);
   }
 
-  getAddressesbyPerson(
-    idPerson: number | null
-  ): IServiceResponse<Array<IAddressPerson>> {
-    return this.client.get(
-      `/Domicilios/${idPerson}/ObtenerDomiciliosPorPersonaId`
-    );
+  getCurrentAddress(idPerson: number | null): IServiceResponse<IAddress> {
+    return this.client.get(`/Domicilios/ObtenerActual/${idPerson}`);
   }
 
   createAddresPerson(
-    addressPerson: IAddressPersonSave
-  ): IServiceResponse<IAddressPersonSave> {
+    addressPerson: IAddressPerson
+  ): IServiceResponse<IAddressPerson> {
     return this.client.post(
       "/Domicilios/CrearDomiciliosPersona",
       addressPerson
     );
   }
 
-  assignAddressPerson(
-    addressPerson: IAddressPersonSave
-  ): IServiceResponse<IAddressPersonSave> {
-    return this.client.put(
-      `Domicilios/AsignarDomicilioPersona/${addressPerson.id_domicilio_persona}`,
-      addressPerson
-    );
-  }
+  // getAddressesbyPerson(
+  //   idPerson: number | null
+  // ): IServiceResponse<Array<IAddressPerson>> {
+  //   return this.client.get(
+  //     `/Domicilios/${idPerson}/ObtenerDomiciliosPorPersonaId`
+  //   );
+  // }
 }

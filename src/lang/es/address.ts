@@ -1,10 +1,10 @@
 export default {
   address: {
-    title: "Alta domicilio",
+    title: "Editar domicilio empleado",
+    titleSecondary: "Nuevo domicilio empleado",
     addressForm: {
       employeeType: "Tipo de empleado",
       assigmentNumber: "Número de asignación",
-      rc: "RC",
       fullname: "Nombre completo",
       address: "Domicilio",
       country: "Pais",

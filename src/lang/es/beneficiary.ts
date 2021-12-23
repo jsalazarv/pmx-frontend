@@ -15,6 +15,20 @@ export default {
       address: "Domicilio",
       medicalUnit: "Unidad médica",
       observations: "Observaciones",
+      country: "Pais",
+      state: "Estado",
+      municipality: "Municipio",
+      locality: "Localidad",
+      zipcode: "Código postal",
+      suburb: "Colonia",
+      street: "Calle",
+      outdoorNumber: "Número exterior",
+      interiorNumber: "Número interior",
+      block: "Manzana",
+      lot: "Lote",
+    },
+    selectText:{
+      newAddress:"Nuevo domicilio..."
     },
     buttons: {
       validate: "Validar",
