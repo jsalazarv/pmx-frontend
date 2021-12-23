@@ -8,7 +8,7 @@ const mvd: IModuleMenu = {
       icon: "mdi-keyboard-f1",
       text: "Consulta",
       message: null,
-      route: "people:searchEmployee",
+      route: "mvd:people:searchEmployee",
     },
     {
       icon: "mdi-keyboard-f2",

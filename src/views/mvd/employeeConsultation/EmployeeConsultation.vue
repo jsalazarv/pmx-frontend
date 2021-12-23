@@ -3,7 +3,7 @@
     <div class="pa-4">
       <v-card>
         <v-toolbar flat>
-          <v-toolbar-title>
+          <v-toolbar-title class="highlight">
             {{ $t("employeeConsultation.consultation.title") }}
           </v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
@@ -15,134 +15,21 @@
         ></v-progress-linear>
         {{ consultationEmployee }}
         <v-container>
-          <v-row>
-            <v-col cols="12" sm="12" md="6">
-              <v-text-field
-                :label="
-                  $t(
-                    'employeeConsultation.consultation.employeeConsultationForm.employeeType'
-                  )
-                "
-                name="employeeType"
-                dense
-                outlined
-                disabled
-                :value="consultationEmployee.consultation.employeeType"
-              >
-              </v-text-field>
-            </v-col>
-            <v-col cols="12" sm="12" md="6">
-              <v-text-field
-                :label="
-                  $t(
-                    'employeeConsultation.consultation.employeeConsultationForm.assignmentNumber'
-                  )
-                "
-                name="assignmentNumber"
-                dense
-                outlined
-                disabled
-                :value="consultationEmployee.consultation.assigmentNumber"
-              >
-              </v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="12" sm="12" md="6">
-              <v-text-field
-                :label="
-                  $t(
-                    'employeeConsultation.consultation.employeeConsultationForm.rc'
-                  )
-                "
-                name="rc"
-                dense
-                outlined
-                disabled
-                :value="consultationEmployee.consultation.rc"
-              >
-              </v-text-field>
-            </v-col>
-            <v-col cols="12" sm="12" md="6">
-              <v-text-field
-                :label="
-                  $t(
-                    'employeeConsultation.consultation.employeeConsultationForm.fullname'
-                  )
-                "
-                name="fullname"
-                dense
-                outlined
-                disabled
-                :value="consultationEmployee.consultation.fullname"
-              >
-              </v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="12" sm="12" md="4">
-              <v-text-field
-                :label="
-                  $t(
-                    'employeeConsultation.consultation.employeeConsultationForm.department'
-                  )
-                "
-                name="department"
-                dense
-                outlined
-                disabled
-                :value="consultationEmployee.consultation.department"
-              >
-              </v-text-field>
-            </v-col>
-            <v-col cols="12" sm="12" md="8">
-              <v-text-field
-                :label="
-                  $t(
-                    'employeeConsultation.consultation.employeeConsultationForm.departmentDescription'
-                  )
-                "
-                name="departmentDescription"
-                dense
-                outlined
-                disabled
-                :value="consultationEmployee.consultation.departmentDescription"
-              >
-              </v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="12" sm="12" md="6">
-              <v-text-field
-                :label="
-                  $t(
-                    'employeeConsultation.consultation.employeeConsultationForm.validity'
-                  )
-                "
-                name="validity"
-                dense
-                outlined
-                disabled
-                :value="consultationEmployee.consultation.validity"
-              >
-              </v-text-field>
-            </v-col>
-            <v-col cols="12" sm="12" md="6">
-              <v-text-field
-                :label="
-                  $t(
-                    'employeeConsultation.consultation.employeeConsultationForm.validityStatus'
-                  )
-                "
-                name="validityStatus"
-                dense
-                outlined
-                disabled
-                :value="consultationEmployee.consultation.ValidityStatus"
-              >
-              </v-text-field>
-            </v-col>
-          </v-row>
+          <v-col cols="12" sm="12" md="12">
+            <Alert
+              :message="alert.message"
+              :alert="alert.alert"
+              :type="alert.type"
+              @hideAlert="hideAlert"
+            ></Alert>
+          </v-col>
+          <EmployeeFormData
+            v-if="consultationEmployee.consultation.employeeTypeId == 0"
+          />
+          <EmployeeForm v-else />
+        </v-container>
+        <v-divider></v-divider>
+        <v-container>
           <v-row>
             <v-col cols="12" sm="6" md="3">
               <v-btn
@@ -152,11 +39,11 @@
                 dark
                 large
                 dense
-                @click="onBtnAddAddress"
+                @click="onBtnEditAddress"
               >
                 {{
                   $t(
-                    "employeeConsultation.consultation.actionsButtons.manageAddresses"
+                    "employeeConsultation.consultation.actionsButtons.editAddress"
                   )
                 }}
               </v-btn>
@@ -169,89 +56,104 @@
                 dark
                 large
                 dense
-                @click.stop="dialog = true"
+                @click="onBtnNewAddress"
               >
                 {{
                   $t(
-                    "employeeConsultation.consultation.actionsButtons.assignAddress"
+                    "employeeConsultation.consultation.actionsButtons.newAddress"
                   )
                 }}
               </v-btn>
-
-              <v-dialog v-model="dialog" max-width="800px">
+            </v-col>
+            <v-col cols="12" sm="6" md="3">
+              <v-dialog v-model="dialog" persistent max-width="600">
+                <template v-slot:activator="{ on, attrs }">
+                  <!-- <v-btn color="primary" dark v-bind="attrs" v-on="on">
+                    Open Dialog
+                  </v-btn> -->
+                  <v-btn
+                    class="sizeTextButton"
+                    type="button"
+                    color="success"
+                    large
+                    dark
+                    dense
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    {{
+                      $t(
+                        "employeeConsultation.consultation.actionsButtons.assignMedicalUnit"
+                      )
+                    }}
+                  </v-btn>
+                </template>
                 <v-card>
                   <v-card-title class="text-h5">
                     {{
                       $t(
-                        "employeeConsultation.consultation.actionsButtons.assignAddress"
+                        "employeeConsultation.consultation.actionsButtons.assignMedicalUnit"
                       )
                     }}
                   </v-card-title>
+                  <v-col cols="12" sm="12" md="12">
+                    <v-autocomplete
+                      dense
+                      name="medicalUnit"
+                      outlined
+                      item-text="Nombre"
+                      item-value="Id"
+                      :items="medicalUnitsList"
+                      :label="
+                        $t(
+                          'employeeConsultation.consultation.assignMedicalUnit.medicalUnit'
+                        )
+                      "
+                      :disabled="isLoadingMedicalUnitsList"
+                      :loading="isLoadingMedicalUnitsList"
+                    ></v-autocomplete>
+                  </v-col>
 
-                  <v-card-text>
-                    <v-data-table
-                      :headers="heeadersAddress"
-                      :items="addressesPerson"
-                      :items-per-page="5"
-                      class="elevation-1"
-                    >
-                      <template v-slot:item="row">
-                        <tr>
-                          <td>
-                            {{ addressString(row.item.domicilio_desc) }}
-                          </td>
-
-                          <td>
-                            <v-chip
-                              class="ma-2"
-                              :color="row.item.baja ? 'success' : 'error'"
-                              label
-                              text-color="white"
-                            >
-                              <v-icon left>
-                                {{
-                                  row.item.baja ? "mdi-bank" : "mdi-bank-off"
-                                }}</v-icon
-                              >
-                            </v-chip>
-                          </td>
-                          <td>
-                            <v-btn
-                              @click="
-                                onBtnAssign(
-                                  row.item.id_domicilio,
-                                  row.item.id_domicilio_persona
-                                )
-                              "
-                              class="mx-2"
-                            >
-                              {{
-                                $t(
-                                  "employeeConsultation.consultation.actionsButtons.assign"
-                                )
-                              }}
-                            </v-btn>
-                          </td>
-                        </tr>
-                      </template>
-                    </v-data-table>
-                  </v-card-text>
+                  <!--
+                    v-model="beneficiary.medicalUnit"
+                    :error-messages="errors"
+                     :items="countries"
+                    :disabled="isLoadingCountries"
+                      :loading="isLoadingCountries"
+                      v-model="address.IdPais"
+                      @change="getStates"
+                      :error-messages="errors"
+                     <v-card-text
+                    >Let Google help apps determine location. This means sending
+                    anonymous location data to Google, even when no apps are
+                    running.</v-card-text
+                  > -->
 
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="green darken-1" text @click="dialog = false">
+                    <v-btn color="red darken-1" text @click="dialog = false">
                       {{
                         $t(
-                          "employeeConsultation.consultation.actionsButtons.close"
+                          "employeeConsultation.consultation.actionsButtons.cancel"
+                        )
+                      }}
+                    </v-btn>
+                    <v-btn
+                      color="success"
+                      dark
+                      dense
+                      @click="dialog = false"
+                    >
+                      {{
+                        $t(
+                          "employeeConsultation.consultation.actionsButtons.assign"
                         )
                       }}
                     </v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
-            </v-col>
-            <v-col cols="12" sm="6" md="3">
-              <v-btn
+              <!-- <v-btn
                 class="sizeTextButton"
                 type="button"
                 color="success"
@@ -264,13 +166,13 @@
                     "employeeConsultation.consultation.actionsButtons.assignMedicalUnit"
                   )
                 }}
-              </v-btn>
+              </v-btn> -->
             </v-col>
             <v-col cols="12" sm="6" md="3">
               <v-btn
+                :disabled="disabledCredential"
                 class="colorCredentialButton sizeTextButton"
                 type="button"
-                dark
                 dense
                 large
               >
@@ -286,7 +188,7 @@
         <v-divider></v-divider>
         <v-toolbar flat>
           <v-toolbar-title>
-            {{ $t("employeeConsultation.consultation.secondTitle") }}
+            {{ $t("employeeConsultation.consultation.titleSecondary") }}
           </v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
@@ -352,42 +254,37 @@ import Component from "vue-class-component";
 import { IConsultationState } from "@/store/consultation/types";
 import BeneficiaryService from "@/services/BeneficiaryService/";
 import EmployeeService from "@/services/EmployeeService";
-import AddressService from "@/services/AddressService";
 import {
-  IAddressPerson,
-  IAddressPersonSave,
-} from "@/services/AddressService/types";
-import address from "@/lang/en/address";
+  IBeneficiary,
+  ITitularBeneficiaryRequest,
+} from "@/services/BeneficiaryService/types";
+import EmployeeFormData from "./components/EmployeeFormData.vue";
+import EmployeeForm from "./components/EmployeeForm.vue";
+import Alert from "@/components/Alert.vue";
+import { IMedicalUnit } from "@/services/MedicalUnitService/types";
+import MedicalUnitService from "@/services/MedicalUnitService";
 
-@Component({})
+@Component({ components: { EmployeeFormData, EmployeeForm, Alert } })
 export default class EmployeeConsultation extends Vue {
   protected beneficiaryService = new BeneficiaryService();
   protected employeeService = new EmployeeService();
-  protected addressService = new AddressService();
+  protected medicalUnitService = new MedicalUnitService();
+  public medicalUnitsList: Array<IMedicalUnit> = [];
+  public beneficiaries: Array<any> = [];
+  public disabledCredential = false;
   public dialog = false;
-  public addressesPerson: Array<IAddressPerson> = [];
-  public addressPersonSave: IAddressPersonSave = {
-    id_domicilio_persona: null,
-    id_domicilio: null,
-    id_persona: null,
-    usuario_sesion: null,
-    baja: null,
+  public isLoadingMedicalUnitsList = false;
+  public titularBeneficiary: ITitularBeneficiaryRequest = {
+    IdPersona: null,
+    IdCentro: null,
+    IdDepartamento: null,
+    Vigencia: null,
   };
-  public heeadersAddress: Array<any> = [
-    {
-      text: this.$t("employeeConsultation.consultation.addressTable.address"),
-      value: "address",
-    },
-    {
-      text: this.$t("employeeConsultation.consultation.addressTable.status"),
-      value: "status",
-    },
-    {
-      text: "",
-      value: "",
-      sortable: false,
-    },
-  ];
+  public alert = {
+    alert: false,
+    message: "",
+    type: false,
+  };
   public headers: Array<any> = [
     { text: "", value: "edit", sortable: false },
     { text: "", value: "delete", sortable: false },
@@ -422,38 +319,33 @@ export default class EmployeeConsultation extends Vue {
       value: "parentesco",
     },
   ];
-  public beneficiaries: Array<any> = [];
-  public arrayAddress: Array<any> = [];
+
+  get isLoading(): boolean {
+    // TODO Refactor this form is submitting
+    return false;
+  }
 
   get consultationEmployee(): IConsultationState {
     return this.$store.state.consultation;
   }
 
+  onBtnEditAddress(): void {
+    this.$router.push({ name: "address:editAddress" });
+  }
+
+  onBtnNewAddress(): void {
+    this.$router.push({ name: "address:newAddress" });
+  }
+
   onBtnAddBeneficiary(): void {
-    this.$router.push({ path: "/derechohabiente/alta" });
+    this.$router.push({ name: "beneficiary:newBeneficiary" });
   }
 
-  onBtnAddAddress(): void {
-    this.$router.push({ path: "/domicilio/alta" });
-  }
-
-  addressString(_address: string): string {
-    let array = _address.split("|");
-    console.log(array);
-    return `${array[0]} ${array[1]}, ${array[3]}, ${array[6]}, ${array[4]}, ${array[5]}, ${array[7]} `;
-  }
-
-  getAddressesbyPerson(): void {
-    this.addressService
-      .getAddressesbyPerson(this.consultationEmployee.consultation.id_person)
-      .then((response) => {
-        this.addressesPerson = response.Data;
-      });
+  onBtnCredentialization(): void {
+    this.$router.push({ name: "credentialization:credentialization" });
   }
 
   getAllBeneficiaries(): void {
-    // this.employeeTypesService .getAll() .then((response) => { this.employeeTypeList
-    // = response.Data; }) .finally(() => { this.isLoadingEmployeeList = false; });
     this.beneficiaries = this.beneficiaryService.getAll(
       this.consultationEmployee.consultation.assigmentNumber
     );
@@ -466,35 +358,53 @@ export default class EmployeeConsultation extends Vue {
     });
   }
 
-  onBtnAssign(idAddress: number, idAddressPerson: number): void {
-    this.addressPersonSave.id_domicilio_persona = idAddressPerson;
-    this.addressPersonSave.id_persona = this.consultationEmployee.consultation.id_person;
-    this.addressPersonSave.usuario_sesion = 0; // TODO: Aquí va el usuario de la sesión
-    this.addressPersonSave.baja = true;
-    this.addressService
-      .assignAddressPerson(this.addressPersonSave)
+  hideAlert(): void {
+    this.alert.message = "";
+    this.alert.alert = false;
+    this.alert.type = false;
+  }
+
+  validity(): void {
+    if (!this.consultationEmployee.consultation.validityStatus) {
+      this.alert = {
+        message: "El empleado no encuentra se actualmente vigente", //this.$t("address.address.messages.success") as string,
+        alert: true,
+        type: false,
+      };
+      console.log(this.disabledCredential);
+      this.disabledCredential = true;
+    }
+  }
+
+  getMedicalUnits(): void {
+    this.isLoadingMedicalUnitsList = true;
+    this.medicalUnitService
+      .getAll()
       .then((response) => {
-        let index = this.addressesPerson.findIndex(
-          (d) => d.id_domicilio == idAddress
-        );
-        this.addressesPerson[index].baja = true;
-        for (let i = 0; i < this.addressesPerson.length; i++) {
-          if (i != index) {
-            this.addressesPerson[i].baja = false;
-          }
-        }
+        this.medicalUnitsList = response.Data;
+      })
+      .finally(() => {
+        this.isLoadingMedicalUnitsList = false;
       });
   }
 
   mounted(): void {
+    if (this.consultationEmployee.consultation.assigmentNumber == null) {
+      this.$router.push({
+        name: "mvd:people:searchEmployee",
+      });
+    }
+    this.getMedicalUnits();
+    this.validity();
     this.getAllBeneficiaries();
-    this.getAddressesbyPerson();
   }
 
-  get isLoading(): boolean {
-    // TODO Refactor this form is submitting
-    return false;
-  }
+  // created() {
+
+  //   window.addEventListener("beforeunload", (event) => {
+  //     event.returnValue = "";
+  //   });
+  // }
 }
 </script>
 
@@ -506,5 +416,6 @@ export default class EmployeeConsultation extends Vue {
 .sizeTextButton {
   font-size: 11px !important;
   width: 240px !important;
+  color: white;
 }
 </style>

@@ -7,8 +7,7 @@ import {
   IEmployeeValidationResponse,
   IMessage,
   IRejectEmployeeRequest,
-  ISearchResult,
-  IConsultationResult,
+  ISearchResponse,
   IDeleteEmployeeRequest,
   IUpdateEmployeeRequest,
 } from "@/services/EmployeeService/types";
@@ -74,16 +73,7 @@ export default class EmployeeService extends BaseService {
     return this.client.post(`/Empleados/Cancelacion`, data);
   }
 
-  search(params = {}): IServiceResponse<ISearchResult[]> {
+  search(params = {}): IServiceResponse<ISearchResponse[]> {
     return this.client.post("/Empleados/Buscar/", params);
-  }
-
-  consultation(
-    assigmentNumber: number | null,
-    employeeTypeId: number
-  ): IServiceResponse<IConsultationResult> {
-    return this.client.get(
-      `/Empleados/${assigmentNumber}/${employeeTypeId}/ObtenerVigenciaPorId`
-    );
   }
 }

@@ -3,7 +3,7 @@
     <div class="pa-4">
       <v-card>
         <v-toolbar flat>
-          <v-toolbar-title>
+          <v-toolbar-title class="highlight">
             {{ $t("address.address.title") }}
           </v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
@@ -41,18 +41,7 @@
                 </v-col>
               </v-row>
               <v-row>
-                <v-col cols="12" sm="12" md="6">
-                  <v-text-field
-                    :label="$t('address.address.addressForm.rc')"
-                    name="rc"
-                    dense
-                    outlined
-                    :value="consultationEmployee.consultation.rc"
-                    disabled
-                  >
-                  </v-text-field>
-                </v-col>
-                <v-col cols="12" sm="12" md="6">
+                <v-col cols="12" sm="12" md="12">
                   <v-text-field
                     :label="$t('address.address.addressForm.fullname')"
                     name="fullname"
@@ -65,29 +54,12 @@
                 </v-col>
               </v-row>
               <v-row>
-                <v-col cols="12" sm="12" md="6">
-                  <v-autocomplete
-                    dense
-                    name="address"
-                    :items="selectAddresses"
-                    item-text="street"
-                    item-value="idAddress"
-                    :label="$t('address.address.addressForm.address')"
-                    outlined
-                    :disabled="isLoadingAddress"
-                    :loading="isLoadingAddress"
-                    v-model="address.IdDomicilio"
-                    @change="getAddressById"
-                  ></v-autocomplete>
-                </v-col>
-              </v-row>
-              <v-row>
-                <alert
+                <Alert
                   :message="alert.message"
                   :alert="alert.alert"
                   :type="alert.type"
                   @hideAlert="hideAlert"
-                ></alert>
+                ></Alert>
               </v-row>
               <v-row>
                 <v-col cols="12" sm="12" md="4">
@@ -305,19 +277,14 @@ import StateService from "@/services/StateService";
 import { IState } from "@/services/StateService/types";
 import MunicipalityService from "@/services/MunicipalityService";
 import { IMunicipality } from "@/services/MunicipalityService/types";
-import {
-  IAddress,
-  IAddressPerson,
-  IAddressPersonSave,
-  IAddressSelect,
-} from "@/services/AddressService/types";
+import { IAddress } from "@/services/AddressService/types";
 import AddressService from "@/services/AddressService/index";
 import Alert from "@/components/Alert.vue";
 
 @Component({
   components: { Alert },
 })
-export default class Address extends Vue {
+export default class EditAddress extends Vue {
   protected countryService = new CountryService();
   protected stateService = new StateService();
   protected municipalityService = new MunicipalityService();
@@ -328,14 +295,6 @@ export default class Address extends Vue {
   public isLoadingStates = false;
   public isLoadingMunicipalities = false;
   public municipalities: Array<IMunicipality> = [];
-  public addressesPerson: Array<IAddressPerson> = [];
-  public addressPersonSave: IAddressPersonSave = {
-    id_domicilio_persona: null,
-    id_domicilio: null,
-    id_persona: null,
-    usuario_sesion: null,
-    baja: null,
-  };
   public alert = {
     alert: false,
     message: "",
@@ -356,8 +315,15 @@ export default class Address extends Vue {
     Lote: "",
     Baja: false,
   };
-  public selectAddresses: Array<IAddressSelect> = [];
-  public isLoadingAddress = false;
+
+  get isLoading(): boolean {
+    // TODO Refactor this form is submitting
+    return false;
+  }
+
+  get consultationEmployee(): IConsultationState {
+    return this.$store.state.consultation;
+  }
 
   getCountries(): void {
     this.isLoadingCountries = true;
@@ -397,13 +363,9 @@ export default class Address extends Vue {
       });
   }
 
-  get consultationEmployee(): IConsultationState {
-    return this.$store.state.consultation;
-  }
-
-  getAddressById(): void {
+  getCurrentAddress(): void {
     this.addressService
-      .get(this.address.IdDomicilio)
+      .getCurrentAddress(this.consultationEmployee.consultation.idPerson)
       .then((response) => {
         this.address = response.Data;
       })
@@ -419,102 +381,34 @@ export default class Address extends Vue {
     this.alert.type = false;
   }
 
-  getAddressesbyPerson(): void {
-    this.isLoadingAddress = true;
+  onSubmit(): void {
+    console.log("editar");
     this.addressService
-      .getAddressesbyPerson(this.consultationEmployee.consultation.id_person)
+      .edit(this.address)
       .then((response) => {
-        for (let i = 0; i < response.Data.length; i++) {
-          const address = response.Data[i].domicilio_desc;
-          const arrayAddress = address.split("|");
-          const street = arrayAddress[0];
-          const select = {} as IAddressSelect;
-          select.street = street;
-          select.idAddress = response.Data[i].id_domicilio;
-          this.selectAddresses.push(select);
-        }
+        this.alert = {
+          message: this.$t("address.address.messages.success") as string,
+          alert: true,
+          type: true,
+        };
       })
-      .finally(() => {
-        this.isLoadingAddress = false;
+      .catch((error) => {
+        this.alert = {
+          message: this.$t("address.address.messages.error") as string,
+          alert: true,
+          type: false,
+        };
       });
   }
 
-  onSubmit(): void {
-    if (this.address.IdDomicilio == null) {
-      this.addressService
-        .create(this.address)
-        .then((response) => {
-          this.addressPersonSave.id_domicilio = response.Data.IdDomicilio;
-          this.addressPersonSave.id_persona = this.consultationEmployee.consultation.id_person;
-          this.addressPersonSave.usuario_sesion = 0; // TODO: Aquí va el usuario de la sesión
-
-          this.addressService
-            .createAddresPerson(this.addressPersonSave)
-            .then((r) => {
-              this.alert.message = this.$t(
-                "address.address.messages.success"
-              ) as string;
-              this.alert.alert = true;
-              this.alert.type = true;
-              this.cleanForm();
-              this.getAddressesbyPerson();
-            });
-        })
-        .catch((error) => {
-          this.alert.alert = true;
-          this.alert.message = this.$t(
-            "address.address.messages.error"
-          ) as string;
-          this.alert.type = false;
-        });
-    } else {
-      this.addressService
-        .edit(this.address)
-        .then((response) => {
-          this.alert.message = this.$t(
-            "address.address.messages.success"
-          ) as string;
-          this.alert.alert = true;
-          this.alert.type = true;
-          this.cleanForm();
-        })
-        .catch((error) => {
-          this.alert.alert = true;
-          this.alert.message = this.$t(
-            "address.address.messages.error"
-          ) as string;
-          this.alert.type = false;
-        });
-    }
-  }
-
-  cleanForm(): void {
-    this.address = {
-      IdDomicilio: null,
-      IdPais: null,
-      IdEstado: null,
-      IdMunicipio: null,
-      Localidad: "",
-      CodigoPostal: "",
-      Colonia: "",
-      Calle: "",
-      NumeroInterior: "",
-      NumeroExterior: "",
-      Manzana: "",
-      Lote: "",
-      Baja: false,
-    };
-    (this.$refs.form as HTMLFormElement).reset();
-  }
-
   mounted(): void {
+     if (this.consultationEmployee.consultation.assigmentNumber == null) {
+      this.$router.push({
+        name: "mvd:people:searchEmployee",
+      });
+    }
     this.getCountries();
-    this.getAddressesbyPerson();
-  }
-
-  get isLoading(): boolean {
-    // TODO Refactor this form is submitting
-    return false;
+    this.getCurrentAddress();
   }
 }
 </script>

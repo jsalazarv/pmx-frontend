@@ -10,28 +10,29 @@ const consultationStore: Module<IConsultationState, IRootState> = {
       employeeType: null,
       fullname: null,
       employeeTypeId: null,
-      rc: "",
-      id_person: null,
-      department: "",
+      areaPersonal: null,
+      groupPersonal: null,
+      idPerson: null,
+      departmentCenter: "",
       departmentDescription: "",
       validity: "",
-      ValidityStatus: "",
+      validityStatus: false,
     },
   },
 
   mutations: {
     SET_CONSULTATION_DATA(state, params: IConsultation) {
-      console.log(params);
       state.consultation.assigmentNumber = params.assigmentNumber;
       state.consultation.employeeType = params.employeeType;
       state.consultation.fullname = params.fullname;
       state.consultation.employeeTypeId = params.employeeTypeId;
-      state.consultation.id_person = params.id_person;
-      state.consultation.department = params.department;
+      state.consultation.idPerson = params.idPerson;
+      state.consultation.departmentCenter = params.departmentCenter;
       state.consultation.departmentDescription = params.departmentDescription;
       state.consultation.validity = params.validity;
-      state.consultation.ValidityStatus = params.ValidityStatus;
-      state.consultation.rc = params.rc;
+      state.consultation.validityStatus = params.validityStatus;
+      state.consultation.groupPersonal = params.groupPersonal;
+      state.consultation.areaPersonal = params.areaPersonal;
     },
   },
 
