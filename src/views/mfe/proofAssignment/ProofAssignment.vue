@@ -155,6 +155,10 @@
         </v-container>
       </v-card>
     </div>
+    <applicants-dialog
+      :open.sync="confirmDialogOpen"
+      :employee-id="employeeId"
+    />
   </div>
 </template>
 
@@ -162,9 +166,10 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import EmployeeService from "@/services/EmployeeService";
-import { IProofAssignmentReport } from "@/services/ProofAssignmentService/types";
+import { IProofAssignmentEmployeeData } from "@/services/ProofAssignmentService/types";
+import ApplicantsDialog from "@/views/mfe/proofAssignment/components/applicantsDialog.vue";
 
-const initialEmployeeData: IProofAssignmentReport = {
+const initialEmployeeData: IProofAssignmentEmployeeData = {
   IdEmpleado: undefined,
   Estado: "",
   TipoEmpleado: {
@@ -181,13 +186,16 @@ const initialEmployeeData: IProofAssignmentReport = {
   },
 };
 
-@Component({})
+@Component({
+  components: { ApplicantsDialog },
+})
 export default class ProofAssignment extends Vue {
   protected employeeService = new EmployeeService();
   public employeeData = { ...initialEmployeeData };
-
   public isLoadingEmployeeData = false;
   public assignmentNumber = "";
+  public confirmDialogOpen = false;
+  public employeeId?: number | null = null;
 
   getEmployeeById(): void {
     this.isLoadingEmployeeData = true;
@@ -202,7 +210,8 @@ export default class ProofAssignment extends Vue {
   }
 
   generateReport(): void {
-    console.log("REPORT: ", this.employeeData);
+    this.employeeId = this.employeeData.IdEmpleado;
+    this.confirmDialogOpen = true;
   }
 
   clear(): void {
