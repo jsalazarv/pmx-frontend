@@ -66,7 +66,9 @@ export default class PeopleCreate extends Vue {
         //TODO: Success message
         console.log("Data POST: ", response);
       })
-      .finally();
+      .finally(() => {
+        this.$store.dispatch("employees/clear");
+      });
   }
 
   async registerEmployee(): Promise<void> {

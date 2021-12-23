@@ -20,6 +20,7 @@ const initialState: IEmployeeState = {
     RFC: "",
     EdoCivil: "",
     Fotografia: "",
+    Nacionalidad: "",
   },
   employmentData: {
     Folio: "",

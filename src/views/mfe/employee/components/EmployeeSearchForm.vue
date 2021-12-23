@@ -286,20 +286,9 @@
       @onConfirm="disableInputs"
       @onReject="resetForm"
     />
-
-    <v-snackbar v-model="snackbar.visible" :top="true">
+    <snackbar-alert :color="snackbar.color" :open.sync="snackbar.visible">
       {{ snackbar.message }}
-      <template v-slot:action="{ attrs }">
-        <v-btn
-          :color="snackbar.color"
-          text
-          v-bind="attrs"
-          @click="snackbar.visible = false"
-        >
-          {{ $t("dictionary.close") }}
-        </v-btn>
-      </template>
-    </v-snackbar>
+    </snackbar-alert>
   </div>
 </template>
 
@@ -323,9 +312,14 @@ import { ISnackbarProps } from "@/components/types";
 import RenapoDialog from "@/views/mfe/employee/components/RenapoDialog.vue";
 import ConfirmUseExistingEmployeeDialog from "@/views/mfe/employee/components/ConfirmUseExistingEmployeeDialog.vue";
 import { IApiResponse } from "@/services/types";
+import SnackbarAlert from "@/components/snackbarAlert/SnackbarAlert.vue";
 
 @Component({
-  components: { ConfirmUseExistingEmployeeDialog, RenapoDialog },
+  components: {
+    SnackbarAlert,
+    ConfirmUseExistingEmployeeDialog,
+    RenapoDialog,
+  },
 })
 export default class EmployeeSearchForm extends Vue {
   protected employeeTypesService = new EmployeeTypeService();
