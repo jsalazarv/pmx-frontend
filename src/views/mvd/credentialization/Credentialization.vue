@@ -28,7 +28,7 @@ import Component from "vue-class-component";
 @Component({})
 export default class Credentialization extends Vue {
   mounted(): void {
-      console.log("entra")
+    console.log("entra");
   }
 
   get isLoading(): boolean {

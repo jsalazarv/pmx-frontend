@@ -1,9 +1,6 @@
 import BaseService from "@/services/BaseService";
 import { IServiceResponse } from "@/services/types";
-import {
-  IAddress,
-  IAddressPerson,
-} from "@/services/AddressService/types";
+import { IAddress, IAddressPerson } from "@/services/AddressService/types";
 
 export default class AddressService extends BaseService {
   create(address: IAddress): IServiceResponse<IAddress> {

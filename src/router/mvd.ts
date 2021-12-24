@@ -39,7 +39,8 @@ export default [
   {
     path: "/mvd/credencializacion/",
     name: "credentialization:credentialization",
-    component: () => import("@/views/mvd/credentialization/Credentialization.vue"),
+    component: () =>
+      import("@/views/mvd/credentialization/Credentialization.vue"),
     meta: { requiresAuth: true },
   },
   {

@@ -4,7 +4,7 @@ export interface IConsultation {
   fullname: string | null;
   employeeTypeId: number | null;
   groupPersonal: string | null;
-  areaPersonal:string | null;
+  areaPersonal: string | null;
   idPerson: number | null;
   departmentCenter: string;
   departmentDescription: string;

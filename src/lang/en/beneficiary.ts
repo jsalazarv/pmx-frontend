@@ -27,8 +27,8 @@ export default {
       block: "Block",
       lot: "Lot",
     },
-    selectText:{
-      newAddress:"New address..."
+    selectText: {
+      newAddress: "New address...",
     },
     buttons: {
       validate: "Validate",

@@ -173,4 +173,3 @@ export default class EmployeeFormData extends Vue {
   }
 }
 </script>
-
