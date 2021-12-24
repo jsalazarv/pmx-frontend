@@ -8,10 +8,19 @@
           </v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-btn color="primary">
+          <v-btn
+            color="primary"
+            @click="generateReport"
+            :disabled="isLoadingEmployeeList"
+          >
             {{ $t("employeeConsultationMFE.labels.export") }}
           </v-btn>
-          <v-btn class="mx-1" color="success" :to="{ name: 'people:create' }">
+          <v-btn
+            class="mx-1"
+            color="success"
+            :to="{ name: 'people:create' }"
+            :disabled="isLoadingEmployeeList"
+          >
             {{ $t("employeeConsultationMFE.labels.add") }}
           </v-btn>
         </v-toolbar>
@@ -29,6 +38,7 @@
                 required
                 :loading="isLoadingEmployeeList"
                 :disabled="isLoadingEmployeeList"
+                v-model="params.IdTipoEmpleado"
               ></v-autocomplete>
             </v-col>
             <v-col class="pb-0" cols="12" md="3">
@@ -40,6 +50,8 @@
                 :label="$t('employee.attributes.names')"
                 outlined
                 required
+                @click:clear="getEmployeeList"
+                v-model="params.Nombres"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -53,6 +65,8 @@
                 outlined
                 required
                 :disabled="isLoadingEmployeeList"
+                @click:clear="getEmployeeList"
+                v-model="params.Curp"
               ></v-text-field>
             </v-col>
             <v-col class="pb-0" cols="12" md="3">
@@ -64,6 +78,8 @@
                 :label="$t('employee.attributes.lastname')"
                 outlined
                 required
+                @click:clear="getEmployeeList"
+                v-model="params.ApellidoPaterno"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -77,6 +93,8 @@
                 outlined
                 required
                 :disabled="isLoadingEmployeeList"
+                @click:clear="getEmployeeList"
+                v-model="params.IdEmpleado"
               ></v-text-field>
             </v-col>
             <v-col class="pb-0" cols="12" md="3">
@@ -88,10 +106,16 @@
                 :label="$t('employee.attributes.surname')"
                 outlined
                 required
+                @click:clear="getEmployeeList"
+                v-model="params.ApellidoMaterno"
               ></v-text-field>
             </v-col>
             <v-col class="pb-0" cols="12" md="3">
-              <v-btn color="success" :disabled="isLoadingEmployeeList">
+              <v-btn
+                color="success"
+                :disabled="isLoadingEmployeeList"
+                @click="search"
+              >
                 {{ $t("employeeConsultationMFE.labels.search") }}
               </v-btn>
             </v-col>
@@ -147,6 +171,7 @@ import {
 } from "@/services/EmployeeService/types";
 import { IEmployeeType } from "@/services/EmployeeTypeService/types";
 import DeleteDialog from "@/views/mfe/employeeConsultation/components/deleteDialog.vue";
+import download from "downloadjs";
 
 const initialEmployeeData: IShowEmployee = {
   IdEmpleado: undefined,
@@ -189,6 +214,14 @@ export default class EmployeeList extends Vue {
   public isLoadingEmployeeList = false;
   public confirmDialogOpen = false;
   public employeeData = { ...initialEmployeeData };
+  public params = {
+    IdTipoEmpleado: null,
+    Nombres: "",
+    Curp: "",
+    ApellidoPaterno: "",
+    IdEmpleado: "",
+    ApellidoMaterno: "",
+  };
   public headers = [
     {
       text: this.$t("employeeConsultationMFE.attributes.typeOfEmployee"),
@@ -223,6 +256,21 @@ export default class EmployeeList extends Vue {
     { text: "", value: "actions", align: "end", sortable: false },
   ];
 
+  get filters() {
+    return {
+      ...this.params,
+    };
+  }
+
+  get reportHeaders() {
+    return this.headers
+      .filter((item) => !["actions"].includes(item.value))
+      .map((header) => ({
+        Nombre: header.value,
+        Personalizado: header.text as string,
+      }));
+  }
+
   getEmployeeList(): void {
     this.isLoadingEmployeeList = true;
     this.employeeService
@@ -256,6 +304,38 @@ export default class EmployeeList extends Vue {
     const index = this.employeeList.indexOf(data);
 
     this.employeeList.splice(index, 1);
+  }
+
+  search(): void {
+    this.isLoadingEmployeeList = true;
+    this.employeeService
+      .filter(this.filters)
+      .then((response) => {
+        this.employeeList = response.Data;
+      })
+      .finally(() => {
+        this.isLoadingEmployeeList = false;
+      });
+  }
+
+  generateReport(): void {
+    this.isLoadingEmployeeList = true;
+    const data = {
+      NombreReporte: "Reporte",
+      Propiedades: this.reportHeaders,
+    };
+    this.employeeService
+      .export(data, this.filters)
+      .then((response) => {
+        download(
+          response.data,
+          `${data.NombreReporte}.xlsx`,
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        );
+      })
+      .finally(() => {
+        this.isLoadingEmployeeList = false;
+      });
   }
 
   mounted(): void {

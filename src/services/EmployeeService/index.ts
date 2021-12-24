@@ -1,5 +1,6 @@
 import { serialize } from "object-to-formdata";
 import BaseService from "@/services/BaseService";
+import { AxiosResponse } from "axios";
 import { IApiResponse, IServiceResponse } from "@/services/types";
 import {
   ICreateEmployeeResponse,
@@ -10,11 +11,12 @@ import {
   ISearchResponse,
   IDeleteEmployeeRequest,
   IUpdateEmployeeRequest,
+  IEmployeeReport,
 } from "@/services/EmployeeService/types";
 
 export default class EmployeeService extends BaseService {
   getAll(): IServiceResponse<Array<ICreateEmployeeResponse>> {
-    return this.client.get(`/Empleados`);
+    return this.client.post(`/Empleados/Filtro`);
   }
 
   findByCurp(
@@ -71,6 +73,22 @@ export default class EmployeeService extends BaseService {
     data: IDeleteEmployeeRequest
   ): IServiceResponse<IDeleteEmployeeRequest> {
     return this.client.post(`/Empleados/Cancelacion`, data);
+  }
+
+  filter(params = {}): IServiceResponse<Array<ICreateEmployeeResponse>> {
+    const payload = { exportar: false };
+    const config = { params };
+
+    return this.client.post("/Empleados/Filtro", payload, config);
+  }
+
+  export(data: IEmployeeReport, params = {}): Promise<AxiosResponse> {
+    const payload = { ...data, exportar: true };
+
+    return this.client.post("/Empleados/Filtro", payload, {
+      params,
+      responseType: "blob",
+    });
   }
 
   search(params = {}): IServiceResponse<ISearchResponse[]> {

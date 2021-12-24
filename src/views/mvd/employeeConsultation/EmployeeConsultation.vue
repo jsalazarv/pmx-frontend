@@ -138,12 +138,7 @@
                         )
                       }}
                     </v-btn>
-                    <v-btn
-                      color="success"
-                      dark
-                      dense
-                      @click="dialog = false"
-                    >
+                    <v-btn color="success" dark dense @click="dialog = false">
                       {{
                         $t(
                           "employeeConsultation.consultation.actionsButtons.assign"

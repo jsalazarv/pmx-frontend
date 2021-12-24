@@ -27,8 +27,8 @@ export default {
       block: "Manzana",
       lot: "Lote",
     },
-    selectText:{
-      newAddress:"Nuevo domicilio..."
+    selectText: {
+      newAddress: "Nuevo domicilio...",
     },
     buttons: {
       validate: "Validar",

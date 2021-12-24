@@ -27,7 +27,7 @@ export default {
       cancel: "Cancelar",
       save: "Guardar datos vigencia",
     },
-    assignMedicalUnit:{
+    assignMedicalUnit: {
       medicalUnit: "Unidad médica",
     },
     beneficiariesTable: {

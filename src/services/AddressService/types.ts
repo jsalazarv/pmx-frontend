@@ -24,5 +24,3 @@ export interface IAddressPerson {
 //   street: string;
 //   idAddress: number | null;
 // }
-
-

@@ -402,7 +402,7 @@ export default class EditAddress extends Vue {
   }
 
   mounted(): void {
-     if (this.consultationEmployee.consultation.assigmentNumber == null) {
+    if (this.consultationEmployee.consultation.assigmentNumber == null) {
       this.$router.push({
         name: "mvd:people:searchEmployee",
       });

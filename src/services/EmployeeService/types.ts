@@ -9,6 +9,7 @@ import { IEmployeeType } from "@/services/EmployeeTypeService/types";
 import { ISyndicate } from "@/services/SyndicateService/types";
 import { ISyndicateSection } from "@/services/SyndicateSectionService/types";
 import { IWorkplace } from "@/services/WorkplaceService/types";
+import { IIAffiliationLogReportProperties } from "@/services/AffiliationLogService/types";
 
 export interface IRenapoData {
   Curp: string;
@@ -146,6 +147,11 @@ export interface ISearchRequest {
 export interface IDeleteEmployeeRequest {
   IdEmpleado: number;
   Motivo: string;
+}
+
+export interface IEmployeeReport {
+  NombreReporte: string;
+  Propiedades: Array<IIAffiliationLogReportProperties>;
 }
 
 export interface ISearchResponse {
