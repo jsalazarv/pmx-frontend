@@ -13,12 +13,16 @@
           :active="isLoading"
           :indeterminate="isLoading"
         ></v-progress-linear>
-        <ValidationObserver ref="form">
+        <ValidationObserver ref="form" v-slot="{ invalid }">
           <employee-search-form />
           <employment-information-form />
           <location-form />
           <v-container>
-            <v-btn color="success" @click="registerEmployee">
+            <v-btn
+              color="success"
+              @click="registerEmployee"
+              :disabled="invalid"
+            >
               {{ $t("employee.labels.generateAssignmentNumber") }}
             </v-btn>
           </v-container>
@@ -36,6 +40,8 @@ import EmployeeSearchForm from "@/views/mfe/employee/components/EmployeeSearchFo
 import EmploymentInformationForm from "@/views/mfe/employee/components/EmploymentInformationForm.vue";
 import LocationForm from "@/views/mfe/employee/components/LocationForm.vue";
 import EmployeeService from "@/services/EmployeeService";
+import { Watch } from "vue-property-decorator";
+import { IValidationObserver } from "@/components/types";
 
 @Component({
   components: {
@@ -67,6 +73,7 @@ export default class PeopleCreate extends Vue {
         console.log("Data POST: ", response);
       })
       .finally(() => {
+        (this.$refs.form as IValidationObserver).reset();
         this.$store.dispatch("employees/clear");
       });
   }

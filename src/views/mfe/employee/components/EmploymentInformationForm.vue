@@ -67,8 +67,9 @@
         <v-col cols="12" md="4">
           <ValidationProvider
             :name="$t('employee.attributes.syndicate')"
-            rules="required"
+            rules="required_if:typeOfEmployee,0"
             v-slot="{ errors }"
+            ref="syndicate"
           >
             <v-autocomplete
               :disabled="isLoadingSyndicates"
@@ -91,8 +92,9 @@
         <v-col cols="12" md="4">
           <ValidationProvider
             :name="$t('employee.attributes.syndicateSection')"
-            rules="required"
+            rules="required_if:typeOfEmployee,0"
             v-slot="{ errors }"
+            ref="syndicateSection"
           >
             <v-autocomplete
               :items="syndicateSections"
@@ -150,6 +152,7 @@ import { ISyndicateSection } from "@/services/SyndicateSectionService/types";
 import { IEmploymentDataForm, IEmployeeForm } from "@/store/employee/types";
 import { ICompany } from "@/services/CompanyService/types";
 import { IWorkplace } from "@/services/WorkplaceService/types";
+import { IValidationObserver } from "@/components/types";
 
 @Component({})
 export default class EmploymentInformationForm extends Vue {
@@ -229,6 +232,8 @@ export default class EmploymentInformationForm extends Vue {
   selectedEmployeeType(employeeTypeId: number | null): void {
     if (employeeTypeId === 0) {
       this.showSyndicates = true;
+      (this.$refs.syndicate as IValidationObserver).validate();
+      (this.$refs.syndicateSection as IValidationObserver).validate();
     } else {
       this.showSyndicates = false;
       this.employmentData.IdSindicato = null;

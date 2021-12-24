@@ -7,7 +7,13 @@ import {
 } from "vee-validate";
 import en from "vee-validate/dist/locale/en.json";
 import es from "vee-validate/dist/locale/es.json";
-import { min, numeric, required, max } from "vee-validate/dist/rules";
+import {
+  min,
+  numeric,
+  required,
+  max,
+  required_if,
+} from "vee-validate/dist/rules";
 
 Vue.component("ValidationObserver", ValidationObserver);
 Vue.component("ValidationProvider", ValidationProvider);
@@ -20,6 +26,7 @@ localize({
 localize("es");
 
 extend("required", required);
+extend("required_if", required_if);
 extend("min", min);
 extend("max", max);
 extend("numeric", numeric);

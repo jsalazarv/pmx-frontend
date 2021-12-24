@@ -8,6 +8,7 @@
               <ValidationProvider
                 :name="$t('employee.attributes.typeOfEmployee')"
                 rules="required"
+                vid="typeOfEmployee"
                 v-slot="{ errors }"
               >
                 <v-autocomplete
