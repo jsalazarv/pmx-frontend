@@ -1,5 +1,6 @@
 import { serialize } from "object-to-formdata";
 import BaseService from "@/services/BaseService";
+import { AxiosResponse } from "axios";
 import { IApiResponse, IServiceResponse } from "@/services/types";
 import {
   ICreateEmployeeResponse,
@@ -10,6 +11,7 @@ import {
   ISearchResponse,
   IDeleteEmployeeRequest,
   IUpdateEmployeeRequest,
+  IEmployeeReport,
 } from "@/services/EmployeeService/types";
 
 export default class EmployeeService extends BaseService {
@@ -78,6 +80,15 @@ export default class EmployeeService extends BaseService {
     const config = { params };
 
     return this.client.post("/Empleados/Filtro", payload, config);
+  }
+
+  export(data: IEmployeeReport, params = {}): Promise<AxiosResponse> {
+    const payload = { ...data, exportar: true };
+
+    return this.client.post("/Empleados/Filtro", payload, {
+      params,
+      responseType: "blob",
+    });
   }
 
   search(params = {}): IServiceResponse<ISearchResponse[]> {

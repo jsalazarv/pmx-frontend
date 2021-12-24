@@ -8,10 +8,19 @@
           </v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-btn color="primary">
+          <v-btn
+            color="primary"
+            @click="generateReport"
+            :disabled="isLoadingEmployeeList"
+          >
             {{ $t("employeeConsultationMFE.labels.export") }}
           </v-btn>
-          <v-btn class="mx-1" color="success" :to="{ name: 'people:create' }">
+          <v-btn
+            class="mx-1"
+            color="success"
+            :to="{ name: 'people:create' }"
+            :disabled="isLoadingEmployeeList"
+          >
             {{ $t("employeeConsultationMFE.labels.add") }}
           </v-btn>
         </v-toolbar>
@@ -162,6 +171,7 @@ import {
 } from "@/services/EmployeeService/types";
 import { IEmployeeType } from "@/services/EmployeeTypeService/types";
 import DeleteDialog from "@/views/mfe/employeeConsultation/components/deleteDialog.vue";
+import download from "downloadjs";
 
 const initialEmployeeData: IShowEmployee = {
   IdEmpleado: undefined,
@@ -252,6 +262,15 @@ export default class EmployeeList extends Vue {
     };
   }
 
+  get reportHeaders() {
+    return this.headers
+      .filter((item) => !["actions"].includes(item.value))
+      .map((header) => ({
+        Nombre: header.value,
+        Personalizado: header.text as string,
+      }));
+  }
+
   getEmployeeList(): void {
     this.isLoadingEmployeeList = true;
     this.employeeService
@@ -293,6 +312,26 @@ export default class EmployeeList extends Vue {
       .filter(this.filters)
       .then((response) => {
         this.employeeList = response.Data;
+      })
+      .finally(() => {
+        this.isLoadingEmployeeList = false;
+      });
+  }
+
+  generateReport(): void {
+    this.isLoadingEmployeeList = true;
+    const data = {
+      NombreReporte: "Reporte",
+      Propiedades: this.reportHeaders,
+    };
+    this.employeeService
+      .export(data, this.filters)
+      .then((response) => {
+        download(
+          response.data,
+          `${data.NombreReporte}.xlsx`,
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        );
       })
       .finally(() => {
         this.isLoadingEmployeeList = false;
