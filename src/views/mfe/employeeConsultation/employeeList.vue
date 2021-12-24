@@ -29,6 +29,7 @@
                 required
                 :loading="isLoadingEmployeeList"
                 :disabled="isLoadingEmployeeList"
+                v-model="params.IdTipoEmpleado"
               ></v-autocomplete>
             </v-col>
             <v-col class="pb-0" cols="12" md="3">
@@ -40,6 +41,8 @@
                 :label="$t('employee.attributes.names')"
                 outlined
                 required
+                @click:clear="getEmployeeList"
+                v-model="params.Nombres"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -53,6 +56,8 @@
                 outlined
                 required
                 :disabled="isLoadingEmployeeList"
+                @click:clear="getEmployeeList"
+                v-model="params.Curp"
               ></v-text-field>
             </v-col>
             <v-col class="pb-0" cols="12" md="3">
@@ -64,6 +69,8 @@
                 :label="$t('employee.attributes.lastname')"
                 outlined
                 required
+                @click:clear="getEmployeeList"
+                v-model="params.ApellidoPaterno"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -77,6 +84,8 @@
                 outlined
                 required
                 :disabled="isLoadingEmployeeList"
+                @click:clear="getEmployeeList"
+                v-model="params.IdEmpleado"
               ></v-text-field>
             </v-col>
             <v-col class="pb-0" cols="12" md="3">
@@ -88,10 +97,16 @@
                 :label="$t('employee.attributes.surname')"
                 outlined
                 required
+                @click:clear="getEmployeeList"
+                v-model="params.ApellidoMaterno"
               ></v-text-field>
             </v-col>
             <v-col class="pb-0" cols="12" md="3">
-              <v-btn color="success" :disabled="isLoadingEmployeeList">
+              <v-btn
+                color="success"
+                :disabled="isLoadingEmployeeList"
+                @click="search"
+              >
                 {{ $t("employeeConsultationMFE.labels.search") }}
               </v-btn>
             </v-col>
@@ -189,6 +204,14 @@ export default class EmployeeList extends Vue {
   public isLoadingEmployeeList = false;
   public confirmDialogOpen = false;
   public employeeData = { ...initialEmployeeData };
+  public params = {
+    IdTipoEmpleado: null,
+    Nombres: "",
+    Curp: "",
+    ApellidoPaterno: "",
+    IdEmpleado: "",
+    ApellidoMaterno: "",
+  };
   public headers = [
     {
       text: this.$t("employeeConsultationMFE.attributes.typeOfEmployee"),
@@ -223,6 +246,12 @@ export default class EmployeeList extends Vue {
     { text: "", value: "actions", align: "end", sortable: false },
   ];
 
+  get filters() {
+    return {
+      ...this.params,
+    };
+  }
+
   getEmployeeList(): void {
     this.isLoadingEmployeeList = true;
     this.employeeService
@@ -256,6 +285,18 @@ export default class EmployeeList extends Vue {
     const index = this.employeeList.indexOf(data);
 
     this.employeeList.splice(index, 1);
+  }
+
+  search(): void {
+    this.isLoadingEmployeeList = true;
+    this.employeeService
+      .filter(this.filters)
+      .then((response) => {
+        this.employeeList = response.Data;
+      })
+      .finally(() => {
+        this.isLoadingEmployeeList = false;
+      });
   }
 
   mounted(): void {

@@ -14,7 +14,7 @@ import {
 
 export default class EmployeeService extends BaseService {
   getAll(): IServiceResponse<Array<ICreateEmployeeResponse>> {
-    return this.client.get(`/Empleados`);
+    return this.client.post(`/Empleados/Filtro`);
   }
 
   findByCurp(
@@ -71,6 +71,13 @@ export default class EmployeeService extends BaseService {
     data: IDeleteEmployeeRequest
   ): IServiceResponse<IDeleteEmployeeRequest> {
     return this.client.post(`/Empleados/Cancelacion`, data);
+  }
+
+  filter(params = {}): IServiceResponse<Array<ICreateEmployeeResponse>> {
+    const payload = { exportar: false };
+    const config = { params };
+
+    return this.client.post("/Empleados/Filtro", payload, config);
   }
 
   search(params = {}): IServiceResponse<ISearchResponse[]> {
