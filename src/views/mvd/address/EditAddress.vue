@@ -23,8 +23,9 @@
                     name="employeeType"
                     dense
                     outlined
-                    :value="consultationEmployee.consultation.employeeType"
-                    disabled
+                    :value="validityRights.TipoEmpleadoDescripcion"
+                    readonly
+                    :loading="isLoadingValidityRights"
                   >
                   </v-text-field>
                 </v-col>
@@ -34,8 +35,9 @@
                     name="assigmentNumber"
                     dense
                     outlined
-                    :value="consultationEmployee.consultation.assigmentNumber"
-                    disabled
+                    :value="computedEmployeeId"
+                    readonly
+                    :loading="isLoadingValidityRights"
                   >
                   </v-text-field>
                 </v-col>
@@ -47,8 +49,9 @@
                     name="fullname"
                     dense
                     outlined
-                    :value="consultationEmployee.consultation.fullname"
-                    disabled
+                    :value="computedFullname"
+                    readonly
+                    :loading="isLoadingValidityRights"
                   >
                   </v-text-field>
                 </v-col>
@@ -144,6 +147,7 @@
                       outlined
                       :error-messages="errors"
                       v-model="address.CodigoPostal"
+                      :loading="isLoadingCurrentAddres"
                     >
                     </v-text-field>
                   </ValidationProvider>
@@ -161,6 +165,7 @@
                       outlined
                       :error-messages="errors"
                       v-model="address.Colonia"
+                      :loading="isLoadingCurrentAddres"
                     >
                     </v-text-field>
                   </ValidationProvider>
@@ -178,6 +183,7 @@
                       outlined
                       :error-messages="errors"
                       v-model="address.Localidad"
+                      :loading="isLoadingCurrentAddres"
                     >
                     </v-text-field>
                   </ValidationProvider>
@@ -197,6 +203,7 @@
                       outlined
                       :error-messages="errors"
                       v-model="address.Calle"
+                      :loading="isLoadingCurrentAddres"
                     >
                     </v-text-field>
                   </ValidationProvider>
@@ -215,6 +222,7 @@
                       outlined
                       :error-messages="errors"
                       v-model="address.NumeroExterior"
+                      :loading="isLoadingCurrentAddres"
                     >
                     </v-text-field>
                   </ValidationProvider>
@@ -226,6 +234,7 @@
                     dense
                     outlined
                     v-model="address.NumeroInterior"
+                    :loading="isLoadingCurrentAddres"
                   >
                   </v-text-field>
                 </v-col>
@@ -236,6 +245,7 @@
                     dense
                     outlined
                     v-model="address.Manzana"
+                    :loading="isLoadingCurrentAddres"
                   >
                   </v-text-field>
                 </v-col>
@@ -248,6 +258,7 @@
                     dense
                     outlined
                     v-model="address.Lote"
+                    :loading="isLoadingCurrentAddres"
                   >
                   </v-text-field>
                 </v-col>
@@ -270,7 +281,6 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { IConsultationState } from "@/store/consultation/types";
 import CountryService from "@/services/CountryService";
 import { ICountry } from "@/services/CountryService/types";
 import StateService from "@/services/StateService";
@@ -280,11 +290,14 @@ import { IMunicipality } from "@/services/MunicipalityService/types";
 import { IAddress } from "@/services/AddressService/types";
 import AddressService from "@/services/AddressService/index";
 import Alert from "@/components/Alert.vue";
+import BeneficiaryService from "@/services/BeneficiaryService";
+import { IValidityRightsResponse } from "@/services/BeneficiaryService/types";
 
 @Component({
   components: { Alert },
 })
 export default class EditAddress extends Vue {
+  protected beneficiaryService = new BeneficiaryService();
   protected countryService = new CountryService();
   protected stateService = new StateService();
   protected municipalityService = new MunicipalityService();
@@ -294,11 +307,28 @@ export default class EditAddress extends Vue {
   public states: Array<IState> = [];
   public isLoadingStates = false;
   public isLoadingMunicipalities = false;
+  public isLoadingValidityRights = false;
+  public isLoadingCurrentAddres = false;
   public municipalities: Array<IMunicipality> = [];
   public alert = {
     alert: false,
     message: "",
     type: false,
+  };
+  public validityRights: IValidityRightsResponse = {
+    GrupoPersonal: null,
+    AreaPersonal: null,
+    CentroDepto: null,
+    DepartamentoDescripcion: null,
+    IdCentro: null,
+    IdDepartamento: null,
+    Vigencia: null,
+    EstadoVigencia: false,
+    TipoEmpleadoDescripcion: null,
+    Nombres: "",
+    ApellidoPaterno: "",
+    ApellidoMaterno: "",
+    Curp: null,
   };
   public address: IAddress = {
     IdDomicilio: null,
@@ -321,8 +351,20 @@ export default class EditAddress extends Vue {
     return false;
   }
 
-  get consultationEmployee(): IConsultationState {
-    return this.$store.state.consultation;
+  get computedIdPerson(): number {
+    return Number(this.$route.params.paramIdPerson);
+  }
+
+  get computedEmployeeId(): number {
+    return Number(this.$route.params.paramEmployeeId);
+  }
+
+  get computedEmployeeTypeId(): number {
+    return Number(this.$route.params.paramEmployeeTypeId);
+  }
+
+  get computedFullname(): string {
+    return `${this.validityRights.Nombres} ${this.validityRights.ApellidoPaterno} ${this.validityRights.ApellidoMaterno}`;
   }
 
   getCountries(): void {
@@ -363,15 +405,33 @@ export default class EditAddress extends Vue {
       });
   }
 
+  getValidityRights(): void {
+    this.isLoadingValidityRights = true;
+    this.beneficiaryService
+      .getValidityRights(
+        this.computedIdPerson,
+        this.computedEmployeeId,
+        this.computedEmployeeTypeId
+      )
+      .then((response) => {
+        this.validityRights = response.Data;
+      })
+      .finally(() => {
+        this.isLoadingValidityRights = false;
+      });
+  }
+
   getCurrentAddress(): void {
+    this.isLoadingCurrentAddres = true;
     this.addressService
-      .getCurrentAddress(this.consultationEmployee.consultation.idPerson)
+      .getCurrentAddress(this.computedIdPerson)
       .then((response) => {
         this.address = response.Data;
       })
       .finally(() => {
         this.getStates();
         this.getMunicipalities();
+        this.isLoadingCurrentAddres = false;
       });
   }
 
@@ -382,7 +442,6 @@ export default class EditAddress extends Vue {
   }
 
   onSubmit(): void {
-    console.log("editar");
     this.addressService
       .edit(this.address)
       .then((response) => {
@@ -402,11 +461,7 @@ export default class EditAddress extends Vue {
   }
 
   mounted(): void {
-     if (this.consultationEmployee.consultation.assigmentNumber == null) {
-      this.$router.push({
-        name: "mvd:people:searchEmployee",
-      });
-    }
+    this.getValidityRights();
     this.getCountries();
     this.getCurrentAddress();
   }

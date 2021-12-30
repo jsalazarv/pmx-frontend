@@ -20,9 +20,8 @@ export interface IAddressPerson {
   IdPersona: number | null;
 }
 
-// export interface IAddressSelect {
-//   street: string;
-//   idAddress: number | null;
-// }
-
-
+export interface IAddresPersonResponse {
+  IdDomicilioPersona: number | null;
+  IdDomicilio: number | null;
+  DomicilioDescripcion: string | null;
+}

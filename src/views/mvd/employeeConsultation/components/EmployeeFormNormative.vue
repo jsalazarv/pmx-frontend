@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    {{ titularBeneficiary }}
+    <!-- {{ titularBeneficiary }} -->
     <ValidationObserver v-slot="{ handleSubmit }" ref="form">
       <form @submit.prevent="handleSubmit(onSubmit)">
         <v-row>
@@ -14,8 +14,9 @@
               name="employeeType"
               dense
               outlined
-              disabled
-              :value="consultationEmployee.consultation.employeeType"
+              readonly
+              :value="validityRights.TipoEmpleadoDescripcion"
+              :loading="isLoadingValidityRights"
             >
             </v-text-field>
           </v-col>
@@ -29,8 +30,9 @@
               name="assignmentNumber"
               dense
               outlined
-              disabled
-              :value="consultationEmployee.consultation.assigmentNumber"
+              readonly
+              :value="computedEmployeeId"
+              :loading="isLoadingValidityRights"
             >
             </v-text-field>
           </v-col>
@@ -46,8 +48,9 @@
               name="fullname"
               dense
               outlined
-              disabled
-              :value="consultationEmployee.consultation.fullname"
+              readonly
+              :value="computedFullname"
+              :loading="isLoadingValidityRights"
             >
             </v-text-field>
           </v-col>
@@ -175,22 +178,25 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { IConsultationState } from "@/store/consultation/types";
 import WorkplaceService from "@/services/WorkplaceService";
 import DepartmentService from "@/services/DepartmentService";
 import { IDepartament } from "@/services/DepartmentService/types";
 import { IWorkplace } from "@/services/WorkplaceService/types";
 import BeneficiaryService from "@/services/BeneficiaryService/";
-import { ITitularBeneficiaryRequest } from "@/services/BeneficiaryService/types";
+import {
+  ITitularBeneficiaryRequest,
+  IValidityRightsResponse,
+} from "@/services/BeneficiaryService/types";
 import { extend } from "vee-validate";
 
 @Component({})
-export default class EmployeeForm extends Vue {
+export default class EmployeeFormNormative extends Vue {
   protected workPlaceService = new WorkplaceService();
   protected departmentService = new DepartmentService();
   protected beneficiaryService = new BeneficiaryService();
   public isLoadingWorkplaces = false;
   public isLoadingDepartments = false;
+  public isLoadingValidityRights = false;
   public workplaces: Array<IWorkplace> = [];
   public departments: Array<IDepartament> = [];
   public showPickerValidity: any = false;
@@ -200,18 +206,61 @@ export default class EmployeeForm extends Vue {
     IdDepartamento: null,
     Vigencia: null,
   };
+  public validityRights: IValidityRightsResponse = {
+    GrupoPersonal: null,
+    AreaPersonal: null,
+    CentroDepto: null,
+    DepartamentoDescripcion: null,
+    IdCentro: null,
+    IdDepartamento: null,
+    Vigencia: null,
+    EstadoVigencia: false,
+    TipoEmpleadoDescripcion: null,
+    Nombres: "",
+    ApellidoPaterno: "",
+    ApellidoMaterno: "",
+    Curp: null,
+  };
 
   get isLoading(): boolean {
     // TODO Refactor this form is submitting
     return false;
   }
 
-  get consultationEmployee(): IConsultationState {
-    return this.$store.state.consultation;
+  get computedIdPerson(): number {
+    return Number(this.$route.params.paramIdPerson);
+  }
+
+  get computedEmployeeId(): number {
+    return Number(this.$route.params.paramEmployeeId);
+  }
+
+  get computedEmployeeTypeId(): number {
+    return Number(this.$route.params.paramEmployeeTypeId);
+  }
+
+  get computedFullname(): string {
+    return `${this.validityRights.Nombres} ${this.validityRights.ApellidoPaterno} ${this.validityRights.ApellidoMaterno}`;
   }
 
   get computedValidityFormatted() {
     return this.formatted(this.titularBeneficiary.Vigencia);
+  }
+
+  getValidityRights(): void {
+    this.isLoadingValidityRights = true;
+    this.beneficiaryService
+      .getValidityRights(
+        this.computedIdPerson,
+        this.computedEmployeeId,
+        this.computedEmployeeTypeId
+      )
+      .then((response) => {
+        this.validityRights = response.Data;
+      })
+      .finally(() => {
+        this.isLoadingValidityRights = false;
+      });
   }
 
   formatted(date: any): string | null {
@@ -247,7 +296,7 @@ export default class EmployeeForm extends Vue {
 
   getBeneficiaryByPerson(): void {
     this.beneficiaryService
-      .getBeneficiaryByPerson(this.consultationEmployee.consultation.idPerson)
+      .getBeneficiaryByPerson(this.computedIdPerson)
       .then((response) => {
         console.log(response);
       });
@@ -258,24 +307,24 @@ export default class EmployeeForm extends Vue {
   }
 
   mounted(): void {
-    if (this.consultationEmployee.consultation.assigmentNumber != null) {
-      this.getWorkplaces();
-      this.getBeneficiaryByPerson();
+    this.getValidityRights();
 
-      extend("validityrule", (value, args: any) => {
-        const valueDate = `${value.split("/")[2]}-${value.split("/")[1]}-${
-          value.split("/")[0]
-        } `;
-        const currentDate = new Date().toDateString();
-        const validityDate = new Date(valueDate).toDateString();
-        if (new Date(validityDate) >= new Date(currentDate)) {
-          return true;
-        }
-        return `{_field_} ${this.$t(
-          "employeeConsultation.consultation.validations.validityRule"
-        )}`;
-      });
-    }
+    // this.getWorkplaces();
+    // this.getBeneficiaryByPerson();
+
+    extend("validityrule", (value, args: any) => {
+      const valueDate = `${value.split("/")[2]}-${value.split("/")[1]}-${
+        value.split("/")[0]
+      } `;
+      const currentDate = new Date().toDateString();
+      const validityDate = new Date(valueDate).toDateString();
+      if (new Date(validityDate) >= new Date(currentDate)) {
+        return true;
+      }
+      return `{_field_} ${this.$t(
+        "employeeConsultation.consultation.validations.validityRule"
+      )}`;
+    });
   }
 }
 </script>

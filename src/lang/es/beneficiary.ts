@@ -3,6 +3,7 @@ export default {
     title: "Alta derechohabiente",
     beneficiaryForm: {
       assignmentNumber: "Número de asignación",
+      workerValidity: "Vigencia trabajador(titular)",
       coding: "Codificación",
       names: "Nombres",
       lastname: "Apellido paterno",
@@ -26,9 +27,10 @@ export default {
       interiorNumber: "Número interior",
       block: "Manzana",
       lot: "Lote",
+      inability: "¿Tiene capacidades diferentes?",
     },
-    selectText:{
-      newAddress:"Nuevo domicilio..."
+    selectText: {
+      newAddress: "Nuevo domicilio...",
     },
     buttons: {
       validate: "Validar",

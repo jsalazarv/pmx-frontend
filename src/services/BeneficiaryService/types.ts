@@ -1,12 +1,17 @@
 export interface IValidityRightsResponse {
-  GrupoPersonal: string;
-  AreaPersonal: string;
-  CentroDepto: string;
-  DepartamentoDescripcion: string;
+  GrupoPersonal: string | null;
+  AreaPersonal: string | null;
+  CentroDepto: string | null;
+  DepartamentoDescripcion: string | null;
   IdCentro: number | null;
   IdDepartamento: number | null;
-  Vigencia: string;
-  EstadoVigencia: boolean;
+  Vigencia: string | null;
+  EstadoVigencia: boolean | null;
+  TipoEmpleadoDescripcion: string | null;
+  Nombres: string | null;
+  ApellidoPaterno: string | null;
+  ApellidoMaterno: string | null;
+  Curp: string | null;
 }
 
 export interface ITitularBeneficiaryRequest {
@@ -32,14 +37,44 @@ export interface IBeneficiary {
 }
 
 export interface IPerson {
+  IdPersona: number;
   Curp: string;
   Nombres: string;
   ApellidoPaterno: string;
   ApellidoMaterno: string;
   FechaNacimiento: string;
+  Edad: string | null;
   Sexo: string;
   Rfc: string;
-  Edad: string;
+  EstadoCivil: string;
+  IndRenapo: boolean;
+  Fotografia: string;
+  FechaFoto: string;
+  Firma: string;
+  SiglasEntidad: string;
+  Nacionalidad: string;
+  DpDocumento: number;
+  DpEntidad: number;
+  DpFoja: number;
+  DpMunicipio: number;
+  DpAnio: number;
+  DpLibro: number;
+  DpCrip: unknown;
+  DpMigracion: number;
+  DpNatura: number;
+  DpCertifica: number;
+  Archivo: string;
+  PfechaAlta: string;
+  PFolioConstancia: number;
+  PEstatus: number;
+  XEstatus: unknown;
+  YEstatus: unknown;
+  ZEstatus: string;
+  Marca: unknown;
+  CError: number;
+  Observacion: string;
+  DpActa: number;
+  DpTomo: number;
 }
 
 export interface IAddress {
@@ -59,19 +94,15 @@ export interface IAddress {
 
 export interface IBeneficiaryRequest {
   IdDerechohabiente: number | null;
-  IdPersona: number | null;
+  IdPersona: number;
   IdDerTitular: number | null;
   IdFamiliar: number | null;
   IdUMedica: number | null;
-  TipoDer: string | null;
-  Vigencia: number | null;
-  Estado: number | null;
-  Observaciones: number | null;
-  UsuarioCrea: number | null;
-  IdCentro: number | null;
-  IdDepartamento: number | null;
-  FechaNacimiento: string | null;
-  Edad: string | null;
-  Person: IPerson;
-  Address: IAddress;
+  TipoDer: string;
+  Vigencia: string;
+  Estado: string;
+  Observaciones: string;
+  IndIncapacidad: boolean;
+  Persona: IPerson;
+  Domicilio: IAddress;
 }

@@ -13,20 +13,15 @@
           :active="isLoading"
           :indeterminate="isLoading"
         ></v-progress-linear>
-        {{ consultationEmployee }}
         <v-container>
-          <v-col cols="12" sm="12" md="12">
-            <Alert
-              :message="alert.message"
-              :alert="alert.alert"
-              :type="alert.type"
-              @hideAlert="hideAlert"
-            ></Alert>
-          </v-col>
-          <EmployeeFormData
-            v-if="consultationEmployee.consultation.employeeTypeId == 0"
-          />
-          <EmployeeForm v-else />
+          <Alert
+            :message="alert.message"
+            :alert="alert.alert"
+            :type="alert.type"
+            @hideAlert="hideAlert"
+          ></Alert>
+          <EmployeeFormContratual v-if="computedEmployeeTypeId == 0" />
+          <EmployeeFormNormative v-else />
         </v-container>
         <v-divider></v-divider>
         <v-container>
@@ -68,9 +63,6 @@
             <v-col cols="12" sm="6" md="3">
               <v-dialog v-model="dialog" persistent max-width="600">
                 <template v-slot:activator="{ on, attrs }">
-                  <!-- <v-btn color="primary" dark v-bind="attrs" v-on="on">
-                    Open Dialog
-                  </v-btn> -->
                   <v-btn
                     class="sizeTextButton"
                     type="button"
@@ -80,6 +72,7 @@
                     dense
                     v-bind="attrs"
                     v-on="on"
+                    @click="onBtnAssignMedicalUnit"
                   >
                     {{
                       $t(
@@ -113,22 +106,6 @@
                       :loading="isLoadingMedicalUnitsList"
                     ></v-autocomplete>
                   </v-col>
-
-                  <!--
-                    v-model="beneficiary.medicalUnit"
-                    :error-messages="errors"
-                     :items="countries"
-                    :disabled="isLoadingCountries"
-                      :loading="isLoadingCountries"
-                      v-model="address.IdPais"
-                      @change="getStates"
-                      :error-messages="errors"
-                     <v-card-text
-                    >Let Google help apps determine location. This means sending
-                    anonymous location data to Google, even when no apps are
-                    running.</v-card-text
-                  > -->
-
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="red darken-1" text @click="dialog = false">
@@ -138,12 +115,7 @@
                         )
                       }}
                     </v-btn>
-                    <v-btn
-                      color="success"
-                      dark
-                      dense
-                      @click="dialog = false"
-                    >
+                    <v-btn color="success" dark dense @click="dialog = false">
                       {{
                         $t(
                           "employeeConsultation.consultation.actionsButtons.assign"
@@ -153,20 +125,6 @@
                   </v-card-actions>
                 </v-card>
               </v-dialog>
-              <!-- <v-btn
-                class="sizeTextButton"
-                type="button"
-                color="success"
-                large
-                dark
-                dense
-              >
-                {{
-                  $t(
-                    "employeeConsultation.consultation.actionsButtons.assignMedicalUnit"
-                  )
-                }}
-              </v-btn> -->
             </v-col>
             <v-col cols="12" sm="6" md="3">
               <v-btn
@@ -175,6 +133,7 @@
                 type="button"
                 dense
                 large
+                @click="onBtnCredentialization"
               >
                 {{
                   $t(
@@ -251,20 +210,22 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { IConsultationState } from "@/store/consultation/types";
 import BeneficiaryService from "@/services/BeneficiaryService/";
 import EmployeeService from "@/services/EmployeeService";
 import {
   IBeneficiary,
   ITitularBeneficiaryRequest,
+  IValidityRightsResponse,
 } from "@/services/BeneficiaryService/types";
-import EmployeeFormData from "./components/EmployeeFormData.vue";
-import EmployeeForm from "./components/EmployeeForm.vue";
+import EmployeeFormContratual from "./components/EmployeeFormContractual.vue";
+import EmployeeFormNormative from "./components/EmployeeFormNormative.vue";
 import Alert from "@/components/Alert.vue";
 import { IMedicalUnit } from "@/services/MedicalUnitService/types";
 import MedicalUnitService from "@/services/MedicalUnitService";
 
-@Component({ components: { EmployeeFormData, EmployeeForm, Alert } })
+@Component({
+  components: { EmployeeFormContratual, EmployeeFormNormative, Alert },
+})
 export default class EmployeeConsultation extends Vue {
   protected beneficiaryService = new BeneficiaryService();
   protected employeeService = new EmployeeService();
@@ -272,8 +233,25 @@ export default class EmployeeConsultation extends Vue {
   public medicalUnitsList: Array<IMedicalUnit> = [];
   public beneficiaries: Array<any> = [];
   public disabledCredential = false;
+  public disabledAssignMedicalUnit = false;
+  public disabledAddBeneficiary = false;
   public dialog = false;
   public isLoadingMedicalUnitsList = false;
+  public validityRights: IValidityRightsResponse = {
+    GrupoPersonal: null,
+    AreaPersonal: null,
+    CentroDepto: null,
+    DepartamentoDescripcion: null,
+    IdCentro: null,
+    IdDepartamento: null,
+    Vigencia: null,
+    EstadoVigencia: false,
+    TipoEmpleadoDescripcion: null,
+    Nombres: "",
+    ApellidoPaterno: "",
+    ApellidoMaterno: "",
+    Curp: null,
+  };
   public titularBeneficiary: ITitularBeneficiaryRequest = {
     IdPersona: null,
     IdCentro: null,
@@ -325,30 +303,89 @@ export default class EmployeeConsultation extends Vue {
     return false;
   }
 
-  get consultationEmployee(): IConsultationState {
-    return this.$store.state.consultation;
+  get computedIdPerson(): number {
+    return Number(this.$route.params.paramIdPerson);
+  }
+
+  get computedEmployeeId(): number {
+    return Number(this.$route.params.paramEmployeeId);
+  }
+
+  get computedEmployeeTypeId(): number {
+    return Number(this.$route.params.paramEmployeeTypeId);
   }
 
   onBtnEditAddress(): void {
-    this.$router.push({ name: "address:editAddress" });
+    this.$router.push({
+      name: "address:editAddress",
+      params: {
+        paramEmployeeId: this.computedEmployeeId.toString(),
+        paramEmployeeTypeId: this.computedEmployeeTypeId.toString(),
+        paramIdPerson: this.computedIdPerson.toString(),
+      },
+    });
   }
 
   onBtnNewAddress(): void {
-    this.$router.push({ name: "address:newAddress" });
+    this.$router.push({
+      name: "address:newAddress",
+      params: {
+        paramEmployeeId: this.computedEmployeeId.toString(),
+        paramEmployeeTypeId: this.computedEmployeeTypeId.toString(),
+        paramIdPerson: this.computedIdPerson.toString(),
+      },
+    });
+  }
+
+  onBtnAssignMedicalUnit(): void {
+    this.getMedicalUnits();
   }
 
   onBtnAddBeneficiary(): void {
-    this.$router.push({ name: "beneficiary:newBeneficiary" });
+    this.$router.push({
+      name: "beneficiary:newBeneficiary",
+      params: {
+        paramEmployeeId: this.computedEmployeeId.toString(),
+        paramEmployeeTypeId: this.computedEmployeeTypeId.toString(),
+        paramIdPerson: this.computedIdPerson.toString(),
+      },
+    });
   }
 
   onBtnCredentialization(): void {
-    this.$router.push({ name: "credentialization:credentialization" });
+    this.$router.push({
+      name: "credentialization:credentialization",
+      params: {
+        paramEmployeeId: this.computedEmployeeId.toString(),
+        paramEmployeeTypeId: this.computedEmployeeTypeId.toString(),
+        paramIdPerson: this.computedIdPerson.toString(),
+      },
+    });
   }
 
   getAllBeneficiaries(): void {
-    this.beneficiaries = this.beneficiaryService.getAll(
-      this.consultationEmployee.consultation.assigmentNumber
-    );
+    this.beneficiaries = this.beneficiaryService.getAll(this.computedIdPerson);
+  }
+
+  getValidityRights(): void {
+    this.beneficiaryService
+      .getValidityRights(
+        this.computedIdPerson,
+        this.computedEmployeeId,
+        this.computedEmployeeTypeId
+      )
+      .then((response) => {
+        this.validityRights = response.Data;
+
+        if (!this.validityRights.EstadoVigencia) {
+          this.alert = {
+            message: "El empleado no encuentra se actualmente vigente", //this.$t("address.address.messages.success") as string,
+            alert: true,
+            type: false,
+          };
+          this.disabledCredential = true;
+        }
+      });
   }
 
   onBtnEdit(): void {
@@ -364,18 +401,6 @@ export default class EmployeeConsultation extends Vue {
     this.alert.type = false;
   }
 
-  validity(): void {
-    if (!this.consultationEmployee.consultation.validityStatus) {
-      this.alert = {
-        message: "El empleado no encuentra se actualmente vigente", //this.$t("address.address.messages.success") as string,
-        alert: true,
-        type: false,
-      };
-      console.log(this.disabledCredential);
-      this.disabledCredential = true;
-    }
-  }
-
   getMedicalUnits(): void {
     this.isLoadingMedicalUnitsList = true;
     this.medicalUnitService
@@ -389,22 +414,9 @@ export default class EmployeeConsultation extends Vue {
   }
 
   mounted(): void {
-    if (this.consultationEmployee.consultation.assigmentNumber == null) {
-      this.$router.push({
-        name: "mvd:people:searchEmployee",
-      });
-    }
-    this.getMedicalUnits();
-    this.validity();
+    this.getValidityRights();
     this.getAllBeneficiaries();
   }
-
-  // created() {
-
-  //   window.addEventListener("beforeunload", (event) => {
-  //     event.returnValue = "";
-  //   });
-  // }
 }
 </script>
 
