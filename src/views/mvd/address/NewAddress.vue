@@ -443,8 +443,9 @@ export default class NewAddress extends Vue {
         this.addressPerson.IdDomicilio = responseAddress.Data.IdDomicilio;
         this.addressPerson.IdPersona = this.computedIdPerson;
 
-        let responseAddressPerson =
-          await this.addressService.createAddresPerson(this.addressPerson);
+        let responseAddressPerson = await this.addressService.createAddresPerson(
+          this.addressPerson
+        );
 
         if (responseAddressPerson.Success) {
           this.alert = {

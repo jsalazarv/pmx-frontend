@@ -233,4 +233,3 @@ export default class EmployeeFormContractual extends Vue {
   }
 }
 </script>
-
