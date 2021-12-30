@@ -3,6 +3,7 @@ export default {
     title: "New beneficiary",
     beneficiaryForm: {
       assignmentNumber: "Assignment number",
+      workerValidity: "Workery validity(headline)",
       coding: "Coding",
       names: "Names",
       lastname: "Lastname",
@@ -26,6 +27,7 @@ export default {
       interiorNumber: "Interior number",
       block: "Block",
       lot: "Lot",
+      inability: "Do you have different abilities?",
     },
     selectText: {
       newAddress: "New address...",

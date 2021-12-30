@@ -14,39 +14,52 @@
           :indeterminate="isLoading"
         ></v-progress-linear>
         <v-container>
-          {{ consultationEmployee }}
-          <ValidationObserver v-slot="{ handleSubmit }">
+          <ValidationObserver v-slot="{ handleSubmit }" ref="form">
             <form @submit.prevent="handleSubmit(onSubmit)">
               <v-row>
                 <v-col cols="12" sm="12" md="6">
-                  <ValidationProvider
-                    :name="
+                  <v-text-field
+                    :label="
                       $t(
                         'beneficiary.beneficiary.beneficiaryForm.assignmentNumber'
                       )
                     "
-                    v-slot="{ errors }"
-                    rules="required|max:8"
+                    name="assignmentNumber"
+                    dense
+                    outlined
+                    readonly
+                    :loading="isLoadingValidityRights"
+                    v-model="computedEmployeeId"
                   >
-                    <v-text-field
-                      :label="
-                        $t(
-                          'beneficiary.beneficiary.beneficiaryForm.assignmentNumber'
-                        )
-                      "
-                      name="assignmentNumber"
-                      dense
-                      outlined
-                      disabled
-                      :error-messages="errors"
-                      v-model="
-                        consultationEmployee.consultation.assigmentNumber
-                      "
-                    >
-                    </v-text-field>
-                  </ValidationProvider>
+                  </v-text-field>
                 </v-col>
                 <v-col cols="12" sm="12" md="6">
+                  <v-text-field
+                    :label="
+                      $t(
+                        'beneficiary.beneficiary.beneficiaryForm.workerValidity'
+                      )
+                    "
+                    name="workerValidity"
+                    dense
+                    outlined
+                    readonly
+                    :loading="isLoadingValidityRights"
+                    v-model="computedEmployeeId"
+                  >
+                  </v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <Alert
+                  :message="alert.message"
+                  :alert="alert.alert"
+                  :type="alert.type"
+                  @hideAlert="hideAlert"
+                ></Alert>
+              </v-row>
+              <v-row>
+                <v-col cols="12" sm="12" md="4">
                   <ValidationProvider
                     :name="$t('beneficiary.beneficiary.beneficiaryForm.coding')"
                     v-slot="{ errors }"
@@ -69,9 +82,7 @@
                     ></v-autocomplete>
                   </ValidationProvider>
                 </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="12" sm="12" md="6">
+                <v-col cols="12" sm="12" md="4">
                   <ValidationProvider
                     :name="$t('beneficiary.beneficiary.beneficiaryForm.curp')"
                     v-slot="{ errors }"
@@ -85,12 +96,12 @@
                       dense
                       outlined
                       :error-messages="errors"
-                      v-model="beneficiary.curp"
+                      v-model="beneficiary.Persona.Curp"
                     >
                     </v-text-field>
                   </ValidationProvider>
                 </v-col>
-                <v-col cols="12" sm="12" md="6">
+                <v-col cols="12" sm="12" md="4">
                   <v-btn color="success" dark large dense>
                     {{ $t("beneficiary.beneficiary.buttons.validate") }}
                   </v-btn>
@@ -111,7 +122,7 @@
                       dense
                       outlined
                       :error-messages="errors"
-                      v-model="beneficiary.names"
+                      v-model="beneficiary.Persona.Nombres"
                     >
                     </v-text-field>
                   </ValidationProvider>
@@ -132,7 +143,7 @@
                       dense
                       outlined
                       :error-messages="errors"
-                      v-model="beneficiary.lastanme"
+                      v-model="beneficiary.Persona.ApellidoPaterno"
                     >
                     </v-text-field>
                   </ValidationProvider>
@@ -153,7 +164,7 @@
                       dense
                       outlined
                       :error-messages="errors"
-                      v-model="beneficiary.surname"
+                      v-model="beneficiary.Persona.ApellidoMaterno"
                     >
                     </v-text-field>
                   </ValidationProvider>
@@ -196,7 +207,7 @@
                       </ValidationProvider>
                     </template>
                     <v-date-picker
-                      v-model="beneficiary.birthday"
+                      v-model="beneficiary.Persona.FechaNacimiento"
                       no-title
                       @input="showPickerBirthday = false"
                       locale="es"
@@ -215,7 +226,7 @@
                       dense
                       outlined
                       :error-messages="errors"
-                      v-model="beneficiary.age"
+                      v-model="beneficiary.Persona.Edad"
                     >
                     </v-text-field>
                   </ValidationProvider>
@@ -230,7 +241,7 @@
                       dense
                       name="gender"
                       outlined
-                      v-model="beneficiary.gender"
+                      v-model="beneficiary.Persona.Sexo"
                       item-text="Sigla"
                       item-value="Sigla"
                       :items="gendersList"
@@ -245,6 +256,25 @@
                 </v-col>
               </v-row>
               <v-row>
+                <v-col cols="12" sm="12" md="4">
+                  <ValidationProvider
+                    :name="
+                      $t('beneficiary.beneficiary.beneficiaryForm.inability')
+                    "
+                    v-slot="{ errors }"
+                  >
+                    <v-checkbox
+                      v-model="beneficiary.IndIncapacidad"
+                      dense
+                      outlined
+                      name="inability"
+                      :label="
+                        $t('beneficiary.beneficiary.beneficiaryForm.inability')
+                      "
+                      :error-messages="errors"
+                    ></v-checkbox>
+                  </ValidationProvider>
+                </v-col>
                 <v-col cols="12" sm="12" md="4">
                   <v-menu
                     v-model="showPickerValidity"
@@ -281,7 +311,7 @@
                       </ValidationProvider>
                     </template>
                     <v-date-picker
-                      v-model="beneficiary.validity"
+                      v-model="beneficiary.Vigencia"
                       no-title
                       @input="showPickerValidity = false"
                       locale="es"
@@ -300,7 +330,7 @@
                       dense
                       name="medicalUnit"
                       outlined
-                      v-model="beneficiary.medicalUnit"
+                      v-model="beneficiary.IdUMedica"
                       item-text="Nombre"
                       item-value="Id"
                       :items="medicalUnitsList"
@@ -335,7 +365,7 @@
                       dense
                       outlined
                       :error-messages="errors"
-                      v-model="beneficiary.observations"
+                      v-model="beneficiary.Observaciones"
                     >
                     </v-textarea>
                   </ValidationProvider>
@@ -348,13 +378,16 @@
                       closeOnClick: true,
                       closeOnContentClick: true,
                     }"
-                    :items="items"
+                    :items="addresses"
+                    item-text="DomicilioDescripcion"
+                    item-value="IdDomicilio"
                     :label="
                       $t('beneficiary.beneficiary.beneficiaryForm.address')
                     "
                     dense
                     outlined
                     @change="existingAddress"
+                    v-model="beneficiary.Domicilio.IdDomicilio"
                   >
                     <template v-slot:prepend-item>
                       <v-list-item
@@ -400,7 +433,7 @@
                       :loading="isLoadingCountries"
                       @change="getStates"
                       :error-messages="errors"
-                      v-model="beneficiary.Address.IdPais"
+                      v-model="beneficiary.Domicilio.IdPais"
                     ></v-autocomplete>
                   </ValidationProvider>
                 </v-col>
@@ -419,11 +452,13 @@
                       :label="
                         $t('beneficiary.beneficiary.beneficiaryForm.state')
                       "
-                      :disabled="isLoadingStates || !beneficiary.Address.IdPais"
+                      :disabled="
+                        isLoadingStates || !beneficiary.Domicilio.IdPais
+                      "
                       :loading="isLoadingStates"
                       outlined
                       required
-                      v-model="beneficiary.Address.IdEstado"
+                      v-model="beneficiary.Domicilio.IdEstado"
                       @change="getMunicipalities"
                       :error-messages="errors"
                     ></v-autocomplete>
@@ -444,7 +479,8 @@
                       item-text="Nombre"
                       item-value="IdMunicipio"
                       :disabled="
-                        isLoadingMunicipalities || !beneficiary.Address.IdEstado
+                        isLoadingMunicipalities ||
+                        !beneficiary.Domicilio.IdEstado
                       "
                       :loading="isLoadingMunicipalities"
                       :label="
@@ -454,7 +490,7 @@
                       "
                       outlined
                       required
-                      v-model="beneficiary.Address.IdMunicipio"
+                      v-model="beneficiary.Domicilio.IdMunicipio"
                       :error-messages="errors"
                     ></v-autocomplete>
                   </ValidationProvider>
@@ -477,6 +513,7 @@
                       dense
                       outlined
                       :error-messages="errors"
+                      v-model="beneficiary.Domicilio.CodigoPostal"
                     >
                     </v-text-field>
                   </ValidationProvider>
@@ -495,6 +532,7 @@
                       dense
                       outlined
                       :error-messages="errors"
+                      v-model="beneficiary.Domicilio.Colonia"
                     >
                     </v-text-field>
                   </ValidationProvider>
@@ -515,6 +553,7 @@
                       dense
                       outlined
                       :error-messages="errors"
+                      v-model="beneficiary.Domicilio.Localidad"
                     >
                     </v-text-field>
                   </ValidationProvider>
@@ -535,6 +574,7 @@
                       dense
                       outlined
                       :error-messages="errors"
+                      v-model="beneficiary.Domicilio.Calle"
                     >
                     </v-text-field>
                   </ValidationProvider>
@@ -560,6 +600,7 @@
                       dense
                       outlined
                       :error-messages="errors"
+                      v-model="beneficiary.Domicilio.NumeroExterior"
                     >
                     </v-text-field>
                   </ValidationProvider>
@@ -574,6 +615,7 @@
                     name="interiorNumber"
                     dense
                     outlined
+                    v-model="beneficiary.Domicilio.NumeroInterior"
                   >
                   </v-text-field>
                 </v-col>
@@ -583,6 +625,7 @@
                     name="block"
                     dense
                     outlined
+                    v-model="beneficiary.Domicilio.Manzana"
                   >
                   </v-text-field>
                 </v-col>
@@ -594,6 +637,7 @@
                     name="lot"
                     dense
                     outlined
+                    v-model="beneficiary.Domicilio.Lote"
                   >
                   </v-text-field>
                 </v-col>
@@ -616,7 +660,6 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { IConsultationState } from "@/store/consultation/types";
 import GenderService from "@/services/GenderService";
 import { IGender } from "@/services/GenderService/types";
 import { IMedicalUnit } from "@/services/MedicalUnitService/types";
@@ -625,14 +668,25 @@ import CodingService from "@/services/CodingService";
 import { ICoding } from "@/services/CodingService/types";
 import CountryService from "@/services/CountryService";
 import { ICountry } from "@/services/CountryService/types";
-import { IBeneficiaryRequest } from "@/services/BeneficiaryService/types";
+import {
+  IBeneficiaryRequest,
+  IValidityRightsResponse,
+} from "@/services/BeneficiaryService/types";
 import StateService from "@/services/StateService";
 import MunicipalityService from "@/services/MunicipalityService";
 import { IState } from "@/services/StateService/types";
 import { IMunicipality } from "@/services/MunicipalityService/types";
+import BeneficiaryService from "@/services/BeneficiaryService";
+import AddressService from "@/services/AddressService";
+import { IAddresPersonResponse } from "@/services/AddressService/types";
+import Alert from "@/components/Alert.vue";
 
-@Component({})
+@Component({
+  components: { Alert },
+})
 export default class NewBeneficiary extends Vue {
+  protected beneficiaryService = new BeneficiaryService();
+  protected addressService = new AddressService();
   protected genderService = new GenderService();
   protected medicalUnitService = new MedicalUnitService();
   protected codingService = new CodingService();
@@ -651,35 +705,83 @@ export default class NewBeneficiary extends Vue {
   public isLoadingCountries = false;
   public isLoadingStates = false;
   public isLoadingMunicipalities = false;
+  public isLoadingValidityRights = false;
   public showPickerBirthday: any = false;
   public showPickerValidity: any = false;
   public useAddress: any = false;
-  public beneficiary: IBeneficiaryRequest = {
-    IdDerechohabiente: null,
-    IdPersona: null,
-    IdDerTitular: null,
-    IdFamiliar: null,
-    IdUMedica: null,
-    TipoDer: null,
-    Vigencia: null,
-    Estado: null,
-    Observaciones: null,
-    UsuarioCrea: null,
+  public addresses: Array<IAddresPersonResponse> = [];
+  public alert = {
+    alert: false,
+    message: "",
+    type: false,
+  };
+  public validityRights: IValidityRightsResponse = {
+    GrupoPersonal: null,
+    AreaPersonal: null,
+    CentroDepto: null,
+    DepartamentoDescripcion: null,
     IdCentro: null,
     IdDepartamento: null,
-    FechaNacimiento: null,
-    Edad: null,
-    Person: {
+    Vigencia: null,
+    EstadoVigencia: false,
+    TipoEmpleadoDescripcion: null,
+    Nombres: "",
+    ApellidoPaterno: "",
+    ApellidoMaterno: "",
+    Curp: null,
+  };
+  public beneficiary: IBeneficiaryRequest = {
+    IdDerechohabiente: null,
+    IdPersona: 0,
+    IdDerTitular: 8,
+    IdFamiliar: null,
+    IdUMedica: null,
+    TipoDer: "",
+    Vigencia: "",
+    Estado: "",
+    Observaciones: "",
+    IndIncapacidad: false,
+    Persona: {
+      IdPersona: 0,
       Curp: "",
       Nombres: "",
       ApellidoPaterno: "",
       ApellidoMaterno: "",
       FechaNacimiento: "",
+      Edad: "",
       Sexo: "",
       Rfc: "",
-      Edad: "",
+      EstadoCivil: "",
+      IndRenapo: false,
+      Fotografia: "",
+      FechaFoto: "",
+      Firma: "",
+      SiglasEntidad: "",
+      Nacionalidad: "",
+      DpDocumento: 0,
+      DpEntidad: 0,
+      DpFoja: 0,
+      DpMunicipio: 0,
+      DpAnio: 0,
+      DpLibro: 0,
+      DpCrip: "",
+      DpMigracion: 0,
+      DpNatura: 0,
+      DpCertifica: 0,
+      Archivo: "",
+      PfechaAlta: "",
+      PFolioConstancia: 0,
+      PEstatus: 0,
+      XEstatus: "",
+      YEstatus: "",
+      ZEstatus: "",
+      Marca: "",
+      CError: 0,
+      Observacion: "",
+      DpActa: 0,
+      DpTomo: 0,
     },
-    Address: {
+    Domicilio: {
       IdDomicilio: null,
       IdPais: null,
       IdEstado: null,
@@ -694,30 +796,51 @@ export default class NewBeneficiary extends Vue {
       Lote: "",
     },
   };
-  public items: any = ["Foo", "Bar", "Fizz", "Buzz"];
 
   get isLoading(): boolean {
     // TODO Refactor this form is submitting
     return false;
   }
 
-  get consultationEmployee(): IConsultationState {
-    return this.$store.state.consultation;
+  get computedIdPerson(): number {
+    return Number(this.$route.params.paramIdPerson);
   }
 
-  get computedBirthdayFormatted() {
-    return this.formatted(this.beneficiary.FechaNacimiento);
+  get computedEmployeeId(): number {
+    return Number(this.$route.params.paramEmployeeId);
   }
 
-  get computedValidityFormatted() {
+  get computedEmployeeTypeId(): number {
+    return Number(this.$route.params.paramEmployeeTypeId);
+  }
+
+  get computedBirthdayFormatted(): string | null {
+    return this.formatted(this.beneficiary.Persona.FechaNacimiento);
+  }
+
+  get computedValidityFormatted(): string | null {
     return this.formatted(this.beneficiary.Vigencia);
   }
 
-  newAddress() {
+  newAddress(): void {
     this.useAddress = true;
+    this.beneficiary.Domicilio = {
+      IdDomicilio: 0,
+      IdPais: null,
+      IdEstado: null,
+      IdMunicipio: null,
+      Localidad: "",
+      CodigoPostal: "",
+      Colonia: "",
+      Calle: "",
+      NumeroInterior: "",
+      NumeroExterior: "",
+      Manzana: "",
+      Lote: "",
+    };
   }
 
-  existingAddress() {
+  existingAddress(): void {
     this.useAddress = false;
   }
 
@@ -740,10 +863,10 @@ export default class NewBeneficiary extends Vue {
   }
 
   getStates(): void {
-    if (!this.beneficiary.Address.IdPais) return;
+    if (!this.beneficiary.Domicilio.IdPais) return;
     this.isLoadingStates = true;
     this.stateService
-      .getByCountryId(this.beneficiary.Address.IdPais)
+      .getByCountryId(this.beneficiary.Domicilio.IdPais)
       .then((response) => {
         this.states = response.Data;
       })
@@ -753,10 +876,10 @@ export default class NewBeneficiary extends Vue {
   }
 
   getMunicipalities(): void {
-    if (!this.beneficiary.Address.IdEstado) return;
+    if (!this.beneficiary.Domicilio.IdEstado) return;
     this.isLoadingMunicipalities = true;
     this.municipalityService
-      .getByStateId(this.beneficiary.Address.IdEstado)
+      .getByStateId(this.beneficiary.Domicilio.IdEstado)
       .then((response) => {
         this.municipalities = response.Data;
       })
@@ -789,7 +912,7 @@ export default class NewBeneficiary extends Vue {
       });
   }
 
-  getCoding() {
+  getCoding(): void {
     this.isLoadingCodingList = true;
     this.codingService
       .getAll()
@@ -801,28 +924,134 @@ export default class NewBeneficiary extends Vue {
       });
   }
 
-  mounted() {
+  getValidityRights(): void {
+    this.isLoadingValidityRights = true;
+    this.beneficiaryService
+      .getValidityRights(
+        this.computedIdPerson,
+        this.computedEmployeeId,
+        this.computedEmployeeTypeId
+      )
+      .then((response) => {
+        this.validityRights = response.Data;
+      })
+      .finally(() => {
+        this.isLoadingValidityRights = false;
+      });
+  }
+
+  hideAlert(): void {
+    this.alert.message = "";
+    this.alert.alert = false;
+    this.alert.type = false;
+  }
+
+  getAddressesPerson(): void {
+    this.addressService
+      .getAddressesPerson(this.computedIdPerson)
+      .then((response) => {
+        this.addresses = response.Data;
+      });
+  }
+
+  mounted(): void {
+    this.getValidityRights();
     this.getCountries();
     this.getGenders();
     this.getMedicalUnits();
     this.getCoding();
+    this.getAddressesPerson();
   }
 
-  onSubmit() {
-    console.log("entra");
-  }
-
-  // created() {
-  //   window.addEventListener("beforeunload", (event) => {
-  //     console.log(event)
-  //     // Cancel the event as stated by the standard. event.preventDefault(); // Chrome requires
-  //     //returnValue to be set.
-  //     event.returnValue = "";
-  //   });
-  //   window.addEventListener("unload", (event) => {
-  //     console.log(event)
-  //   });
+  // reset(): void {
+  //   (this.$refs.form as HTMLFormElement).reset();
   // }
+
+  onSubmit(): void {
+    this.beneficiaryService
+      .create(this.beneficiary)
+      .then((response) => {
+        this.alert = {
+          message: this.$t("address.address.messages.success") as string,
+          alert: true,
+          type: true,
+        };
+        this.beneficiary = {
+          IdDerechohabiente: null,
+          IdPersona: 0,
+          IdDerTitular: 8,
+          IdFamiliar: null,
+          IdUMedica: null,
+          TipoDer: "",
+          Vigencia: "",
+          Estado: "",
+          Observaciones: "",
+          IndIncapacidad: false,
+          Persona: {
+            IdPersona: 0,
+            Curp: "",
+            Nombres: "",
+            ApellidoPaterno: "",
+            ApellidoMaterno: "",
+            FechaNacimiento: "",
+            Edad: "",
+            Sexo: "",
+            Rfc: "",
+            EstadoCivil: "",
+            IndRenapo: false,
+            Fotografia: "",
+            FechaFoto: "",
+            Firma: "",
+            SiglasEntidad: "",
+            Nacionalidad: "",
+            DpDocumento: 0,
+            DpEntidad: 0,
+            DpFoja: 0,
+            DpMunicipio: 0,
+            DpAnio: 0,
+            DpLibro: 0,
+            DpCrip: "",
+            DpMigracion: 0,
+            DpNatura: 0,
+            DpCertifica: 0,
+            Archivo: "",
+            PfechaAlta: "",
+            PFolioConstancia: 0,
+            PEstatus: 0,
+            XEstatus: "",
+            YEstatus: "",
+            ZEstatus: "",
+            Marca: "",
+            CError: 0,
+            Observacion: "",
+            DpActa: 0,
+            DpTomo: 0,
+          },
+          Domicilio: {
+            IdDomicilio: null,
+            IdPais: null,
+            IdEstado: null,
+            IdMunicipio: null,
+            Localidad: "",
+            CodigoPostal: "",
+            Colonia: "",
+            Calle: "",
+            NumeroInterior: "",
+            NumeroExterior: "",
+            Manzana: "",
+            Lote: "",
+          },
+        };
+        (this.$refs.form as HTMLFormElement).reset();
+      })
+      .catch((error) => {
+        this.alert = {
+          message: this.$t("address.address.messages.error") as string,
+          alert: true,
+          type: false,
+        };
+      });
+  }
 }
 </script>
 

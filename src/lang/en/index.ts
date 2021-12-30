@@ -7,6 +7,7 @@ import beneficiary from "./beneficiary";
 import address from "./address";
 import employeeConsultationMFE from "./mfe/employeeConsultation";
 import affiliationLog from "./mfe/affiliationLog";
+import credentialization from "./credentialization";
 
 export default {
   dictionary,
@@ -18,4 +19,5 @@ export default {
   address,
   employeeConsultationMFE,
   affiliationLog,
+  credentialization
 };

@@ -11,8 +11,9 @@
           name="employeeType"
           dense
           outlined
-          disabled
-          :value="consultationEmployee.consultation.employeeType"
+          readonly
+          :value="validityRights.TipoEmpleadoDescripcion"
+          :loading="isLoadingValidityRights"
         >
         </v-text-field>
       </v-col>
@@ -26,8 +27,9 @@
           name="assignmentNumber"
           dense
           outlined
-          disabled
-          :value="consultationEmployee.consultation.assigmentNumber"
+          readonly
+          :value="computedEmployeeId"
+          :loading="isLoadingValidityRights"
         >
         </v-text-field>
       </v-col>
@@ -43,8 +45,9 @@
           name="groupPersonal"
           dense
           outlined
-          disabled
-          :value="consultationEmployee.consultation.groupPersonal"
+          readonly
+          :value="validityRights.GrupoPersonal"
+          :loading="isLoadingValidityRights"
         >
         </v-text-field>
       </v-col>
@@ -58,8 +61,9 @@
           name="areaPersonal"
           dense
           outlined
-          disabled
-          :value="consultationEmployee.consultation.areaPersonal"
+          readonly
+          :value="validityRights.AreaPersonal"
+          :loading="isLoadingValidityRights"
         >
         </v-text-field>
       </v-col>
@@ -73,8 +77,9 @@
           name="fullname"
           dense
           outlined
-          disabled
-          :value="consultationEmployee.consultation.fullname"
+          readonly
+          :value="computedFullname"
+          :loading="isLoadingValidityRights"
         >
         </v-text-field>
       </v-col>
@@ -90,8 +95,9 @@
           name="departmentCenter"
           dense
           outlined
-          disabled
-          :value="consultationEmployee.consultation.departmentCenter"
+          readonly
+          :value="validityRights.CentroDepto"
+          :loading="isLoadingValidityRights"
         >
         </v-text-field>
       </v-col>
@@ -105,8 +111,9 @@
           name="departmentDescription"
           dense
           outlined
-          disabled
-          :value="consultationEmployee.consultation.departmentDescription"
+          readonly
+          :value="validityRights.DepartamentoDescripcion"
+          :loading="isLoadingValidityRights"
         >
         </v-text-field>
       </v-col>
@@ -122,8 +129,9 @@
           name="validity"
           dense
           outlined
-          disabled
-          :value="consultationEmployee.consultation.validity"
+          readonly
+          :value="validityRights.Vigencia"
+          :loading="isLoadingValidityRights"
         >
         </v-text-field>
       </v-col>
@@ -137,8 +145,9 @@
           name="validityStatus"
           dense
           outlined
-          disabled
+          readonly
           :value="computedValidity"
+          :loading="isLoadingValidityRights"
         >
         </v-text-field>
       </v-col>
@@ -149,27 +158,78 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { IConsultationState } from "@/store/consultation/types";
+import BeneficiaryService from "@/services/BeneficiaryService";
+import { IValidityRightsResponse } from "@/services/BeneficiaryService/types";
 
 @Component({})
-export default class EmployeeFormData extends Vue {
+export default class EmployeeFormContractual extends Vue {
+  protected beneficiaryService = new BeneficiaryService();
+  public isLoadingValidityRights = false;
+  public validityRights: IValidityRightsResponse = {
+    GrupoPersonal: null,
+    AreaPersonal: null,
+    CentroDepto: null,
+    DepartamentoDescripcion: null,
+    IdCentro: null,
+    IdDepartamento: null,
+    Vigencia: null,
+    EstadoVigencia: false,
+    TipoEmpleadoDescripcion: null,
+    Nombres: "",
+    ApellidoPaterno: "",
+    ApellidoMaterno: "",
+    Curp: null,
+  };
+
   get isLoading(): boolean {
     // TODO Refactor this form is submitting
     return false;
   }
 
-  get consultationEmployee(): IConsultationState {
-    return this.$store.state.consultation;
-  }
-
   get computedValidity(): string {
-    return this.consultationEmployee.consultation.validityStatus
+    return this.validityRights.EstadoVigencia
       ? `${this.$t(
           "employeeConsultation.consultation.employeeConsultationForm.valid"
         )}`
       : `${this.$t(
           "employeeConsultation.consultation.employeeConsultationForm.notValid"
         )}`;
+  }
+
+  get computedIdPerson(): number {
+    return Number(this.$route.params.paramIdPerson);
+  }
+
+  get computedEmployeeId(): number {
+    return Number(this.$route.params.paramEmployeeId);
+  }
+
+  get computedEmployeeTypeId(): number {
+    return Number(this.$route.params.paramEmployeeTypeId);
+  }
+
+  get computedFullname(): string {
+    return `${this.validityRights.Nombres} ${this.validityRights.ApellidoPaterno} ${this.validityRights.ApellidoMaterno}`;
+  }
+
+  getValidityRights(): void {
+    this.isLoadingValidityRights = true;
+    this.beneficiaryService
+      .getValidityRights(
+        this.computedIdPerson,
+        this.computedEmployeeId,
+        this.computedEmployeeTypeId
+      )
+      .then((response) => {
+        this.validityRights = response.Data;
+      })
+      .finally(() => {
+        this.isLoadingValidityRights = false;
+      });
+  }
+
+  mounted() {
+    this.getValidityRights();
   }
 }
 </script>

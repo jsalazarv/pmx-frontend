@@ -2,17 +2,23 @@ import BaseService from "@/services/BaseService";
 import { IServiceResponse } from "@/services/types";
 import {
   IBeneficiary,
+  IBeneficiaryRequest,
   IValidityRightsResponse,
 } from "@/services/BeneficiaryService/types";
 
 export default class BeneficiaryService extends BaseService {
   getValidityRights(
-    assigmentNumber: number | null,
+    idPerson: number,
+    assigmentNumber: number,
     employeeTypeId: number
   ): IServiceResponse<IValidityRightsResponse> {
     return this.client.get(
-      `/Derechohabientes/ObtenerVigenciaDerechosPorEmpleado/${assigmentNumber}/${employeeTypeId}`
+      `/Derechohabientes/ObtenerVigenciaDerechosPorEmpleado/${idPerson}/${assigmentNumber}/${employeeTypeId}`
     );
+  }
+
+  create(beneficiary: IBeneficiaryRequest): IServiceResponse<IBeneficiary> {
+    return this.client.post("/Derechohabientes", beneficiary);
   }
 
   getBeneficiaryByPerson(

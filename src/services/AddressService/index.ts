@@ -1,6 +1,10 @@
 import BaseService from "@/services/BaseService";
 import { IServiceResponse } from "@/services/types";
-import { IAddress, IAddressPerson } from "@/services/AddressService/types";
+import {
+  IAddresPersonResponse,
+  IAddress,
+  IAddressPerson,
+} from "@/services/AddressService/types";
 
 export default class AddressService extends BaseService {
   create(address: IAddress): IServiceResponse<IAddress> {
@@ -28,11 +32,9 @@ export default class AddressService extends BaseService {
     );
   }
 
-  // getAddressesbyPerson(
-  //   idPerson: number | null
-  // ): IServiceResponse<Array<IAddressPerson>> {
-  //   return this.client.get(
-  //     `/Domicilios/${idPerson}/ObtenerDomiciliosPorPersonaId`
-  //   );
-  // }
+  getAddressesPerson(
+    idPerson: number
+  ): IServiceResponse<IAddresPersonResponse[]> {
+    return this.client.get(`/Domicilios/ObtenerHistoricoPorPersona/${idPerson}`);
+  }
 }

@@ -23,8 +23,9 @@
                     name="employeeType"
                     dense
                     outlined
-                    :value="consultationEmployee.consultation.employeeType"
-                    disabled
+                    :value="validityRights.TipoEmpleadoDescripcion"
+                    readonly
+                    :loading="isLoadingValidityRights"
                   >
                   </v-text-field>
                 </v-col>
@@ -34,8 +35,9 @@
                     name="assigmentNumber"
                     dense
                     outlined
-                    :value="consultationEmployee.consultation.assigmentNumber"
-                    disabled
+                    :value="computedEmployeeId"
+                    readonly
+                    :loading="isLoadingValidityRights"
                   >
                   </v-text-field>
                 </v-col>
@@ -47,8 +49,9 @@
                     name="fullname"
                     dense
                     outlined
-                    :value="consultationEmployee.consultation.fullname"
-                    disabled
+                    :value="computedFullname"
+                    readonly
+                    :loading="isLoadingValidityRights"
                   >
                   </v-text-field>
                 </v-col>
@@ -270,7 +273,6 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { IConsultationState } from "@/store/consultation/types";
 import CountryService from "@/services/CountryService";
 import { ICountry } from "@/services/CountryService/types";
 import StateService from "@/services/StateService";
@@ -280,11 +282,14 @@ import { IMunicipality } from "@/services/MunicipalityService/types";
 import { IAddress, IAddressPerson } from "@/services/AddressService/types";
 import AddressService from "@/services/AddressService/index";
 import Alert from "@/components/Alert.vue";
+import BeneficiaryService from "@/services/BeneficiaryService";
+import { IValidityRightsResponse } from "@/services/BeneficiaryService/types";
 
 @Component({
   components: { Alert },
 })
 export default class NewAddress extends Vue {
+  protected beneficiaryService = new BeneficiaryService();
   protected countryService = new CountryService();
   protected stateService = new StateService();
   protected municipalityService = new MunicipalityService();
@@ -294,11 +299,27 @@ export default class NewAddress extends Vue {
   public states: Array<IState> = [];
   public isLoadingStates = false;
   public isLoadingMunicipalities = false;
+  public isLoadingValidityRights = false;
   public municipalities: Array<IMunicipality> = [];
   public alert = {
     alert: false,
     message: "",
     type: false,
+  };
+  public validityRights: IValidityRightsResponse = {
+    GrupoPersonal: null,
+    AreaPersonal: null,
+    CentroDepto: null,
+    DepartamentoDescripcion: null,
+    IdCentro: null,
+    IdDepartamento: null,
+    Vigencia: null,
+    EstadoVigencia: false,
+    TipoEmpleadoDescripcion: null,
+    Nombres: "",
+    ApellidoPaterno: "",
+    ApellidoMaterno: "",
+    Curp: null,
   };
   public address: IAddress = {
     IdDomicilio: null,
@@ -326,8 +347,20 @@ export default class NewAddress extends Vue {
     return false;
   }
 
-  get consultationEmployee(): IConsultationState {
-    return this.$store.state.consultation;
+  get computedIdPerson(): number {
+    return Number(this.$route.params.paramIdPerson);
+  }
+
+  get computedEmployeeId(): number {
+    return Number(this.$route.params.paramEmployeeId);
+  }
+
+  get computedEmployeeTypeId(): number {
+    return Number(this.$route.params.paramEmployeeTypeId);
+  }
+
+  get computedFullname(): string {
+    return `${this.validityRights.Nombres} ${this.validityRights.ApellidoPaterno} ${this.validityRights.ApellidoMaterno}`;
   }
 
   getCountries(): void {
@@ -368,6 +401,22 @@ export default class NewAddress extends Vue {
       });
   }
 
+  getValidityRights(): void {
+    this.isLoadingValidityRights = true;
+    this.beneficiaryService
+      .getValidityRights(
+        this.computedIdPerson,
+        this.computedEmployeeId,
+        this.computedEmployeeTypeId
+      )
+      .then((response) => {
+        this.validityRights = response.Data;
+      })
+      .finally(() => {
+        this.isLoadingValidityRights = false;
+      });
+  }
+
   getAddressById(): void {
     this.addressService
       .get(this.address.IdDomicilio)
@@ -392,7 +441,7 @@ export default class NewAddress extends Vue {
 
       if (responseAddress.Success) {
         this.addressPerson.IdDomicilio = responseAddress.Data.IdDomicilio;
-        this.addressPerson.IdPersona = this.consultationEmployee.consultation.idPerson;
+        this.addressPerson.IdPersona = this.computedIdPerson;
 
         let responseAddressPerson = await this.addressService.createAddresPerson(
           this.addressPerson
@@ -432,11 +481,7 @@ export default class NewAddress extends Vue {
   }
 
   mounted(): void {
-    if (this.consultationEmployee.consultation.assigmentNumber == null) {
-      this.$router.push({
-        name: "mvd:people:searchEmployee",
-      });
-    }
+    this.getValidityRights();
     this.getCountries();
   }
 }

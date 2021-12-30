@@ -157,10 +157,6 @@
                         @click="
                           onButtonClick(
                             row.item.IdEmpleado,
-                            row.item.Nombres,
-                            row.item.ApellidoPaterno,
-                            row.item.ApellidoMaterno,
-                            row.item.TipoEmpleadoDescripcion,
                             row.item.IdTipoEmpleado,
                             row.item.IdPersona
                           )
@@ -196,7 +192,6 @@ import {
   ISearchRequest,
   ISearchResponse,
 } from "@/services/EmployeeService/types";
-import { IConsultation, IConsultationState } from "@/store/consultation/types";
 import BeneficiaryService from "@/services/BeneficiaryService";
 
 @Component({})
@@ -215,19 +210,6 @@ export default class SearchEmployee extends Vue {
     Nombres: null,
     ApellidoPaterno: null,
     ApellidoMaterno: null,
-  };
-  public consultation: IConsultation = {
-    assigmentNumber: null,
-    employeeType: null,
-    fullname: null,
-    employeeTypeId: null,
-    groupPersonal: null,
-    areaPersonal: null,
-    idPerson: null,
-    departmentCenter: "",
-    departmentDescription: "",
-    validity: "",
-    validityStatus: false,
   };
   public searchResponse: Array<ISearchResponse> = [];
   public headers: Array<any> = [
@@ -262,10 +244,6 @@ export default class SearchEmployee extends Vue {
     return false;
   }
 
-  get consultationEmployee(): IConsultationState {
-    return this.$store.state.consultation;
-  }
-
   getEmployeeTypes(): void {
     this.isLoadingEmployeeList = true;
     this.employeeTypesService
@@ -292,46 +270,17 @@ export default class SearchEmployee extends Vue {
 
   onButtonClick(
     assignmentNumber: number,
-    names: string,
-    lastname: string,
-    surname: string,
-    employeeType: string,
     employeeTypeId: number,
     idPerson: number
   ): void {
-    this.consultation.assigmentNumber = assignmentNumber;
-    this.consultation.fullname = names + " " + lastname + " " + surname;
-    this.consultation.employeeType = employeeType;
-    this.consultation.employeeTypeId = employeeTypeId;
-    this.consultation.idPerson = idPerson;
-
-    if (this.consultation.employeeTypeId == 0) {
-      this.beneficiaryService
-        .getValidityRights(
-          this.consultation.assigmentNumber,
-          this.consultation.employeeTypeId
-        )
-        .then((response) => {
-          this.consultation.groupPersonal = response.Data.GrupoPersonal;
-          this.consultation.areaPersonal = response.Data.AreaPersonal;
-          this.consultation.departmentCenter = response.Data.CentroDepto;
-          this.consultation.departmentDescription =
-            response.Data.DepartamentoDescripcion;
-          this.consultation.validity = response.Data.Vigencia;
-          this.consultation.validityStatus = response.Data.EstadoVigencia;
-        })
-        .finally(() => {
-          this.setConsultationData(this.consultation);
-          this.$router.push({ name: "mvd:people:employeeConsultation" });
-        });
-    } else {
-      this.setConsultationData(this.consultation);
-      this.$router.push({ name: "mvd:people:employeeConsultation" });
-    }
-  }
-
-  setConsultationData(data: IConsultation): void {
-    this.$store.dispatch("consultation/setConsultationData", data);
+    this.$router.push({
+      name: "mvd:people:employeeConsultation",
+      params: {
+        paramEmployeeId: assignmentNumber.toString(),
+        paramEmployeeTypeId: employeeTypeId.toString(),
+        paramIdPerson: idPerson.toString(),
+      },
+    });
   }
 
   mounted(): void {
