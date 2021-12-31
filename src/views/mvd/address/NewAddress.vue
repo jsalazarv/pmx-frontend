@@ -388,7 +388,7 @@ export default class NewAddress extends Vue {
       });
   }
 
-  getMunicipalities(): void {
+  getMunicipalities(): void { 
     if (!this.address.IdEstado) return;
     this.isLoadingMunicipalities = true;
     this.municipalityService
