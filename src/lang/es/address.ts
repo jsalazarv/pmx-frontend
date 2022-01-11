@@ -4,7 +4,7 @@ export default {
     titleSecondary: "Nuevo domicilio empleado",
     addressForm: {
       employeeType: "Tipo de empleado",
-      assigmentNumber: "Número de asignación",      
+      assigmentNumber: "Número de asignación",
       fullname: "Nombre completo",
       address: "Domicilio",
       country: "Pais",

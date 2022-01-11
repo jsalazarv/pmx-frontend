@@ -82,7 +82,7 @@ export default class AssignmentFolios extends Vue {
     },
   ];
   public params = {
-    IdFolioAsignacion: ""
+    IdFolioAsignacion: "",
   };
 
   filters(): IFoliosLogbookQueryFilter {
