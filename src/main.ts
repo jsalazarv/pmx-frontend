@@ -10,6 +10,7 @@ import "./directives";
 import "/src/plugins/veevalidate";
 import i18n from "@/lang";
 import "./filters/dataCleaner";
+import "./filters/dateFormatter";
 
 Vue.use(VueAxios, Axios);
 
