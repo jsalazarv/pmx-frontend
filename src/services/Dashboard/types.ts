@@ -1,4 +1,9 @@
 export interface IEmployeeStatus {
-  total: number;
-  estatus: string;
+  Total: number;
+  Estatus: string;
+}
+
+export interface IEmployeeTypesEmployee {
+  Total: number;
+  TipoEmpleado: string;
 }

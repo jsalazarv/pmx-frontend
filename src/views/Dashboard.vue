@@ -6,7 +6,7 @@
         <v-divider></v-divider>
       </v-col>
 
-      <v-col cols="12" class="px-4">
+      <v-col cols="7" class="px-4">
         <v-row>
           <v-col cols="12" md="9">
             <div class="card__indicator pa-4">
@@ -107,7 +107,11 @@
                     <small class="mr-4">Aceptados</small>
                     <div class="card__indicator__graph text-center">
                       <p class="card__indicator__value">
-                        <v-avatar size="80" color="success" class="avatar white--text mt-4">
+                        <v-avatar
+                          size="80"
+                          color="success"
+                          class="avatar white--text mt-4"
+                        >
                           <span>
                             {{ totalEmpleadosEstatuAprobados }}
                           </span>
@@ -119,9 +123,13 @@
                     <small class="mr-4">Cancelados</small>
                     <div class="card__indicator__graph text-center">
                       <p class="card__indicator__value">
-                       <v-avatar size="80" color="red" class="avatar white--text mt-4">
-                         <span>{{totalEmpleadosEstatuCancelacion}}</span>
-                       </v-avatar>
+                        <v-avatar
+                          size="80"
+                          color="red"
+                          class="avatar white--text mt-4"
+                        >
+                          <span>{{ totalEmpleadosEstatuCancelacion }}</span>
+                        </v-avatar>
                       </p>
                     </div>
                   </v-col>
@@ -163,9 +171,7 @@
               </v-col>
               <v-col cols="6">
                 <div class="card__indicator pa-4">
-                  <h4 class="card__indicator__title">
-                    Empleados Registrados Hoy
-                  </h4>
+                  <h4 class="card__indicator__title">Empleados Hoy</h4>
                   <small>Total</small>
                   <v-divider class="my-3"></v-divider>
                   <div class="card__indicator__graph text-center">
@@ -179,17 +185,24 @@
           </v-col>
         </v-row>
       </v-col>
+
+      <v-col cols="5">
+        <Graph />
+      </v-col>
     </v-row>
   </div>
 </template>
 
 <script lang="ts">
 import DashboardService from "@/services/Dashboard";
+import Graph from "./mfe/IndicatorDashboard/Graph.vue";
 
 import { Component, Vue } from "vue-property-decorator";
 
 @Component({
-  components: {},
+  components: {
+    Graph,
+  },
 })
 export default class Inicio extends Vue {
   public numberAssignModel = "";
@@ -264,8 +277,8 @@ export default class Inicio extends Vue {
         let data = res.Data;
 
         if (data && data.length) {
-          this.totalEmpleadosEstatuAprobados = data[0].total;
-          this.totalEmpleadosEstatuCancelacion = data[1].total;
+          this.totalEmpleadosEstatuAprobados = data[0].Total;
+          this.totalEmpleadosEstatuCancelacion = data[1].Total;
         }
       })
       .catch((err) => console.error(err));
@@ -291,7 +304,7 @@ export default class Inicio extends Vue {
   font-weight: normal;
   margin-bottom: 0;
 }
-.avatar{
+.avatar {
   font-size: 1.5em;
 }
 </style>

@@ -1,7 +1,7 @@
 import BaseService from "@/services/BaseService";
 import { IServiceResponse } from "@/services/types";
 
-import { IEmployeeStatus } from "./types";
+import { IEmployeeStatus, IEmployeeTypesEmployee } from "./types";
 
 export default class DashboardService extends BaseService {
   totalPersonas(): IServiceResponse<number> {
@@ -22,5 +22,11 @@ export default class DashboardService extends BaseService {
 
   totalEmpleadosEstatus(): IServiceResponse<Array<IEmployeeStatus>> {
     return this.client.get("/Empleados/Total/Estatus");
+  }
+
+  totalEmpleadosPorTiposEmpleado(): IServiceResponse<
+    Array<IEmployeeTypesEmployee>
+  > {
+    return this.client.get("/Empleados/Total/TiposEmpleado");
   }
 }
