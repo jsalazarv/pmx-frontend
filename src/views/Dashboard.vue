@@ -113,7 +113,7 @@
                           class="avatar white--text mt-4"
                         >
                           <span>
-                            {{ totalEmpleadosEstatuAprobados }}
+                            {{ totalEmployeeStatusAccept }}
                           </span>
                         </v-avatar>
                       </p>
@@ -128,7 +128,7 @@
                           color="red"
                           class="avatar white--text mt-4"
                         >
-                          <span>{{ totalEmpleadosEstatuCancelacion }}</span>
+                          <span>{{ totalEmployeeStatusCancel }}</span>
                         </v-avatar>
                       </p>
                     </div>
@@ -145,7 +145,7 @@
                   <small>Total</small>
                   <v-divider class="my-3"></v-divider>
                   <div class="card__indicator__graph text-center">
-                    <p class="card__indicator__value">{{ totalPersonas }}</p>
+                    <p class="card__indicator__value">{{ totalPeople }}</p>
                   </div>
                 </div>
               </v-col>
@@ -155,7 +155,7 @@
                   <small>Total</small>
                   <v-divider class="my-3"></v-divider>
                   <div class="card__indicator__graph text-center">
-                    <p class="card__indicator__value">{{ totalSolicitud }}</p>
+                    <p class="card__indicator__value">{{ totalRequest }}</p>
                   </div>
                 </div>
               </v-col>
@@ -165,7 +165,7 @@
                   <small>Total</small>
                   <v-divider class="my-3"></v-divider>
                   <div class="card__indicator__graph text-center">
-                    <p class="card__indicator__value">{{ totalEmpleados }}</p>
+                    <p class="card__indicator__value">{{ totalEmployee }}</p>
                   </div>
                 </div>
               </v-col>
@@ -176,7 +176,7 @@
                   <v-divider class="my-3"></v-divider>
                   <div class="card__indicator__graph text-center">
                     <p class="card__indicator__value">
-                      {{ totalEmpleadosHoy }}
+                      {{ totalEmployeeCurrent }}
                     </p>
                   </div>
                 </div>
@@ -206,12 +206,12 @@ import { Component, Vue } from "vue-property-decorator";
 })
 export default class Inicio extends Vue {
   public numberAssignModel = "";
-  public totalPersonas = 0;
-  public totalSolicitud = 0;
-  public totalEmpleados = 0;
-  public totalEmpleadosHoy = 0;
-  public totalEmpleadosEstatuCancelacion = 0;
-  public totalEmpleadosEstatuAprobados = 0;
+  public totalPeople = 0;
+  public totalRequest = 0;
+  public totalEmployee = 0;
+  public totalEmployeeCurrent = 0;
+  public totalEmployeeStatusCancel = 0;
+  public totalEmployeeStatusAccept = 0;
 
   protected dashboardService = new DashboardService();
 
@@ -225,60 +225,60 @@ export default class Inicio extends Vue {
   }
 
   mounted(): void {
-    this.ObtenerTotalPersonas();
-    this.ObtenerTotalFiliaciones();
-    this.ObtenerTotalEmpleados();
-    this.ObtenerTotalEmpleadosHoy();
-    this.ObtenerTotalEmpleadosEstatus();
+    this.getTotalPeople();
+    this.getTotalMembership();
+    this.getTotalEmployee();
+    this.getTotalEmployeeCurrent();
+    this.getTotalEmployeeStatus();
   }
 
-  ObtenerTotalPersonas(): void {
+  getTotalPeople(): void {
     this.dashboardService
-      .totalPersonas()
+      .totalPeople()
       .then((res) => {
-        this.totalPersonas = res.Data;
+        this.totalPeople = res.Data;
       })
       .catch((err) => console.error(err));
   }
 
-  ObtenerTotalFiliaciones(): void {
+  getTotalMembership(): void {
     this.dashboardService
-      .totalSolicitudAfiliaciones()
+      .totalRequestMembership()
       .then((res) => {
-        this.totalSolicitud = res.Data;
+        this.totalRequest = res.Data;
       })
       .catch((err) => {
         console.error(err);
       });
   }
 
-  ObtenerTotalEmpleados(): void {
+  getTotalEmployee(): void {
     this.dashboardService
-      .totalEmpleados()
+      .totalEmployee()
       .then((res) => {
-        this.totalEmpleados = res.Data;
+        this.totalEmployee = res.Data;
       })
       .catch((err) => console.error(err));
   }
 
-  ObtenerTotalEmpleadosHoy(): void {
+  getTotalEmployeeCurrent(): void {
     this.dashboardService
-      .totalEmpleadosHoy()
+      .totalEmployeeCurrent()
       .then((res) => {
-        this.totalEmpleadosHoy = res.Data;
+        this.totalEmployeeCurrent = res.Data;
       })
       .catch((err) => console.error(err));
   }
 
-  ObtenerTotalEmpleadosEstatus(): void {
+  getTotalEmployeeStatus(): void {
     this.dashboardService
-      .totalEmpleadosEstatus()
+      .totalEmployeeStatus()
       .then((res) => {
         let data = res.Data;
 
         if (data && data.length) {
-          this.totalEmpleadosEstatuAprobados = data[0].Total;
-          this.totalEmpleadosEstatuCancelacion = data[1].Total;
+          this.totalEmployeeStatusAccept = data[0].Total;
+          this.totalEmployeeStatusCancel = data[1].Total;
         }
       })
       .catch((err) => console.error(err));

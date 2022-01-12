@@ -39,7 +39,7 @@ export default class Graph extends Vue {
 
   getTotalEmployeeByTypesEmployee(): void {
     this.dashboardService
-      .totalEmpleadosPorTiposEmpleado()
+      .totalEmployeeByTypeEmployee()
       .then((res) => {
         let data: Array<IEmployeeTypesEmployee> = res.Data;
         if (data.length) {

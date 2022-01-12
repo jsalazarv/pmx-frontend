@@ -4,27 +4,27 @@ import { IServiceResponse } from "@/services/types";
 import { IEmployeeStatus, IEmployeeTypesEmployee } from "./types";
 
 export default class DashboardService extends BaseService {
-  totalPersonas(): IServiceResponse<number> {
+  totalPeople(): IServiceResponse<number> {
     return this.client.get("/Personas/Total");
   }
 
-  totalSolicitudAfiliaciones(): IServiceResponse<number> {
+  totalRequestMembership(): IServiceResponse<number> {
     return this.client.get("/SolicitudesFiliacion/Total");
   }
 
-  totalEmpleados(): IServiceResponse<number> {
+  totalEmployee(): IServiceResponse<number> {
     return this.client.get("/Empleados/Total");
   }
 
-  totalEmpleadosHoy(): IServiceResponse<number> {
+  totalEmployeeCurrent(): IServiceResponse<number> {
     return this.client.get("/Empleados/Total/Hoy");
   }
 
-  totalEmpleadosEstatus(): IServiceResponse<Array<IEmployeeStatus>> {
+  totalEmployeeStatus(): IServiceResponse<Array<IEmployeeStatus>> {
     return this.client.get("/Empleados/Total/Estatus");
   }
 
-  totalEmpleadosPorTiposEmpleado(): IServiceResponse<
+  totalEmployeeByTypeEmployee(): IServiceResponse<
     Array<IEmployeeTypesEmployee>
   > {
     return this.client.get("/Empleados/Total/TiposEmpleado");
