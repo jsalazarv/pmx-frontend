@@ -204,7 +204,7 @@
                   ></v-date-picker>
                 </v-menu>
               </v-col>
-              <v-col cols="12" md="4">
+              <v-col cols="12" md="2">
                 <ValidationProvider
                   :name="$t('employee.attributes.gender')"
                   rules="required"
@@ -226,6 +226,28 @@
                   ></v-autocomplete>
                 </ValidationProvider>
               </v-col>
+              <v-col cols="12" md="2">
+                <ValidationProvider
+                  :name="$t('employee.attributes.maritalStatus')"
+                  rules="required"
+                  v-slot="{ errors }"
+                >
+                  <v-autocomplete
+                    dense
+                    name="maritalStatus"
+                    outlined
+                    required
+                    v-model="employeeData.Persona.EstadoCivil"
+                    item-text="Nombre"
+                    item-value="Sigla"
+                    :items="maritalStatusesList"
+                    :disabled="isLoadingMaritalStatusesList"
+                    :error-messages="errors"
+                    :label="$t('employee.attributes.maritalStatus')"
+                    :loading="isLoadingMaritalStatusesList"
+                  ></v-autocomplete>
+                </ValidationProvider>
+              </v-col>
               <v-col cols="12" md="4">
                 <ValidationProvider
                   :name="$t('employee.attributes.rfc')"
@@ -238,7 +260,6 @@
                     :label="$t('employee.attributes.rfc')"
                     outlined
                     required
-                    disabled
                     v-model="employeeData.Persona.RFC"
                     :error-messages="errors"
                   ></v-text-field>
@@ -381,6 +402,7 @@ import Component from "vue-class-component";
 import EmployeeTypeService from "@/services/EmployeeTypeService";
 import EmployeeService from "@/services/EmployeeService";
 import GenderService from "@/services/GenderService";
+import MaritalStatusService from "@/services/MaritalStatusService";
 import CompanyService from "@/services/CompanyService";
 import WorkplaceService from "@/services/WorkplaceService";
 import SyndicateService from "@/services/SyndicateService";
@@ -395,6 +417,7 @@ import { ICompany } from "@/services/CompanyService/types";
 import { IWorkplace } from "@/services/WorkplaceService/types";
 import { ISyndicate } from "@/services/SyndicateService/types";
 import { ISyndicateSection } from "@/services/SyndicateSectionService/types";
+import { IMaritalStatus } from "@/services/MaritalStatusService/types";
 
 const initialEmployeeData: IShowEmployee = {
   IdEmpleado: undefined,
@@ -409,6 +432,7 @@ const initialEmployeeData: IShowEmployee = {
     ApellidoMaterno: "",
     FechaNacimiento: "",
     Sexo: "",
+    EstadoCivil: "",
     RFC: "",
     Curp: "",
   },
@@ -436,6 +460,7 @@ export default class employeeEdit extends Vue {
   protected employeeTypesService = new EmployeeTypeService();
   protected employeeService = new EmployeeService();
   protected genderService = new GenderService();
+  protected maritalStatusService = new MaritalStatusService();
   protected companyService = new CompanyService();
   protected workplaceService = new WorkplaceService();
   protected syndicateService = new SyndicateService();
@@ -443,6 +468,7 @@ export default class employeeEdit extends Vue {
   public employeeData = { ...initialEmployeeData };
   public employeeTypeList: Array<IEmployeeType> = [];
   public gendersList: Array<IGender> = [];
+  public maritalStatusesList: Array<IMaritalStatus> = [];
   public companies: Array<ICompany> = [];
   public workplaces: Array<IWorkplace> = [];
   public syndicates: Array<ISyndicate> = [];
@@ -450,11 +476,13 @@ export default class employeeEdit extends Vue {
   public isLoadingEmployeeList = false;
   public isLoadingEmployeeData = false;
   public isLoadingGendersList = false;
+  public isLoadingMaritalStatusesList = false;
   public isLoadingCompanies = false;
   public isLoadingWorkplaces = false;
   public isLoadingSyndicates = false;
   public isLoadingSyndicateSections = false;
   public isValidatingEmployee = false;
+  public showSyndicates = false;
   public menu1 = false;
 
   getEmployeeTypes(): void {
@@ -478,6 +506,18 @@ export default class employeeEdit extends Vue {
       })
       .finally(() => {
         this.isLoadingGendersList = false;
+      });
+  }
+
+  getMaritalStatuses(): void {
+    this.isLoadingMaritalStatusesList = true;
+    this.maritalStatusService
+      .getAll()
+      .then((response) => {
+        this.maritalStatusesList = response.Data;
+      })
+      .finally(() => {
+        this.isLoadingMaritalStatusesList = false;
       });
   }
 
@@ -554,7 +594,9 @@ export default class employeeEdit extends Vue {
       Nombres: this.employeeData.Persona?.Nombres,
       ApellidoPaterno: this.employeeData.Persona?.ApellidoPaterno,
       ApellidoMaterno: this.employeeData.Persona?.ApellidoMaterno,
+      FechaNacimiento: this.employeeData.Persona?.FechaNacimiento,
       Sexo: this.employeeData.Persona?.Sexo,
+      EstadoCivil: this.employeeData.Persona?.EstadoCivil,
       RFC: this.employeeData.Persona?.RFC,
       Fotografia: this.employeeData.Persona?.Fotografia,
       IdSolicitudFiliacion: this.employeeData.Filiacion?.IdSolicitudFiliacion,
@@ -574,6 +616,7 @@ export default class employeeEdit extends Vue {
   mounted(): void {
     this.getEmployeeTypes();
     this.getGenders();
+    this.getMaritalStatuses();
     this.getCompanies();
     this.getSyndicates();
     this.getEmployeeById();
