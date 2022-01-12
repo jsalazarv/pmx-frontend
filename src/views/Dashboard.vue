@@ -289,8 +289,8 @@ export default class Inicio extends Vue {
 <style scoped>
 .card__indicator {
   border-radius: 1px;
-  -webkit-box-shadow: 0px 0px 10px -6px #000000;
-  box-shadow: 0px 0px 10px -6px #000000;
+  -webkit-box-shadow: 1px 1px 7px -5px rgba(0, 0, 0, 0.77);
+  box-shadow: 1px 1px 7px -5px rgba(0, 0, 0, 0.77);
 }
 
 .card__indicator__title {
