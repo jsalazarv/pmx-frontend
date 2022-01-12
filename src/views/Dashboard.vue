@@ -141,7 +141,7 @@
             <v-row dense>
               <v-col cols="6">
                 <div class="card__indicator pa-4">
-                  <h4 class="card__indicator__title">Personas registradas</h4>
+                  <h4 class="card__indicator__title">Personas</h4>
                   <small>Total</small>
                   <v-divider class="my-3"></v-divider>
                   <div class="card__indicator__graph text-center">

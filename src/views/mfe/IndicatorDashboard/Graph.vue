@@ -52,18 +52,35 @@ export default class Graph extends Vue {
   processDataEmployee(data: Array<IEmployeeTypesEmployee>): void {
     let typesEmployee = data.map((types) => types.TipoEmpleado);
     let total = data.map((types) => types.Total);
+    let colors = this.getColorForIteration(data.length);
 
     this.data = {
       labels: typesEmployee,
       datasets: [
         {
-          label: "Total por Tipos de Empleados",
+          label: "Tipos de Empleados",
           data: total,
-          backgroundColor: "rgb(255, 99, 132)",
+          backgroundColor: colors,
           borderColor: "rgb(255, 99, 132)",
         },
       ]
     };
+  }
+
+  getColorForIteration(length = 1){
+    if(length == 1){
+        return `#${Math.floor(Math.random()*16777215).toString(16)}`;
+    } else {
+        let colors = [];
+
+        for(let i=0; i < length; i++){
+            colors.push(
+                `#${Math.floor(Math.random()*16777215).toString(16)}`
+            );
+        }
+
+        return colors;
+    } 
   }
 }
 </script>

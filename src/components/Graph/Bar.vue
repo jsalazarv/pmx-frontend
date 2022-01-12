@@ -4,8 +4,16 @@ const { reactiveProp } = mixins;
 
 export default {
   extends: Bar,
+  
   mixins: [reactiveProp],
-  props: ["options"],
+
+  props: {
+    options: {
+        type: Object,
+        required: false,
+        default: () => {}
+    }  
+  },
 
   mounted() {
     this.renderChart(this.chartData, this.setOptions);
@@ -14,19 +22,19 @@ export default {
   computed: {
     setOptions() {
       return {
-        ...this.options,
-        scales: {
-          yAxes: [
-            {
-              display: true,
+          scales: {
+              yAxes: [
+                  {
+                      display: true,
               ticks: {
-                beginAtZero: true,
+                  beginAtZero: true,
                 steps: 1,
                 stepValue: 5,
               },
             },
           ],
         },
+        ...this.options
       };
     },
   },
