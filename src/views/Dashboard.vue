@@ -8,7 +8,7 @@
 
       <v-col cols="7" class="px-4">
         <v-row>
-          <v-col cols="12" md="9">
+          <v-col cols="12" md="12">
             <div class="card__indicator pa-4">
               <small>Constancia de Asignación</small>
               <v-divider class="my-3"></v-divider>
@@ -21,6 +21,8 @@
                       outlined
                       label="Número de Asignación"
                       v-model="numberAssignModel"
+                      @keypress.enter="searchNumberAssign"
+                      type="number"
                     ></v-text-field>
                   </v-col>
                   <v-btn
@@ -44,6 +46,7 @@
                   outlined
                   color="secondary"
                   class="text-capitalize py-2"
+                  @click="goToRegister"
                   >Ir</v-btn
                 >
               </div>
@@ -54,7 +57,12 @@
               <small>Consulta</small>
               <v-divider class="my-3"></v-divider>
               <div class="card__indicator__graph text-center">
-                <v-btn small outlined color="secondary" class="text-capitalize"
+                <v-btn
+                  small
+                  outlined
+                  color="secondary"
+                  class="text-capitalize"
+                  @click="goToQuery"
                   >Ir</v-btn
                 >
               </div>
@@ -62,10 +70,15 @@
           </v-col>
           <v-col cols="6" md="3">
             <div class="card__indicator pa-4">
-              <small>Folios de Asignación</small>
+              <small>Folios Asignación</small>
               <v-divider class="my-3"></v-divider>
               <div class="card__indicator__graph text-center">
-                <v-btn small outlined color="secondary" class="text-capitalize"
+                <v-btn
+                  small
+                  outlined
+                  color="secondary"
+                  class="text-capitalize"
+                  @click="goToInvoiceAssign"
                   >Ir</v-btn
                 >
               </div>
@@ -76,18 +89,12 @@
               <small>Bitacora</small>
               <v-divider class="my-3"></v-divider>
               <div class="card__indicator__graph text-center">
-                <v-btn small outlined color="secondary" class="text-capitalize"
-                  >Ir</v-btn
-                >
-              </div>
-            </div>
-          </v-col>
-          <v-col cols="6" md="3">
-            <div class="card__indicator pa-4">
-              <small>Generar Reporte</small>
-              <v-divider class="my-3"></v-divider>
-              <div class="card__indicator__graph text-center">
-                <v-btn small outlined color="secondary" class="text-capitalize"
+                <v-btn
+                  small
+                  outlined
+                  color="secondary"
+                  class="text-capitalize"
+                  @click="goToBinnacle"
                   >Ir</v-btn
                 >
               </div>
@@ -204,7 +211,7 @@ import { Component, Vue } from "vue-property-decorator";
     Graph,
   },
 })
-export default class Inicio extends Vue {
+export default class Dashboard extends Vue {
   public numberAssignModel = "";
   public totalPeople = 0;
   public totalRequest = 0;
@@ -216,6 +223,8 @@ export default class Inicio extends Vue {
   protected dashboardService = new DashboardService();
 
   searchNumberAssign(): void {
+    if (!this.numberAssignModel) return;
+
     this.$router.push({
       name: "proof:assignment",
       query: {
@@ -282,6 +291,42 @@ export default class Inicio extends Vue {
         }
       })
       .catch((err) => console.error(err));
+  }
+
+  goToRegister(): void {
+    this.goToRoute({
+      name: "people:create",
+    });
+  }
+
+  goToQuery(): void {
+    this.goToRoute({
+      name: "people:list",
+    });
+  }
+
+  goToInvoiceAssign(): void {
+    this.goToRoute({
+      name: "folios:list",
+    });
+  }
+
+  goToBinnacle() {
+    this.goToRoute({
+      name: "affiliationLog:list",
+    });
+  }
+
+  goToReport() {
+    this.goToRoute({
+      name: "proof:assignment",
+    });
+  }
+
+  goToRoute(route: any): void {
+    this.$router.push({
+      ...route,
+    });
   }
 }
 </script>
