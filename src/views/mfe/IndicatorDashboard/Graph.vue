@@ -23,7 +23,7 @@ export default class Graph extends Vue {
 
   public data: any = {
     labels: [],
-    datasets: []
+    datasets: [],
   };
 
   get styles() {
@@ -63,24 +63,22 @@ export default class Graph extends Vue {
           backgroundColor: colors,
           borderColor: "rgb(255, 99, 132)",
         },
-      ]
+      ],
     };
   }
 
-  getColorForIteration(length = 1){
-    if(length == 1){
-        return `#${Math.floor(Math.random()*16777215).toString(16)}`;
+  getColorForIteration(length = 1) {
+    if (length == 1) {
+      return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
     } else {
-        let colors = [];
+      let colors = [];
 
-        for(let i=0; i < length; i++){
-            colors.push(
-                `#${Math.floor(Math.random()*16777215).toString(16)}`
-            );
-        }
+      for (let i = 0; i < length; i++) {
+        colors.push(`#${Math.floor(Math.random() * 16777215).toString(16)}`);
+      }
 
-        return colors;
-    } 
+      return colors;
+    }
   }
 }
 </script>

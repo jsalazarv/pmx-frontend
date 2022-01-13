@@ -4,15 +4,17 @@ const { reactiveProp } = mixins;
 
 export default {
   extends: Bar,
-  
+
   mixins: [reactiveProp],
 
   props: {
     options: {
-        type: Object,
-        required: false,
-        default: () => {}
-    }  
+      type: Object,
+      required: false,
+      default() {
+        return {};
+      },
+    },
   },
 
   mounted() {
@@ -22,12 +24,12 @@ export default {
   computed: {
     setOptions() {
       return {
-          scales: {
-              yAxes: [
-                  {
-                      display: true,
+        scales: {
+          yAxes: [
+            {
+              display: true,
               ticks: {
-                  beginAtZero: true,
+                beginAtZero: true,
                 steps: 1,
                 stepValue: 5,
               },
