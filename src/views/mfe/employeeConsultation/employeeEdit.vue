@@ -345,6 +345,7 @@
                     outlined
                     required
                     v-model="employeeData.Sindicato.IdSindicato"
+                    v-if="showSyndicates === true"
                     :error-messages="errors"
                   ></v-autocomplete>
                 </ValidationProvider>
@@ -367,6 +368,7 @@
                     outlined
                     required
                     v-model="employeeData.SeccionSindical.IdSindicato"
+                    v-if="showSyndicates === true"
                     :error-messages="errors"
                   ></v-autocomplete>
                 </ValidationProvider>
@@ -386,7 +388,12 @@
                 ></v-textarea>
               </v-col>
             </v-row>
-            <v-btn color="success" @click="updateEmployee">
+            <v-btn
+              color="success"
+              @click="updateEmployee"
+              :disabled="isUpdating"
+              :loading="isUpdating"
+            >
               {{ $t("employeeConsultationMFE.labels.update") }}
             </v-btn>
           </v-container>
@@ -432,7 +439,11 @@ const initialEmployeeData: IShowEmployee = {
     ApellidoMaterno: "",
     FechaNacimiento: "",
     Sexo: "",
-    EstadoCivil: "",
+    EstadoCivil: {
+      Sigla: "",
+      Nombre: "",
+      Baja: false,
+    },
     RFC: "",
     Curp: "",
   },
@@ -482,6 +493,7 @@ export default class employeeEdit extends Vue {
   public isLoadingSyndicates = false;
   public isLoadingSyndicateSections = false;
   public isValidatingEmployee = false;
+  public isUpdating = false;
   public showSyndicates = false;
   public menu1 = false;
 
@@ -581,10 +593,15 @@ export default class employeeEdit extends Vue {
 
         this.getWorkplaces();
         this.getSyndicateSections();
+        this.selectedEmployeeType(data.EstadoCivil);
       })
       .finally(() => {
         this.isLoadingEmployeeData = false;
       });
+  }
+
+  selectedEmployeeType(employeeTypeId: number | null): void {
+    this.showSyndicates = employeeTypeId === 0;
   }
 
   async updateEmployee(): Promise<void> {
@@ -607,10 +624,13 @@ export default class employeeEdit extends Vue {
       IdTipoEmpleado: this.employeeData.TipoEmpleado?.Id,
       IdEmpleado: this.employeeData.IdEmpleado,
     };
+    this.isUpdating = true;
     this.employeeService
       .update(parseInt(this.$route.params.id), data as IUpdateEmployeeRequest)
       .then()
-      .finally();
+      .finally(() => {
+        this.isUpdating = false;
+      });
   }
 
   mounted(): void {

@@ -117,7 +117,9 @@ export interface IUpdateEmployeeRequest {
   Nombres: string;
   ApellidoPaterno: string;
   ApellidoMaterno: string;
+  FechaNacimiento?: string;
   Sexo: string;
+  EstadoCivil?: string;
   RFC: string;
   Fotografia: string;
   IdSolicitudFiliacion: number;
