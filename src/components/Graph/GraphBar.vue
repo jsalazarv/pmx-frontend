@@ -27,7 +27,7 @@ export default class GraphBar extends Mixins(Bar) {
     },
   }) chartData: any;
 
-  mounted() {
+  mounted(): void {
     let vm = this;
     setTimeout(() => {
       vm.renderChart(this.chartData, this.setOptions);
