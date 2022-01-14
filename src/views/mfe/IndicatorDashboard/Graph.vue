@@ -1,12 +1,12 @@
 <template>
   <div class="graph">
-    <Bar :chart-data="data" :styles="styles" />
+    <GraphBar :chart-data="data" :styles="styles" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import Bar from "@/components/Graph/Bar.vue";
+import GraphBar from "@/components/Graph/GraphBar.vue";
 
 // services
 import DashboardService from "@/services/Dashboard";
@@ -15,7 +15,7 @@ import { IEmployeeTypesEmployee } from "@/services/Dashboard/types";
 @Component({
   name: "Graph",
   components: {
-    Bar,
+    GraphBar,
   },
 })
 export default class Graph extends Vue {
