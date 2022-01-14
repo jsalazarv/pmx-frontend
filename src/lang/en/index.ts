@@ -19,5 +19,5 @@ export default {
   address,
   employeeConsultationMFE,
   affiliationLog,
-  credentialization
+  credentialization,
 };

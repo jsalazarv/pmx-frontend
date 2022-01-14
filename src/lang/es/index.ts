@@ -21,5 +21,5 @@ export default {
   employeeConsultationMFE,
   affiliationLog,
   proofAssignment,
-  credentialization
+  credentialization,
 };

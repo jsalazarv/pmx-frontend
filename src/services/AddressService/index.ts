@@ -35,6 +35,8 @@ export default class AddressService extends BaseService {
   getAddressesPerson(
     idPerson: number
   ): IServiceResponse<IAddresPersonResponse[]> {
-    return this.client.get(`/Domicilios/ObtenerHistoricoPorPersona/${idPerson}`);
+    return this.client.get(
+      `/Domicilios/ObtenerHistoricoPorPersona/${idPerson}`
+    );
   }
 }
