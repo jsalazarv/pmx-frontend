@@ -18,7 +18,9 @@ export default {
   },
 
   mounted() {
-    this.renderChart(this.chartData, this.setOptions);
+    setTimeout(() => {
+      this.renderChart(this.chartData, this.setOptions);
+    }, 300)
   },
 
   computed: {
@@ -36,7 +38,7 @@ export default {
             },
           ],
         },
-        // ...this.options
+        ...this.options,
       };
     },
   },
