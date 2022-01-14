@@ -25,7 +25,8 @@ export default class GraphBar extends Mixins(Bar) {
     default() {
       return {};
     },
-  }) chartData: any;
+  })
+  chartData: any;
 
   mounted(): void {
     let vm = this;
