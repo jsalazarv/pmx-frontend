@@ -1,9 +1,10 @@
 export default {
   beneficiary: {
     title: "New beneficiary",
+    titleSecondary:"Edit beneficiary",
     beneficiaryForm: {
       assignmentNumber: "Assignment number",
-      workerValidity: "Workery validity(headline)",
+      workerValidity: "Workery validity (headline)",
       coding: "Coding",
       names: "Names",
       lastname: "Lastname",
@@ -35,6 +36,27 @@ export default {
     buttons: {
       validate: "Validate",
       save: "Save",
+      cancel: "Cancel",
+      select: "Select",
     },
+    renapoForm: {
+      title: "Renapo",
+      names: "Names",
+      lastname: "Lastname",
+      surname: "Surname",
+      curp: "beneficiary CURP",
+      birthday: "Birthday",
+      gender: "Gender",
+    },
+    dialog: {
+      messagePrimary: "The beneficiary is already registered",
+      messageSecondary: "The beneficiary is not registered",
+      title: "MVD",
+    },
+    messages:{
+      success: "Beneficiary has been saved correctly",
+      error: "A problem has occurred",
+      errorValidate: "A problem has occurred, possible causes: 1. Curp not valid 2. Renapo service not available"
+    }
   },
 };

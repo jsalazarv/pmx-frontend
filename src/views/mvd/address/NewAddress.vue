@@ -320,6 +320,7 @@ export default class NewAddress extends Vue {
     ApellidoPaterno: "",
     ApellidoMaterno: "",
     Curp: null,
+    IdDerechohabiente:null
   };
   public address: IAddress = {
     IdDomicilio: null,

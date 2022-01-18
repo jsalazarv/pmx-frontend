@@ -45,7 +45,7 @@
                     outlined
                     readonly
                     :loading="isLoadingValidityRights"
-                    v-model="computedEmployeeId"
+                    v-model="computedValidityFormattedHeadline"
                   >
                   </v-text-field>
                 </v-col>
@@ -89,6 +89,7 @@
                     rules="required|min:18|max:18"
                   >
                     <v-text-field
+                      clearable
                       :label="
                         $t('beneficiary.beneficiary.beneficiaryForm.curp')
                       "
@@ -97,12 +98,19 @@
                       outlined
                       :error-messages="errors"
                       v-model="beneficiary.Persona.Curp"
+                      @input="enabledValidate"
                     >
                     </v-text-field>
                   </ValidationProvider>
                 </v-col>
                 <v-col cols="12" sm="12" md="4">
-                  <v-btn color="success" dark large dense>
+                  <v-btn
+                    @click="validateCurp"
+                    color="success"
+                    :disabled="isDisabledValidate"
+                    large
+                    dense
+                  >
                     {{ $t("beneficiary.beneficiary.buttons.validate") }}
                   </v-btn>
                 </v-col>
@@ -386,7 +394,7 @@
                     "
                     dense
                     outlined
-                    @change="existingAddress"
+                    @change="existsAddress"
                     v-model="beneficiary.Domicilio.IdDomicilio"
                   >
                     <template v-slot:prepend-item>
@@ -644,13 +652,25 @@
               </v-row>
               <v-row>
                 <v-col cols="12" sm="12" md="4" offset="5">
-                  <v-btn type="submit" color="success" dark x-large dense>
+                  <v-btn
+                    type="submit"
+                    color="success"
+                    x-large
+                    dense
+                    :disabled="existsBeneficiary"
+                  >
                     {{ $t("beneficiary.beneficiary.buttons.save") }}
                   </v-btn>
                 </v-col>
               </v-row>
             </form>
           </ValidationObserver>
+          <RenapoDialogBeneficiary
+            @hideDialog="hideDialog"
+            @selectPerson="selectPerson"
+            :dialog="dialog"
+            :existsBeneficiary="existsBeneficiary"
+          />
         </v-container>
       </v-card>
     </div>
@@ -660,6 +680,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import moment from "moment";
 import GenderService from "@/services/GenderService";
 import { IGender } from "@/services/GenderService/types";
 import { IMedicalUnit } from "@/services/MedicalUnitService/types";
@@ -680,9 +701,13 @@ import BeneficiaryService from "@/services/BeneficiaryService";
 import AddressService from "@/services/AddressService";
 import { IAddresPersonResponse } from "@/services/AddressService/types";
 import Alert from "@/components/Alert.vue";
+import RenapoDialogBeneficiary from "./components/RenapoDialogBeneficiary.vue";
+import PersonService from "@/services/PersonService";
+import { IPersonData, IPersonValidationState } from "@/store/person/types";
+import { IRenapoData } from "@/services/PersonService/types";
 
 @Component({
-  components: { Alert },
+  components: { Alert, RenapoDialogBeneficiary },
 })
 export default class NewBeneficiary extends Vue {
   protected beneficiaryService = new BeneficiaryService();
@@ -693,6 +718,7 @@ export default class NewBeneficiary extends Vue {
   protected stateService = new StateService();
   protected municipalityService = new MunicipalityService();
   protected countryService = new CountryService();
+  protected personService = new PersonService();
   public gendersList: Array<IGender> = [];
   public medicalUnitsList: Array<IMedicalUnit> = [];
   public codingList: Array<ICoding> = [];
@@ -709,6 +735,9 @@ export default class NewBeneficiary extends Vue {
   public showPickerBirthday: any = false;
   public showPickerValidity: any = false;
   public useAddress: any = false;
+  public dialog = false;
+  public existsBeneficiary = true;
+  public isDisabledValidate = true;
   public addresses: Array<IAddresPersonResponse> = [];
   public alert = {
     alert: false,
@@ -729,11 +758,12 @@ export default class NewBeneficiary extends Vue {
     ApellidoPaterno: "",
     ApellidoMaterno: "",
     Curp: null,
+    IdDerechohabiente: 8,
   };
   public beneficiary: IBeneficiaryRequest = {
     IdDerechohabiente: null,
     IdPersona: 0,
-    IdDerTitular: 8,
+    IdDerTitular: null,
     IdFamiliar: null,
     IdUMedica: null,
     TipoDer: "",
@@ -796,6 +826,58 @@ export default class NewBeneficiary extends Vue {
       Lote: "",
     },
   };
+  public renapoData: IRenapoData = {
+    Curp: "",
+    Nombres: "",
+    ApellidoPaterno: "",
+    ApellidoMaterno: "",
+    Sexo: "",
+    FechaNacimiento: "",
+    Nacionalidad: "",
+    AnioRegistro: 0,
+    IdMunicipioRegistro: 0,
+    IdEntidadNacional: "",
+    IdEntidadEmisora: "",
+  };
+  public personData: IPersonData = {
+    IdPersona: 0,
+    Curp: "",
+    Nombres: "",
+    ApellidoPaterno: "",
+    ApellidoMaterno: "",
+    FechaNacimiento: "",
+    Sexo: "",
+    Rfc: "",
+    EstadoCivil: "",
+    IndRenapo: false,
+    Fotografia: "",
+    FechaFoto: "",
+    Firma: "",
+    SiglasEntidad: "",
+    Nacionalidad: "",
+    DpDocumento: 0,
+    DpEntidad: 0,
+    DpFoja: 0,
+    DpMunicipio: 0,
+    DpAnio: 0,
+    DpLibro: 0,
+    DpCrip: "",
+    DpMigracion: 0,
+    DpNatura: 0,
+    DpCertifica: 0,
+    Archivo: "",
+    PfechaAlta: "",
+    PFolioConstancia: 0,
+    PEstatus: 0,
+    XEstatus: "",
+    YEstatus: "",
+    ZEstatus: "",
+    Marca: "",
+    CError: 0,
+    Observacion: "",
+    DpActa: 0,
+    DpTomo: 0,
+  };
 
   get isLoading(): boolean {
     // TODO Refactor this form is submitting
@@ -822,6 +904,14 @@ export default class NewBeneficiary extends Vue {
     return this.formatted(this.beneficiary.Vigencia);
   }
 
+  get computedValidityFormattedHeadline(): string | null {
+    return this.formatted(this.validityRights.Vigencia);
+  }
+
+  get computedPerson(): IPersonValidationState {
+    return this.$store.state.person;
+  }
+
   newAddress(): void {
     this.useAddress = true;
     this.beneficiary.Domicilio = {
@@ -840,14 +930,18 @@ export default class NewBeneficiary extends Vue {
     };
   }
 
-  existingAddress(): void {
+  existsAddress(): void {
     this.useAddress = false;
   }
 
   formatted(date: any): string | null {
     if (!date) return null;
-    const arrayDate = date.split("-");
-    return arrayDate[2] + "/" + arrayDate[1] + "/" + arrayDate[0];
+    return moment(date).format("DD/MM/YYYY");
+  }
+
+  formatted2(date: any): string | null {
+    if (!date) return null;
+    return moment(date, "DD/MM/YYYY").format("YYYY-MM-DD");
   }
 
   getCountries(): void {
@@ -934,6 +1028,7 @@ export default class NewBeneficiary extends Vue {
       )
       .then((response) => {
         this.validityRights = response.Data;
+        this.beneficiary.IdDerTitular = this.validityRights.IdDerechohabiente;
       })
       .finally(() => {
         this.isLoadingValidityRights = false;
@@ -946,33 +1041,155 @@ export default class NewBeneficiary extends Vue {
     this.alert.type = false;
   }
 
-  getAddressesPerson(): void {
+  getHeadlineAddresses(): void {
     this.addressService
-      .getAddressesPerson(this.computedIdPerson)
+      .getHeadlineAddresses(this.validityRights.IdDerechohabiente)
       .then((response) => {
         this.addresses = response.Data;
       });
   }
 
-  mounted(): void {
-    this.getValidityRights();
-    this.getCountries();
-    this.getGenders();
-    this.getMedicalUnits();
-    this.getCoding();
-    this.getAddressesPerson();
+  validateCurp(): void {
+    this.hideAlert();
+    this.personService
+      .findByCurp(this.beneficiary.Persona.Curp)
+      .then((response) => {
+        let dateBirthday = this.formatted2(
+          response.Data.Renapo.FechaNacimiento
+        );
+        this.renapoData = {
+          Curp: response.Data.Renapo.Curp,
+          Nombres: response.Data.Renapo.Nombres,
+          ApellidoPaterno: response.Data.Renapo.ApellidoPaterno,
+          ApellidoMaterno: response.Data.Renapo.ApellidoMaterno,
+          Sexo: response.Data.Renapo.Sexo,
+          FechaNacimiento: dateBirthday == null ? "" : dateBirthday.toString(),
+          Nacionalidad: response.Data.Renapo.Nacionalidad,
+          AnioRegistro: response.Data.Renapo.AnioRegistro,
+          IdMunicipioRegistro: response.Data.Renapo.IdMunicipioRegistro,
+          IdEntidadNacional: response.Data.Renapo.IdEntidadNacional,
+          IdEntidadEmisora: response.Data.Renapo.IdEntidadEmisora,
+        };
+        this.setRenapoData(this.renapoData);
+        if (response.Data.MFE != null) {
+          this.personData = {
+            IdPersona: response.Data.MFE.IdPersona,
+            Curp: response.Data.MFE.Curp,
+            Nombres: response.Data.MFE.Nombres,
+            ApellidoPaterno: response.Data.MFE.ApellidoPaterno,
+            ApellidoMaterno: response.Data.MFE.ApellidoMaterno,
+            FechaNacimiento: response.Data.MFE.FechaNacimiento,
+            Sexo: response.Data.MFE.Sexo,
+            Rfc: "",
+            EstadoCivil: "",
+            IndRenapo: false,
+            Fotografia: "",
+            FechaFoto: response.Data.MFE.FechaFoto,
+            Firma: "",
+            SiglasEntidad: "",
+            Nacionalidad: "",
+            DpDocumento: 0,
+            DpEntidad: 0,
+            DpFoja: 0,
+            DpMunicipio: 0,
+            DpAnio: 0,
+            DpLibro: 0,
+            DpCrip: "",
+            DpMigracion: 0,
+            DpNatura: 0,
+            DpCertifica: 0,
+            Archivo: "",
+            PfechaAlta: "",
+            PFolioConstancia: 0,
+            PEstatus: 0,
+            XEstatus: "",
+            YEstatus: "",
+            ZEstatus: "",
+            Marca: "",
+            CError: 0,
+            Observacion: "",
+            DpActa: 0,
+            DpTomo: 0,
+          };
+          this.setPersonData(this.personData);
+        } else {
+          this.existsBeneficiary = false;
+        }
+        this.dialog = true;
+      })
+      .catch((error) => {
+        this.alert = {
+          message: this.$t(
+            "beneficiary.beneficiary.messages.errorValidate"
+          ) as string,
+          alert: true,
+          type: false,
+        };
+      });
   }
 
-  // reset(): void {
-  //   (this.$refs.form as HTMLFormElement).reset();
-  // }
+  setRenapoData(renapoData: IRenapoData): void {
+    this.$store.dispatch("person/setRenapoData", renapoData);
+  }
+
+  setPersonData(personData: IPersonData): void {
+    this.$store.dispatch("person/setPersonData", personData);
+  }
+
+  hideDialog(): void {
+    this.dialog = false;
+    this.isDisabledValidate = true;
+    this.existsBeneficiary = true;
+  }
+
+  selectPerson(): void {
+    this.beneficiary.Persona.Nombres = this.computedPerson.Renapo.Nombres;
+    this.beneficiary.Persona.ApellidoPaterno =
+      this.computedPerson.Renapo.ApellidoPaterno;
+    this.beneficiary.Persona.ApellidoMaterno =
+      this.computedPerson.Renapo.ApellidoMaterno;
+    this.beneficiary.Persona.Sexo = this.computedPerson.Renapo.Sexo;
+    this.beneficiary.Persona.FechaNacimiento =
+      this.computedPerson.Renapo.FechaNacimiento;
+    this.beneficiary.Persona.Edad = this.getAge(
+      this.computedPerson.Renapo.FechaNacimiento
+    ).toString();
+    this.dialog = false;
+  }
+
+  getAge(dateString: string | null): number {
+    if (!dateString) return 0;
+    let today = new Date();
+    let birthDate = new Date(dateString);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    let m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  }
+
+  enabledValidate(): void {
+    this.beneficiary.Persona.Nombres = "";
+    this.beneficiary.Persona.ApellidoPaterno = "";
+    this.beneficiary.Persona.ApellidoMaterno = "";
+    this.beneficiary.Persona.ApellidoMaterno = "";
+    this.beneficiary.Persona.FechaNacimiento = "";
+    this.beneficiary.Persona.Sexo = "";
+    this.beneficiary.Persona.Edad = "";
+    this.isDisabledValidate = false;
+    this.existsBeneficiary = true;
+    (this.$refs.form as HTMLFormElement).reset();
+  }
 
   onSubmit(): void {
     this.beneficiaryService
       .create(this.beneficiary)
       .then((response) => {
         this.alert = {
-          message: this.$t("address.address.messages.success") as string,
+          message: this.$t(
+            "beneficiary.beneficiary.messages.success"
+          ) as string,
           alert: true,
           type: true,
         };
@@ -1042,15 +1259,26 @@ export default class NewBeneficiary extends Vue {
             Lote: "",
           },
         };
+        this.isDisabledValidate = true;
+        this.existsBeneficiary = true;
         (this.$refs.form as HTMLFormElement).reset();
       })
       .catch((error) => {
         this.alert = {
-          message: this.$t("address.address.messages.error") as string,
+          message: this.$t("beneficiary.beneficiary.messages.error") as string,
           alert: true,
           type: false,
         };
       });
+  }
+
+  mounted(): void {
+    this.getValidityRights();
+    this.getCountries();
+    this.getGenders();
+    this.getMedicalUnits();
+    this.getCoding();
+    this.getHeadlineAddresses();
   }
 }
 </script>

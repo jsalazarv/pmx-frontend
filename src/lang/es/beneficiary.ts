@@ -1,9 +1,10 @@
 export default {
   beneficiary: {
     title: "Alta derechohabiente",
+    titleSecondary:"Editar derechohabiente",
     beneficiaryForm: {
       assignmentNumber: "Número de asignación",
-      workerValidity: "Vigencia trabajador(titular)",
+      workerValidity: "Vigencia trabajador (titular)",
       coding: "Codificación",
       names: "Nombres",
       lastname: "Apellido paterno",
@@ -35,6 +36,27 @@ export default {
     buttons: {
       validate: "Validar",
       save: "Guardar",
+      cancel: "Cancelar",
+      select: "Seleccionar",
     },
+    renapoForm: {
+      title: "Renapo",
+      names: "Nombres",
+      lastname: "Apellido paterno",
+      surname: "Apellido materno",
+      curp: "CURP derechohabiente",
+      birthday: "Fecha de nacimiento",
+      gender: "Sexo",
+    },
+    dialog: {
+      messagePrimary: "El derechohabiente ya se encuentra dado de alta",
+      messageSecondary: "El derechohabiente no se encuentra dado de alta",
+      title: "MVD",
+    },
+    messages:{
+       success: "Se ha guardado el derechohabiente correctamente",
+      error: "Ha ocurrido un problema",
+      errorValidate: "Ha ocurrido un problema, posibles causas: 1. Curp no valida 2. Servicio de renapo no disponible"
+    }
   },
 };

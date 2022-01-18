@@ -36,6 +36,8 @@ export default {
       surname: "Apellido materno",
       curp: "CURP",
       relationship: "Parentesco/Codificación",
+      validity: "Vigencia",
+      inability: "Incapacidad",
     },
     validations: {
       validityRule: "debe ser mayor o igual a la fecha de hoy",
@@ -43,6 +45,11 @@ export default {
     addressTable: {
       address: "Domicilio",
       status: "Estatus",
+    },
+    messages: {
+      validValidity: "El empleado no se encuentra actualmente vigente",
+      success: "Se ha guardado al titular correctamente",
+      error: "Ha ocurrido un problema",
     },
   },
 };

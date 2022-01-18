@@ -98,6 +98,7 @@ export default class Credentialization extends Vue {
     ApellidoPaterno: "",
     ApellidoMaterno: "",
     Curp: null,
+    IdDerechohabiente:null
   };
 
   get isLoading(): boolean {

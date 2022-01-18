@@ -14,14 +14,11 @@
           :indeterminate="isLoading"
         ></v-progress-linear>
         <v-container>
-          <Alert
-            :message="alert.message"
-            :alert="alert.alert"
-            :type="alert.type"
-            @hideAlert="hideAlert"
-          ></Alert>
           <EmployeeFormContratual v-if="computedEmployeeTypeId == 0" />
-          <EmployeeFormNormative v-else />
+          <EmployeeFormNormative
+            v-else
+            @updateValidityRights="getValidityRights"
+          />
         </v-container>
         <v-divider></v-divider>
         <v-container>
@@ -64,11 +61,11 @@
               <v-dialog v-model="dialog" persistent max-width="600">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
+                    :disabled="disabledAssignMedicalUnit"
                     class="sizeTextButton"
                     type="button"
                     color="success"
                     large
-                    dark
                     dense
                     v-bind="attrs"
                     v-on="on"
@@ -156,9 +153,9 @@
           <v-row>
             <v-col cols="12" sm="6" md="3" offset-md="9">
               <v-btn
+                :disabled="disabledAddBeneficiary"
                 class="sizeTextButton"
                 type="button"
-                dark
                 dense
                 large
                 color="success"
@@ -173,6 +170,10 @@
               </v-btn>
             </v-col>
             <v-col cols="12" sm="12" md="12">
+              <v-progress-linear
+                :active="isLoadingBeneficiaries"
+                :indeterminate="isLoadingBeneficiaries"
+              ></v-progress-linear>
               <v-data-table
                 :headers="headers"
                 :items="beneficiaries"
@@ -182,20 +183,111 @@
                 <template v-slot:item="row">
                   <tr>
                     <td>
-                      <v-btn class="mx-2" @click="onBtnEdit">
+                      <v-btn
+                        class="mx-2"
+                        @click="onBtnEdit(row.item.IdDerechohabiente)"
+                      >
                         <v-icon dark>mdi-pencil</v-icon>
                       </v-btn>
                     </td>
                     <td>
-                      <v-btn class="mx-2">
-                        <v-icon dark>mdi-delete</v-icon>
-                      </v-btn>
+                      <v-dialog
+                        v-model="dialogDelete"
+                        persistent
+                        max-width="600"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn class="mx-2" v-bind="attrs" v-on="on">
+                            <v-icon dark>mdi-delete</v-icon>
+                          </v-btn>
+                          <!-- <v-btn
+                            :disabled="disabledAssignMedicalUnit"
+                            class="sizeTextButton"
+                            type="button"
+                            color="success"
+                            large
+                            dense
+                            v-bind="attrs"
+                            v-on="on"
+                            @click="onBtnAssignMedicalUnit"
+                          >
+                            {{
+                              $t(
+                                "employeeConsultation.consultation.actionsButtons.assignMedicalUnit"
+                              )
+                            }}
+                          </v-btn> -->
+                        </template>
+                        <v-card>
+                          <v-card-title class="text-h5">
+                            <!-- {{
+                              $t(
+                                "employeeConsultation.consultation.actionsButtons.assignMedicalUnit"
+                              )
+                            }} -->
+                            ¿Desea eliminar al derechohabiente?
+                          </v-card-title>
+                          <!-- <v-col cols="12" sm="12" md="12">
+                            <v-autocomplete
+                              dense
+                              name="medicalUnit"
+                              outlined
+                              item-text="Nombre"
+                              item-value="Id"
+                              :items="medicalUnitsList"
+                              :label="
+                                $t(
+                                  'employeeConsultation.consultation.assignMedicalUnit.medicalUnit'
+                                )
+                              "
+                              :disabled="isLoadingMedicalUnitsList"
+                              :loading="isLoadingMedicalUnitsList"
+                            ></v-autocomplete>
+                          </v-col> -->
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn
+                              color="red darken-1"
+                              text
+                              @click="dialogDelete = false"
+                            >
+                              <!-- {{
+                                $t(
+                                  "employeeConsultation.consultation.actionsButtons.cancel"
+                                )
+                              }} -->
+                              No
+                            </v-btn>
+                            <v-btn
+                              color="success"
+                              dark
+                              dense
+                              @click="dialogDelete = false"
+                            >
+                              Si
+                              <!-- {{
+                                $t(
+                                  "employeeConsultation.consultation.actionsButtons.assign"
+                                )
+                              }} -->
+                            </v-btn>
+                          </v-card-actions>
+                        </v-card>
+                      </v-dialog>
                     </td>
-                    <td>{{ row.item.nombres }}</td>
-                    <td>{{ row.item.apellido_paterno }}</td>
-                    <td>{{ row.item.apellido_materno }}</td>
-                    <td>{{ row.item.curp }}</td>
-                    <td>{{ row.item.codificacion }}</td>
+                    <td>{{ row.item.Nombre }}</td>
+                    <td>{{ row.item.ApellidoPaterno }}</td>
+                    <td>{{ row.item.ApellidoMaterno }}</td>
+                    <td>{{ row.item.Curp }}</td>
+                    <td>{{ row.item.Parentesco }}</td>
+                    <td>{{ formatted(row.item.Vigencia) }}</td>
+                    <td>
+                      <v-checkbox
+                        :input-value="row.item.IndIncapacidad"
+                        value
+                        disabled
+                      ></v-checkbox>
+                    </td>
                   </tr>
                 </template>
               </v-data-table>
@@ -210,6 +302,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import moment from "moment";
 import BeneficiaryService from "@/services/BeneficiaryService/";
 import EmployeeService from "@/services/EmployeeService";
 import {
@@ -219,24 +312,25 @@ import {
 } from "@/services/BeneficiaryService/types";
 import EmployeeFormContratual from "./components/EmployeeFormContractual.vue";
 import EmployeeFormNormative from "./components/EmployeeFormNormative.vue";
-import Alert from "@/components/Alert.vue";
 import { IMedicalUnit } from "@/services/MedicalUnitService/types";
 import MedicalUnitService from "@/services/MedicalUnitService";
 
 @Component({
-  components: { EmployeeFormContratual, EmployeeFormNormative, Alert },
+  components: { EmployeeFormContratual, EmployeeFormNormative },
 })
 export default class EmployeeConsultation extends Vue {
   protected beneficiaryService = new BeneficiaryService();
   protected employeeService = new EmployeeService();
   protected medicalUnitService = new MedicalUnitService();
   public medicalUnitsList: Array<IMedicalUnit> = [];
-  public beneficiaries: Array<any> = [];
+  public beneficiaries: Array<IBeneficiary> = [];
   public disabledCredential = false;
   public disabledAssignMedicalUnit = false;
   public disabledAddBeneficiary = false;
   public dialog = false;
+  public dialogDelete = false;
   public isLoadingMedicalUnitsList = false;
+  public isLoadingBeneficiaries = false;
   public validityRights: IValidityRightsResponse = {
     GrupoPersonal: null,
     AreaPersonal: null,
@@ -251,17 +345,16 @@ export default class EmployeeConsultation extends Vue {
     ApellidoPaterno: "",
     ApellidoMaterno: "",
     Curp: null,
+    IdDerechohabiente: null,
   };
   public titularBeneficiary: ITitularBeneficiaryRequest = {
     IdPersona: null,
     IdCentro: null,
     IdDepartamento: null,
     Vigencia: null,
-  };
-  public alert = {
-    alert: false,
-    message: "",
-    type: false,
+    IdEmpleado: null,
+    IdTipoEmpleado: null,
+    IdDerechohabiente: null,
   };
   public headers: Array<any> = [
     { text: "", value: "edit", sortable: false },
@@ -296,6 +389,18 @@ export default class EmployeeConsultation extends Vue {
       ),
       value: "parentesco",
     },
+    {
+      text: this.$t(
+        "employeeConsultation.consultation.beneficiariesTable.validity"
+      ),
+      value: "vigencia",
+    },
+    {
+      text: this.$t(
+        "employeeConsultation.consultation.beneficiariesTable.inability"
+      ),
+      value: "incapacidad",
+    },
   ];
 
   get isLoading(): boolean {
@@ -313,6 +418,11 @@ export default class EmployeeConsultation extends Vue {
 
   get computedEmployeeTypeId(): number {
     return Number(this.$route.params.paramEmployeeTypeId);
+  }
+
+  formatted(date: any): string | null {
+    if (!date) return null;
+    return moment(date).format("DD/MM/YYYY");
   }
 
   onBtnEditAddress(): void {
@@ -364,41 +474,49 @@ export default class EmployeeConsultation extends Vue {
   }
 
   getAllBeneficiaries(): void {
-    this.beneficiaries = this.beneficiaryService.getAll(this.computedIdPerson);
-  }
-
-  getValidityRights(): void {
+    if (!this.validityRights.IdDerechohabiente) return;
+    this.isLoadingBeneficiaries = true;
     this.beneficiaryService
-      .getValidityRights(
-        this.computedIdPerson,
-        this.computedEmployeeId,
-        this.computedEmployeeTypeId
-      )
+      .getAll(this.validityRights.IdDerechohabiente)
       .then((response) => {
-        this.validityRights = response.Data;
-
-        if (!this.validityRights.EstadoVigencia) {
-          this.alert = {
-            message: "El empleado no encuentra se actualmente vigente", //this.$t("address.address.messages.success") as string,
-            alert: true,
-            type: false,
-          };
-          this.disabledCredential = true;
-        }
+        this.beneficiaries = response.Data;
+      })
+      .finally(() => {
+        this.isLoadingBeneficiaries = false;
       });
   }
 
-  onBtnEdit(): void {
-    this.$router.push({
-      path: "/derechohabiente/editar/",
-      query: { id: "1" },
-    });
+  async getValidityRights() {
+    let responseValidityRights =
+      await this.beneficiaryService.getValidityRights(
+        this.computedIdPerson,
+        this.computedEmployeeId,
+        this.computedEmployeeTypeId
+      );
+    if (responseValidityRights.Success) {
+      this.validityRights = responseValidityRights.Data;
+      if (this.validityRights.IdDerechohabiente == null) {
+        this.disabledCredential = true;
+        this.disabledAssignMedicalUnit = true;
+        this.disabledAddBeneficiary = true;
+      } else {
+        this.disabledCredential = false;
+        this.disabledAssignMedicalUnit = false;
+        this.disabledAddBeneficiary = false;
+      }
+    }
   }
 
-  hideAlert(): void {
-    this.alert.message = "";
-    this.alert.alert = false;
-    this.alert.type = false;
+  onBtnEdit(idBeneficiary: number): void {
+    this.$router.push({
+      name: "beneficiary:editBeneficiary",
+      params: {
+        paramEmployeeId: this.computedEmployeeId.toString(),
+        paramEmployeeTypeId: this.computedEmployeeTypeId.toString(),
+        paramIdPerson: this.computedIdPerson.toString(),
+        paramIdBeneficiary: idBeneficiary.toString(),
+      },
+    });
   }
 
   getMedicalUnits(): void {
@@ -413,8 +531,8 @@ export default class EmployeeConsultation extends Vue {
       });
   }
 
-  mounted(): void {
-    this.getValidityRights();
+  async mounted() {
+    await this.getValidityRights();
     this.getAllBeneficiaries();
   }
 }

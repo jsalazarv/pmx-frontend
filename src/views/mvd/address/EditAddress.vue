@@ -329,6 +329,7 @@ export default class EditAddress extends Vue {
     ApellidoPaterno: "",
     ApellidoMaterno: "",
     Curp: null,
+    IdDerechohabiente:null
   };
   public address: IAddress = {
     IdDomicilio: null,

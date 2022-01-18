@@ -36,6 +36,8 @@ export default {
       surname: "Surname",
       curp: "CURP",
       relationship: "Relationship/Coding",
+      validity: "Validity",
+      inability: "Inability",
     },
     validations: {
       validityRule: "must be greater than or equal to today's date",
@@ -43,6 +45,11 @@ export default {
     addressTable: {
       address: "Address",
       status: "Status",
+    },
+    messages: {
+      validValidity: "The employee is not currently in force",
+      success: "The headline has been saved successfully",
+      error: "A problem has occurred",
     },
   },
 };
