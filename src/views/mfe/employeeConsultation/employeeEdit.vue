@@ -53,11 +53,37 @@
                         outlined
                         required
                         v-model="employeeData.Persona.Curp"
-                        :disabled="isValidatingEmployee"
-                        :loading="isValidatingEmployee"
+                        :disabled="
+                          isValidatingEmployee ||
+                          !enableValidationButton ||
+                          isValidatingCurp
+                        "
+                        :loading="isValidatingEmployee || isValidatingCurp"
                         :error-messages="errors"
                       ></v-text-field>
                     </ValidationProvider>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-btn
+                      class="d-inline-block"
+                      color="success"
+                      :disabled="
+                        isValidatingEmployee ||
+                        !enableValidationButton ||
+                        isValidatingCurp
+                      "
+                      :loading="isValidatingEmployee || isValidatingCurp"
+                      @click="validateCurp"
+                    >
+                      {{ $t("employee.labels.validate") }}
+                    </v-btn>
+                    <v-checkbox
+                      v-model="enableValidationButton"
+                      hide-details
+                      :label="$t('employee.labels.enable')"
+                      class="shrink mt-0"
+                      :disabled="isValidatingCurp"
+                    ></v-checkbox>
                   </v-col>
                 </v-row>
               </v-col>
@@ -406,6 +432,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import PeopleService from "@/services/PeopleService";
 import EmployeeTypeService from "@/services/EmployeeTypeService";
 import EmployeeService from "@/services/EmployeeService";
 import GenderService from "@/services/GenderService";
@@ -425,6 +452,8 @@ import { IWorkplace } from "@/services/WorkplaceService/types";
 import { ISyndicate } from "@/services/SyndicateService/types";
 import { ISyndicateSection } from "@/services/SyndicateSectionService/types";
 import { IMaritalStatus } from "@/services/MaritalStatusService/types";
+import { IApiResponse } from "@/services/types";
+import { IPersonValidationResponse } from "@/services/PeopleService/types";
 
 const initialEmployeeData: IShowEmployee = {
   IdEmpleado: undefined,
@@ -468,6 +497,7 @@ const initialEmployeeData: IShowEmployee = {
 
 @Component({})
 export default class employeeEdit extends Vue {
+  protected peopleService = new PeopleService();
   protected employeeTypesService = new EmployeeTypeService();
   protected employeeService = new EmployeeService();
   protected genderService = new GenderService();
@@ -493,9 +523,11 @@ export default class employeeEdit extends Vue {
   public isLoadingSyndicates = false;
   public isLoadingSyndicateSections = false;
   public isValidatingEmployee = false;
+  public isValidatingCurp = false;
   public isUpdating = false;
   public showSyndicates = false;
   public menu1 = false;
+  public enableValidationButton = false;
 
   getEmployeeTypes(): void {
     this.isLoadingEmployeeList = true;
@@ -631,6 +663,20 @@ export default class employeeEdit extends Vue {
       .finally(() => {
         this.isUpdating = false;
       });
+  }
+
+  validateCurp(): void {
+    this.isValidatingCurp = true;
+    this.peopleService
+      .validateCurpRenapo(this.employeeData.Persona?.Curp as string)
+      .then(this.handleValidationResponse)
+      .finally();
+  }
+
+  handleValidationResponse(
+    response: IApiResponse<IPersonValidationResponse>
+  ): void {
+    console.log("Respuesta validador:", response);
   }
 
   mounted(): void {
