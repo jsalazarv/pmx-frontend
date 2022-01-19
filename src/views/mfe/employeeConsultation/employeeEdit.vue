@@ -21,6 +21,7 @@
                       v-slot="{ errors }"
                     >
                       <v-autocomplete
+                        class="required"
                         dense
                         name="typeOfEmployee"
                         :items="employeeTypeList"
@@ -46,6 +47,7 @@
                       v-slot="{ errors }"
                     >
                       <v-text-field
+                        class="required"
                         clearable
                         dense
                         name="curp"
@@ -281,6 +283,7 @@
                   v-slot="{ errors }"
                 >
                   <v-text-field
+                    class="required"
                     dense
                     name="rfc"
                     :label="$t('employee.attributes.rfc')"
