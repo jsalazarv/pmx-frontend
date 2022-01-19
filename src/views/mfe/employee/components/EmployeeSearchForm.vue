@@ -172,22 +172,44 @@
           </ValidationProvider>
         </v-col>
         <v-col cols="12" md="2">
-          <ValidationProvider
-            :name="$t('employee.attributes.birthday')"
-            rules="required"
-            v-slot="{ errors }"
+          <v-menu
+            v-model="menu1"
+            :close-on-content-click="false"
+            max-width="290"
           >
-            <v-text-field
-              dense
-              name="birthday"
-              :disabled="canEditPersonalInfo"
-              :label="$t('employee.attributes.birthday')"
-              outlined
-              required
+            <template v-slot:activator="{ on, attrs }">
+              <ValidationProvider
+                :name="$t('employee.attributes.birthday')"
+                rules="required"
+                v-slot="{ errors }"
+                ref="birthday"
+              >
+                <v-text-field
+                  name="birthday"
+                  :value="
+                    employee.FechaNacimiento
+                      | dateFormatted('YYYY-MM-DD', 'DD/MM/YYYY')
+                  "
+                  clearable
+                  dense
+                  :disabled="canEditPersonalInfo"
+                  outlined
+                  :label="$t('employee.attributes.birthday')"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                  @click:clear="employee.FechaNacimiento = null"
+                  :error-messages="errors"
+                ></v-text-field>
+              </ValidationProvider>
+            </template>
+            <v-date-picker
               v-model="employee.FechaNacimiento"
-              :error-messages="errors"
-            ></v-text-field>
-          </ValidationProvider>
+              no-title
+              required
+              @change="menu1 = false"
+            ></v-date-picker>
+          </v-menu>
         </v-col>
         <v-col cols="12" md="2">
           <ValidationProvider
@@ -344,6 +366,7 @@ export default class EmployeeSearchForm extends Vue {
   public isDialogOpen = false;
   public isConfirmDialogOpen = false;
   public infoSelected = false;
+  public menu1 = false;
 
   get employee(): IEmployeeForm {
     return this.$store.state.employees.employee;
@@ -362,7 +385,11 @@ export default class EmployeeSearchForm extends Vue {
       Nombres: this.employeeValidationData?.MFE?.Nombres,
       ApellidoPaterno: this.employeeValidationData?.MFE?.ApellidoPaterno,
       ApellidoMaterno: this.employeeValidationData?.MFE?.ApellidoMaterno,
-      FechaNacimiento: this.employeeValidationData?.MFE?.FechaNacimiento,
+      FechaNacimiento: Vue.filter("dateFormatted")(
+        this.employeeValidationData?.MFE?.FechaNacimiento,
+        "DD/MM/YYYY",
+        "YYYY-MM-DD"
+      ),
       Sexo: this.employeeValidationData?.MFE?.Sexo,
       Nacionalidad: this.employeeValidationData?.MFE?.Nacionalidad,
     };
@@ -373,7 +400,11 @@ export default class EmployeeSearchForm extends Vue {
       Nombres: this.employeeValidationData?.Renapo?.Nombres,
       ApellidoPaterno: this.employeeValidationData?.Renapo?.ApellidoPaterno,
       ApellidoMaterno: this.employeeValidationData?.Renapo?.ApellidoMaterno,
-      FechaNacimiento: this.employeeValidationData?.Renapo?.FechaNacimiento,
+      FechaNacimiento: Vue.filter("dateFormatted")(
+        this.employeeValidationData?.Renapo?.FechaNacimiento,
+        "DD/MM/YYYY",
+        "YYYY-MM-DD"
+      ),
       Sexo: this.employeeValidationData?.Renapo?.Sexo,
       Nacionalidad: this.employeeValidationData?.Renapo?.Nacionalidad,
     };

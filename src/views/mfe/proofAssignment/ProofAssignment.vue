@@ -217,6 +217,15 @@ export default class ProofAssignment extends Vue {
   clear(): void {
     this.employeeData = { ...initialEmployeeData };
   }
+
+  mounted(): void {
+    if (this.$route?.query?.numAssign !== null) {
+      let id: any = this.$route.query.numAssign;
+      this.assignmentNumber = id;
+
+      this.getEmployeeById();
+    }
+  }
 }
 </script>
 

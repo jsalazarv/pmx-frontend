@@ -4,7 +4,7 @@
       <v-card>
         <v-toolbar flat>
           <v-toolbar-title class="highlight">
-            Credencialización
+              {{ $t("credentialization.report.title") }}
           </v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
@@ -20,7 +20,7 @@
                 <v-text-field
                   :label="
                     $t(
-                      'credentialization.credentialization.credentializationForm.employeeType'
+                      'credentialization.attributes.employeeType'
                     )
                   "
                   name="employeeType"
@@ -36,7 +36,7 @@
                 <v-text-field
                   :label="
                     $t(
-                      'credentialization.credentialization.credentializationForm.assignmentNumber'
+                      'credentialization.attributes.assignmentNumber'
                     )
                   "
                   name="assignmentNumber"
@@ -54,7 +54,7 @@
                 <v-text-field
                   :label="
                     $t(
-                      'credentialization.credentialization.credentializationForm.fullname'
+                      'credentialization.attributes.fullname'
                     )
                   "
                   name="fullname"

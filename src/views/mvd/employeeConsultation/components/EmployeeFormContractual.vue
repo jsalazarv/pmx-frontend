@@ -13,7 +13,7 @@
         <v-text-field
           :label="
             $t(
-              'employeeConsultation.consultation.employeeConsultationForm.employeeType'
+              'employeeConsultation.attributes.employeeType'
             )
           "
           name="employeeType"
@@ -29,7 +29,7 @@
         <v-text-field
           :label="
             $t(
-              'employeeConsultation.consultation.employeeConsultationForm.assignmentNumber'
+              'employeeConsultation.attributes.assignmentNumber'
             )
           "
           name="assignmentNumber"
@@ -47,7 +47,7 @@
         <v-text-field
           :label="
             $t(
-              'employeeConsultation.consultation.employeeConsultationForm.groupPersonal'
+              'employeeConsultation.attributes.groupPersonal'
             )
           "
           name="groupPersonal"
@@ -63,7 +63,7 @@
         <v-text-field
           :label="
             $t(
-              'employeeConsultation.consultation.employeeConsultationForm.areaPersonal'
+              'employeeConsultation.attributes.areaPersonal'
             )
           "
           name="areaPersonal"
@@ -79,7 +79,7 @@
         <v-text-field
           :label="
             $t(
-              'employeeConsultation.consultation.employeeConsultationForm.fullname'
+              'employeeConsultation.attributes.fullname'
             )
           "
           name="fullname"
@@ -97,7 +97,7 @@
         <v-text-field
           :label="
             $t(
-              'employeeConsultation.consultation.employeeConsultationForm.departmentCenter'
+              'employeeConsultation.attributes.departmentCenter'
             )
           "
           name="departmentCenter"
@@ -113,7 +113,7 @@
         <v-text-field
           :label="
             $t(
-              'employeeConsultation.consultation.employeeConsultationForm.departmentDescription'
+              'employeeConsultation.attributes.departmentDescription'
             )
           "
           name="departmentDescription"
@@ -131,7 +131,7 @@
         <v-text-field
           :label="
             $t(
-              'employeeConsultation.consultation.employeeConsultationForm.validity'
+              'employeeConsultation.attributes.validity'
             )
           "
           name="validity"
@@ -147,7 +147,7 @@
         <v-text-field
           :label="
             $t(
-              'employeeConsultation.consultation.employeeConsultationForm.validityStatus'
+              'employeeConsultation.attributes.validityStatus'
             )
           "
           name="validityStatus"
@@ -205,10 +205,10 @@ export default class EmployeeFormContractual extends Vue {
   get computedValidity(): string {
     return this.validityRights.EstadoVigencia
       ? `${this.$t(
-          "employeeConsultation.consultation.employeeConsultationForm.valid"
+          "employeeConsultation.labels.validations.valid"
         )}`
       : `${this.$t(
-          "employeeConsultation.consultation.employeeConsultationForm.notValid"
+          "employeeConsultation.labels.validations.notValid"
         )}`;
   }
 
@@ -250,7 +250,7 @@ export default class EmployeeFormContractual extends Vue {
         if (!this.validityRights.EstadoVigencia) {
           this.alert = {
             message: this.$t(
-              "employeeConsultation.consultation.messages.validValidity"
+              "employeeConsultation.labels.dialogs.info.message"
             ) as string,
             alert: true,
             type: false,

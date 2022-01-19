@@ -163,22 +163,46 @@
                 </ValidationProvider>
               </v-col>
               <v-col cols="12" md="4">
-                <ValidationProvider
-                  :name="$t('employee.attributes.birthday')"
-                  rules="required"
-                  v-slot="{ errors }"
+                <v-menu
+                  v-model="menu1"
+                  :close-on-content-click="false"
+                  max-width="290"
                 >
-                  <v-text-field
-                    dense
-                    name="birthday"
-                    disabled
-                    :label="$t('employee.attributes.birthday')"
-                    outlined
-                    required
+                  <template v-slot:activator="{ on, attrs }">
+                    <ValidationProvider
+                      :name="$t('employee.attributes.birthday')"
+                      rules="required"
+                      v-slot="{ errors }"
+                      ref="birthday"
+                    >
+                      <v-text-field
+                        name="birthday"
+                        disabled
+                        :value="
+                          employeeData.Persona.FechaNacimiento
+                            | dateFormatted('YYYY-MM-DD', 'DD/MM/YYYY')
+                        "
+                        clearable
+                        dense
+                        outlined
+                        :label="$t('employee.attributes.birthday')"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                        @click:clear="
+                          employeeData.Persona.FechaNacimiento = null
+                        "
+                        :error-messages="errors"
+                      ></v-text-field>
+                    </ValidationProvider>
+                  </template>
+                  <v-date-picker
                     v-model="employeeData.Persona.FechaNacimiento"
-                    :error-messages="errors"
-                  ></v-text-field>
-                </ValidationProvider>
+                    no-title
+                    required
+                    @change="menu1 = false"
+                  ></v-date-picker>
+                </v-menu>
               </v-col>
               <v-col cols="12" md="4">
                 <ValidationProvider
@@ -431,6 +455,7 @@ export default class employeeEdit extends Vue {
   public isLoadingSyndicates = false;
   public isLoadingSyndicateSections = false;
   public isValidatingEmployee = false;
+  public menu1 = false;
 
   getEmployeeTypes(): void {
     this.isLoadingEmployeeList = true;

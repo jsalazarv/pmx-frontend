@@ -4,8 +4,8 @@
       <v-card-title class="text-h6">
         {{
           existsBeneficiary
-            ? $t("beneficiary.beneficiary.dialog.messagePrimary")
-            : $t("beneficiary.beneficiary.dialog.messageSecondary")
+            ? $t("beneficiary.labels.validations.discharged")
+            : $t("beneficiary.labels.validations.isNotDischarged")
         }}</v-card-title
       >
       <v-card-text>
@@ -13,13 +13,13 @@
           <v-col cols="12" md="6">
             <v-card elevation="0" outlined>
               <v-card-title class="subheading font-weight-bold">
-                {{ $t("beneficiary.beneficiary.renapoForm.title") }}
+                {{ $t("beneficiary.attributes.title") }}
               </v-card-title>
               <v-divider></v-divider>
               <v-list dense>
                 <v-list-item>
                   <v-list-item-content>
-                    {{ $t("beneficiary.beneficiary.renapoForm.names") }}
+                    {{ $t("beneficiary.attributes.names") }}
                   </v-list-item-content>
                   <v-list-item-content class="align-end">
                     {{ computedPerson.Renapo.Nombres }}
@@ -27,7 +27,7 @@
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-content>
-                    {{ $t("beneficiary.beneficiary.renapoForm.lastname") }}
+                    {{ $t("beneficiary.attributes.lastname") }}
                   </v-list-item-content>
                   <v-list-item-content class="align-end">
                     {{ computedPerson.Renapo.ApellidoPaterno }}
@@ -35,7 +35,7 @@
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-content>
-                    {{ $t("beneficiary.beneficiary.renapoForm.surname") }}
+                    {{ $t("beneficiary.attributes.surname") }}
                   </v-list-item-content>
                   <v-list-item-content class="align-end">
                     {{ computedPerson.Renapo.ApellidoMaterno }}
@@ -43,7 +43,7 @@
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-content>
-                    {{ $t("beneficiary.beneficiary.renapoForm.birthday") }}
+                    {{ $t("beneficiary.attributes.birthday") }}
                   </v-list-item-content>
                   <v-list-item-content class="align-end">
                     {{ computedPerson.Renapo.FechaNacimiento }}
@@ -51,7 +51,7 @@
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-content>
-                    {{ $t("beneficiary.beneficiary.renapoForm.gender") }}
+                    {{ $t("beneficiary.attributes.gender") }}
                   </v-list-item-content>
                   <v-list-item-content class="align-end">
                     {{ computedPerson.Renapo.Sexo }}
@@ -63,13 +63,13 @@
           <v-col cols="12" md="6" v-if="existsBeneficiary">
             <v-card elevation="0" outlined>
               <v-card-title class="subheading font-weight-bold">
-                {{ $t("beneficiary.beneficiary.dialog.title") }}
+                {{ $t("beneficiary.labels.mvd") }}
               </v-card-title>
               <v-divider></v-divider>
               <v-list dense>
                 <v-list-item>
                   <v-list-item-content>
-                    {{ $t("beneficiary.beneficiary.renapoForm.names") }}
+                    {{ $t("beneficiary.attributes.names") }}
                   </v-list-item-content>
                   <v-list-item-content class="align-end">
                     {{ computedPerson.Person.Nombres }}
@@ -77,7 +77,7 @@
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-content>
-                    {{ $t("beneficiary.beneficiary.renapoForm.lastname") }}
+                    {{ $t("beneficiary.attributes.lastname") }}
                   </v-list-item-content>
                   <v-list-item-content class="align-end">
                     {{ computedPerson.Person.ApellidoPaterno }}
@@ -85,7 +85,7 @@
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-content>
-                    {{ $t("beneficiary.beneficiary.renapoForm.surname") }}
+                    {{ $t("beneficiary.attributes.surname") }}
                   </v-list-item-content>
                   <v-list-item-content class="align-end">
                     {{ computedPerson.Person.ApellidoMaterno }}
@@ -93,7 +93,7 @@
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-content>
-                    {{ $t("beneficiary.beneficiary.renapoForm.birthday") }}
+                    {{ $t("beneficiary.attributes.birthday") }}
                   </v-list-item-content>
                   <v-list-item-content class="align-end">
                     {{ computedPerson.Person.FechaNacimiento }}
@@ -101,7 +101,7 @@
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-content>
-                    {{ $t("beneficiary.beneficiary.renapoForm.gender") }}
+                    {{ $t("beneficiary.attributes.gender") }}
                   </v-list-item-content>
                   <v-list-item-content class="align-end">
                     {{ computedPerson.Person.Sexo }}
@@ -115,7 +115,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn @click="hide" color="error darken-1" text>
-          {{ $t("beneficiary.beneficiary.buttons.cancel") }}
+          {{ $t("beneficiary.labels.cancel") }}
         </v-btn>
         <v-btn
           color="success"
@@ -123,7 +123,7 @@
           @click="select"
           :disabled="existsBeneficiary"
         >
-          {{ $t("beneficiary.beneficiary.buttons.select") }}
+          {{ $t("beneficiary.labels.select") }}
         </v-btn>
       </v-card-actions>
     </v-card>

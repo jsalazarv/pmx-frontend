@@ -40,7 +40,6 @@ import EmployeeSearchForm from "@/views/mfe/employee/components/EmployeeSearchFo
 import EmploymentInformationForm from "@/views/mfe/employee/components/EmploymentInformationForm.vue";
 import LocationForm from "@/views/mfe/employee/components/LocationForm.vue";
 import EmployeeService from "@/services/EmployeeService";
-import { Watch } from "vue-property-decorator";
 import { IValidationObserver } from "@/components/types";
 
 @Component({

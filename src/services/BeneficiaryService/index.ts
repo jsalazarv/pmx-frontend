@@ -36,4 +36,19 @@ export default class BeneficiaryService extends BaseService {
       beneficiaryTitular
     );
   }
+
+  getMedicalUnit(idBeneficiary: number | null): IServiceResponse<number> {
+    return this.client.get(
+      `Derechohabientes/ObtenerIdUnidadMedica/${idBeneficiary}`
+    );
+  }
+
+  updateMedicalUnit(
+    idBeneficiary: number | null,
+    idMedicalUnit: number | null
+  ): IServiceResponse<number> {
+    return this.client.put(
+      `Derechohabientes/ActualizarUnidadMedica/${idBeneficiary}/${idMedicalUnit}`
+    );
+  }
 }

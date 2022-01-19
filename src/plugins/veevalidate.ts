@@ -41,7 +41,7 @@ extend("validityrule", (value, args: any) => {
   if (new Date(validityDate) >= new Date(currentDate)) {
     return true;
   }
-  return `{_field_} ${i18n.t("employeeConsultation.consultation.validations.validityRule")}`;
+  return `{_field_} ${i18n.t("employeeConsultation.labels.validations.dateGreaterThanToday")}`;
 });
 
 

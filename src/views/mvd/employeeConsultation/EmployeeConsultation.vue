@@ -4,7 +4,7 @@
       <v-card>
         <v-toolbar flat>
           <v-toolbar-title class="highlight">
-            {{ $t("employeeConsultation.consultation.title") }}
+            {{ $t("employeeConsultation.info.title") }}
           </v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
@@ -14,10 +14,18 @@
           :indeterminate="isLoading"
         ></v-progress-linear>
         <v-container>
+          <Alert
+            :message="alert.message"
+            :alert="alert.alert"
+            :type="alert.type"
+            @hideAlert="hideAlert"
+          ></Alert>
           <EmployeeFormContratual v-if="computedEmployeeTypeId == 0" />
           <EmployeeFormNormative
             v-else
             @updateValidityRights="getValidityRights"
+            @hide="hideAlert"
+            ref="employeeFormNormative"
           />
         </v-container>
         <v-divider></v-divider>
@@ -33,11 +41,7 @@
                 dense
                 @click="onBtnEditAddress"
               >
-                {{
-                  $t(
-                    "employeeConsultation.consultation.actionsButtons.editAddress"
-                  )
-                }}
+                {{ $t("employeeConsultation.labels.editAddress") }}
               </v-btn>
             </v-col>
             <v-col cols="12" sm="6" md="3">
@@ -50,11 +54,7 @@
                 dense
                 @click="onBtnNewAddress"
               >
-                {{
-                  $t(
-                    "employeeConsultation.consultation.actionsButtons.newAddress"
-                  )
-                }}
+                {{ $t("employeeConsultation.labels.newAddress") }}
               </v-btn>
             </v-col>
             <v-col cols="12" sm="6" md="3">
@@ -71,55 +71,55 @@
                     v-on="on"
                     @click="onBtnAssignMedicalUnit"
                   >
-                    {{
-                      $t(
-                        "employeeConsultation.consultation.actionsButtons.assignMedicalUnit"
-                      )
-                    }}
+                    {{ $t("employeeConsultation.labels.assignMedicalUnit") }}
                   </v-btn>
                 </template>
                 <v-card>
-                  <v-card-title class="text-h5">
-                    {{
-                      $t(
-                        "employeeConsultation.consultation.actionsButtons.assignMedicalUnit"
-                      )
-                    }}
-                  </v-card-title>
-                  <v-col cols="12" sm="12" md="12">
-                    <v-autocomplete
-                      dense
-                      name="medicalUnit"
-                      outlined
-                      item-text="Nombre"
-                      item-value="Id"
-                      :items="medicalUnitsList"
-                      :label="
-                        $t(
-                          'employeeConsultation.consultation.assignMedicalUnit.medicalUnit'
-                        )
-                      "
-                      :disabled="isLoadingMedicalUnitsList"
-                      :loading="isLoadingMedicalUnitsList"
-                    ></v-autocomplete>
-                  </v-col>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="red darken-1" text @click="dialog = false">
-                      {{
-                        $t(
-                          "employeeConsultation.consultation.actionsButtons.cancel"
-                        )
-                      }}
-                    </v-btn>
-                    <v-btn color="success" dark dense @click="dialog = false">
-                      {{
-                        $t(
-                          "employeeConsultation.consultation.actionsButtons.assign"
-                        )
-                      }}
-                    </v-btn>
-                  </v-card-actions>
+                  <ValidationObserver v-slot="{ handleSubmit }" ref="form">
+                    <form @submit.prevent="handleSubmit(onSubmit)">
+                      <v-card-title class="text-h5">
+                        {{
+                          $t("employeeConsultation.labels.assignMedicalUnit")
+                        }}
+                      </v-card-title>
+                      <v-col cols="12" sm="12" md="12">
+                        <ValidationProvider
+                          :name="$t('employeeConsultation.attributes.validity')"
+                          v-slot="{ errors }"
+                          rules="required"
+                        >
+                          <v-autocomplete
+                            dense
+                            name="medicalUnit"
+                            outlined
+                            item-text="Nombre"
+                            item-value="Id"
+                            :items="medicalUnitsList"
+                            :label="
+                              $t('employeeConsultation.labels.medicalUnit')
+                            "
+                            :disabled="isLoadingMedicalUnitsList"
+                            :loading="isLoadingMedicalUnitsList"
+                            v-model="medicalUnitId"
+                            :error-messages="errors"
+                          ></v-autocomplete>
+                        </ValidationProvider>
+                      </v-col>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                          color="red darken-1"
+                          text
+                          @click="dialog = false"
+                        >
+                          {{ $t("employeeConsultation.labels.cancel") }}
+                        </v-btn>
+                        <v-btn type="submit" color="success" dark dense>
+                          {{ $t("employeeConsultation.labels.assign") }}
+                        </v-btn>
+                      </v-card-actions>
+                    </form>
+                  </ValidationObserver>
                 </v-card>
               </v-dialog>
             </v-col>
@@ -132,11 +132,7 @@
                 large
                 @click="onBtnCredentialization"
               >
-                {{
-                  $t(
-                    "employeeConsultation.consultation.actionsButtons.credential"
-                  )
-                }}
+                {{ $t("employeeConsultation.labels.credential") }}
               </v-btn>
             </v-col>
           </v-row>
@@ -144,7 +140,7 @@
         <v-divider></v-divider>
         <v-toolbar flat>
           <v-toolbar-title>
-            {{ $t("employeeConsultation.consultation.titleSecondary") }}
+            {{ $t("employeeConsultation.list.title") }}
           </v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
@@ -162,11 +158,7 @@
                 @click="onBtnAddBeneficiary"
               >
                 +
-                {{
-                  $t(
-                    "employeeConsultation.consultation.actionsButtons.addBeneficiary"
-                  )
-                }}
+                {{ $t("employeeConsultation.labels.addBeneficiary") }}
               </v-btn>
             </v-col>
             <v-col cols="12" sm="12" md="12">
@@ -200,50 +192,15 @@
                           <v-btn class="mx-2" v-bind="attrs" v-on="on">
                             <v-icon dark>mdi-delete</v-icon>
                           </v-btn>
-                          <!-- <v-btn
-                            :disabled="disabledAssignMedicalUnit"
-                            class="sizeTextButton"
-                            type="button"
-                            color="success"
-                            large
-                            dense
-                            v-bind="attrs"
-                            v-on="on"
-                            @click="onBtnAssignMedicalUnit"
-                          >
-                            {{
-                              $t(
-                                "employeeConsultation.consultation.actionsButtons.assignMedicalUnit"
-                              )
-                            }}
-                          </v-btn> -->
                         </template>
                         <v-card>
                           <v-card-title class="text-h5">
-                            <!-- {{
+                            {{
                               $t(
-                                "employeeConsultation.consultation.actionsButtons.assignMedicalUnit"
+                                "employeeConsultation.labels.dialogs.confirmDelete.message"
                               )
-                            }} -->
-                            ¿Desea eliminar al derechohabiente?
+                            }}
                           </v-card-title>
-                          <!-- <v-col cols="12" sm="12" md="12">
-                            <v-autocomplete
-                              dense
-                              name="medicalUnit"
-                              outlined
-                              item-text="Nombre"
-                              item-value="Id"
-                              :items="medicalUnitsList"
-                              :label="
-                                $t(
-                                  'employeeConsultation.consultation.assignMedicalUnit.medicalUnit'
-                                )
-                              "
-                              :disabled="isLoadingMedicalUnitsList"
-                              :loading="isLoadingMedicalUnitsList"
-                            ></v-autocomplete>
-                          </v-col> -->
                           <v-card-actions>
                             <v-spacer></v-spacer>
                             <v-btn
@@ -314,9 +271,10 @@ import EmployeeFormContratual from "./components/EmployeeFormContractual.vue";
 import EmployeeFormNormative from "./components/EmployeeFormNormative.vue";
 import { IMedicalUnit } from "@/services/MedicalUnitService/types";
 import MedicalUnitService from "@/services/MedicalUnitService";
+import Alert from "@/components/Alert.vue";
 
 @Component({
-  components: { EmployeeFormContratual, EmployeeFormNormative },
+  components: { EmployeeFormContratual, EmployeeFormNormative, Alert },
 })
 export default class EmployeeConsultation extends Vue {
   protected beneficiaryService = new BeneficiaryService();
@@ -331,6 +289,12 @@ export default class EmployeeConsultation extends Vue {
   public dialogDelete = false;
   public isLoadingMedicalUnitsList = false;
   public isLoadingBeneficiaries = false;
+  public medicalUnitId: number | null = null;
+  public alert = {
+    alert: false,
+    message: "",
+    type: false,
+  };
   public validityRights: IValidityRightsResponse = {
     GrupoPersonal: null,
     AreaPersonal: null,
@@ -360,45 +324,31 @@ export default class EmployeeConsultation extends Vue {
     { text: "", value: "edit", sortable: false },
     { text: "", value: "delete", sortable: false },
     {
-      text: this.$t(
-        "employeeConsultation.consultation.beneficiariesTable.names"
-      ),
+      text: this.$t("employeeConsultation.attributes.names"),
       value: "nombres",
     },
     {
-      text: this.$t(
-        "employeeConsultation.consultation.beneficiariesTable.lastname"
-      ),
+      text: this.$t("employeeConsultation.attributes.lastname"),
       value: "ap_paterno",
     },
     {
-      text: this.$t(
-        "employeeConsultation.consultation.beneficiariesTable.surname"
-      ),
+      text: this.$t("employeeConsultation.attributes.surname"),
       value: "ap_materno",
     },
     {
-      text: this.$t(
-        "employeeConsultation.consultation.beneficiariesTable.curp"
-      ),
+      text: this.$t("employeeConsultation.attributes.curp"),
       value: "curp",
     },
     {
-      text: this.$t(
-        "employeeConsultation.consultation.beneficiariesTable.relationship"
-      ),
+      text: this.$t("employeeConsultation.attributes.relationship"),
       value: "parentesco",
     },
     {
-      text: this.$t(
-        "employeeConsultation.consultation.beneficiariesTable.validity"
-      ),
+      text: this.$t("employeeConsultation.attributes.validity"),
       value: "vigencia",
     },
     {
-      text: this.$t(
-        "employeeConsultation.consultation.beneficiariesTable.inability"
-      ),
+      text: this.$t("employeeConsultation.attributes.inability"),
       value: "incapacidad",
     },
   ];
@@ -486,6 +436,12 @@ export default class EmployeeConsultation extends Vue {
       });
   }
 
+  hideAlert(): void {
+    this.alert.message = "";
+    this.alert.alert = false;
+    this.alert.type = false;
+  }
+
   async getValidityRights() {
     let responseValidityRights =
       await this.beneficiaryService.getValidityRights(
@@ -531,9 +487,50 @@ export default class EmployeeConsultation extends Vue {
       });
   }
 
+  getMedicalUnit(): void {
+    if (!this.validityRights.IdDerechohabiente) return;
+    this.beneficiaryService
+      .getMedicalUnit(this.validityRights.IdDerechohabiente)
+      .then((response) => {
+        this.medicalUnitId = response.Data;
+      });
+  }
+
+  onSubmit(): void {
+    this.beneficiaryService
+      .updateMedicalUnit(
+        this.validityRights.IdDerechohabiente,
+        this.medicalUnitId
+      )
+      .then((response) => {
+        console.log(response.Data);
+        this.alert = {
+          message: this.$t(
+            "employeeConsultation.labels.dialogs.successAssign.message"
+          ) as string,
+          alert: true,
+          type: true,
+        };
+      })
+      .catch((error) => {
+        this.alert = {
+          message: this.$t(
+            "employeeConsultation.labels.dialogs.errorAssign.message"
+          ) as string,
+          alert: true,
+          type: false,
+        };
+      })
+      .finally(() => {
+        this.dialog = false;
+      });
+    (this.$refs.employeeFormNormative as EmployeeFormNormative).hideAlert();
+  }
+
   async mounted() {
     await this.getValidityRights();
     this.getAllBeneficiaries();
+    this.getMedicalUnit();
   }
 }
 </script>
