@@ -202,7 +202,18 @@ export default class ProofAssignment extends Vue {
     this.employeeService
       .findById(this.assignmentNumber)
       .then((response) => {
-        this.employeeData = response.Data;
+        if (response.Success) {
+          this.employeeData = response.Data;
+          this.$store.dispatch("app/setNotify", {});
+        }
+      })
+      .catch((err) => {
+        if (err.response) {
+          this.$store.dispatch("app/setNotify", {
+            status: err?.response?.status,
+          });
+          console.error(err?.response?.status);
+        }
       })
       .finally(() => {
         this.isLoadingEmployeeData = false;

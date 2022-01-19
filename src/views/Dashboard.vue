@@ -197,22 +197,18 @@
         <Graph />
       </v-col>
     </v-row>
-
-    <SnackbarAlert :text="'Hola Bienvenidos'" v-if="notifyModel" v-model="notifyModel" />
   </div>
 </template>
 
 <script lang="ts">
 import DashboardService from "@/services/Dashboard";
 import Graph from "./mfe/IndicatorDashboard/Graph.vue";
-import SnackbarAlert from "@/components/snackbarAlert/SnackbarAlert.vue";
 
 import { Component, Vue } from "vue-property-decorator";
 
 @Component({
   components: {
     Graph,
-    SnackbarAlert,
   },
 })
 export default class Dashboard extends Vue {
@@ -223,12 +219,20 @@ export default class Dashboard extends Vue {
   public totalEmployeeCurrent = 0;
   public totalEmployeeStatusCancel = 0;
   public totalEmployeeStatusAccept = 0;
-  public notifyModel: boolean = true;
 
   protected dashboardService = new DashboardService();
 
   searchNumberAssign(): void {
-    if (!this.numberAssignModel) return;
+    if (!this.numberAssignModel) {
+      // this.notifyModel = true;
+      // this.messageAlert = 'Ingrese un número de asignación'
+
+      // setTimeout(() => {
+      //   this.notifyModel = false;
+      //   this.messageAlert = '';
+      // }, 2000)
+      return;
+    }
 
     this.$router.push({
       name: "proof:assignment",

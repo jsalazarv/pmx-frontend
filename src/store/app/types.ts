@@ -21,7 +21,14 @@ export interface ISidebar {
   currentMenu: IModuleMenu;
 }
 
+export interface Notify {
+  open: boolean;
+  text: string;
+  color: string;
+}
+
 export interface IAppState {
   layout: string;
   sidebar: ISidebar;
+  notifyModel: Notify;
 }
