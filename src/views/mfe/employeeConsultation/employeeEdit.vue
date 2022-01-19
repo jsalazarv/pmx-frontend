@@ -426,6 +426,13 @@
         </ValidationObserver>
       </v-card>
     </div>
+    <renapo-edit-dialog
+      :open.sync="isDialogOpen"
+      :renapo-data="renapoData"
+      :title="validationMessage"
+      @onSelect="newRenapoData"
+      @onCancel="resetForm"
+    />
   </div>
 </template>
 
@@ -454,6 +461,8 @@ import { ISyndicateSection } from "@/services/SyndicateSectionService/types";
 import { IMaritalStatus } from "@/services/MaritalStatusService/types";
 import { IApiResponse } from "@/services/types";
 import { IPersonValidationResponse } from "@/services/PeopleService/types";
+import RenapoEditDialog from "@/views/mfe/employeeConsultation/components/RenapoEditDialog.vue";
+import { IEmployeeForm } from "@/store/employee/types";
 
 const initialEmployeeData: IShowEmployee = {
   IdEmpleado: undefined,
@@ -495,7 +504,9 @@ const initialEmployeeData: IShowEmployee = {
   },
 };
 
-@Component({})
+@Component({
+  components: { RenapoEditDialog },
+})
 export default class employeeEdit extends Vue {
   protected peopleService = new PeopleService();
   protected employeeTypesService = new EmployeeTypeService();
@@ -514,6 +525,9 @@ export default class employeeEdit extends Vue {
   public workplaces: Array<IWorkplace> = [];
   public syndicates: Array<ISyndicate> = [];
   public syndicateSections: Array<ISyndicateSection> = [];
+  public employeeValidationData = null;
+  public validationMessage: string | null = null;
+  public infoSelected = false;
   public isLoadingEmployeeList = false;
   public isLoadingEmployeeData = false;
   public isLoadingGendersList = false;
@@ -528,6 +542,7 @@ export default class employeeEdit extends Vue {
   public showSyndicates = false;
   public menu1 = false;
   public enableValidationButton = false;
+  public isDialogOpen = false;
 
   getEmployeeTypes(): void {
     this.isLoadingEmployeeList = true;
@@ -665,6 +680,21 @@ export default class employeeEdit extends Vue {
       });
   }
 
+  get renapoData(): Partial<IEmployeeForm> {
+    return {
+      Nombres: this.employeeValidationData?.Nombres,
+      ApellidoPaterno: this.employeeValidationData?.ApellidoPaterno,
+      ApellidoMaterno: this.employeeValidationData?.ApellidoMaterno,
+      FechaNacimiento: Vue.filter("dateFormatted")(
+        this.employeeValidationData?.FechaNacimiento,
+        "DD/MM/YYYY",
+        "YYYY-MM-DD"
+      ),
+      Sexo: this.employeeValidationData?.Sexo,
+      Nacionalidad: this.employeeValidationData?.Nacionalidad,
+    };
+  }
+
   validateCurp(): void {
     this.isValidatingCurp = true;
     this.peopleService
@@ -676,7 +706,30 @@ export default class employeeEdit extends Vue {
   handleValidationResponse(
     response: IApiResponse<IPersonValidationResponse>
   ): void {
-    console.log("Respuesta validador:", response);
+    this.employeeValidationData = response.Data;
+    this.validationMessage = response.Message.Texto;
+
+    this.openDialog();
+  }
+
+  openDialog(): void {
+    this.isDialogOpen = true;
+  }
+
+  newRenapoData(): void {
+    this.employeeData.Persona = {
+      ...this.employeeData.Persona,
+      ...this.renapoData,
+    };
+
+    this.isValidatingCurp = false;
+    this.enableValidationButton = false;
+  }
+
+  resetForm(): void {
+    this.infoSelected = false;
+    this.isValidatingCurp = false;
+    this.enableValidationButton = false;
   }
 
   mounted(): void {
