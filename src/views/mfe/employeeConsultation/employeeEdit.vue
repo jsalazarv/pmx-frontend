@@ -143,6 +143,7 @@
                   v-slot="{ errors }"
                 >
                   <v-text-field
+                    class="required"
                     dense
                     name="names"
                     disabled
@@ -161,6 +162,7 @@
                   v-slot="{ errors }"
                 >
                   <v-text-field
+                    class="required"
                     dense
                     name="lastname"
                     disabled
@@ -179,6 +181,7 @@
                   v-slot="{ errors }"
                 >
                   <v-text-field
+                    class="required"
                     dense
                     name="surname"
                     disabled
@@ -204,6 +207,7 @@
                       ref="birthday"
                     >
                       <v-text-field
+                        class="required"
                         name="birthday"
                         disabled
                         :value="
@@ -239,6 +243,7 @@
                   v-slot="{ errors }"
                 >
                   <v-autocomplete
+                    class="required"
                     dense
                     name="gender"
                     outlined
@@ -261,6 +266,7 @@
                   v-slot="{ errors }"
                 >
                   <v-autocomplete
+                    class="required"
                     dense
                     name="maritalStatus"
                     outlined
@@ -318,6 +324,7 @@
                   v-slot="{ errors }"
                 >
                   <v-autocomplete
+                    class="required"
                     dense
                     name="applicantCompany"
                     :label="$t('employee.attributes.applicantCompany')"
@@ -342,6 +349,7 @@
                   v-slot="{ errors }"
                 >
                   <v-autocomplete
+                    class="required"
                     dense
                     disabled
                     :items="workplaces"
@@ -363,6 +371,7 @@
                   v-slot="{ errors }"
                 >
                   <v-autocomplete
+                    class="required"
                     disabled
                     :loading="isLoadingSyndicates"
                     :items="syndicates"
@@ -386,6 +395,7 @@
                   v-slot="{ errors }"
                 >
                   <v-autocomplete
+                    class="required"
                     :items="syndicateSections"
                     item-text="Nombre"
                     item-value="IdSeccionSindicato"
@@ -420,8 +430,8 @@
             <v-btn
               color="success"
               @click="updateEmployee"
-              :disabled="isUpdating"
               :loading="isUpdating"
+              :disabled="isUpdating || isValidatingEmployee || isValidatingCurp"
             >
               {{ $t("employeeConsultationMFE.labels.update") }}
             </v-btn>
@@ -546,6 +556,7 @@ export default class employeeEdit extends Vue {
   public menu1 = false;
   public enableValidationButton = false;
   public isDialogOpen = false;
+  public currentCurp = "";
 
   getEmployeeTypes(): void {
     this.isLoadingEmployeeList = true;
@@ -640,7 +651,7 @@ export default class employeeEdit extends Vue {
       .then((response) => {
         const data = Vue.filter("cleanObject")(response.Data);
         this.employeeData = { ...initialEmployeeData, ...data };
-
+        this.currentCurp = data.Persona.Curp;
         this.getWorkplaces();
         this.getSyndicateSections();
         this.selectedEmployeeType(data.EstadoCivil);
@@ -710,7 +721,7 @@ export default class employeeEdit extends Vue {
     response: IApiResponse<IPersonValidationResponse>
   ): void {
     this.employeeValidationData = response.Data;
-    this.validationMessage = response.Message.Texto;
+    this.validationMessage = response.Message;
 
     this.openDialog();
   }
@@ -733,6 +744,7 @@ export default class employeeEdit extends Vue {
     this.infoSelected = false;
     this.isValidatingCurp = false;
     this.enableValidationButton = false;
+    this.employeeData.Persona.Curp = this.currentCurp;
   }
 
   mounted(): void {

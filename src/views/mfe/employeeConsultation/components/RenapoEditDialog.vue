@@ -110,7 +110,6 @@ export default class RenapoEditDialog extends Vue {
 
   @Emit("onSelect")
   selectData(): void {
-    this.selectDataRenapo();
     if (this.onSelectData) {
       this.onSelectData();
     }
@@ -119,10 +118,6 @@ export default class RenapoEditDialog extends Vue {
 
   closeDialog(): void {
     this.isDialogOpen = false;
-  }
-
-  selectDataRenapo(): void {
-    console.log("SELECT DATA RENAPO", this.renapoData);
   }
 }
 </script>
