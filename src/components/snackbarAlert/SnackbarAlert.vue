@@ -23,7 +23,7 @@ export default class SnackbarAlert extends Vue {
   @Prop({
     type: Boolean,
     default: false,
-    required: true,
+    required: false,
   })
   public value!: boolean;
 

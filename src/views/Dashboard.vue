@@ -224,13 +224,10 @@ export default class Dashboard extends Vue {
 
   searchNumberAssign(): void {
     if (!this.numberAssignModel) {
-      // this.notifyModel = true;
-      // this.messageAlert = 'Ingrese un número de asignación'
-
-      // setTimeout(() => {
-      //   this.notifyModel = false;
-      //   this.messageAlert = '';
-      // }, 2000)
+      this.$store.dispatch("app/setNotify", {
+        status: 400,
+        text: "Ingrese un Número de Asignación"
+      });
       return;
     }
 
