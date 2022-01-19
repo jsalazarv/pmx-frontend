@@ -3,6 +3,7 @@ import { Bar, mixins } from "vue-chartjs";
 const { reactiveProp } = mixins;
 
 import { Component, Prop, Mixins } from "vue-property-decorator";
+import { ChartData, ChartOptions } from "chart.js";
 
 @Component({
   extends: Bar,
@@ -17,7 +18,7 @@ export default class GraphBar extends Mixins(Bar) {
       return {};
     },
   })
-  options: any;
+  options!: ChartOptions;
 
   @Prop({
     type: Object,
@@ -26,12 +27,11 @@ export default class GraphBar extends Mixins(Bar) {
       return {};
     },
   })
-  chartData: any;
+  chartData!: ChartData;
 
   mounted(): void {
-    let vm = this;
     setTimeout(() => {
-      vm.renderChart(this.chartData, this.setOptions);
+      this.renderChart(this.chartData, this.setOptions);
     }, 300);
   }
 
