@@ -12,6 +12,7 @@
                 v-slot="{ errors }"
               >
                 <v-autocomplete
+                  class="required"
                   dense
                   name="typeOfEmployee"
                   :items="employeeTypeList"
@@ -34,6 +35,7 @@
                 v-slot="{ errors }"
               >
                 <v-text-field
+                  class="required"
                   clearable
                   dense
                   name="curp"
@@ -103,6 +105,7 @@
                 v-slot="{ errors }"
               >
                 <v-text-field
+                  class="required"
                   dense
                   name="invoice"
                   :label="$t('employee.attributes.invoice')"
@@ -124,6 +127,7 @@
             v-slot="{ errors }"
           >
             <v-text-field
+              class="required"
               dense
               name="names"
               :disabled="canEditPersonalInfo"
@@ -142,6 +146,7 @@
             v-slot="{ errors }"
           >
             <v-text-field
+              class="required"
               dense
               name="lastname"
               :disabled="canEditPersonalInfo"
@@ -160,6 +165,7 @@
             v-slot="{ errors }"
           >
             <v-text-field
+              class="required"
               dense
               name="surname"
               :disabled="canEditPersonalInfo"
@@ -185,6 +191,7 @@
                 ref="birthday"
               >
                 <v-text-field
+                  class="required"
                   name="birthday"
                   :value="
                     employee.FechaNacimiento
@@ -235,6 +242,7 @@
             v-slot="{ errors }"
           >
             <v-autocomplete
+              class="required"
               dense
               name="gender"
               outlined
@@ -257,6 +265,7 @@
             v-slot="{ errors }"
           >
             <v-autocomplete
+              class="required"
               dense
               name="maritalStatus"
               outlined
@@ -279,6 +288,7 @@
             v-slot="{ errors }"
           >
             <v-text-field
+              class="required"
               dense
               name="rfc"
               :label="$t('employee.attributes.rfc')"

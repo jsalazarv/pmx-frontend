@@ -21,6 +21,7 @@
                       v-slot="{ errors }"
                     >
                       <v-autocomplete
+                        class="required"
                         dense
                         name="typeOfEmployee"
                         :items="employeeTypeList"
@@ -46,6 +47,7 @@
                       v-slot="{ errors }"
                     >
                       <v-text-field
+                        class="required"
                         clearable
                         dense
                         name="curp"
@@ -53,11 +55,37 @@
                         outlined
                         required
                         v-model="employeeData.Persona.Curp"
-                        :disabled="isValidatingEmployee"
-                        :loading="isValidatingEmployee"
+                        :disabled="
+                          isValidatingEmployee ||
+                          !enableValidationButton ||
+                          isValidatingCurp
+                        "
+                        :loading="isValidatingEmployee || isValidatingCurp"
                         :error-messages="errors"
                       ></v-text-field>
                     </ValidationProvider>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-btn
+                      class="d-inline-block"
+                      color="success"
+                      :disabled="
+                        isValidatingEmployee ||
+                        !enableValidationButton ||
+                        isValidatingCurp
+                      "
+                      :loading="isValidatingEmployee || isValidatingCurp"
+                      @click="validateCurp"
+                    >
+                      {{ $t("employee.labels.validate") }}
+                    </v-btn>
+                    <v-checkbox
+                      v-model="enableValidationButton"
+                      hide-details
+                      :label="$t('employee.labels.enable')"
+                      class="shrink mt-0"
+                      :disabled="isValidatingCurp"
+                    ></v-checkbox>
                   </v-col>
                 </v-row>
               </v-col>
@@ -115,6 +143,7 @@
                   v-slot="{ errors }"
                 >
                   <v-text-field
+                    class="required"
                     dense
                     name="names"
                     disabled
@@ -133,6 +162,7 @@
                   v-slot="{ errors }"
                 >
                   <v-text-field
+                    class="required"
                     dense
                     name="lastname"
                     disabled
@@ -151,6 +181,7 @@
                   v-slot="{ errors }"
                 >
                   <v-text-field
+                    class="required"
                     dense
                     name="surname"
                     disabled
@@ -176,6 +207,7 @@
                       ref="birthday"
                     >
                       <v-text-field
+                        class="required"
                         name="birthday"
                         disabled
                         :value="
@@ -204,13 +236,14 @@
                   ></v-date-picker>
                 </v-menu>
               </v-col>
-              <v-col cols="12" md="4">
+              <v-col cols="12" md="2">
                 <ValidationProvider
                   :name="$t('employee.attributes.gender')"
                   rules="required"
                   v-slot="{ errors }"
                 >
                   <v-autocomplete
+                    class="required"
                     dense
                     name="gender"
                     outlined
@@ -226,6 +259,29 @@
                   ></v-autocomplete>
                 </ValidationProvider>
               </v-col>
+              <v-col cols="12" md="2">
+                <ValidationProvider
+                  :name="$t('employee.attributes.maritalStatus')"
+                  rules="required"
+                  v-slot="{ errors }"
+                >
+                  <v-autocomplete
+                    class="required"
+                    dense
+                    name="maritalStatus"
+                    outlined
+                    required
+                    v-model="employeeData.Persona.EstadoCivil"
+                    item-text="Nombre"
+                    item-value="Sigla"
+                    :items="maritalStatusesList"
+                    :disabled="isLoadingMaritalStatusesList"
+                    :error-messages="errors"
+                    :label="$t('employee.attributes.maritalStatus')"
+                    :loading="isLoadingMaritalStatusesList"
+                  ></v-autocomplete>
+                </ValidationProvider>
+              </v-col>
               <v-col cols="12" md="4">
                 <ValidationProvider
                   :name="$t('employee.attributes.rfc')"
@@ -233,12 +289,12 @@
                   v-slot="{ errors }"
                 >
                   <v-text-field
+                    class="required"
                     dense
                     name="rfc"
                     :label="$t('employee.attributes.rfc')"
                     outlined
                     required
-                    disabled
                     v-model="employeeData.Persona.RFC"
                     :error-messages="errors"
                   ></v-text-field>
@@ -268,6 +324,7 @@
                   v-slot="{ errors }"
                 >
                   <v-autocomplete
+                    class="required"
                     dense
                     name="applicantCompany"
                     :label="$t('employee.attributes.applicantCompany')"
@@ -292,6 +349,7 @@
                   v-slot="{ errors }"
                 >
                   <v-autocomplete
+                    class="required"
                     dense
                     disabled
                     :items="workplaces"
@@ -313,6 +371,7 @@
                   v-slot="{ errors }"
                 >
                   <v-autocomplete
+                    class="required"
                     disabled
                     :loading="isLoadingSyndicates"
                     :items="syndicates"
@@ -324,6 +383,7 @@
                     outlined
                     required
                     v-model="employeeData.Sindicato.IdSindicato"
+                    v-if="showSyndicates === true"
                     :error-messages="errors"
                   ></v-autocomplete>
                 </ValidationProvider>
@@ -335,6 +395,7 @@
                   v-slot="{ errors }"
                 >
                   <v-autocomplete
+                    class="required"
                     :items="syndicateSections"
                     item-text="Nombre"
                     item-value="IdSeccionSindicato"
@@ -346,6 +407,7 @@
                     outlined
                     required
                     v-model="employeeData.SeccionSindical.IdSindicato"
+                    v-if="showSyndicates === true"
                     :error-messages="errors"
                   ></v-autocomplete>
                 </ValidationProvider>
@@ -365,22 +427,36 @@
                 ></v-textarea>
               </v-col>
             </v-row>
-            <v-btn color="success" @click="updateEmployee">
+            <v-btn
+              color="success"
+              @click="updateEmployee"
+              :loading="isUpdating"
+              :disabled="isUpdating || isValidatingEmployee || isValidatingCurp"
+            >
               {{ $t("employeeConsultationMFE.labels.update") }}
             </v-btn>
           </v-container>
         </ValidationObserver>
       </v-card>
     </div>
+    <renapo-edit-dialog
+      :open.sync="isDialogOpen"
+      :renapo-data="renapoData"
+      :title="validationMessage"
+      @onSelect="newRenapoData"
+      @onCancel="resetForm"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import PeopleService from "@/services/PeopleService";
 import EmployeeTypeService from "@/services/EmployeeTypeService";
 import EmployeeService from "@/services/EmployeeService";
 import GenderService from "@/services/GenderService";
+import MaritalStatusService from "@/services/MaritalStatusService";
 import CompanyService from "@/services/CompanyService";
 import WorkplaceService from "@/services/WorkplaceService";
 import SyndicateService from "@/services/SyndicateService";
@@ -395,6 +471,11 @@ import { ICompany } from "@/services/CompanyService/types";
 import { IWorkplace } from "@/services/WorkplaceService/types";
 import { ISyndicate } from "@/services/SyndicateService/types";
 import { ISyndicateSection } from "@/services/SyndicateSectionService/types";
+import { IMaritalStatus } from "@/services/MaritalStatusService/types";
+import { IApiResponse } from "@/services/types";
+import { IPersonValidationResponse } from "@/services/PeopleService/types";
+import RenapoEditDialog from "@/views/mfe/employeeConsultation/components/RenapoEditDialog.vue";
+import { IEmployeeForm } from "@/store/employee/types";
 
 const initialEmployeeData: IShowEmployee = {
   IdEmpleado: undefined,
@@ -409,6 +490,11 @@ const initialEmployeeData: IShowEmployee = {
     ApellidoMaterno: "",
     FechaNacimiento: "",
     Sexo: "",
+    EstadoCivil: {
+      Sigla: "",
+      Nombre: "",
+      Baja: false,
+    },
     RFC: "",
     Curp: "",
   },
@@ -431,11 +517,15 @@ const initialEmployeeData: IShowEmployee = {
   },
 };
 
-@Component({})
+@Component({
+  components: { RenapoEditDialog },
+})
 export default class employeeEdit extends Vue {
+  protected peopleService = new PeopleService();
   protected employeeTypesService = new EmployeeTypeService();
   protected employeeService = new EmployeeService();
   protected genderService = new GenderService();
+  protected maritalStatusService = new MaritalStatusService();
   protected companyService = new CompanyService();
   protected workplaceService = new WorkplaceService();
   protected syndicateService = new SyndicateService();
@@ -443,19 +533,30 @@ export default class employeeEdit extends Vue {
   public employeeData = { ...initialEmployeeData };
   public employeeTypeList: Array<IEmployeeType> = [];
   public gendersList: Array<IGender> = [];
+  public maritalStatusesList: Array<IMaritalStatus> = [];
   public companies: Array<ICompany> = [];
   public workplaces: Array<IWorkplace> = [];
   public syndicates: Array<ISyndicate> = [];
   public syndicateSections: Array<ISyndicateSection> = [];
+  public employeeValidationData = null;
+  public validationMessage: string | null = null;
+  public infoSelected = false;
   public isLoadingEmployeeList = false;
   public isLoadingEmployeeData = false;
   public isLoadingGendersList = false;
+  public isLoadingMaritalStatusesList = false;
   public isLoadingCompanies = false;
   public isLoadingWorkplaces = false;
   public isLoadingSyndicates = false;
   public isLoadingSyndicateSections = false;
   public isValidatingEmployee = false;
+  public isValidatingCurp = false;
+  public isUpdating = false;
+  public showSyndicates = false;
   public menu1 = false;
+  public enableValidationButton = false;
+  public isDialogOpen = false;
+  public currentCurp = "";
 
   getEmployeeTypes(): void {
     this.isLoadingEmployeeList = true;
@@ -478,6 +579,18 @@ export default class employeeEdit extends Vue {
       })
       .finally(() => {
         this.isLoadingGendersList = false;
+      });
+  }
+
+  getMaritalStatuses(): void {
+    this.isLoadingMaritalStatusesList = true;
+    this.maritalStatusService
+      .getAll()
+      .then((response) => {
+        this.maritalStatusesList = response.Data;
+      })
+      .finally(() => {
+        this.isLoadingMaritalStatusesList = false;
       });
   }
 
@@ -538,13 +651,18 @@ export default class employeeEdit extends Vue {
       .then((response) => {
         const data = Vue.filter("cleanObject")(response.Data);
         this.employeeData = { ...initialEmployeeData, ...data };
-
+        this.currentCurp = data.Persona.Curp;
         this.getWorkplaces();
         this.getSyndicateSections();
+        this.selectedEmployeeType(data.EstadoCivil);
       })
       .finally(() => {
         this.isLoadingEmployeeData = false;
       });
+  }
+
+  selectedEmployeeType(employeeTypeId: number | null): void {
+    this.showSyndicates = employeeTypeId === 0;
   }
 
   async updateEmployee(): Promise<void> {
@@ -554,7 +672,9 @@ export default class employeeEdit extends Vue {
       Nombres: this.employeeData.Persona?.Nombres,
       ApellidoPaterno: this.employeeData.Persona?.ApellidoPaterno,
       ApellidoMaterno: this.employeeData.Persona?.ApellidoMaterno,
+      FechaNacimiento: this.employeeData.Persona?.FechaNacimiento,
       Sexo: this.employeeData.Persona?.Sexo,
+      EstadoCivil: this.employeeData.Persona?.EstadoCivil,
       RFC: this.employeeData.Persona?.RFC,
       Fotografia: this.employeeData.Persona?.Fotografia,
       IdSolicitudFiliacion: this.employeeData.Filiacion?.IdSolicitudFiliacion,
@@ -565,15 +685,75 @@ export default class employeeEdit extends Vue {
       IdTipoEmpleado: this.employeeData.TipoEmpleado?.Id,
       IdEmpleado: this.employeeData.IdEmpleado,
     };
+    this.isUpdating = true;
     this.employeeService
       .update(parseInt(this.$route.params.id), data as IUpdateEmployeeRequest)
       .then()
+      .finally(() => {
+        this.isUpdating = false;
+      });
+  }
+
+  get renapoData(): Partial<IEmployeeForm> {
+    return {
+      Nombres: this.employeeValidationData?.Nombres,
+      ApellidoPaterno: this.employeeValidationData?.ApellidoPaterno,
+      ApellidoMaterno: this.employeeValidationData?.ApellidoMaterno,
+      FechaNacimiento: Vue.filter("dateFormatted")(
+        this.employeeValidationData?.FechaNacimiento,
+        "DD/MM/YYYY",
+        "YYYY-MM-DD"
+      ),
+      Sexo: this.employeeValidationData?.Sexo,
+      Nacionalidad: this.employeeValidationData?.Nacionalidad,
+    };
+  }
+
+  validateCurp(): void {
+    this.isValidatingCurp = true;
+    this.peopleService
+      .validateCurpRenapo(this.employeeData.Persona?.Curp as string)
+      .then(this.handleValidationResponse)
+      .catch((error) => {
+        console.log("ERROR HEADER", error.response);
+      })
       .finally();
+  }
+
+  handleValidationResponse(
+    response: IApiResponse<IPersonValidationResponse>
+  ): void {
+    this.employeeValidationData = response.Data;
+    this.validationMessage = response.Message;
+
+    this.openDialog();
+  }
+
+  openDialog(): void {
+    this.isDialogOpen = true;
+  }
+
+  newRenapoData(): void {
+    this.employeeData.Persona = {
+      ...this.employeeData.Persona,
+      ...this.renapoData,
+    };
+
+    this.isValidatingCurp = false;
+    this.enableValidationButton = false;
+  }
+
+  resetForm(): void {
+    this.infoSelected = false;
+    this.isValidatingCurp = false;
+    this.enableValidationButton = false;
+    this.employeeData.Persona.Curp = this.currentCurp;
   }
 
   mounted(): void {
     this.getEmployeeTypes();
     this.getGenders();
+    this.getMaritalStatuses();
     this.getCompanies();
     this.getSyndicates();
     this.getEmployeeById();

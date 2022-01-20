@@ -47,6 +47,7 @@ export default {
   labels: {
     validate: "Validar",
     generateAssignmentNumber: "Generar número de asignación",
+    enable: "Habilitar validación de CURP",
     dialogs: {
       renapo: {
         title: "",
