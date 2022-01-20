@@ -13,7 +13,8 @@ const initialState: IAppState = {
   notifyModel: {
     open: true,
     text: "",
-    color: "",
+    colorText: "",
+    colorBtn: "",
   },
 };
 
@@ -46,43 +47,62 @@ const appStore: Module<IAppState, IRootState> = {
       const notifyModel: Notify = {
         open: true,
         text: "",
-        color: "",
+        colorText: "",
+        colorBtn: ''
       };
 
       switch (status) {
+        case 200:
+          notifyModel.text = "Petición Exitosa";
+          notifyModel.colorText = "green";
+          notifyModel.colorBtn = "green";
+          commit("SET_NOTIFY", notifyModel);
+          break;
+        case 204:
+          notifyModel.text = "Petición Exitosa";
+          notifyModel.colorText = "green";
+          notifyModel.colorBtn = "green";
+          commit("SET_NOTIFY", notifyModel);
+          break;
         case 400:
           notifyModel.text = text;
-          notifyModel.color = "orange";
+          notifyModel.colorText = "orange";
+          notifyModel.colorBtn = "orange";
           commit("SET_NOTIFY", notifyModel);
           break;
         case 404:
           notifyModel.text = "Registro no Encontrado";
-          notifyModel.color = "orange";
+          notifyModel.colorText = "orange";
+          notifyModel.colorBtn = "orange";
           commit("SET_NOTIFY", notifyModel);
           break;
         case 500:
           notifyModel.text = "Error Interno en el Servidor";
-          notifyModel.color = "red";
+          notifyModel.colorText = "white";
+          notifyModel.colorBtn = "red";
           commit("SET_NOTIFY", notifyModel);
           break;
         default:
           notifyModel.text = "Petición Exitosa";
-          notifyModel.color = "green";
+          notifyModel.colorText = "green";
+          notifyModel.colorBtn = "green";
           commit("SET_NOTIFY", notifyModel);
       }
 
       setTimeout(() => {
         notifyModel.open = false;
-        notifyModel.color = "";
+        notifyModel.colorText = "";
+        notifyModel.colorBtn = "";
         notifyModel.text = "";
         commit("SET_NOTIFY", notifyModel);
-      }, 3000);
+      }, 8000);
     },
     clearNotify({ commit }) {
       const notifyModel: Notify = {
         open: false,
         text: "",
-        color: "",
+        colorText: "",
+        colorBtn: ""
       };
       commit("SET_NOTIFY", notifyModel);
     },

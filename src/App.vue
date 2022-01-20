@@ -5,7 +5,8 @@
       :text="notify.text"
       v-if="notify.open"
       v-model="notify.open"
-      :color="notify.color"
+      :colorText="notify.colorText"
+      :colorBtn="notify.colorBtn"
       @close="closeNotify"
     />
   </v-app>

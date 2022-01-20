@@ -131,7 +131,7 @@
           :headers="headers"
           :items="employeeList"
         >
-          <template v-slot:item.actions="{ item }">
+          <template v-slot:[`item.actions`]="{ item }">
             <v-btn
               x-small
               :to="{ name: 'people:show', params: { id: item.IdEmpleado } }"
@@ -311,7 +311,20 @@ export default class EmployeeList extends Vue {
     this.employeeService
       .filter(this.filters)
       .then((response) => {
-        this.employeeList = response.Data;
+        console.log(response)
+         if (response.Success) {
+          this.$store.dispatch("app/setNotify", {});
+          this.employeeList = response.Data;
+        } 
+      })
+      .catch((err) => {
+        if (err.response) {
+          this.$store.dispatch("app/setNotify", {
+            status: err?.response?.status,
+            text: err?.response?.data?.Message?.Texto,
+          });
+          console.error(err?.response);
+        }
       })
       .finally(() => {
         this.isLoadingEmployeeList = false;

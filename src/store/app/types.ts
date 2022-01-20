@@ -24,7 +24,8 @@ export interface ISidebar {
 export interface Notify {
   open: boolean;
   text: string;
-  color: string;
+  colorText: string;
+  colorBtn: string;
 }
 
 export interface IAppState {

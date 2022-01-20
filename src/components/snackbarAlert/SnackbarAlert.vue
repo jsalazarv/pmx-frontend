@@ -1,11 +1,13 @@
 <template>
   <div class="text-center">
-    <v-snackbar :value="value" :top="true" :color="color">
-      {{ text }}
+    <v-snackbar :value="value" :top="true">
+      <span :style="{ color: colorText }">
+        {{ text }}
+      </span>
       <template v-slot:action="{ attrs }">
         <div class="text-center">
 
-          <v-btn class="white--text" text v-bind="attrs" @click="closeSnackbar">
+          <v-btn class="white--text" text v-bind="attrs" @click="closeSnackbar" :color="colorBtn">
             {{ $t("dictionary.close") }}
           </v-btn>
         </div>
@@ -28,7 +30,10 @@ export default class SnackbarAlert extends Vue {
   public value!: boolean;
 
   @Prop({ type: String, default: "#E80459" })
-  public color?: string;
+  public colorText?: string;
+
+  @Prop({ type: String, default: "#E80459" })
+  public colorBtn?: string;
 
   @Prop({
     type: String,
