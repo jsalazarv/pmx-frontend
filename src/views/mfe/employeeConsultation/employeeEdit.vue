@@ -714,6 +714,9 @@ export default class employeeEdit extends Vue {
     this.peopleService
       .validateCurpRenapo(this.employeeData.Persona?.Curp as string)
       .then(this.handleValidationResponse)
+      .catch((error) => {
+        console.log("ERROR HEADER", error.response);
+      })
       .finally();
   }
 
