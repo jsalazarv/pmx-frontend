@@ -35,11 +35,11 @@ export default class App extends Vue {
     return this.$store.state.app.layout;
   }
 
-  get notify(){
+  get notify() {
     return this.$store.state.app.notifyModel;
   }
 
-  closeNotify(){
+  closeNotify() {
     this.$store.dispatch("app/clearNotify");
   }
 }

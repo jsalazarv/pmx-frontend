@@ -211,7 +211,7 @@ export default class ProofAssignment extends Vue {
         if (err.response) {
           this.$store.dispatch("app/setNotify", {
             status: err?.response?.status,
-            text: err?.response?.data?.Message?.Texto
+            text: err?.response?.data?.Message?.Texto,
           });
           console.error(err?.response);
         }

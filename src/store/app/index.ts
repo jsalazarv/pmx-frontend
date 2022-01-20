@@ -48,7 +48,7 @@ const appStore: Module<IAppState, IRootState> = {
         open: true,
         text: "",
         colorText: "",
-        colorBtn: ''
+        colorBtn: "",
       };
 
       switch (status) {
@@ -56,38 +56,34 @@ const appStore: Module<IAppState, IRootState> = {
           notifyModel.text = "Petición Exitosa";
           notifyModel.colorText = "green";
           notifyModel.colorBtn = "green";
-          commit("SET_NOTIFY", notifyModel);
           break;
         case 204:
           notifyModel.text = "Petición Exitosa";
           notifyModel.colorText = "green";
           notifyModel.colorBtn = "green";
-          commit("SET_NOTIFY", notifyModel);
           break;
         case 400:
           notifyModel.text = text;
           notifyModel.colorText = "orange";
           notifyModel.colorBtn = "orange";
-          commit("SET_NOTIFY", notifyModel);
           break;
         case 404:
           notifyModel.text = "Registro no Encontrado";
           notifyModel.colorText = "orange";
           notifyModel.colorBtn = "orange";
-          commit("SET_NOTIFY", notifyModel);
           break;
         case 500:
           notifyModel.text = "Error Interno en el Servidor";
           notifyModel.colorText = "white";
           notifyModel.colorBtn = "red";
-          commit("SET_NOTIFY", notifyModel);
           break;
         default:
           notifyModel.text = "Petición Exitosa";
           notifyModel.colorText = "green";
           notifyModel.colorBtn = "green";
-          commit("SET_NOTIFY", notifyModel);
-      }
+        }
+
+      commit("SET_NOTIFY", notifyModel);
 
       setTimeout(() => {
         notifyModel.open = false;
@@ -102,7 +98,7 @@ const appStore: Module<IAppState, IRootState> = {
         open: false,
         text: "",
         colorText: "",
-        colorBtn: ""
+        colorBtn: "",
       };
       commit("SET_NOTIFY", notifyModel);
     },

@@ -6,8 +6,13 @@
       </span>
       <template v-slot:action="{ attrs }">
         <div class="text-center">
-
-          <v-btn class="white--text" text v-bind="attrs" @click="closeSnackbar" :color="colorBtn">
+          <v-btn
+            class="white--text"
+            text
+            v-bind="attrs"
+            @click="closeSnackbar"
+            :color="colorBtn"
+          >
             {{ $t("dictionary.close") }}
           </v-btn>
         </div>
@@ -49,6 +54,4 @@ export default class SnackbarAlert extends Vue {
 }
 </script>
 
-<style>
-
-</style>
+<style></style>
