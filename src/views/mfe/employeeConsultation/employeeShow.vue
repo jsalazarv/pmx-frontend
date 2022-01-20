@@ -125,10 +125,13 @@
                 :label="$t('employee.attributes.birthday')"
                 outlined
                 required
-                v-model="employeeData.Persona.FechaNacimiento"
+                :value="
+                  employeeData.Persona.FechaNacimiento
+                    | dateFormatted('YYYY-MM-DD', 'DD/MM/YYYY')
+                "
               ></v-text-field>
             </v-col>
-            <v-col cols="12" md="4">
+            <v-col cols="12" md="2">
               <v-text-field
                 dense
                 readonly
@@ -139,6 +142,19 @@
                 outlined
                 required
                 v-model="employeeData.Persona.Sexo"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" md="2">
+              <v-text-field
+                dense
+                readonly
+                :disabled="isLoadingEmployeeData"
+                :loading="isLoadingEmployeeData"
+                name="gender"
+                :label="$t('employee.attributes.maritalStatus')"
+                outlined
+                required
+                v-model="employeeData.Persona.EstadoCivil"
               ></v-text-field>
             </v-col>
             <v-col cols="12" md="4">
@@ -203,6 +219,7 @@
                 :label="$t('employee.attributes.syndicate')"
                 outlined
                 required
+                v-if="showSyndicates === true"
                 v-model="employeeData.Sindicato.Nombre"
               ></v-text-field>
             </v-col>
@@ -216,6 +233,7 @@
                 :label="$t('employee.attributes.syndicateSection')"
                 outlined
                 required
+                v-if="showSyndicates === true"
                 v-model="employeeData.SeccionSindical.Nombre"
               ></v-text-field>
             </v-col>
@@ -259,6 +277,11 @@ const initialEmployeeData: IShowEmployee = {
     ApellidoMaterno: "",
     FechaNacimiento: "",
     Sexo: "",
+    EstadoCivil: {
+      Sigla: "",
+      Nombre: "",
+      Baja: false,
+    },
     RFC: "",
     Curp: "",
   },
@@ -282,6 +305,7 @@ export default class employeeShow extends Vue {
   protected employeeService = new EmployeeService();
   public employeeData = { ...initialEmployeeData };
   public isLoadingEmployeeData = false;
+  public showSyndicates = false;
 
   getEmployeeById(): void {
     this.isLoadingEmployeeData = true;
@@ -290,10 +314,16 @@ export default class employeeShow extends Vue {
       .then((response) => {
         const data = Vue.filter("cleanObject")(response.Data);
         this.employeeData = { ...initialEmployeeData, ...data };
+
+        this.selectedEmployeeType(data.EstadoCivil);
       })
       .finally(() => {
         this.isLoadingEmployeeData = false;
       });
+  }
+
+  selectedEmployeeType(employeeTypeId: number | null): void {
+    this.showSyndicates = employeeTypeId === 0;
   }
 
   mounted(): void {
