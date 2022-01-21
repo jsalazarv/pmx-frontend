@@ -538,7 +538,7 @@ export default class employeeEdit extends Vue {
   public workplaces: Array<IWorkplace> = [];
   public syndicates: Array<ISyndicate> = [];
   public syndicateSections: Array<ISyndicateSection> = [];
-  public employeeValidationData = null;
+  public employeeValidationData: IPersonValidationResponse | null = null;
   public validationMessage: string | null = null;
   public infoSelected = false;
   public isLoadingEmployeeList = false;
@@ -747,7 +747,9 @@ export default class employeeEdit extends Vue {
     this.infoSelected = false;
     this.isValidatingCurp = false;
     this.enableValidationButton = false;
-    this.employeeData.Persona.Curp = this.currentCurp;
+    this.employeeData.Persona = {
+      Curp: this.currentCurp,
+    };
   }
 
   mounted(): void {
