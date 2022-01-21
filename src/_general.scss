@@ -8,3 +8,13 @@
     margin-right: 10px;
   }
 }
+
+.required {
+  label.v-label {
+    &:after {
+      content: "*" !important;
+      color: red !important;
+      margin-left: 3px;
+    }
+  }
+}
