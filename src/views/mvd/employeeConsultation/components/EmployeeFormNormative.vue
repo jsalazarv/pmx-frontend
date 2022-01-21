@@ -1,16 +1,19 @@
 <template>
   <v-container>
-    <!-- {{ titularBeneficiary }} -->
+    <v-row>
+      <Alert
+        :message="alert.message"
+        :alert="alert.alert"
+        :type="alert.type"
+        @hideAlert="hideAlert"
+      ></Alert>
+    </v-row>
     <ValidationObserver v-slot="{ handleSubmit }" ref="form">
       <form @submit.prevent="handleSubmit(onSubmit)">
         <v-row>
           <v-col cols="12" sm="12" md="6">
             <v-text-field
-              :label="
-                $t(
-                  'employeeConsultation.consultation.employeeConsultationForm.employeeType'
-                )
-              "
+              :label="$t('employeeConsultation.attributes.employeeType')"
               name="employeeType"
               dense
               outlined
@@ -22,11 +25,7 @@
           </v-col>
           <v-col cols="12" sm="12" md="6">
             <v-text-field
-              :label="
-                $t(
-                  'employeeConsultation.consultation.employeeConsultationForm.assignmentNumber'
-                )
-              "
+              :label="$t('employeeConsultation.attributes.assignmentNumber')"
               name="assignmentNumber"
               dense
               outlined
@@ -40,11 +39,7 @@
         <v-row>
           <v-col cols="12" sm="12" md="12">
             <v-text-field
-              :label="
-                $t(
-                  'employeeConsultation.consultation.employeeConsultationForm.fullname'
-                )
-              "
+              :label="$t('employeeConsultation.attributes.fullname')"
               name="fullname"
               dense
               outlined
@@ -57,40 +52,47 @@
         </v-row>
         <v-row>
           <v-col cols="120" sm="12" md="6">
-            <v-autocomplete
-              dense
-              name="workplaces"
-              :items="workplaces"
-              item-text="Descripcion"
-              item-value="IdCentro"
-              :label="
-                $t(
-                  'employeeConsultation.consultation.employeeConsultationForm.workplace'
-                )
-              "
-              outlined
-              v-model="titularBeneficiary.IdCentro"
-              :disabled="isLoadingWorkplaces"
-              :loading="isLoadingWorkplaces"
-              @change="getDepartments"
-            ></v-autocomplete>
+            <ValidationProvider
+              :name="$t('employeeConsultation.attributes.workplace')"
+              v-slot="{ errors }"
+              rules="required"
+            >
+              <v-autocomplete
+                dense
+                name="workplaces"
+                :items="workplaces"
+                item-text="Descripcion"
+                item-value="IdCentro"
+                :label="$t('employeeConsultation.attributes.workplace')"
+                outlined
+                v-model="titularBeneficiary.IdCentro"
+                :disabled="isLoadingWorkplaces"
+                :loading="isLoadingWorkplaces"
+                @change="getDepartments"
+                :error-messages="errors"
+              ></v-autocomplete>
+            </ValidationProvider>
           </v-col>
           <v-col cols="120" sm="12" md="6">
-            <v-autocomplete
-              dense
-              name="departments"
-              :items="departments"
-              item-text="Descripcion"
-              item-value="IdDepartamento"
-              :label="
-                $t(
-                  'employeeConsultation.consultation.employeeConsultationForm.department'
-                )
-              "
-              outlined
-              v-model="titularBeneficiary.IdDepartamento"
-              :disabled="isLoadingDepartments || !titularBeneficiary.IdCentro"
-            ></v-autocomplete>
+            <ValidationProvider
+              :name="$t('employeeConsultation.attributes.department')"
+              v-slot="{ errors }"
+              rules="required"
+            >
+              <v-autocomplete
+                dense
+                name="departments"
+                :items="departments"
+                item-text="Descripcion"
+                item-value="IdDepartamento"
+                :label="$t('employeeConsultation.attributes.department')"
+                outlined
+                v-model="titularBeneficiary.IdDepartamento"
+                :disabled="isLoadingDepartments || !titularBeneficiary.IdCentro"
+                :loading="isLoadingDepartments"
+                :error-messages="errors"
+              ></v-autocomplete>
+            </ValidationProvider>
           </v-col>
         </v-row>
         <v-row>
@@ -105,21 +107,13 @@
             >
               <template v-slot:activator="{ on }">
                 <ValidationProvider
-                  :name="
-                    $t(
-                      'employeeConsultation.consultation.employeeConsultationForm.validity'
-                    )
-                  "
+                  :name="$t('employeeConsultation.attributes.validity')"
                   v-slot="{ errors }"
                   rules="required|validityrule"
                 >
                   <v-text-field
                     v-model="computedValidityFormatted"
-                    :label="
-                      $t(
-                        'employeeConsultation.consultation.employeeConsultationForm.validity'
-                      )
-                    "
+                    :label="$t('employeeConsultation.attributes.validity')"
                     name="validity"
                     hint="DD/MM/YYYY"
                     persistent-hint
@@ -128,6 +122,7 @@
                     dense
                     outlined
                     :error-messages="errors"
+                    :loading="isLoadingValidityRights"
                   ></v-text-field>
                 </ValidationProvider>
               </template>
@@ -142,11 +137,7 @@
 
           <v-col cols="12" sm="12" md="6">
             <v-text-field
-              :label="
-                $t(
-                  'employeeConsultation.consultation.employeeConsultationForm.validityStatus'
-                )
-              "
+              :label="$t('employeeConsultation.attributes.validityStatus')"
               name="validityStatus"
               dense
               outlined
@@ -166,7 +157,7 @@
               large
               dense
             >
-              {{ $t("employeeConsultation.consultation.actionsButtons.save") }}
+              {{ $t("employeeConsultation.labels.save") }}
             </v-btn>
           </v-col>
         </v-row>
@@ -178,6 +169,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+// import moment from "moment";
 import WorkplaceService from "@/services/WorkplaceService";
 import DepartmentService from "@/services/DepartmentService";
 import { IDepartament } from "@/services/DepartmentService/types";
@@ -187,9 +179,9 @@ import {
   ITitularBeneficiaryRequest,
   IValidityRightsResponse,
 } from "@/services/BeneficiaryService/types";
-import { extend } from "vee-validate";
+import Alert from "@/components/Alert.vue";
 
-@Component({})
+@Component({ components: { Alert } })
 export default class EmployeeFormNormative extends Vue {
   protected workPlaceService = new WorkplaceService();
   protected departmentService = new DepartmentService();
@@ -200,11 +192,19 @@ export default class EmployeeFormNormative extends Vue {
   public workplaces: Array<IWorkplace> = [];
   public departments: Array<IDepartament> = [];
   public showPickerValidity: any = false;
+  public alert = {
+    alert: false,
+    message: "",
+    type: false,
+  };
   public titularBeneficiary: ITitularBeneficiaryRequest = {
     IdPersona: null,
     IdCentro: null,
     IdDepartamento: null,
     Vigencia: null,
+    IdEmpleado: null,
+    IdTipoEmpleado: null,
+    IdDerechohabiente: null,
   };
   public validityRights: IValidityRightsResponse = {
     GrupoPersonal: null,
@@ -220,6 +220,7 @@ export default class EmployeeFormNormative extends Vue {
     ApellidoPaterno: "",
     ApellidoMaterno: "",
     Curp: null,
+    IdDerechohabiente: null,
   };
 
   get isLoading(): boolean {
@@ -244,7 +245,11 @@ export default class EmployeeFormNormative extends Vue {
   }
 
   get computedValidityFormatted() {
-    return this.formatted(this.titularBeneficiary.Vigencia);
+    return Vue.filter("dateFormatted")(
+      this.titularBeneficiary.Vigencia,
+      "YYYY-MM-DD",
+      "DD/MM/YYYY"
+    );
   }
 
   getValidityRights(): void {
@@ -257,16 +262,27 @@ export default class EmployeeFormNormative extends Vue {
       )
       .then((response) => {
         this.validityRights = response.Data;
+        if (!this.validityRights.EstadoVigencia) {
+          this.alert = {
+            message: this.$t(
+              "employeeConsultation.labels.dialogs.info.message"
+            ) as string,
+            alert: true,
+            type: false,
+          };
+        }
+
+        if (this.validityRights.IdDerechohabiente != null) {
+          this.titularBeneficiary.IdCentro = this.validityRights.IdCentro;
+          this.getDepartments();
+          this.titularBeneficiary.IdDepartamento =
+            this.validityRights.IdDepartamento;
+          this.titularBeneficiary.Vigencia = this.validityRights.Vigencia;
+        }
       })
       .finally(() => {
         this.isLoadingValidityRights = false;
       });
-  }
-
-  formatted(date: any): string | null {
-    if (!date) return null;
-    const arrayDate = date.split("-");
-    return arrayDate[2] + "/" + arrayDate[1] + "/" + arrayDate[0];
   }
 
   getWorkplaces(): void {
@@ -279,6 +295,12 @@ export default class EmployeeFormNormative extends Vue {
       .finally(() => {
         this.isLoadingWorkplaces = false;
       });
+  }
+
+  hideAlert(): void {
+    this.alert.message = "";
+    this.alert.alert = false;
+    this.alert.type = false;
   }
 
   getDepartments(): void {
@@ -294,37 +316,40 @@ export default class EmployeeFormNormative extends Vue {
       });
   }
 
-  getBeneficiaryByPerson(): void {
-    this.beneficiaryService
-      .getBeneficiaryByPerson(this.computedIdPerson)
-      .then((response) => {
-        console.log(response);
-      });
-  }
-
   onSubmit(): void {
-    console.log("entra");
+    this.$emit("hide");
+    this.titularBeneficiary.IdEmpleado = this.computedEmployeeId;
+    this.titularBeneficiary.IdTipoEmpleado = this.computedEmployeeTypeId;
+    this.titularBeneficiary.IdPersona = this.computedIdPerson;
+    this.titularBeneficiary.IdDerechohabiente =
+      this.validityRights.IdDerechohabiente;
+    this.beneficiaryService
+      .createTitular(this.titularBeneficiary)
+      .then((response) => {
+        this.alert = {
+          message: this.$t(
+            "employeeConsultation.labels.dialogs.successCreate.message"
+          ) as string,
+          alert: true,
+          type: true,
+        };
+        this.getValidityRights();
+        this.$emit("updateValidityRights");
+      })
+      .catch((error) => {
+        this.alert = {
+          message: this.$t(
+            "employeeConsultation.labels.dialogs.errorCreate.message"
+          ) as string,
+          alert: true,
+          type: false,
+        };
+      });
   }
 
   mounted(): void {
     this.getValidityRights();
-
-    // this.getWorkplaces();
-    // this.getBeneficiaryByPerson();
-
-    extend("validityrule", (value, args: any) => {
-      const valueDate = `${value.split("/")[2]}-${value.split("/")[1]}-${
-        value.split("/")[0]
-      } `;
-      const currentDate = new Date().toDateString();
-      const validityDate = new Date(valueDate).toDateString();
-      if (new Date(validityDate) >= new Date(currentDate)) {
-        return true;
-      }
-      return `{_field_} ${this.$t(
-        "employeeConsultation.consultation.validations.validityRule"
-      )}`;
-    });
+    this.getWorkplaces();
   }
 }
 </script>

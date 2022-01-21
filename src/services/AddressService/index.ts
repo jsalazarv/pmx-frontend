@@ -32,11 +32,11 @@ export default class AddressService extends BaseService {
     );
   }
 
-  getAddressesPerson(
-    idPerson: number
+  getHeadlineAddresses(
+    idBenficiary: number | null
   ): IServiceResponse<IAddresPersonResponse[]> {
     return this.client.get(
-      `/Domicilios/ObtenerHistoricoPorPersona/${idPerson}`
+      `Domicilios/ObtenerHistoricoPorTitular/${idBenficiary}`
     );
   }
 }

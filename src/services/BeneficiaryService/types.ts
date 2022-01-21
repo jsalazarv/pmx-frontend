@@ -12,16 +12,32 @@ export interface IValidityRightsResponse {
   ApellidoPaterno: string | null;
   ApellidoMaterno: string | null;
   Curp: string | null;
+  IdDerechohabiente: number | null;
 }
 
 export interface ITitularBeneficiaryRequest {
+  IdEmpleado: number | null;
+  IdTipoEmpleado: number | null;
   IdPersona: number | null;
   IdCentro: number | null;
   IdDepartamento: number | null;
+  IdDerechohabiente: number | null;
   Vigencia: string | null;
 }
 
 export interface IBeneficiary {
+  IdDerechohabiente: number;
+  Nombre: string;
+  ApellidoPaterno: string;
+  ApellidoMaterno: string;
+  Curp: string;
+  Parentesco: string;
+  Vigencia: string;
+  IndIncapacidad: boolean;
+  CveBajal: boolean;
+}
+
+export interface IBeneficiaryResponse {
   IdDerechohabiente: number | null;
   IdPersona: number | null;
   IdDerTitular: number | null;

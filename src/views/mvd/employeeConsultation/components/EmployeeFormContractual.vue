@@ -1,11 +1,19 @@
 <template>
   <v-container>
     <v-row>
+      <Alert
+        :message="alert.message"
+        :alert="alert.alert"
+        :type="alert.type"
+        @hideAlert="hideAlert"
+      ></Alert>
+    </v-row>
+    <v-row>
       <v-col cols="12" sm="12" md="6">
         <v-text-field
           :label="
             $t(
-              'employeeConsultation.consultation.employeeConsultationForm.employeeType'
+              'employeeConsultation.attributes.employeeType'
             )
           "
           name="employeeType"
@@ -21,7 +29,7 @@
         <v-text-field
           :label="
             $t(
-              'employeeConsultation.consultation.employeeConsultationForm.assignmentNumber'
+              'employeeConsultation.attributes.assignmentNumber'
             )
           "
           name="assignmentNumber"
@@ -39,7 +47,7 @@
         <v-text-field
           :label="
             $t(
-              'employeeConsultation.consultation.employeeConsultationForm.groupPersonal'
+              'employeeConsultation.attributes.groupPersonal'
             )
           "
           name="groupPersonal"
@@ -55,7 +63,7 @@
         <v-text-field
           :label="
             $t(
-              'employeeConsultation.consultation.employeeConsultationForm.areaPersonal'
+              'employeeConsultation.attributes.areaPersonal'
             )
           "
           name="areaPersonal"
@@ -71,7 +79,7 @@
         <v-text-field
           :label="
             $t(
-              'employeeConsultation.consultation.employeeConsultationForm.fullname'
+              'employeeConsultation.attributes.fullname'
             )
           "
           name="fullname"
@@ -89,7 +97,7 @@
         <v-text-field
           :label="
             $t(
-              'employeeConsultation.consultation.employeeConsultationForm.departmentCenter'
+              'employeeConsultation.attributes.departmentCenter'
             )
           "
           name="departmentCenter"
@@ -105,7 +113,7 @@
         <v-text-field
           :label="
             $t(
-              'employeeConsultation.consultation.employeeConsultationForm.departmentDescription'
+              'employeeConsultation.attributes.departmentDescription'
             )
           "
           name="departmentDescription"
@@ -123,14 +131,14 @@
         <v-text-field
           :label="
             $t(
-              'employeeConsultation.consultation.employeeConsultationForm.validity'
+              'employeeConsultation.attributes.validity'
             )
           "
           name="validity"
           dense
           outlined
           readonly
-          :value="validityRights.Vigencia"
+          :value="computedValidityFormatted"
           :loading="isLoadingValidityRights"
         >
         </v-text-field>
@@ -139,7 +147,7 @@
         <v-text-field
           :label="
             $t(
-              'employeeConsultation.consultation.employeeConsultationForm.validityStatus'
+              'employeeConsultation.attributes.validityStatus'
             )
           "
           name="validityStatus"
@@ -158,13 +166,20 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import moment from "moment";
 import BeneficiaryService from "@/services/BeneficiaryService";
 import { IValidityRightsResponse } from "@/services/BeneficiaryService/types";
+import Alert from "@/components/Alert.vue";
 
-@Component({})
+@Component({ components: { Alert } })
 export default class EmployeeFormContractual extends Vue {
   protected beneficiaryService = new BeneficiaryService();
   public isLoadingValidityRights = false;
+  public alert = {
+    alert: false,
+    message: "",
+    type: false,
+  };
   public validityRights: IValidityRightsResponse = {
     GrupoPersonal: null,
     AreaPersonal: null,
@@ -179,6 +194,7 @@ export default class EmployeeFormContractual extends Vue {
     ApellidoPaterno: "",
     ApellidoMaterno: "",
     Curp: null,
+    IdDerechohabiente: null,
   };
 
   get isLoading(): boolean {
@@ -189,10 +205,10 @@ export default class EmployeeFormContractual extends Vue {
   get computedValidity(): string {
     return this.validityRights.EstadoVigencia
       ? `${this.$t(
-          "employeeConsultation.consultation.employeeConsultationForm.valid"
+          "employeeConsultation.labels.validations.valid"
         )}`
       : `${this.$t(
-          "employeeConsultation.consultation.employeeConsultationForm.notValid"
+          "employeeConsultation.labels.validations.notValid"
         )}`;
   }
 
@@ -212,6 +228,15 @@ export default class EmployeeFormContractual extends Vue {
     return `${this.validityRights.Nombres} ${this.validityRights.ApellidoPaterno} ${this.validityRights.ApellidoMaterno}`;
   }
 
+  get computedValidityFormatted() {
+    return this.formatted(this.validityRights.Vigencia);
+  }
+
+  formatted(date: any): string | null {
+    if (!date) return null;
+    return moment(date).format("DD/MM/YYYY");
+  }
+
   getValidityRights(): void {
     this.isLoadingValidityRights = true;
     this.beneficiaryService
@@ -222,10 +247,25 @@ export default class EmployeeFormContractual extends Vue {
       )
       .then((response) => {
         this.validityRights = response.Data;
+        if (!this.validityRights.EstadoVigencia) {
+          this.alert = {
+            message: this.$t(
+              "employeeConsultation.labels.dialogs.info.message"
+            ) as string,
+            alert: true,
+            type: false,
+          };
+        }
       })
       .finally(() => {
         this.isLoadingValidityRights = false;
       });
+  }
+
+  hideAlert(): void {
+    this.alert.message = "";
+    this.alert.alert = false;
+    this.alert.type = false;
   }
 
   mounted() {
