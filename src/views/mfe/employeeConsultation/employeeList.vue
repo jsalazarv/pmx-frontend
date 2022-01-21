@@ -276,7 +276,20 @@ export default class EmployeeList extends Vue {
     this.employeeService
       .getAll()
       .then((response) => {
-        this.employeeList = response.Data;
+        if (response.Success) {
+          this.employeeList = response.Data;
+
+          this.$store.dispatch("app/setNotify", {});
+        }
+      })
+      .catch((err) => {
+        if (err.response) {
+          this.$store.dispatch("app/setNotify", {
+            status: err?.response?.status,
+            text: err?.response?.data?.Message?.Texto,
+          });
+          console.error(err?.response);
+        }
       })
       .finally(() => {
         this.isLoadingEmployeeList = false;
@@ -339,11 +352,23 @@ export default class EmployeeList extends Vue {
     this.employeeService
       .export(data, this.filters)
       .then((response) => {
-        download(
-          response.data,
-          `${data.NombreReporte}.xlsx`,
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        );
+        if (response.data) {
+          this.$store.dispatch("app/setNotify", {});
+          download(
+            response.data,
+            `${data.NombreReporte}.xlsx`,
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          );
+        }
+      })
+      .catch((err) => {
+        if (err.response) {
+          this.$store.dispatch("app/setNotify", {
+            status: err?.response?.status,
+            text: err?.response?.data?.Message?.Texto,
+          });
+          console.error(err?.response);
+        }
       })
       .finally(() => {
         this.isLoadingEmployeeList = false;

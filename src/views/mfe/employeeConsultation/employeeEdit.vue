@@ -650,12 +650,25 @@ export default class employeeEdit extends Vue {
     this.employeeService
       .findById(this.$route.params.id)
       .then((response) => {
-        const data = Vue.filter("cleanObject")(response.Data);
-        this.employeeData = { ...initialEmployeeData, ...data };
-        this.currentCurp = data.Persona.Curp;
-        this.getWorkplaces();
-        this.getSyndicateSections();
-        this.selectedEmployeeType(data.EstadoCivil);
+        if (response.Success) {
+          const data = Vue.filter("cleanObject")(response.Data);
+          this.employeeData = { ...initialEmployeeData, ...data };
+          this.currentCurp = data.Persona.Curp;
+          this.getWorkplaces();
+          this.getSyndicateSections();
+          this.selectedEmployeeType(data.EstadoCivil);
+
+          this.$store.dispatch("app/setNotify", {});
+        }
+      })
+      .catch((err) => {
+        if (err.response) {
+          this.$store.dispatch("app/setNotify", {
+            status: err?.response?.status,
+            text: err?.response?.data?.Message?.Texto,
+          });
+          console.error(err?.response);
+        }
       })
       .finally(() => {
         this.isLoadingEmployeeData = false;
@@ -693,7 +706,7 @@ export default class employeeEdit extends Vue {
         if (response.Success) {
           this.$store.dispatch("app/setNotify", {});
         } else {
-          console.log(response)
+          console.log(response);
           this.$store.dispatch("app/setNotify", {
             status: 400,
             text: response.Message,
@@ -704,7 +717,9 @@ export default class employeeEdit extends Vue {
         if (err.response) {
           this.$store.dispatch("app/setNotify", {
             status: err?.response?.status,
-            text: err?.response?.data?.Message?.Texto || err?.response?.data?.Message,
+            text:
+              err?.response?.data?.Message?.Texto ||
+              err?.response?.data?.Message,
           });
         }
       })
