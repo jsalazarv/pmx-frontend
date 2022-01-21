@@ -198,6 +198,14 @@ export default class ProofAssignment extends Vue {
   public employeeId?: number | null = null;
 
   getEmployeeById(): void {
+    if (!this.assignmentNumber) {
+      this.$store.dispatch("app/setNotify", {
+        status: 400,
+        text: "Ingrese un Número de Asignación",
+      });
+      return;
+    }
+
     this.isLoadingEmployeeData = true;
     this.employeeService
       .findById(this.assignmentNumber)
@@ -235,7 +243,7 @@ export default class ProofAssignment extends Vue {
       let id: any = this.$route.query.numAssign;
       this.assignmentNumber = id;
 
-      this.getEmployeeById();
+      if (this.assignmentNumber) this.getEmployeeById();
     }
   }
 }
