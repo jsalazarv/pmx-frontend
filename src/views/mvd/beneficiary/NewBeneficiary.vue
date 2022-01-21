@@ -5,11 +5,6 @@
         <v-toolbar flat>
           <v-toolbar-title class="highlight">
             {{ $t("beneficiary.create.title") }}
-
-            <span>{{
-              validityRights.Vigencia
-                | dateFormatted("YYYY-MM-DD", "DD/MM/YYYY")
-            }}</span>
           </v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
@@ -808,15 +803,27 @@ export default class NewBeneficiary extends Vue {
   }
 
   get computedBirthdayFormatted(): string | null {
-    return this.formatted(this.beneficiary.Persona.FechaNacimiento);
+    return Vue.filter("dateFormatted")(
+      this.beneficiary.Persona.FechaNacimiento,
+      "YYYY-MM-DD",
+      "DD/MM/YYYY"
+    );
   }
 
   get computedValidityFormatted(): string | null {
-    return this.formatted(this.beneficiary.Vigencia);
+    return Vue.filter("dateFormatted")(
+      this.beneficiary.Vigencia,
+      "YYYY-MM-DD",
+      "DD/MM/YYYY"
+    );
   }
 
   get computedValidityFormattedHeadline(): string | null {
-    return this.formatted(this.validityRights.Vigencia);
+    return Vue.filter("dateFormatted")(
+      this.validityRights.Vigencia,
+      "YYYY-MM-DD",
+      "DD/MM/YYYY"
+    );
   }
 
   get computedPerson(): IPersonValidationState {
@@ -843,16 +850,6 @@ export default class NewBeneficiary extends Vue {
 
   existsAddress(): void {
     this.useAddress = false;
-  }
-
-  formatted(date: any): string | null {
-    if (!date) return null;
-    return moment(date).format("DD/MM/YYYY");
-  }
-
-  formatted2(date: any): string | null {
-    if (!date) return null;
-    return moment(date, "DD/MM/YYYY").format("YYYY-MM-DD");
   }
 
   getCountries(): void {
@@ -965,16 +962,17 @@ export default class NewBeneficiary extends Vue {
     this.personService
       .findByCurp(this.beneficiary.Persona.Curp)
       .then((response) => {
-        let dateBirthday = this.formatted2(
-          response.Data.Renapo.FechaNacimiento
-        );
         this.renapoData = {
           Curp: response.Data.Renapo.Curp,
           Nombres: response.Data.Renapo.Nombres,
           ApellidoPaterno: response.Data.Renapo.ApellidoPaterno,
           ApellidoMaterno: response.Data.Renapo.ApellidoMaterno,
           Sexo: response.Data.Renapo.Sexo,
-          FechaNacimiento: dateBirthday == null ? "" : dateBirthday.toString(),
+          FechaNacimiento: Vue.filter("dateFormatted")(
+            response.Data.Renapo.FechaNacimiento,
+            "DD/MM/YYYY",
+            "YYYY-MM-DD"
+          ),
           Nacionalidad: response.Data.Renapo.Nacionalidad,
           AnioRegistro: response.Data.Renapo.AnioRegistro,
           IdMunicipioRegistro: response.Data.Renapo.IdMunicipioRegistro,

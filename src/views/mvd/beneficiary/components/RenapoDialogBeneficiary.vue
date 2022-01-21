@@ -46,7 +46,10 @@
                     {{ $t("beneficiary.attributes.birthday") }}
                   </v-list-item-content>
                   <v-list-item-content class="align-end">
-                    {{ computedPerson.Renapo.FechaNacimiento }}
+                    {{
+                      computedPerson.Renapo.FechaNacimiento
+                        | dateFormatted("YYYY-MM-DD", "DD/MM/YYYY")
+                    }}
                   </v-list-item-content>
                 </v-list-item>
                 <v-list-item>
@@ -96,7 +99,10 @@
                     {{ $t("beneficiary.attributes.birthday") }}
                   </v-list-item-content>
                   <v-list-item-content class="align-end">
-                    {{ computedPerson.Person.FechaNacimiento }}
+                    {{
+                      computedPerson.Person.FechaNacimiento
+                        | dateFormatted("YYYY-MM-DD", "DD/MM/YYYY")
+                    }}
                   </v-list-item-content>
                 </v-list-item>
                 <v-list-item>

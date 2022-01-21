@@ -169,7 +169,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import moment from "moment";
+// import moment from "moment";
 import WorkplaceService from "@/services/WorkplaceService";
 import DepartmentService from "@/services/DepartmentService";
 import { IDepartament } from "@/services/DepartmentService/types";
@@ -245,7 +245,11 @@ export default class EmployeeFormNormative extends Vue {
   }
 
   get computedValidityFormatted() {
-    return this.formatted(this.titularBeneficiary.Vigencia);
+    return Vue.filter("dateFormatted")(
+      this.titularBeneficiary.Vigencia,
+      "YYYY-MM-DD",
+      "DD/MM/YYYY"
+    );
   }
 
   getValidityRights(): void {
@@ -279,11 +283,6 @@ export default class EmployeeFormNormative extends Vue {
       .finally(() => {
         this.isLoadingValidityRights = false;
       });
-  }
-
-  formatted(date: any): string | null {
-    if (!date) return null;
-    return moment(date).format("DD/MM/YYYY");
   }
 
   getWorkplaces(): void {
