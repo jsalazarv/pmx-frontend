@@ -199,10 +199,7 @@ export default class ProofAssignment extends Vue {
 
   getEmployeeById(): void {
     if (!this.assignmentNumber) {
-      this.$store.dispatch("app/setNotify", {
-        status: 400,
-        text: "Ingrese un Número de Asignación",
-      });
+      (this as any).badRequest(this.$t("notify.enterAnAssignmentNumber"));
       return;
     }
 

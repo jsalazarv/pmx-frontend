@@ -1,7 +1,7 @@
 export default Object.freeze({
   ok: {
     status: 200,
-    text: "Error Interno en el Servidor",
+    text: "La petición ha sido exitosa",
   },
   noContent: {
     status: 204,
