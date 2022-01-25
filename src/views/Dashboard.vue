@@ -223,7 +223,13 @@ export default class Dashboard extends Vue {
   protected dashboardService = new DashboardService();
 
   searchNumberAssign(): void {
-    if (!this.numberAssignModel) return;
+    if (!this.numberAssignModel) {
+      this.$store.dispatch("app/setNotify", {
+        status: 400,
+        text: "Ingrese un Número de Asignación",
+      });
+      return;
+    }
 
     this.$router.push({
       name: "proof:assignment",

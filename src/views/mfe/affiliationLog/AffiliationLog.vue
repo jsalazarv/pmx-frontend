@@ -194,7 +194,19 @@ export default class AffiliationLog extends Vue {
     this.affiliationLogService
       .search(this.filters)
       .then((response) => {
-        this.affiliationLogList = response.Data;
+        if (response.Success) {
+          this.affiliationLogList = response.Data;
+          this.$store.dispatch("app/setNotify", {});
+        }
+      })
+      .catch((err) => {
+        if (err.response) {
+          this.$store.dispatch("app/setNotify", {
+            status: err?.response?.status,
+            text: err?.response?.data?.Message?.Texto,
+          });
+          console.error(err?.response);
+        }
       })
       .finally(() => {
         this.isLoadingAffiliationLogList = false;
@@ -210,11 +222,23 @@ export default class AffiliationLog extends Vue {
     this.affiliationLogService
       .export(data, this.filters)
       .then((response) => {
-        download(
-          response.data,
-          `${data.NombreReporte}.xlsx`,
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        );
+        if (response.data) {
+          this.$store.dispatch("app/setNotify", {});
+          download(
+            response.data,
+            `${data.NombreReporte}.xlsx`,
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          );
+        }
+      })
+      .catch((err) => {
+        if (err.response) {
+          this.$store.dispatch("app/setNotify", {
+            status: err?.response?.status,
+            text: err?.response?.data?.Message?.Texto,
+          });
+          console.error(err?.response);
+        }
       })
       .finally(() => {
         this.isLoadingAffiliationLogList = false;
@@ -226,7 +250,19 @@ export default class AffiliationLog extends Vue {
     this.affiliationLogService
       .getAll()
       .then((response) => {
-        this.affiliationLogList = response.Data;
+        if (response.Success) {
+          this.affiliationLogList = response.Data;
+          this.$store.dispatch("app/setNotify", {});
+        }
+      })
+      .catch((err) => {
+        if (err.response) {
+          this.$store.dispatch("app/setNotify", {
+            status: err?.response?.status,
+            text: err?.response?.data?.Message?.Texto,
+          });
+          console.error(err?.response);
+        }
       })
       .finally(() => {
         this.isLoadingAffiliationLogList = false;

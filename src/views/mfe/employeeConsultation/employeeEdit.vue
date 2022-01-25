@@ -62,6 +62,7 @@
                         "
                         :loading="isValidatingEmployee || isValidatingCurp"
                         :error-messages="errors"
+                        maxlength="18"
                       ></v-text-field>
                     </ValidationProvider>
                   </v-col>
@@ -649,12 +650,25 @@ export default class employeeEdit extends Vue {
     this.employeeService
       .findById(this.$route.params.id)
       .then((response) => {
-        const data = Vue.filter("cleanObject")(response.Data);
-        this.employeeData = { ...initialEmployeeData, ...data };
-        this.currentCurp = data.Persona.Curp;
-        this.getWorkplaces();
-        this.getSyndicateSections();
-        this.selectedEmployeeType(data.EstadoCivil);
+        if (response.Success) {
+          const data = Vue.filter("cleanObject")(response.Data);
+          this.employeeData = { ...initialEmployeeData, ...data };
+          this.currentCurp = data.Persona.Curp;
+          this.getWorkplaces();
+          this.getSyndicateSections();
+          this.selectedEmployeeType(data.EstadoCivil);
+
+          this.$store.dispatch("app/setNotify", {});
+        }
+      })
+      .catch((err) => {
+        if (err.response) {
+          this.$store.dispatch("app/setNotify", {
+            status: err?.response?.status,
+            text: err?.response?.data?.Message?.Texto,
+          });
+          console.error(err?.response);
+        }
       })
       .finally(() => {
         this.isLoadingEmployeeData = false;
@@ -688,7 +702,27 @@ export default class employeeEdit extends Vue {
     this.isUpdating = true;
     this.employeeService
       .update(parseInt(this.$route.params.id), data as IUpdateEmployeeRequest)
-      .then()
+      .then((response) => {
+        if (response.Success) {
+          this.$store.dispatch("app/setNotify", {});
+        } else {
+          console.log(response);
+          this.$store.dispatch("app/setNotify", {
+            status: 400,
+            text: response.Message,
+          });
+        }
+      })
+      .catch((err) => {
+        if (err.response) {
+          this.$store.dispatch("app/setNotify", {
+            status: err?.response?.status,
+            text:
+              err?.response?.data?.Message?.Texto ||
+              err?.response?.data?.Message,
+          });
+        }
+      })
       .finally(() => {
         this.isUpdating = false;
       });
@@ -714,19 +748,36 @@ export default class employeeEdit extends Vue {
     this.peopleService
       .validateCurpRenapo(this.employeeData.Persona?.Curp as string)
       .then(this.handleValidationResponse)
-      .catch((error) => {
-        console.log("ERROR HEADER", error.response);
+      .catch((err) => {
+        if (err.response) {
+          this.$store.dispatch("app/setNotify", {
+            status: err?.response?.status,
+            text: err?.response?.data?.Message?.Texto,
+          });
+          console.error(err?.response);
+        }
       })
-      .finally();
+      .finally(() => {
+        this.isUpdating = false;
+        this.isValidatingEmployee = false;
+        this.isValidatingCurp = false;
+      });
   }
 
   handleValidationResponse(
     response: IApiResponse<IPersonValidationResponse>
   ): void {
-    this.employeeValidationData = response.Data;
-    this.validationMessage = response.Message;
-
-    this.openDialog();
+    if (response.Success) {
+      this.employeeValidationData = response.Data;
+      this.validationMessage = response.Message;
+      this.$store.dispatch("app/setNotify", {});
+      setTimeout(() => this.openDialog(), 500);
+    } else {
+      this.$store.dispatch("app/setNotify", {
+        status: 400,
+        text: response.Message,
+      });
+    }
   }
 
   openDialog(): void {
