@@ -557,6 +557,7 @@ export default class employeeEdit extends Vue {
   public enableValidationButton = false;
   public isDialogOpen = false;
   public currentCurp = "";
+  public hasIndRenapo = false;
   public currentEmployeeData = {
     Curp: "",
     Nombres: "",
@@ -663,11 +664,11 @@ export default class employeeEdit extends Vue {
           const data = Vue.filter("cleanObject")(response.Data);
           this.employeeData = { ...initialEmployeeData, ...data };
           this.currentCurp = data.Persona.Curp;
+          this.hasIndRenapo = data.Persona.IndRenapo;
           this.currentEmployeeData = data.Persona;
           this.getWorkplaces();
           this.getSyndicateSections();
           this.selectedEmployeeType(data.EstadoCivil);
-
           this.$store.dispatch("app/setNotify", {});
         }
       })
@@ -708,6 +709,7 @@ export default class employeeEdit extends Vue {
       Observaciones: this.employeeData.Filiacion?.Observaciones,
       IdTipoEmpleado: this.employeeData.TipoEmpleado?.Id,
       IdEmpleado: this.employeeData.IdEmpleado,
+      IndRenapo: this.hasIndRenapo,
     };
     this.isUpdating = true;
     this.employeeService
@@ -716,7 +718,6 @@ export default class employeeEdit extends Vue {
         if (response.Success) {
           this.$store.dispatch("app/setNotify", {});
         } else {
-          console.log(response);
           this.$store.dispatch("app/setNotify", {
             status: 400,
             text: response.Message,
@@ -769,6 +770,7 @@ export default class employeeEdit extends Vue {
             text: err?.response?.data?.Message?.Texto,
           });
           console.error(err?.response);
+          this.hasIndRenapo = false;
           this.infoSelected = false;
         }
       })
@@ -787,6 +789,7 @@ export default class employeeEdit extends Vue {
       this.validationMessage = response.Message;
       this.$store.dispatch("app/setNotify", {});
       setTimeout(() => this.openDialog(), 500);
+      this.hasIndRenapo = true;
     } else {
       this.$store.dispatch("app/setNotify", {
         status: 400,
@@ -813,6 +816,7 @@ export default class employeeEdit extends Vue {
     this.isValidatingCurp = false;
     this.enableValidationButton = false;
     this.employeeData.Persona = {
+      IdPersona: this.employeeData.Persona?.IdPersona,
       Curp: this.currentCurp,
       Nombres: this.currentEmployeeData.Nombres,
       ApellidoPaterno: this.currentEmployeeData.ApellidoPaterno,
@@ -821,6 +825,7 @@ export default class employeeEdit extends Vue {
       Sexo: this.currentEmployeeData.Sexo,
       EstadoCivil: this.currentEmployeeData.EstadoCivil,
       RFC: this.currentEmployeeData.RFC,
+      IndRenapo: this.hasIndRenapo,
     };
   }
 
