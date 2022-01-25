@@ -51,7 +51,10 @@ export default class EmployeeService extends BaseService {
     return this.client.post(`/Empleados/Alta`, body, config);
   }
 
-  async update(id: number, data: IUpdateEmployeeRequest) {
+  async update(
+    id: number,
+    data: IUpdateEmployeeRequest
+  ): IServiceResponse<ICreateEmployeeResponse> {
     const body = serialize(data);
     const config = {
       headers: {

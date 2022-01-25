@@ -320,7 +320,7 @@ export default class NewAddress extends Vue {
     ApellidoPaterno: "",
     ApellidoMaterno: "",
     Curp: null,
-    IdDerechohabiente:null
+    IdDerechohabiente: null,
   };
   public address: IAddress = {
     IdDomicilio: null,
@@ -450,7 +450,9 @@ export default class NewAddress extends Vue {
 
         if (responseAddressPerson.Success) {
           this.alert = {
-            message: this.$t("address.labels.dialogs.successCreate.message") as string,
+            message: this.$t(
+              "address.labels.dialogs.successCreate.message"
+            ) as string,
             alert: true,
             type: true,
           };
@@ -474,7 +476,9 @@ export default class NewAddress extends Vue {
       }
     } catch (error) {
       this.alert = {
-        message: this.$t("address.labels.dialogs.errorCreate.message") as string,
+        message: this.$t(
+          "address.labels.dialogs.errorCreate.message"
+        ) as string,
         alert: true,
         type: false,
       };

@@ -11,11 +11,7 @@
     <v-row>
       <v-col cols="12" sm="12" md="6">
         <v-text-field
-          :label="
-            $t(
-              'employeeConsultation.attributes.employeeType'
-            )
-          "
+          :label="$t('employeeConsultation.attributes.employeeType')"
           name="employeeType"
           dense
           outlined
@@ -27,11 +23,7 @@
       </v-col>
       <v-col cols="12" sm="12" md="6">
         <v-text-field
-          :label="
-            $t(
-              'employeeConsultation.attributes.assignmentNumber'
-            )
-          "
+          :label="$t('employeeConsultation.attributes.assignmentNumber')"
           name="assignmentNumber"
           dense
           outlined
@@ -45,11 +37,7 @@
     <v-row>
       <v-col cols="12" sm="12" md="2">
         <v-text-field
-          :label="
-            $t(
-              'employeeConsultation.attributes.groupPersonal'
-            )
-          "
+          :label="$t('employeeConsultation.attributes.groupPersonal')"
           name="groupPersonal"
           dense
           outlined
@@ -61,11 +49,7 @@
       </v-col>
       <v-col cols="12" sm="12" md="2">
         <v-text-field
-          :label="
-            $t(
-              'employeeConsultation.attributes.areaPersonal'
-            )
-          "
+          :label="$t('employeeConsultation.attributes.areaPersonal')"
           name="areaPersonal"
           dense
           outlined
@@ -77,11 +61,7 @@
       </v-col>
       <v-col cols="12" sm="12" md="8">
         <v-text-field
-          :label="
-            $t(
-              'employeeConsultation.attributes.fullname'
-            )
-          "
+          :label="$t('employeeConsultation.attributes.fullname')"
           name="fullname"
           dense
           outlined
@@ -95,11 +75,7 @@
     <v-row>
       <v-col cols="12" sm="12" md="4">
         <v-text-field
-          :label="
-            $t(
-              'employeeConsultation.attributes.departmentCenter'
-            )
-          "
+          :label="$t('employeeConsultation.attributes.departmentCenter')"
           name="departmentCenter"
           dense
           outlined
@@ -111,11 +87,7 @@
       </v-col>
       <v-col cols="12" sm="12" md="8">
         <v-text-field
-          :label="
-            $t(
-              'employeeConsultation.attributes.departmentDescription'
-            )
-          "
+          :label="$t('employeeConsultation.attributes.departmentDescription')"
           name="departmentDescription"
           dense
           outlined
@@ -129,11 +101,7 @@
     <v-row>
       <v-col cols="12" sm="12" md="6">
         <v-text-field
-          :label="
-            $t(
-              'employeeConsultation.attributes.validity'
-            )
-          "
+          :label="$t('employeeConsultation.attributes.validity')"
           name="validity"
           dense
           outlined
@@ -145,11 +113,7 @@
       </v-col>
       <v-col cols="12" sm="12" md="6">
         <v-text-field
-          :label="
-            $t(
-              'employeeConsultation.attributes.validityStatus'
-            )
-          "
+          :label="$t('employeeConsultation.attributes.validityStatus')"
           name="validityStatus"
           dense
           outlined
@@ -204,12 +168,8 @@ export default class EmployeeFormContractual extends Vue {
 
   get computedValidity(): string {
     return this.validityRights.EstadoVigencia
-      ? `${this.$t(
-          "employeeConsultation.labels.validations.valid"
-        )}`
-      : `${this.$t(
-          "employeeConsultation.labels.validations.notValid"
-        )}`;
+      ? `${this.$t("employeeConsultation.labels.validations.valid")}`
+      : `${this.$t("employeeConsultation.labels.validations.notValid")}`;
   }
 
   get computedIdPerson(): number {

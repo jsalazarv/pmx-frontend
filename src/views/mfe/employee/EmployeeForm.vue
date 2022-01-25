@@ -68,8 +68,18 @@ export default class PeopleCreate extends Vue {
     this.employeeService
       .create(data)
       .then((response) => {
-        //TODO: Success message
-        console.log("Data POST: ", response);
+        if (response.Success) {
+          this.$store.dispatch("app/setNotify", {});
+        }
+      })
+      .catch((err) => {
+        if (err.response) {
+          this.$store.dispatch("app/setNotify", {
+            status: err?.response?.status,
+            text: err?.response?.data?.Message?.Texto,
+          });
+          console.error(err?.response);
+        }
       })
       .finally(() => {
         (this.$refs.form as IValidationObserver).reset();

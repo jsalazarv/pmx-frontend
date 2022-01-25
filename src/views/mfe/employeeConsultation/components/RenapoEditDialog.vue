@@ -7,9 +7,9 @@
     class="mx-2"
   >
     <v-card>
-      <v-card-title class="text-h6" v-if="title">
+      <!-- <v-card-title class="text-h6" v-if="title">
         {{ title }}
-      </v-card-title>
+      </v-card-title> -->
       <v-card-text>
         <v-row>
           <v-col cols="12">
