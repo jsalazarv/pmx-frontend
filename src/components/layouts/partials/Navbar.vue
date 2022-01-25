@@ -8,16 +8,6 @@
         transition="scale-transition"
     /></v-toolbar-title>
     <v-spacer></v-spacer>
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on }">
-        <v-btn icon v-on="on" class="mr-7">
-          <v-badge color="error" dot>
-            <v-icon size="25">mdi-bell</v-icon>
-          </v-badge>
-        </v-btn>
-      </template>
-      <span>Notificaciones</span>
-    </v-tooltip>
     <v-menu offset-y left>
       <template v-slot:activator="{ on }">
         <v-btn small color="red" depressed fab v-on="on" class="white--text">

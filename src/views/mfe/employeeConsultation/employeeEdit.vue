@@ -62,7 +62,6 @@
                         "
                         :loading="isValidatingEmployee || isValidatingCurp"
                         :error-messages="errors"
-                        maxlength="18"
                       ></v-text-field>
                     </ValidationProvider>
                   </v-col>
@@ -147,7 +146,7 @@
                     class="required"
                     dense
                     name="names"
-                    disabled
+                    :disabled="canEditPersonalInfo"
                     :label="$t('employee.attributes.names')"
                     outlined
                     required
@@ -166,7 +165,7 @@
                     class="required"
                     dense
                     name="lastname"
-                    disabled
+                    :disabled="canEditPersonalInfo"
                     :label="$t('employee.attributes.lastname')"
                     outlined
                     required
@@ -185,7 +184,7 @@
                     class="required"
                     dense
                     name="surname"
-                    disabled
+                    :disabled="canEditPersonalInfo"
                     :label="$t('employee.attributes.surname')"
                     outlined
                     required
@@ -210,7 +209,7 @@
                       <v-text-field
                         class="required"
                         name="birthday"
-                        disabled
+                        :disabled="canEditPersonalInfo"
                         :value="
                           employeeData.Persona.FechaNacimiento
                             | dateFormatted('YYYY-MM-DD', 'DD/MM/YYYY')
@@ -252,7 +251,7 @@
                     item-text="Sigla"
                     item-value="Sigla"
                     :items="gendersList"
-                    disabled
+                    :disabled="canEditPersonalInfo"
                     :label="$t('employee.attributes.gender')"
                     :loading="isLoadingGendersList"
                     v-model="employeeData.Persona.Sexo"
@@ -541,7 +540,7 @@ export default class employeeEdit extends Vue {
   public syndicateSections: Array<ISyndicateSection> = [];
   public employeeValidationData: IPersonValidationResponse | null = null;
   public validationMessage: string | null = null;
-  public infoSelected = false;
+  public infoSelected = true;
   public isLoadingEmployeeList = false;
   public isLoadingEmployeeData = false;
   public isLoadingGendersList = false;
@@ -754,6 +753,10 @@ export default class employeeEdit extends Vue {
     };
   }
 
+  get canEditPersonalInfo(): boolean {
+    return this.infoSelected;
+  }
+
   validateCurp(): void {
     this.isValidatingCurp = true;
     this.peopleService
@@ -766,6 +769,7 @@ export default class employeeEdit extends Vue {
             text: err?.response?.data?.Message?.Texto,
           });
           console.error(err?.response);
+          this.infoSelected = false;
         }
       })
       .finally(() => {
@@ -806,11 +810,10 @@ export default class employeeEdit extends Vue {
   }
 
   resetForm(): void {
-    this.infoSelected = false;
     this.isValidatingCurp = false;
     this.enableValidationButton = false;
     this.employeeData.Persona = {
-      Curp: this.currentEmployeeData.Curp,
+      Curp: this.currentCurp,
       Nombres: this.currentEmployeeData.Nombres,
       ApellidoPaterno: this.currentEmployeeData.ApellidoPaterno,
       ApellidoMaterno: this.currentEmployeeData.ApellidoMaterno,
