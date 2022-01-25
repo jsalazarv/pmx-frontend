@@ -63,17 +63,17 @@ export default {
       info: {
         message: "El empleado no se encuentra actualmente vigente",
       },
-      successAssign:{
-        message:"Se ha asigando correctamente"
+      successAssign: {
+        message: "Se ha asigando correctamente",
       },
-      errorAssign:{
-        message:"Un problema ha ocurrido"
-      }
+      errorAssign: {
+        message: "Un problema ha ocurrido",
+      },
     },
     validations: {
       valid: "Vigente",
       notValid: "No vigente",
-      dateGreaterThanToday:"debe ser mayor o igual a la fecha de hoy"
+      dateGreaterThanToday: "debe ser mayor o igual a la fecha de hoy",
     },
   },
 };

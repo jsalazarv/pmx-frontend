@@ -4,7 +4,7 @@
       <v-card>
         <v-toolbar flat>
           <v-toolbar-title class="highlight">
-              {{ $t("credentialization.report.title") }}
+            {{ $t("credentialization.report.title") }}
           </v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
@@ -18,11 +18,7 @@
             <v-row>
               <v-col cols="12" sm="12" md="6">
                 <v-text-field
-                  :label="
-                    $t(
-                      'credentialization.attributes.employeeType'
-                    )
-                  "
+                  :label="$t('credentialization.attributes.employeeType')"
                   name="employeeType"
                   dense
                   outlined
@@ -34,11 +30,7 @@
               </v-col>
               <v-col cols="12" sm="12" md="6">
                 <v-text-field
-                  :label="
-                    $t(
-                      'credentialization.attributes.assignmentNumber'
-                    )
-                  "
+                  :label="$t('credentialization.attributes.assignmentNumber')"
                   name="assignmentNumber"
                   dense
                   outlined
@@ -52,11 +44,7 @@
             <v-row>
               <v-col cols="12" sm="12" md="12">
                 <v-text-field
-                  :label="
-                    $t(
-                      'credentialization.attributes.fullname'
-                    )
-                  "
+                  :label="$t('credentialization.attributes.fullname')"
                   name="fullname"
                   dense
                   outlined
@@ -98,7 +86,7 @@ export default class Credentialization extends Vue {
     ApellidoPaterno: "",
     ApellidoMaterno: "",
     Curp: null,
-    IdDerechohabiente:null
+    IdDerechohabiente: null,
   };
 
   get isLoading(): boolean {

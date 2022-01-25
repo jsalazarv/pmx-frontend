@@ -91,16 +91,12 @@
               <v-row>
                 <v-col cols="12" sm="12" md="4">
                   <ValidationProvider
-                    :name="
-                      $t('searchEmployee.attributes.assignmentNumber')
-                    "
+                    :name="$t('searchEmployee.attributes.assignmentNumber')"
                     v-slot="{ errors }"
                     rules="numeric|max:8"
                   >
                     <v-text-field
-                      :label="
-                        $t('searchEmployee.attributes.assignmentNumber')
-                      "
+                      :label="$t('searchEmployee.attributes.assignmentNumber')"
                       name="assignmentNumber"
                       dense
                       outlined

@@ -95,9 +95,9 @@ export default class AssignmentFolios extends Vue {
     this.getFoliosLogBook(this.filters());
   }
 
-  clearFilter():void{
+  clearFilter(): void {
     this.params = {
-      IdFolioAsignacion: ""
+      IdFolioAsignacion: "",
     };
     this.getFoliosLogBook(this.filters());
   }

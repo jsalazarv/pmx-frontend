@@ -9,6 +9,8 @@ import employeeConsultationMFE from "./mfe/employeeConsultation";
 import affiliationLog from "./mfe/affiliationLog";
 import proofAssignment from "./mfe/proofAssignment";
 import credentialization from "./mvd/credentialization";
+import statusCode from "@/lang/es/statusCode";
+import notify from "@/lang/es/mfe/notify";
 
 export default {
   dictionary,
@@ -22,4 +24,6 @@ export default {
   affiliationLog,
   proofAssignment,
   credentialization,
+  statusCode,
+  notify,
 };

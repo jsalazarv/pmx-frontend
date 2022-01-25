@@ -81,7 +81,7 @@ const appStore: Module<IAppState, IRootState> = {
           notifyModel.text = "Petición Exitosa";
           notifyModel.colorText = "green";
           notifyModel.colorBtn = "green";
-        }
+      }
 
       commit("SET_NOTIFY", notifyModel);
 

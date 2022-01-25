@@ -226,7 +226,7 @@ export default class Dashboard extends Vue {
     if (!this.numberAssignModel) {
       this.$store.dispatch("app/setNotify", {
         status: 400,
-        text: "Ingrese un Número de Asignación",
+        text: this.$t("notify.enterAnAssignmentNumber"),
       });
       return;
     }
