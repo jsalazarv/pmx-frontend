@@ -557,6 +557,16 @@ export default class employeeEdit extends Vue {
   public enableValidationButton = false;
   public isDialogOpen = false;
   public currentCurp = "";
+  public currentEmployeeData = {
+    Curp: "",
+    Nombres: "",
+    ApellidoPaterno: "",
+    ApellidoMaterno: "",
+    FechaNacimiento: "",
+    Sexo: "",
+    EstadoCivil: undefined,
+    RFC: "",
+  };
 
   getEmployeeTypes(): void {
     this.isLoadingEmployeeList = true;
@@ -652,6 +662,7 @@ export default class employeeEdit extends Vue {
         const data = Vue.filter("cleanObject")(response.Data);
         this.employeeData = { ...initialEmployeeData, ...data };
         this.currentCurp = data.Persona.Curp;
+        this.currentEmployeeData = data.Persona;
         this.getWorkplaces();
         this.getSyndicateSections();
         this.selectedEmployeeType(data.EstadoCivil);
@@ -748,7 +759,14 @@ export default class employeeEdit extends Vue {
     this.isValidatingCurp = false;
     this.enableValidationButton = false;
     this.employeeData.Persona = {
-      Curp: this.currentCurp,
+      Curp: this.currentEmployeeData.Curp,
+      Nombres: this.currentEmployeeData.Nombres,
+      ApellidoPaterno: this.currentEmployeeData.ApellidoPaterno,
+      ApellidoMaterno: this.currentEmployeeData.ApellidoMaterno,
+      FechaNacimiento: this.currentEmployeeData.FechaNacimiento,
+      Sexo: this.currentEmployeeData.Sexo,
+      EstadoCivil: this.currentEmployeeData.EstadoCivil,
+      RFC: this.currentEmployeeData.RFC,
     };
   }
 
