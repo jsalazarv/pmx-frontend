@@ -4,7 +4,7 @@
       <v-card>
         <v-toolbar flat>
           <v-toolbar-title class="highlight">
-            {{ $t("beneficiary.beneficiary.title") }}
+            {{ $t("beneficiary.create.title") }}
           </v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
@@ -19,11 +19,7 @@
               <v-row>
                 <v-col cols="12" sm="12" md="6">
                   <v-text-field
-                    :label="
-                      $t(
-                        'beneficiary.beneficiary.beneficiaryForm.assignmentNumber'
-                      )
-                    "
+                    :label="$t('beneficiary.attributes.assignmentNumber')"
                     name="assignmentNumber"
                     dense
                     outlined
@@ -35,17 +31,13 @@
                 </v-col>
                 <v-col cols="12" sm="12" md="6">
                   <v-text-field
-                    :label="
-                      $t(
-                        'beneficiary.beneficiary.beneficiaryForm.workerValidity'
-                      )
-                    "
+                    :label="$t('beneficiary.attributes.workerValidity')"
                     name="workerValidity"
                     dense
                     outlined
                     readonly
                     :loading="isLoadingValidityRights"
-                    v-model="computedEmployeeId"
+                    v-model="computedValidityFormattedHeadline"
                   >
                   </v-text-field>
                 </v-col>
@@ -61,7 +53,7 @@
               <v-row>
                 <v-col cols="12" sm="12" md="4">
                   <ValidationProvider
-                    :name="$t('beneficiary.beneficiary.beneficiaryForm.coding')"
+                    :name="$t('beneficiary.attributes.coding')"
                     v-slot="{ errors }"
                     rules="required"
                   >
@@ -73,9 +65,7 @@
                       item-text="Nombre"
                       item-value="Id"
                       :items="codingList"
-                      :label="
-                        $t('beneficiary.beneficiary.beneficiaryForm.coding')
-                      "
+                      :label="$t('beneficiary.attributes.coding')"
                       :error-messages="errors"
                       :disabled="isLoadingCodingList"
                       :loading="isLoadingCodingList"
@@ -84,40 +74,44 @@
                 </v-col>
                 <v-col cols="12" sm="12" md="4">
                   <ValidationProvider
-                    :name="$t('beneficiary.beneficiary.beneficiaryForm.curp')"
+                    :name="$t('beneficiary.attributes.curp')"
                     v-slot="{ errors }"
                     rules="required|min:18|max:18"
                   >
                     <v-text-field
-                      :label="
-                        $t('beneficiary.beneficiary.beneficiaryForm.curp')
-                      "
+                      clearable
+                      :label="$t('beneficiary.attributes.curp')"
                       name="curp"
                       dense
                       outlined
                       :error-messages="errors"
                       v-model="beneficiary.Persona.Curp"
+                      @input="enabledValidate"
                     >
                     </v-text-field>
                   </ValidationProvider>
                 </v-col>
                 <v-col cols="12" sm="12" md="4">
-                  <v-btn color="success" dark large dense>
-                    {{ $t("beneficiary.beneficiary.buttons.validate") }}
+                  <v-btn
+                    @click="validateCurp"
+                    color="success"
+                    :disabled="isDisabledValidate"
+                    large
+                    dense
+                  >
+                    {{ $t("beneficiary.labels.validate") }}
                   </v-btn>
                 </v-col>
               </v-row>
               <v-row>
                 <v-col cols="12" sm="12" md="4">
                   <ValidationProvider
-                    :name="$t('beneficiary.beneficiary.beneficiaryForm.names')"
+                    :name="$t('beneficiary.attributes.names')"
                     v-slot="{ errors }"
                     rules="required"
                   >
                     <v-text-field
-                      :label="
-                        $t('beneficiary.beneficiary.beneficiaryForm.names')
-                      "
+                      :label="$t('beneficiary.attributes.names')"
                       name="names"
                       dense
                       outlined
@@ -129,16 +123,12 @@
                 </v-col>
                 <v-col cols="12" sm="12" md="4">
                   <ValidationProvider
-                    :name="
-                      $t('beneficiary.beneficiary.beneficiaryForm.lastname')
-                    "
+                    :name="$t('beneficiary.attributes.lastname')"
                     v-slot="{ errors }"
                     rules="required"
                   >
                     <v-text-field
-                      :label="
-                        $t('beneficiary.beneficiary.beneficiaryForm.lastname')
-                      "
+                      :label="$t('beneficiary.attributes.lastname')"
                       name="lastname"
                       dense
                       outlined
@@ -150,16 +140,12 @@
                 </v-col>
                 <v-col cols="12" sm="12" md="4">
                   <ValidationProvider
-                    :name="
-                      $t('beneficiary.beneficiary.beneficiaryForm.surname')
-                    "
+                    :name="$t('beneficiary.attributes.surname')"
                     v-slot="{ errors }"
                     rules="required"
                   >
                     <v-text-field
-                      :label="
-                        $t('beneficiary.beneficiary.beneficiaryForm.surname')
-                      "
+                      :label="$t('beneficiary.attributes.surname')"
                       name="surname"
                       dense
                       outlined
@@ -182,19 +168,13 @@
                   >
                     <template v-slot:activator="{ on }">
                       <ValidationProvider
-                        :name="
-                          $t('beneficiary.beneficiary.beneficiaryForm.birthday')
-                        "
+                        :name="$t('beneficiary.attributes.birthday')"
                         v-slot="{ errors }"
                         rules="required"
                       >
                         <v-text-field
                           v-model="computedBirthdayFormatted"
-                          :label="
-                            $t(
-                              'beneficiary.beneficiary.beneficiaryForm.birthday'
-                            )
-                          "
+                          :label="$t('beneficiary.attributes.birthday')"
                           name="birthday"
                           hint="DD/MM/YYYY"
                           persistent-hint
@@ -216,12 +196,12 @@
                 </v-col>
                 <v-col cols="12" sm="12" md="4">
                   <ValidationProvider
-                    :name="$t('beneficiary.beneficiary.beneficiaryForm.age')"
+                    :name="$t('beneficiary.attributes.age')"
                     v-slot="{ errors }"
                     rules="required|max:3|numeric"
                   >
                     <v-text-field
-                      :label="$t('beneficiary.beneficiary.beneficiaryForm.age')"
+                      :label="$t('beneficiary.attributes.age')"
                       name="age"
                       dense
                       outlined
@@ -233,7 +213,7 @@
                 </v-col>
                 <v-col cols="12" sm="12" md="4">
                   <ValidationProvider
-                    :name="$t('beneficiary.beneficiary.beneficiaryForm.gender')"
+                    :name="$t('beneficiary.attributes.gender')"
                     v-slot="{ errors }"
                     rules="required"
                   >
@@ -245,9 +225,7 @@
                       item-text="Sigla"
                       item-value="Sigla"
                       :items="gendersList"
-                      :label="
-                        $t('beneficiary.beneficiary.beneficiaryForm.gender')
-                      "
+                      :label="$t('beneficiary.attributes.gender')"
                       :error-messages="errors"
                       :disabled="isLoadingGendersList"
                       :loading="isLoadingGendersList"
@@ -258,9 +236,7 @@
               <v-row>
                 <v-col cols="12" sm="12" md="4">
                   <ValidationProvider
-                    :name="
-                      $t('beneficiary.beneficiary.beneficiaryForm.inability')
-                    "
+                    :name="$t('beneficiary.attributes.inability')"
                     v-slot="{ errors }"
                   >
                     <v-checkbox
@@ -268,9 +244,7 @@
                       dense
                       outlined
                       name="inability"
-                      :label="
-                        $t('beneficiary.beneficiary.beneficiaryForm.inability')
-                      "
+                      :label="$t('beneficiary.attributes.inability')"
                       :error-messages="errors"
                     ></v-checkbox>
                   </ValidationProvider>
@@ -286,19 +260,13 @@
                   >
                     <template v-slot:activator="{ on }">
                       <ValidationProvider
-                        :name="
-                          $t('beneficiary.beneficiary.beneficiaryForm.validity')
-                        "
+                        :name="$t('beneficiary.attributes.validity')"
                         v-slot="{ errors }"
                         rules="required"
                       >
                         <v-text-field
                           v-model="computedValidityFormatted"
-                          :label="
-                            $t(
-                              'beneficiary.beneficiary.beneficiaryForm.validity'
-                            )
-                          "
+                          :label="$t('beneficiary.attributes.validity')"
                           name="validity"
                           hint="DD/MM/YYYY"
                           persistent-hint
@@ -320,9 +288,7 @@
                 </v-col>
                 <v-col cols="12" sm="12" md="4">
                   <ValidationProvider
-                    :name="
-                      $t('beneficiary.beneficiary.beneficiaryForm.medicalUnit')
-                    "
+                    :name="$t('beneficiary.attributes.medicalUnit')"
                     v-slot="{ errors }"
                     rules="required"
                   >
@@ -334,11 +300,7 @@
                       item-text="Nombre"
                       item-value="Id"
                       :items="medicalUnitsList"
-                      :label="
-                        $t(
-                          'beneficiary.beneficiary.beneficiaryForm.medicalUnit'
-                        )
-                      "
+                      :label="$t('beneficiary.attributes.medicalUnit')"
                       :error-messages="errors"
                       :disabled="isLoadingMedicalUnitsList"
                       :loading="isLoadingMedicalUnitsList"
@@ -349,18 +311,12 @@
               <v-row>
                 <v-col cols="12" sm="12" md="12">
                   <ValidationProvider
-                    :name="
-                      $t('beneficiary.beneficiary.beneficiaryForm.observations')
-                    "
+                    :name="$t('beneficiary.attributes.observations')"
                     v-slot="{ errors }"
                     rules="max:250"
                   >
                     <v-textarea
-                      :label="
-                        $t(
-                          'beneficiary.beneficiary.beneficiaryForm.observations'
-                        )
-                      "
+                      :label="$t('beneficiary.attributes.observations')"
                       name="observations"
                       dense
                       outlined
@@ -381,12 +337,10 @@
                     :items="addresses"
                     item-text="DomicilioDescripcion"
                     item-value="IdDomicilio"
-                    :label="
-                      $t('beneficiary.beneficiary.beneficiaryForm.address')
-                    "
+                    :label="$t('beneficiary.attributes.address')"
                     dense
                     outlined
-                    @change="existingAddress"
+                    @change="existsAddress"
                     v-model="beneficiary.Domicilio.IdDomicilio"
                   >
                     <template v-slot:prepend-item>
@@ -397,11 +351,7 @@
                       >
                         <v-list-item-content>
                           <v-list-item-title>
-                            {{
-                              $t(
-                                "beneficiary.beneficiary.selectText.newAddress"
-                              )
-                            }}
+                            {{ $t("beneficiary.labels.newAddress") }}
                           </v-list-item-title>
                         </v-list-item-content>
                       </v-list-item>
@@ -413,9 +363,7 @@
               <v-row v-if="useAddress">
                 <v-col cols="12" sm="12" md="4">
                   <ValidationProvider
-                    :name="
-                      $t('beneficiary.beneficiary.beneficiaryForm.country')
-                    "
+                    :name="$t('beneficiary.attributes.country')"
                     v-slot="{ errors }"
                     rules="required"
                   >
@@ -425,9 +373,7 @@
                       :items="countries"
                       item-text="Nombre"
                       item-value="Id"
-                      :label="
-                        $t('beneficiary.beneficiary.beneficiaryForm.country')
-                      "
+                      :label="$t('beneficiary.attributes.country')"
                       outlined
                       :disabled="isLoadingCountries"
                       :loading="isLoadingCountries"
@@ -439,7 +385,7 @@
                 </v-col>
                 <v-col cols="12" sm="12" md="4">
                   <ValidationProvider
-                    :name="$t('beneficiary.beneficiary.beneficiaryForm.state')"
+                    :name="$t('beneficiary.attributes.state')"
                     v-slot="{ errors }"
                     rules="required"
                   >
@@ -449,9 +395,7 @@
                       :items="states"
                       item-text="Nombre"
                       item-value="IdEstado"
-                      :label="
-                        $t('beneficiary.beneficiary.beneficiaryForm.state')
-                      "
+                      :label="$t('beneficiary.attributes.state')"
                       :disabled="
                         isLoadingStates || !beneficiary.Domicilio.IdPais
                       "
@@ -466,9 +410,7 @@
                 </v-col>
                 <v-col cols="12" sm="12" md="4">
                   <ValidationProvider
-                    :name="
-                      $t('beneficiary.beneficiary.beneficiaryForm.municipality')
-                    "
+                    :name="$t('beneficiary.attributes.municipality')"
                     v-slot="{ errors }"
                     rules="required"
                   >
@@ -483,11 +425,7 @@
                         !beneficiary.Domicilio.IdEstado
                       "
                       :loading="isLoadingMunicipalities"
-                      :label="
-                        $t(
-                          'beneficiary.beneficiary.beneficiaryForm.municipality'
-                        )
-                      "
+                      :label="$t('beneficiary.attributes.municipality')"
                       outlined
                       required
                       v-model="beneficiary.Domicilio.IdMunicipio"
@@ -499,16 +437,12 @@
               <v-row v-if="useAddress">
                 <v-col cols="12" sm="12" md="4">
                   <ValidationProvider
-                    :name="
-                      $t('beneficiary.beneficiary.beneficiaryForm.zipcode')
-                    "
+                    :name="$t('beneficiary.attributes.zipcode')"
                     v-slot="{ errors }"
                     rules="required|numeric|min:5|max:5"
                   >
                     <v-text-field
-                      :label="
-                        $t('beneficiary.beneficiary.beneficiaryForm.zipcode')
-                      "
+                      :label="$t('beneficiary.attributes.zipcode')"
                       name="zipCode"
                       dense
                       outlined
@@ -520,14 +454,12 @@
                 </v-col>
                 <v-col cols="12" sm="12" md="4">
                   <ValidationProvider
-                    :name="$t('beneficiary.beneficiary.beneficiaryForm.suburb')"
+                    :name="$t('beneficiary.attributes.suburb')"
                     v-slot="{ errors }"
                     rules="required|max:150"
                   >
                     <v-text-field
-                      :label="
-                        $t('beneficiary.beneficiary.beneficiaryForm.suburb')
-                      "
+                      :label="$t('beneficiary.attributessuburb')"
                       name="suburb"
                       dense
                       outlined
@@ -539,16 +471,12 @@
                 </v-col>
                 <v-col cols="12" sm="12" md="4">
                   <ValidationProvider
-                    :name="
-                      $t('beneficiary.beneficiary.beneficiaryForm.locality')
-                    "
+                    :name="$t('beneficiary.attributes.locality')"
                     v-slot="{ errors }"
                     rules="required|max:150"
                   >
                     <v-text-field
-                      :label="
-                        $t('beneficiary.beneficiary.beneficiaryForm.locality')
-                      "
+                      :label="$t('beneficiary.attributes.locality')"
                       name="suburb"
                       dense
                       outlined
@@ -562,14 +490,12 @@
               <v-row v-if="useAddress">
                 <v-col cols="12" sm="12" md="4">
                   <ValidationProvider
-                    :name="$t('beneficiary.beneficiary.beneficiaryForm.street')"
+                    :name="$t('beneficiary.attributes.street')"
                     v-slot="{ errors }"
                     rules="required|max:150"
                   >
                     <v-text-field
-                      :label="
-                        $t('beneficiary.beneficiary.beneficiaryForm.street')
-                      "
+                      :label="$t('beneficiary.attributes.street')"
                       name="street"
                       dense
                       outlined
@@ -582,20 +508,12 @@
 
                 <v-col cols="12" sm="12" md="2">
                   <ValidationProvider
-                    :name="
-                      $t(
-                        'beneficiary.beneficiary.beneficiaryForm.outdoorNumber'
-                      )
-                    "
+                    :name="$t('beneficiary.attributes.outdoorNumber')"
                     v-slot="{ errors }"
                     rules="required|max:5"
                   >
                     <v-text-field
-                      :label="
-                        $t(
-                          'beneficiary.beneficiary.beneficiaryForm.outdoorNumber'
-                        )
-                      "
+                      :label="$t('beneficiary.attributes.outdoorNumber')"
                       name="outdoorNumber"
                       dense
                       outlined
@@ -607,11 +525,7 @@
                 </v-col>
                 <v-col cols="12" sm="12" md="2">
                   <v-text-field
-                    :label="
-                      $t(
-                        'beneficiary.beneficiary.beneficiaryForm.interiorNumber'
-                      )
-                    "
+                    :label="$t('beneficiary.attributes.interiorNumber')"
                     name="interiorNumber"
                     dense
                     outlined
@@ -621,7 +535,7 @@
                 </v-col>
                 <v-col cols="12" sm="12" md="4">
                   <v-text-field
-                    :label="$t('beneficiary.beneficiary.beneficiaryForm.block')"
+                    :label="$t('beneficiary.attributes.block')"
                     name="block"
                     dense
                     outlined
@@ -633,7 +547,7 @@
               <v-row v-if="useAddress">
                 <v-col cols="12" sm="12" md="4">
                   <v-text-field
-                    :label="$t('beneficiary.beneficiary.beneficiaryForm.lot')"
+                    :label="$t('beneficiary.attributes.lot')"
                     name="lot"
                     dense
                     outlined
@@ -644,13 +558,25 @@
               </v-row>
               <v-row>
                 <v-col cols="12" sm="12" md="4" offset="5">
-                  <v-btn type="submit" color="success" dark x-large dense>
-                    {{ $t("beneficiary.beneficiary.buttons.save") }}
+                  <v-btn
+                    type="submit"
+                    color="success"
+                    x-large
+                    dense
+                    :disabled="existsBeneficiary"
+                  >
+                    {{ $t("beneficiary.labels.save") }}
                   </v-btn>
                 </v-col>
               </v-row>
             </form>
           </ValidationObserver>
+          <RenapoDialogBeneficiary
+            @hideDialog="hideDialog"
+            @selectPerson="selectPerson"
+            :dialog="dialog"
+            :existsBeneficiary="existsBeneficiary"
+          />
         </v-container>
       </v-card>
     </div>
@@ -660,6 +586,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import moment from "moment";
 import GenderService from "@/services/GenderService";
 import { IGender } from "@/services/GenderService/types";
 import { IMedicalUnit } from "@/services/MedicalUnitService/types";
@@ -680,9 +607,13 @@ import BeneficiaryService from "@/services/BeneficiaryService";
 import AddressService from "@/services/AddressService";
 import { IAddresPersonResponse } from "@/services/AddressService/types";
 import Alert from "@/components/Alert.vue";
+import RenapoDialogBeneficiary from "./components/RenapoDialogBeneficiary.vue";
+import PersonService from "@/services/PersonService";
+import { IPersonData, IPersonValidationState } from "@/store/person/types";
+import { IRenapoData } from "@/services/PersonService/types";
 
 @Component({
-  components: { Alert },
+  components: { Alert, RenapoDialogBeneficiary },
 })
 export default class NewBeneficiary extends Vue {
   protected beneficiaryService = new BeneficiaryService();
@@ -693,6 +624,7 @@ export default class NewBeneficiary extends Vue {
   protected stateService = new StateService();
   protected municipalityService = new MunicipalityService();
   protected countryService = new CountryService();
+  protected personService = new PersonService();
   public gendersList: Array<IGender> = [];
   public medicalUnitsList: Array<IMedicalUnit> = [];
   public codingList: Array<ICoding> = [];
@@ -709,6 +641,9 @@ export default class NewBeneficiary extends Vue {
   public showPickerBirthday: any = false;
   public showPickerValidity: any = false;
   public useAddress: any = false;
+  public dialog = false;
+  public existsBeneficiary = true;
+  public isDisabledValidate = true;
   public addresses: Array<IAddresPersonResponse> = [];
   public alert = {
     alert: false,
@@ -729,11 +664,12 @@ export default class NewBeneficiary extends Vue {
     ApellidoPaterno: "",
     ApellidoMaterno: "",
     Curp: null,
+    IdDerechohabiente: 8,
   };
   public beneficiary: IBeneficiaryRequest = {
     IdDerechohabiente: null,
     IdPersona: 0,
-    IdDerTitular: 8,
+    IdDerTitular: null,
     IdFamiliar: null,
     IdUMedica: null,
     TipoDer: "",
@@ -796,6 +732,58 @@ export default class NewBeneficiary extends Vue {
       Lote: "",
     },
   };
+  public renapoData: IRenapoData = {
+    Curp: "",
+    Nombres: "",
+    ApellidoPaterno: "",
+    ApellidoMaterno: "",
+    Sexo: "",
+    FechaNacimiento: "",
+    Nacionalidad: "",
+    AnioRegistro: 0,
+    IdMunicipioRegistro: 0,
+    IdEntidadNacional: "",
+    IdEntidadEmisora: "",
+  };
+  public personData: IPersonData = {
+    IdPersona: 0,
+    Curp: "",
+    Nombres: "",
+    ApellidoPaterno: "",
+    ApellidoMaterno: "",
+    FechaNacimiento: "",
+    Sexo: "",
+    Rfc: "",
+    EstadoCivil: "",
+    IndRenapo: false,
+    Fotografia: "",
+    FechaFoto: "",
+    Firma: "",
+    SiglasEntidad: "",
+    Nacionalidad: "",
+    DpDocumento: 0,
+    DpEntidad: 0,
+    DpFoja: 0,
+    DpMunicipio: 0,
+    DpAnio: 0,
+    DpLibro: 0,
+    DpCrip: "",
+    DpMigracion: 0,
+    DpNatura: 0,
+    DpCertifica: 0,
+    Archivo: "",
+    PfechaAlta: "",
+    PFolioConstancia: 0,
+    PEstatus: 0,
+    XEstatus: "",
+    YEstatus: "",
+    ZEstatus: "",
+    Marca: "",
+    CError: 0,
+    Observacion: "",
+    DpActa: 0,
+    DpTomo: 0,
+  };
 
   get isLoading(): boolean {
     // TODO Refactor this form is submitting
@@ -815,11 +803,31 @@ export default class NewBeneficiary extends Vue {
   }
 
   get computedBirthdayFormatted(): string | null {
-    return this.formatted(this.beneficiary.Persona.FechaNacimiento);
+    return Vue.filter("dateFormatted")(
+      this.beneficiary.Persona.FechaNacimiento,
+      "YYYY-MM-DD",
+      "DD/MM/YYYY"
+    );
   }
 
   get computedValidityFormatted(): string | null {
-    return this.formatted(this.beneficiary.Vigencia);
+    return Vue.filter("dateFormatted")(
+      this.beneficiary.Vigencia,
+      "YYYY-MM-DD",
+      "DD/MM/YYYY"
+    );
+  }
+
+  get computedValidityFormattedHeadline(): string | null {
+    return Vue.filter("dateFormatted")(
+      this.validityRights.Vigencia,
+      "YYYY-MM-DD",
+      "DD/MM/YYYY"
+    );
+  }
+
+  get computedPerson(): IPersonValidationState {
+    return this.$store.state.person;
   }
 
   newAddress(): void {
@@ -840,14 +848,8 @@ export default class NewBeneficiary extends Vue {
     };
   }
 
-  existingAddress(): void {
+  existsAddress(): void {
     this.useAddress = false;
-  }
-
-  formatted(date: any): string | null {
-    if (!date) return null;
-    const arrayDate = date.split("-");
-    return arrayDate[2] + "/" + arrayDate[1] + "/" + arrayDate[0];
   }
 
   getCountries(): void {
@@ -934,6 +936,7 @@ export default class NewBeneficiary extends Vue {
       )
       .then((response) => {
         this.validityRights = response.Data;
+        this.beneficiary.IdDerTitular = this.validityRights.IdDerechohabiente;
       })
       .finally(() => {
         this.isLoadingValidityRights = false;
@@ -946,33 +949,156 @@ export default class NewBeneficiary extends Vue {
     this.alert.type = false;
   }
 
-  getAddressesPerson(): void {
+  getHeadlineAddresses(): void {
     this.addressService
-      .getAddressesPerson(this.computedIdPerson)
+      .getHeadlineAddresses(this.validityRights.IdDerechohabiente)
       .then((response) => {
         this.addresses = response.Data;
       });
   }
 
-  mounted(): void {
-    this.getValidityRights();
-    this.getCountries();
-    this.getGenders();
-    this.getMedicalUnits();
-    this.getCoding();
-    this.getAddressesPerson();
+  validateCurp(): void {
+    this.hideAlert();
+    this.personService
+      .findByCurp(this.beneficiary.Persona.Curp)
+      .then((response) => {
+        this.renapoData = {
+          Curp: response.Data.Renapo.Curp,
+          Nombres: response.Data.Renapo.Nombres,
+          ApellidoPaterno: response.Data.Renapo.ApellidoPaterno,
+          ApellidoMaterno: response.Data.Renapo.ApellidoMaterno,
+          Sexo: response.Data.Renapo.Sexo,
+          FechaNacimiento: Vue.filter("dateFormatted")(
+            response.Data.Renapo.FechaNacimiento,
+            "DD/MM/YYYY",
+            "YYYY-MM-DD"
+          ),
+          Nacionalidad: response.Data.Renapo.Nacionalidad,
+          AnioRegistro: response.Data.Renapo.AnioRegistro,
+          IdMunicipioRegistro: response.Data.Renapo.IdMunicipioRegistro,
+          IdEntidadNacional: response.Data.Renapo.IdEntidadNacional,
+          IdEntidadEmisora: response.Data.Renapo.IdEntidadEmisora,
+        };
+        this.setRenapoData(this.renapoData);
+        if (response.Data.MFE != null) {
+          this.personData = {
+            IdPersona: response.Data.MFE.IdPersona,
+            Curp: response.Data.MFE.Curp,
+            Nombres: response.Data.MFE.Nombres,
+            ApellidoPaterno: response.Data.MFE.ApellidoPaterno,
+            ApellidoMaterno: response.Data.MFE.ApellidoMaterno,
+            FechaNacimiento: response.Data.MFE.FechaNacimiento,
+            Sexo: response.Data.MFE.Sexo,
+            Rfc: "",
+            EstadoCivil: "",
+            IndRenapo: false,
+            Fotografia: "",
+            FechaFoto: response.Data.MFE.FechaFoto,
+            Firma: "",
+            SiglasEntidad: "",
+            Nacionalidad: "",
+            DpDocumento: 0,
+            DpEntidad: 0,
+            DpFoja: 0,
+            DpMunicipio: 0,
+            DpAnio: 0,
+            DpLibro: 0,
+            DpCrip: "",
+            DpMigracion: 0,
+            DpNatura: 0,
+            DpCertifica: 0,
+            Archivo: "",
+            PfechaAlta: "",
+            PFolioConstancia: 0,
+            PEstatus: 0,
+            XEstatus: "",
+            YEstatus: "",
+            ZEstatus: "",
+            Marca: "",
+            CError: 0,
+            Observacion: "",
+            DpActa: 0,
+            DpTomo: 0,
+          };
+          this.setPersonData(this.personData);
+        } else {
+          this.existsBeneficiary = false;
+        }
+        this.dialog = true;
+      })
+      .catch((error) => {
+        this.alert = {
+          message: this.$t(
+            "beneficiary.labels.dialogs.errorValidate.message"
+          ) as string,
+          alert: true,
+          type: false,
+        };
+      });
   }
 
-  // reset(): void {
-  //   (this.$refs.form as HTMLFormElement).reset();
-  // }
+  setRenapoData(renapoData: IRenapoData): void {
+    this.$store.dispatch("person/setRenapoData", renapoData);
+  }
+
+  setPersonData(personData: IPersonData): void {
+    this.$store.dispatch("person/setPersonData", personData);
+  }
+
+  hideDialog(): void {
+    this.dialog = false;
+    this.isDisabledValidate = true;
+    this.existsBeneficiary = true;
+  }
+
+  selectPerson(): void {
+    this.beneficiary.Persona.Nombres = this.computedPerson.Renapo.Nombres;
+    this.beneficiary.Persona.ApellidoPaterno =
+      this.computedPerson.Renapo.ApellidoPaterno;
+    this.beneficiary.Persona.ApellidoMaterno =
+      this.computedPerson.Renapo.ApellidoMaterno;
+    this.beneficiary.Persona.Sexo = this.computedPerson.Renapo.Sexo;
+    this.beneficiary.Persona.FechaNacimiento =
+      this.computedPerson.Renapo.FechaNacimiento;
+    this.beneficiary.Persona.Edad = this.getAge(
+      this.computedPerson.Renapo.FechaNacimiento
+    ).toString();
+    this.dialog = false;
+  }
+
+  getAge(dateString: string | null): number {
+    if (!dateString) return 0;
+    let today = new Date();
+    let birthDate = new Date(dateString);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    let m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  }
+
+  enabledValidate(): void {
+    this.beneficiary.Persona.Nombres = "";
+    this.beneficiary.Persona.ApellidoPaterno = "";
+    this.beneficiary.Persona.ApellidoMaterno = "";
+    this.beneficiary.Persona.ApellidoMaterno = "";
+    this.beneficiary.Persona.FechaNacimiento = "";
+    this.beneficiary.Persona.Sexo = "";
+    this.beneficiary.Persona.Edad = "";
+    this.isDisabledValidate = false;
+    this.existsBeneficiary = true;
+    (this.$refs.form as HTMLFormElement).reset();
+  }
 
   onSubmit(): void {
     this.beneficiaryService
       .create(this.beneficiary)
       .then((response) => {
         this.alert = {
-          message: this.$t("address.address.messages.success") as string,
+          message: this.$t(
+            "beneficiary.labels.dialogs.successCreate.message"
+          ) as string,
           alert: true,
           type: true,
         };
@@ -1042,15 +1168,28 @@ export default class NewBeneficiary extends Vue {
             Lote: "",
           },
         };
+        this.isDisabledValidate = true;
+        this.existsBeneficiary = true;
         (this.$refs.form as HTMLFormElement).reset();
       })
       .catch((error) => {
         this.alert = {
-          message: this.$t("address.address.messages.error") as string,
+          message: this.$t(
+            "beneficiary.labels.dialogs.errorCreate.message"
+          ) as string,
           alert: true,
           type: false,
         };
       });
+  }
+
+  mounted(): void {
+    this.getValidityRights();
+    this.getCountries();
+    this.getGenders();
+    this.getMedicalUnits();
+    this.getCoding();
+    this.getHeadlineAddresses();
   }
 }
 </script>

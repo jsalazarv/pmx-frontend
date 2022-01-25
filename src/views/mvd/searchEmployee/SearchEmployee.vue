@@ -4,7 +4,7 @@
       <v-card>
         <v-toolbar flat>
           <v-toolbar-title class="highlight">
-            {{ $t("searchEmployee.search.title") }}
+            {{ $t("searchEmployee.list.title") }}
           </v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
@@ -24,7 +24,7 @@
                     :items="employeeTypeList"
                     item-text="Nombre"
                     item-value="Id"
-                    :label="$t('searchEmployee.search.searchForm.employeeType')"
+                    :label="$t('searchEmployee.attributes.employeeType')"
                     outlined
                     v-model="searchRequest.IdTipoEmpleado"
                     :loading="isLoadingEmployeeList"
@@ -34,12 +34,12 @@
 
                 <v-col cols="12" sm="12" md="6">
                   <ValidationProvider
-                    :name="$t('searchEmployee.search.searchForm.names')"
+                    :name="$t('searchEmployee.attributes.names')"
                     v-slot="{ errors }"
                     rules="max:150"
                   >
                     <v-text-field
-                      :label="$t('searchEmployee.search.searchForm.names')"
+                      :label="$t('searchEmployee.attributes.names')"
                       name="names"
                       dense
                       outlined
@@ -54,12 +54,12 @@
               <v-row>
                 <v-col cols="12" sm="12" md="4">
                   <ValidationProvider
-                    :name="$t('searchEmployee.search.searchForm.curp')"
+                    :name="$t('searchEmployee.attributes.curp')"
                     v-slot="{ errors }"
                     rules="max:18"
                   >
                     <v-text-field
-                      :label="$t('searchEmployee.search.searchForm.curp')"
+                      :label="$t('searchEmployee.attributes.curp')"
                       name="curp"
                       dense
                       outlined
@@ -71,12 +71,12 @@
                 </v-col>
                 <v-col cols="12" sm="12" md="6">
                   <ValidationProvider
-                    :name="$t('searchEmployee.search.searchForm.lastname')"
+                    :name="$t('searchEmployee.attributes.lastname')"
                     v-slot="{ errors }"
                     rules="max:150"
                   >
                     <v-text-field
-                      :label="$t('searchEmployee.search.searchForm.lastname')"
+                      :label="$t('searchEmployee.attributes.lastname')"
                       name="lastname"
                       dense
                       outlined
@@ -92,14 +92,14 @@
                 <v-col cols="12" sm="12" md="4">
                   <ValidationProvider
                     :name="
-                      $t('searchEmployee.search.searchForm.assignmentNumber')
+                      $t('searchEmployee.attributes.assignmentNumber')
                     "
                     v-slot="{ errors }"
                     rules="numeric|max:8"
                   >
                     <v-text-field
                       :label="
-                        $t('searchEmployee.search.searchForm.assignmentNumber')
+                        $t('searchEmployee.attributes.assignmentNumber')
                       "
                       name="assignmentNumber"
                       dense
@@ -112,12 +112,12 @@
                 </v-col>
                 <v-col cols="12" sm="12" md="6">
                   <ValidationProvider
-                    :name="$t('searchEmployee.search.searchForm.surname')"
+                    :name="$t('searchEmployee.attributes.surname')"
                     v-slot="{ errors }"
                     rules="max:150"
                   >
                     <v-text-field
-                      :label="$t('searchEmployee.search.searchForm.surname')"
+                      :label="$t('searchEmployee.attributes.surname')"
                       name="surname"
                       dense
                       outlined
@@ -130,7 +130,7 @@
 
                 <v-col cols="12" sm="12" md="2">
                   <v-btn type="submit" color="success" dark large dense>
-                    {{ $t("searchEmployee.search.buttons.search") }}
+                    {{ $t("searchEmployee.labels.search") }}
                   </v-btn>
                 </v-col>
               </v-row>
@@ -215,26 +215,26 @@ export default class SearchEmployee extends Vue {
   public headers: Array<any> = [
     { text: "", value: "actions", sortable: false },
     {
-      text: this.$t("searchEmployee.search.searchForm.employeeType"),
+      text: this.$t("searchEmployee.attributes.employeeType"),
       align: "start",
       sortable: false,
       value: "tipo_emp_desc",
     },
     {
-      text: this.$t("searchEmployee.search.searchForm.names"),
+      text: this.$t("searchEmployee.attributes.names"),
       value: "nombres",
     },
     {
-      text: this.$t("searchEmployee.search.searchForm.lastname"),
+      text: this.$t("searchEmployee.attributes.lastname"),
       value: "ap_paterno",
     },
     {
-      text: this.$t("searchEmployee.search.searchForm.surname"),
+      text: this.$t("searchEmployee.attributes.surname"),
       value: "ap_materno",
     },
-    { text: this.$t("searchEmployee.search.searchForm.curp"), value: "curp" },
+    { text: this.$t("searchEmployee.attributes.curp"), value: "curp" },
     {
-      text: this.$t("searchEmployee.search.searchForm.assignmentNumber"),
+      text: this.$t("searchEmployee.attributes.assignmentNumber"),
       value: "num_empleado",
     },
   ];

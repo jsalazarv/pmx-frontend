@@ -4,7 +4,7 @@
       <v-card>
         <v-toolbar flat>
           <v-toolbar-title class="highlight">
-            {{ $t("address.address.titleSecondary") }}
+            {{ $t("address.create.title") }}
           </v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
@@ -19,7 +19,7 @@
               <v-row>
                 <v-col cols="12" sm="12" md="6">
                   <v-text-field
-                    :label="$t('address.address.addressForm.employeeType')"
+                    :label="$t('address.attributes.employeeType')"
                     name="employeeType"
                     dense
                     outlined
@@ -31,7 +31,7 @@
                 </v-col>
                 <v-col cols="12" sm="12" md="6">
                   <v-text-field
-                    :label="$t('address.address.addressForm.assigmentNumber')"
+                    :label="$t('address.attributes.assigmentNumber')"
                     name="assigmentNumber"
                     dense
                     outlined
@@ -45,7 +45,7 @@
               <v-row>
                 <v-col cols="12" sm="12" md="12">
                   <v-text-field
-                    :label="$t('address.address.addressForm.fullname')"
+                    :label="$t('address.attributes.fullname')"
                     name="fullname"
                     dense
                     outlined
@@ -67,7 +67,7 @@
               <v-row>
                 <v-col cols="12" sm="12" md="4">
                   <ValidationProvider
-                    :name="$t('address.address.addressForm.country')"
+                    :name="$t('address.attributes.country')"
                     v-slot="{ errors }"
                     rules="required"
                   >
@@ -77,7 +77,7 @@
                       :items="countries"
                       item-text="Nombre"
                       item-value="Id"
-                      :label="$t('address.address.addressForm.country')"
+                      :label="$t('address.attributes.country')"
                       outlined
                       :disabled="isLoadingCountries"
                       :loading="isLoadingCountries"
@@ -89,7 +89,7 @@
                 </v-col>
                 <v-col cols="12" sm="12" md="4">
                   <ValidationProvider
-                    :name="$t('address.address.addressForm.state')"
+                    :name="$t('address.attributes.state')"
                     v-slot="{ errors }"
                     rules="required"
                   >
@@ -99,7 +99,7 @@
                       :items="states"
                       item-text="Nombre"
                       item-value="IdEstado"
-                      :label="$t('address.address.addressForm.state')"
+                      :label="$t('address.attributes.state')"
                       :disabled="isLoadingStates || !address.IdPais"
                       :loading="isLoadingStates"
                       outlined
@@ -112,7 +112,7 @@
                 </v-col>
                 <v-col cols="12" sm="12" md="4">
                   <ValidationProvider
-                    :name="$t('address.address.addressForm.municipality')"
+                    :name="$t('address.attributes.municipality')"
                     v-slot="{ errors }"
                     rules="required"
                   >
@@ -124,7 +124,7 @@
                       item-value="IdMunicipio"
                       :disabled="isLoadingMunicipalities || !address.IdEstado"
                       :loading="isLoadingMunicipalities"
-                      :label="$t('address.address.addressForm.municipality')"
+                      :label="$t('address.attributes.municipality')"
                       outlined
                       required
                       v-model="address.IdMunicipio"
@@ -136,12 +136,12 @@
               <v-row>
                 <v-col cols="12" sm="12" md="4">
                   <ValidationProvider
-                    :name="$t('address.address.addressForm.zipcode')"
+                    :name="$t('address.attributes.zipcode')"
                     v-slot="{ errors }"
                     rules="required|numeric|min:5|max:5"
                   >
                     <v-text-field
-                      :label="$t('address.address.addressForm.zipcode')"
+                      :label="$t('address.attributes.zipcode')"
                       name="zipCode"
                       dense
                       outlined
@@ -153,12 +153,12 @@
                 </v-col>
                 <v-col cols="12" sm="12" md="4">
                   <ValidationProvider
-                    :name="$t('address.address.addressForm.suburb')"
+                    :name="$t('address.attributes.suburb')"
                     v-slot="{ errors }"
                     rules="required|max:150"
                   >
                     <v-text-field
-                      :label="$t('address.address.addressForm.suburb')"
+                      :label="$t('address.attributes.suburb')"
                       name="suburb"
                       dense
                       outlined
@@ -170,13 +170,13 @@
                 </v-col>
                 <v-col cols="12" sm="12" md="4">
                   <ValidationProvider
-                    :name="$t('address.address.addressForm.locality')"
+                    :name="$t('address.attributes.locality')"
                     v-slot="{ errors }"
                     rules="required|max:150"
                   >
                     <v-text-field
-                      :label="$t('address.address.addressForm.locality')"
-                      name="suburb"
+                      :label="$t('address.attributes.locality')"
+                      name="locality"
                       dense
                       outlined
                       :error-messages="errors"
@@ -189,12 +189,12 @@
               <v-row>
                 <v-col cols="12" sm="12" md="4">
                   <ValidationProvider
-                    :name="$t('address.address.addressForm.street')"
+                    :name="$t('address.attributes.street')"
                     v-slot="{ errors }"
                     rules="required|max:150"
                   >
                     <v-text-field
-                      :label="$t('address.address.addressForm.street')"
+                      :label="$t('address.attributes.street')"
                       name="street"
                       dense
                       outlined
@@ -207,12 +207,12 @@
 
                 <v-col cols="12" sm="12" md="2">
                   <ValidationProvider
-                    :name="$t('address.address.addressForm.outdoorNumber')"
+                    :name="$t('address.attributes.outdoorNumber')"
                     v-slot="{ errors }"
                     rules="required|max:5"
                   >
                     <v-text-field
-                      :label="$t('address.address.addressForm.outdoorNumber')"
+                      :label="$t('address.attributes.outdoorNumber')"
                       name="outdoorNumber"
                       dense
                       outlined
@@ -224,7 +224,7 @@
                 </v-col>
                 <v-col cols="12" sm="12" md="2">
                   <v-text-field
-                    :label="$t('address.address.addressForm.interiorNumber')"
+                    :label="$t('address.attributes.interiorNumber')"
                     name="interiorNumber"
                     dense
                     outlined
@@ -234,7 +234,7 @@
                 </v-col>
                 <v-col cols="12" sm="12" md="4">
                   <v-text-field
-                    :label="$t('address.address.addressForm.block')"
+                    :label="$t('address.attributes.block')"
                     name="block"
                     dense
                     outlined
@@ -246,7 +246,7 @@
               <v-row>
                 <v-col cols="12" sm="12" md="4">
                   <v-text-field
-                    :label="$t('address.address.addressForm.lot')"
+                    :label="$t('address.attributes.lot')"
                     name="lot"
                     dense
                     outlined
@@ -258,7 +258,7 @@
               <v-row>
                 <v-col cols="12" sm="12" md="4" offset="5">
                   <v-btn type="submit" color="success" dark x-large dense>
-                    {{ $t("address.address.buttons.save") }}
+                    {{ $t("address.labels.save") }}
                   </v-btn>
                 </v-col>
               </v-row>
@@ -320,6 +320,7 @@ export default class NewAddress extends Vue {
     ApellidoPaterno: "",
     ApellidoMaterno: "",
     Curp: null,
+    IdDerechohabiente:null
   };
   public address: IAddress = {
     IdDomicilio: null,
@@ -449,7 +450,7 @@ export default class NewAddress extends Vue {
 
         if (responseAddressPerson.Success) {
           this.alert = {
-            message: this.$t("address.address.messages.success") as string,
+            message: this.$t("address.labels.dialogs.successCreate.message") as string,
             alert: true,
             type: true,
           };
@@ -473,7 +474,7 @@ export default class NewAddress extends Vue {
       }
     } catch (error) {
       this.alert = {
-        message: this.$t("address.address.messages.error") as string,
+        message: this.$t("address.labels.dialogs.errorCreate.message") as string,
         alert: true,
         type: false,
       };

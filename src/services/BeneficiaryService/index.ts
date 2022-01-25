@@ -3,6 +3,7 @@ import { IServiceResponse } from "@/services/types";
 import {
   IBeneficiary,
   IBeneficiaryRequest,
+  ITitularBeneficiaryRequest,
   IValidityRightsResponse,
 } from "@/services/BeneficiaryService/types";
 
@@ -21,15 +22,33 @@ export default class BeneficiaryService extends BaseService {
     return this.client.post("/Derechohabientes", beneficiary);
   }
 
-  getBeneficiaryByPerson(
-    idPerson: number | null
-  ): IServiceResponse<IBeneficiary> {
+  getAll(idBeneficiary: number | null): IServiceResponse<Array<IBeneficiary>> {
     return this.client.get(
-      `/Derechohabientes/ObtenerDerechohabientePorPersona/${idPerson}`
+      `Derechohabientes/ObtenerTodosIdTitular/${idBeneficiary}`
     );
   }
 
-  getAll(assigmentNumber: number | null): IBeneficiary[] {
-    return [];
+  createTitular(
+    beneficiaryTitular: ITitularBeneficiaryRequest
+  ): IServiceResponse<number> {
+    return this.client.post(
+      "/Derechohabientes/AltaTitular",
+      beneficiaryTitular
+    );
+  }
+
+  getMedicalUnit(idBeneficiary: number | null): IServiceResponse<number> {
+    return this.client.get(
+      `Derechohabientes/ObtenerIdUnidadMedica/${idBeneficiary}`
+    );
+  }
+
+  updateMedicalUnit(
+    idBeneficiary: number | null,
+    idMedicalUnit: number | null
+  ): IServiceResponse<number> {
+    return this.client.put(
+      `Derechohabientes/ActualizarUnidadMedica/${idBeneficiary}/${idMedicalUnit}`
+    );
   }
 }

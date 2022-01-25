@@ -39,9 +39,11 @@ export default [
     meta: { requiresAuth: true },
   },
   {
-    path: "/mvd/derechohabiente/editar/:id",
+    path:
+      "/mvd/derechohabiente/editar/:paramEmployeeId?/:paramEmployeeTypeId?/:paramIdPerson?/:paramIdBeneficiary?",
     name: "beneficiary:editBeneficiary",
-    component: () => import("@/views/mvd/beneficiary/NewBeneficiary.vue"),
+    props: true,
+    component: () => import("@/views/mvd/beneficiary/EditBeneficiary.vue"),
     meta: { requiresAuth: true },
   },
   {

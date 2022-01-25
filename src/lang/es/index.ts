@@ -1,14 +1,14 @@
 import dictionary from "./dictionary";
 import employee from "./employee";
 import assignmentFolios from "./assignmentFolios";
-import searchEmployee from "./searchEmployee";
-import employeeConsultation from "./employeeConsultation";
-import beneficiary from "./beneficiary";
-import address from "./address";
+import searchEmployee from "./mvd/searchEmployee";
+import employeeConsultation from "./mvd/employeeConsultation";
+import beneficiary from "./mvd/beneficiary";
+import address from "./mvd/address";
 import employeeConsultationMFE from "./mfe/employeeConsultation";
 import affiliationLog from "./mfe/affiliationLog";
 import proofAssignment from "./mfe/proofAssignment";
-import credentialization from "./credentialization";
+import credentialization from "./mvd/credentialization";
 
 export default {
   dictionary,
