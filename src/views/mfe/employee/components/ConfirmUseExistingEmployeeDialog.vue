@@ -180,14 +180,11 @@ export default class ConfirmUseExistingEmployeeDialog extends Vue {
       })
       .catch((err) => {
         if (err.response) {
-          (this as any).CustomError(err?.response?.status)
+          (this as any).CustomError(err?.response?.status);
           console.error(err?.response?.status);
         }
       })
-      .finally(() => {
-        //TODO: Final action
-        console.log("Final action");
-      });
+      .finally(() => {});
   }
 }
 </script>

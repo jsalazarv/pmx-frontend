@@ -77,7 +77,7 @@ export default class PeopleCreate extends Vue {
           (this as any).CustomError(
             err?.response?.status,
             err?.response?.data?.Message?.Texto
-          )
+          );
           console.error(err?.response);
         }
       })

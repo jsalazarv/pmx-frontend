@@ -11,7 +11,8 @@ export class NotifyMixin extends Vue {
   };
 
   ok(text = ""): void {
-    this.notifyModel.text = text ?? this.$t("statusCode.ok.text");
+    this.notifyModel.open = true;
+    this.notifyModel.text = text || (this.$t("statusCode.ok.text") as string);
     this.notifyModel.colorText = "green";
     this.notifyModel.colorBtn = "green";
 
@@ -19,7 +20,9 @@ export class NotifyMixin extends Vue {
   }
 
   noContent(text = "") {
-    this.notifyModel.text = text ?? this.$t("statusCode.noContent.text");
+    this.notifyModel.open = true;
+    this.notifyModel.text =
+      text || (this.$t("statusCode.noContent.text") as string);
     this.notifyModel.colorText = "green";
     this.notifyModel.colorBtn = "green";
 
@@ -27,7 +30,9 @@ export class NotifyMixin extends Vue {
   }
 
   badRequest(text = ""): void {
-    this.notifyModel.text = text ?? this.$t("statusCode.badRequest.text");
+    this.notifyModel.open = true;
+    this.notifyModel.text =
+      text || (this.$t("statusCode.badRequest.text") as string);
     this.notifyModel.colorText = "orange";
     this.notifyModel.colorBtn = "orange";
 
@@ -35,7 +40,9 @@ export class NotifyMixin extends Vue {
   }
 
   notFound(text = "") {
-    this.notifyModel.text = text ?? this.$t("statusCode.notFound.text");
+    this.notifyModel.open = true;
+    this.notifyModel.text =
+      text || (this.$t("statusCode.notFound.text") as string);
     this.notifyModel.colorText = "orange";
     this.notifyModel.colorBtn = "orange";
 
@@ -43,27 +50,33 @@ export class NotifyMixin extends Vue {
   }
 
   internalServerError(text = "") {
+    this.notifyModel.open = true;
     this.notifyModel.text =
-      text ?? this.$t("statusCode.internalServerError.text");
+      text || (this.$t("statusCode.internalServerError.text") as string);
     this.notifyModel.colorText = "white";
     this.notifyModel.colorBtn = "red";
 
     this.$store.dispatch("app/setNotify", this.notifyModel);
   }
 
-  CustomError(status: string, text: string = "") {
+  customError(status: number, text = "") {
+    const badRequest: number = parseInt(
+      this.$t("statusCode.badRequest.status").toString()
+    );
+    const internalServerError: number = parseInt(
+      this.$t("statusCode.internalServerError.status").toString()
+    );
+
     switch (status) {
-      case this.$t("statusCode.badRequest.status"):
-          this.badRequest(text);
-          break;
-          
-        case this.$t("statusCode.internalServerError.status"):
-          this.internalServerError(text);
+      case badRequest:
+        this.badRequest(text);
+        break;
+
+      case internalServerError:
+        this.internalServerError(text);
         break;
     }
   }
 
-  mounted(): void {
-    console.log(this.$t("statusCode.ok.text"));
-  }
+  mounted(): void {}
 }

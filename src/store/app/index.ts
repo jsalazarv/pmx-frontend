@@ -52,7 +52,7 @@ const appStore: Module<IAppState, IRootState> = {
         notify.colorBtn = "";
         notify.text = "";
         commit("SET_NOTIFY", notify);
-      }, 8000);
+      }, 3000);
     },
     clearNotify({ commit }) {
       const notifyModel: Notify = {
