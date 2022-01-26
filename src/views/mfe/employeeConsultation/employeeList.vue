@@ -278,17 +278,11 @@ export default class EmployeeList extends Vue {
       .then((response) => {
         if (response.Success) {
           this.employeeList = response.Data;
-
-          this.$store.dispatch("app/setNotify", {});
         }
       })
       .catch((err) => {
         if (err.response) {
-          this.$store.dispatch("app/setNotify", {
-            status: err?.response?.status,
-            text: err?.response?.data?.Message?.Texto,
-          });
-          console.error(err?.response);
+          console.error(err.response);
         }
       })
       .finally(() => {
@@ -302,6 +296,9 @@ export default class EmployeeList extends Vue {
       .getAll()
       .then((response) => {
         this.employeeTypeList = response.Data;
+      })
+      .catch((error) => {
+        console.error(error.response);
       })
       .finally(() => {
         this.isLoadingEmployeeList = false;
@@ -331,10 +328,10 @@ export default class EmployeeList extends Vue {
       })
       .catch((err) => {
         if (err.response) {
-          this.$store.dispatch("app/setNotify", {
-            status: err?.response?.status,
-            text: err?.response?.data?.Message?.Texto,
-          });
+          (this as any).customError(
+            err?.response?.status,
+            err?.response?.data?.Message?.Texto
+          );
           console.error(err?.response);
         }
       })
@@ -353,7 +350,7 @@ export default class EmployeeList extends Vue {
       .export(data, this.filters)
       .then((response) => {
         if (response.data) {
-          this.$store.dispatch("app/setNotify", {});
+          (this as any).ok(this.$t("notify.reportGenerate") as string);
           download(
             response.data,
             `${data.NombreReporte}.xlsx`,
@@ -363,10 +360,10 @@ export default class EmployeeList extends Vue {
       })
       .catch((err) => {
         if (err.response) {
-          this.$store.dispatch("app/setNotify", {
-            status: err?.response?.status,
-            text: err?.response?.data?.Message?.Texto,
-          });
+          (this as any).customError(
+            err?.response?.status,
+            err?.response?.data?.Message?.Texto
+          );
           console.error(err?.response);
         }
       })

@@ -196,15 +196,10 @@ export default class AffiliationLog extends Vue {
       .then((response) => {
         if (response.Success) {
           this.affiliationLogList = response.Data;
-          this.$store.dispatch("app/setNotify", {});
         }
       })
       .catch((err) => {
         if (err.response) {
-          this.$store.dispatch("app/setNotify", {
-            status: err?.response?.status,
-            text: err?.response?.data?.Message?.Texto,
-          });
           console.error(err?.response);
         }
       })
@@ -214,6 +209,8 @@ export default class AffiliationLog extends Vue {
   }
 
   generateReport(): void {
+    let vm = this as any;
+
     this.isLoadingAffiliationLogList = true;
     const data = {
       NombreReporte: "Reporte",
@@ -223,7 +220,8 @@ export default class AffiliationLog extends Vue {
       .export(data, this.filters)
       .then((response) => {
         if (response.data) {
-          this.$store.dispatch("app/setNotify", {});
+          vm.ok(vm.$t("notify.reportGenerate") as string);
+
           download(
             response.data,
             `${data.NombreReporte}.xlsx`,
@@ -233,10 +231,10 @@ export default class AffiliationLog extends Vue {
       })
       .catch((err) => {
         if (err.response) {
-          this.$store.dispatch("app/setNotify", {
-            status: err?.response?.status,
-            text: err?.response?.data?.Message?.Texto,
-          });
+          (this as any).customError(
+            err?.response?.status,
+            err?.response?.data?.Message?.Texto
+          );
           console.error(err?.response);
         }
       })
@@ -252,15 +250,11 @@ export default class AffiliationLog extends Vue {
       .then((response) => {
         if (response.Success) {
           this.affiliationLogList = response.Data;
-          this.$store.dispatch("app/setNotify", {});
+          (this as any).ok();
         }
       })
       .catch((err) => {
         if (err.response) {
-          this.$store.dispatch("app/setNotify", {
-            status: err?.response?.status,
-            text: err?.response?.data?.Message?.Texto,
-          });
           console.error(err?.response);
         }
       })
@@ -275,6 +269,11 @@ export default class AffiliationLog extends Vue {
       .getAll()
       .then((response) => {
         this.employeeTypeList = response.Data;
+      })
+      .catch((error) => {
+        if(error.response){
+          console.error(error.response)
+        }
       })
       .finally(() => {
         this.isLoadingAffiliationLogList = false;
