@@ -317,15 +317,15 @@ export default class employeeShow extends Vue {
           this.employeeData = { ...initialEmployeeData, ...data };
 
           this.selectedEmployeeType(data.EstadoCivil);
-          this.$store.dispatch("app/setNotify", {});
+          (this as any).ok();
         }
       })
       .catch((err) => {
         if (err.response) {
-          this.$store.dispatch("app/setNotify", {
-            status: err?.response?.status,
-            text: err?.response?.data?.Message?.Texto,
-          });
+          (this as any).customError(
+            err?.response?.status,
+            err?.response?.data?.Message?.Texto
+          );
           console.error(err?.response);
         }
       })

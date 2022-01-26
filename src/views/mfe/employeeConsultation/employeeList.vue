@@ -322,7 +322,7 @@ export default class EmployeeList extends Vue {
       .filter(this.filters)
       .then((response) => {
         if (response.Success) {
-          this.$store.dispatch("app/setNotify", {});
+          (this as any).ok();
           this.employeeList = response.Data;
         }
       })
