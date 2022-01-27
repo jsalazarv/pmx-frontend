@@ -21,6 +21,7 @@ const initialState: IEmployeeState = {
     EdoCivil: "",
     Fotografia: "",
     Nacionalidad: "",
+    IndRenapo: false,
   },
   employmentData: {
     Folio: "",

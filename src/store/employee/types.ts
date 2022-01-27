@@ -91,6 +91,7 @@ export interface IEmployeeForm {
   EdoCivil: string;
   Fotografia: string;
   Nacionalidad: string;
+  IndRenapo?: boolean;
 }
 
 export interface IEmploymentDataForm {
