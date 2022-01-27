@@ -704,12 +704,8 @@ export default class employeeEdit extends Vue {
           this.getWorkplaces();
           this.getSyndicateSections();
           this.selectedEmployeeType(data.EstadoCivil);
-<<<<<<< HEAD
 
           (this as any).ok();
-=======
-          this.$store.dispatch("app/setNotify", {});
->>>>>>> a2ed16bda4eba80c3ae4754a6337a60ad4c609e1
         }
       })
       .catch((err) => {
@@ -754,14 +750,7 @@ export default class employeeEdit extends Vue {
         if (response.Success) {
           (this as any).ok();
         } else {
-<<<<<<< HEAD
           (this as any).customError(400, response.Message);
-=======
-          this.$store.dispatch("app/setNotify", {
-            status: 400,
-            text: response.Message,
-          });
->>>>>>> a2ed16bda4eba80c3ae4754a6337a60ad4c609e1
         }
       })
       .catch((err) => {

@@ -214,9 +214,11 @@ export default class ProofAssignment extends Vue {
       })
       .catch((err) => {
         if (err.response) {
-         (this as any).customError(
+          console.log(err.response);
+
+          (this as any).customError(
             err?.response?.status,
-            err?.response?.data?.Message?.Texto
+            err?.response?.data?.Message 
           );
           console.error(err?.response);
         }

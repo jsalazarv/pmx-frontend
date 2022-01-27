@@ -271,8 +271,8 @@ export default class AffiliationLog extends Vue {
         this.employeeTypeList = response.Data;
       })
       .catch((error) => {
-        if(error.response){
-          console.error(error.response)
+        if (error.response) {
+          console.error(error.response);
         }
       })
       .finally(() => {

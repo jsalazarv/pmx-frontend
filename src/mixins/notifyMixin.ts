@@ -66,10 +66,17 @@ export class NotifyMixin extends Vue {
     const internalServerError: number = parseInt(
       this.$t("statusCode.internalServerError.status").toString()
     );
+    const notFound: number = parseInt(
+      this.$t("statusCode.notFound.status").toString()
+    );
 
     switch (status) {
       case badRequest:
         this.badRequest(text);
+        break;
+
+      case notFound:
+        this.notFound(text);
         break;
 
       case internalServerError:
