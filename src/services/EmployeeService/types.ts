@@ -129,6 +129,7 @@ export interface IUpdateEmployeeRequest {
   Observaciones: string;
   IdTipoEmpleado: number;
   IdEmpleado: number;
+  IndRenapo: boolean;
 }
 
 export interface IRejectEmployeeRequest {

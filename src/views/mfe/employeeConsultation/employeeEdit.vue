@@ -557,6 +557,7 @@ export default class employeeEdit extends Vue {
   public enableValidationButton = false;
   public isDialogOpen = false;
   public currentCurp = "";
+  public hasIndRenapo = false;
   public currentEmployeeData = {
     Curp: "",
     Nombres: "",
@@ -698,12 +699,17 @@ export default class employeeEdit extends Vue {
           const data = Vue.filter("cleanObject")(response.Data);
           this.employeeData = { ...initialEmployeeData, ...data };
           this.currentCurp = data.Persona.Curp;
+          this.hasIndRenapo = data.Persona.IndRenapo;
           this.currentEmployeeData = data.Persona;
           this.getWorkplaces();
           this.getSyndicateSections();
           this.selectedEmployeeType(data.EstadoCivil);
+<<<<<<< HEAD
 
           (this as any).ok();
+=======
+          this.$store.dispatch("app/setNotify", {});
+>>>>>>> a2ed16bda4eba80c3ae4754a6337a60ad4c609e1
         }
       })
       .catch((err) => {
@@ -739,6 +745,7 @@ export default class employeeEdit extends Vue {
       Observaciones: this.employeeData.Filiacion?.Observaciones,
       IdTipoEmpleado: this.employeeData.TipoEmpleado?.Id,
       IdEmpleado: this.employeeData.IdEmpleado,
+      IndRenapo: this.hasIndRenapo,
     };
     this.isUpdating = true;
     this.employeeService
@@ -747,7 +754,14 @@ export default class employeeEdit extends Vue {
         if (response.Success) {
           (this as any).ok();
         } else {
+<<<<<<< HEAD
           (this as any).customError(400, response.Message);
+=======
+          this.$store.dispatch("app/setNotify", {
+            status: 400,
+            text: response.Message,
+          });
+>>>>>>> a2ed16bda4eba80c3ae4754a6337a60ad4c609e1
         }
       })
       .catch((err) => {
@@ -794,6 +808,7 @@ export default class employeeEdit extends Vue {
             err?.response?.data?.Message?.Texto
           );
           console.error(err?.response);
+          this.hasIndRenapo = false;
           this.infoSelected = false;
         }
       })
@@ -812,6 +827,7 @@ export default class employeeEdit extends Vue {
       this.validationMessage = response.Message;
       (this as any).ok();
       setTimeout(() => this.openDialog(), 500);
+      this.hasIndRenapo = true;
     } else {
       (this as any).customError(400, response.Message);
     }
@@ -835,6 +851,7 @@ export default class employeeEdit extends Vue {
     this.isValidatingCurp = false;
     this.enableValidationButton = false;
     this.employeeData.Persona = {
+      IdPersona: this.employeeData.Persona?.IdPersona,
       Curp: this.currentCurp,
       Nombres: this.currentEmployeeData.Nombres,
       ApellidoPaterno: this.currentEmployeeData.ApellidoPaterno,
@@ -843,6 +860,7 @@ export default class employeeEdit extends Vue {
       Sexo: this.currentEmployeeData.Sexo,
       EstadoCivil: this.currentEmployeeData.EstadoCivil,
       RFC: this.currentEmployeeData.RFC,
+      IndRenapo: this.hasIndRenapo,
     };
   }
 

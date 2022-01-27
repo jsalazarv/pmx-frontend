@@ -377,6 +377,7 @@ export default class EmployeeSearchForm extends Vue {
   public isConfirmDialogOpen = false;
   public infoSelected = false;
   public menu1 = false;
+  public hasIndRenapo = false;
 
   get employee(): IEmployeeForm {
     return this.$store.state.employees.employee;
@@ -417,6 +418,7 @@ export default class EmployeeSearchForm extends Vue {
       ),
       Sexo: this.employeeValidationData?.Renapo?.Sexo,
       Nacionalidad: this.employeeValidationData?.Renapo?.Nacionalidad,
+      IndRenapo: this.hasIndRenapo,
     };
   }
 
@@ -462,6 +464,7 @@ export default class EmployeeSearchForm extends Vue {
           error.response.status,
           this.$t("employee.labels.dialogs.searchNotFound.message") as string
         );
+        this.hasIndRenapo = false;
         this.infoSelected = false;
         const { Curp, IdTipoEmpleado } = this.employee;
         this.$store.dispatch("employees/clear", {
@@ -497,15 +500,19 @@ export default class EmployeeSearchForm extends Vue {
 
     switch (response.Message.Regla) {
       case EmployeeValidationRule.PERSONA_TIPOS_EMPLEADO_NO_EXISTE:
+        this.hasIndRenapo = true;
         this.openDialog();
         break;
       case EmployeeValidationRule.PERSONA_OTROS_TIPO_EMPLEADO_EXISTE:
+        this.hasIndRenapo = true;
         this.openDialog();
         break;
       case EmployeeValidationRule.PERSONA_TIPO_EMPLEADO_EXISTE:
+        this.hasIndRenapo = true;
         this.openConfirmDialog();
         break;
       default:
+        this.hasIndRenapo = true;
         //TODO: default case
         break;
     }
