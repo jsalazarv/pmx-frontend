@@ -126,7 +126,7 @@
           @click="selectData"
           :disabled="!renapoData.Nombres"
         >
-          {{ $t("employee.labels.dialogs.renapo.labels.select") }}:
+          {{ $t("employee.labels.dialogs.renapo.labels.select") }}
         </v-btn>
       </v-card-actions>
     </v-card>

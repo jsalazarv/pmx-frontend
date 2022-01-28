@@ -78,6 +78,7 @@
                       @click="validateCurp"
                     >
                       {{ $t("employee.labels.validate") }}
+                      <v-icon right dark>mdi-account-convert</v-icon>
                     </v-btn>
                     <v-checkbox
                       v-model="enableValidationButton"
@@ -434,6 +435,7 @@
               :disabled="isUpdating || isValidatingEmployee || isValidatingCurp"
             >
               {{ $t("employeeConsultationMFE.labels.update") }}
+              <v-icon right dark>mdi-autorenew</v-icon>
             </v-btn>
           </v-container>
         </ValidationObserver>

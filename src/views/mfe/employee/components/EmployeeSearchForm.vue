@@ -58,6 +58,7 @@
                 :loading="isValidatingEmployee"
               >
                 {{ $t("employee.labels.validate") }}
+                <v-icon right dark>mdi-account-convert</v-icon>
               </v-btn>
             </v-col>
           </v-row>
@@ -477,9 +478,6 @@ export default class EmployeeSearchForm extends Vue {
   ): void {
     this.employeeValidationData = response.Data;
     this.validationMessage = response.Message.Texto;
-
-    console.log("RESPUESTA DE VALIDACION RENAPO", response.Data.Renapo.Curp);
-    console.log("RESPUESTA DE VALIDACION", response.Data);
 
     switch (response.Message.Regla) {
       case EmployeeValidationRule.PERSONA_TIPOS_EMPLEADO_NO_EXISTE:

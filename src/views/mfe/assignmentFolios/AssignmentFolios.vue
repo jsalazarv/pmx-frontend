@@ -27,6 +27,7 @@
             @click="search"
           >
             {{ $t("assignmentFolios.labels.search") }}
+            <v-icon right dark> mdi-magnify </v-icon>
           </v-btn>
         </v-toolbar>
         <v-progress-linear

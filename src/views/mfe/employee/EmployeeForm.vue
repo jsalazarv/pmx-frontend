@@ -25,6 +25,7 @@
               :loading="isCreating"
             >
               {{ $t("employee.labels.generateAssignmentNumber") }}
+              <v-icon right dark>mdi-plus-thick</v-icon>
             </v-btn>
           </v-container>
         </ValidationObserver>
