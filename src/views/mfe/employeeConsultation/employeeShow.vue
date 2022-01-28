@@ -10,6 +10,7 @@
           <v-spacer></v-spacer>
           <v-btn color="primary" :to="{ name: 'people:edit' }">
             {{ $t("employeeConsultationMFE.labels.edit") }}
+            <v-icon right dark>mdi-account-edit</v-icon>
           </v-btn>
         </v-toolbar>
         <v-container>

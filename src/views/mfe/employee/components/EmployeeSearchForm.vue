@@ -58,6 +58,7 @@
                 :loading="isValidatingEmployee"
               >
                 {{ $t("employee.labels.validate") }}
+                <v-icon right dark>mdi-account-convert</v-icon>
               </v-btn>
             </v-col>
           </v-row>

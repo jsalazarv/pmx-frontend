@@ -26,6 +26,7 @@
             @click="getEmployeeById"
           >
             {{ $t("proofAssignment.labels.search") }}
+            <v-icon right dark> mdi-magnify </v-icon>
           </v-btn>
 
           <v-spacer></v-spacer>
@@ -35,6 +36,7 @@
             @click="generateReport"
           >
             {{ $t("proofAssignment.labels.export") }}
+            <v-icon right dark>mdi-file-account</v-icon>
           </v-btn>
         </v-toolbar>
         <v-progress-linear
