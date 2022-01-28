@@ -11,52 +11,60 @@ export class NotifyMixin extends Vue {
   };
 
   ok(text = ""): void {
-    this.notifyModel.open = true;
-    this.notifyModel.text = text || (this.$t("statusCode.ok.text") as string);
-    this.notifyModel.colorText = "green";
-    this.notifyModel.colorBtn = "green";
+    this.baseNotification(
+      text || (this.$t("statusCode.ok.text") as string),
+      "white",
+      "green"
+    );
 
     this.$store.dispatch("app/setNotify", this.notifyModel);
   }
 
   noContent(text = "") {
-    this.notifyModel.open = true;
-    this.notifyModel.text =
-      text || (this.$t("statusCode.noContent.text") as string);
-    this.notifyModel.colorText = "green";
-    this.notifyModel.colorBtn = "green";
+    this.baseNotification(
+      text || (this.$t("statusCode.noContent.text") as string),
+      "white",
+      "green"
+    );
 
     this.$store.dispatch("app/setNotify", this.notifyModel);
   }
 
   badRequest(text = ""): void {
-    this.notifyModel.open = true;
-    this.notifyModel.text =
-      text || (this.$t("statusCode.badRequest.text") as string);
-    this.notifyModel.colorText = "orange";
-    this.notifyModel.colorBtn = "orange";
+    this.baseNotification(
+      text || (this.$t("statusCode.badRequest.text") as string),
+      "orange",
+      "orange"
+    );
 
     this.$store.dispatch("app/setNotify", this.notifyModel);
   }
 
   notFound(text = "") {
-    this.notifyModel.open = true;
-    this.notifyModel.text =
-      text || (this.$t("statusCode.notFound.text") as string);
-    this.notifyModel.colorText = "orange";
-    this.notifyModel.colorBtn = "orange";
+    this.baseNotification(
+      text || (this.$t("statusCode.notFound.text") as string),
+      "orange",
+      "orange"
+    );
 
     this.$store.dispatch("app/setNotify", this.notifyModel);
   }
 
   internalServerError(text = "") {
-    this.notifyModel.open = true;
-    this.notifyModel.text =
-      text || (this.$t("statusCode.internalServerError.text") as string);
-    this.notifyModel.colorText = "white";
-    this.notifyModel.colorBtn = "red";
+    this.baseNotification(
+      text || (this.$t("statusCode.internalServerError.text") as string),
+      "white",
+      "red"
+    );
 
     this.$store.dispatch("app/setNotify", this.notifyModel);
+  }
+
+  baseNotification(text: string, colorText: string, colorBtn: string = "") {
+    this.notifyModel.open = true;
+    this.notifyModel.text = text;
+    this.notifyModel.colorText = colorText;
+    this.notifyModel.colorBtn = colorBtn;
   }
 
   customError(status: number, text = "") {
