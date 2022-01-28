@@ -14,6 +14,7 @@
             @click="generateReport"
           >
             {{ $t("affiliationLog.labels.export") }}
+            <v-icon right dark>mdi-file-account</v-icon>
           </v-btn>
         </v-toolbar>
         <v-container fluid>
@@ -89,6 +90,7 @@
                 @click="search"
               >
                 {{ $t("affiliationLog.labels.search") }}
+                <v-icon right dark> mdi-magnify </v-icon>
               </v-btn>
             </v-col>
           </v-row>
