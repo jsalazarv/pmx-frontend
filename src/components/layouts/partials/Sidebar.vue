@@ -66,6 +66,20 @@
         </v-list-item>
       </template>
     </v-list>
+    <template v-slot:append>
+      <v-list dense>
+        <v-list-item link :to="{ name: 'users:list' }" exact>
+          <v-list-item-action>
+            <v-icon>mdi-account-multiple-plus</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>
+              {{ $t("sidebar.common.items.manageUsers") }}
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </template>
   </v-navigation-drawer>
 </template>
 
