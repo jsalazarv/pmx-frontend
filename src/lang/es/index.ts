@@ -12,6 +12,7 @@ import credentialization from "./mvd/credentialization";
 import statusCode from "@/lang/es/statusCode";
 import notify from "@/lang/es/mfe/notify";
 import sidebar from "@/lang/es/sidebar";
+import users from "@/lang/es/admin/users";
 
 export default {
   dictionary,
@@ -28,4 +29,5 @@ export default {
   statusCode,
   notify,
   sidebar,
+  users,
 };
