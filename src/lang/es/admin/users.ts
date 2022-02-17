@@ -30,6 +30,13 @@ export default {
     delete: "Eliminar",
     search: "Buscar",
     dialogs: {
+      createUser: {
+        title: "Agregar usuario",
+        actions: {
+          dismiss: "Cancelar",
+          search: "Buscar",
+        },
+      },
       confirmDelete: {},
       successDelete: {},
       errorDelete: {},

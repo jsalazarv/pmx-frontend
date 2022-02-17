@@ -8,7 +8,12 @@
           </v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-btn class="mx-1" color="success" :disabled="isLoadingUsersList">
+          <v-btn
+            class="mx-1"
+            color="success"
+            :disabled="isLoadingUsersList"
+            @click="openUserModal"
+          >
             {{ $t("users.labels.add") }}
             <v-icon right dark>mdi-account-plus</v-icon>
           </v-btn>
@@ -24,7 +29,7 @@
           :headers="headers"
           :items="userList"
         >
-          <template v-slot:[`item.actions`]="{ item }">
+          <template>
             <v-btn class="mx-1" color="info" outlined fab x-small>
               <v-icon dark>mdi-account-eye</v-icon>
             </v-btn>
@@ -37,16 +42,27 @@
           </template>
         </v-data-table>
       </v-card>
+
+      <pre>
+        {{ employeeData }}
+      </pre>
     </div>
+    <UserDialog
+      :open.sync="confirmDialogOpen"
+      :employeeData.sync="employeeData"
+    ></UserDialog>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { IUser } from "@/store/user/types";
+import { IUser } from "@/services/UserService/types";
 import UserService from "@/services/UserService";
-
-@Component
+import UserDialog from "@/views/admin/users/components/UserDialog.vue";
+import { IShowEmployee } from "@/services/EmployeeService/types";
+@Component({
+  components: { UserDialog },
+})
 export default class UsersList extends Vue {
   protected userService = new UserService();
   public isLoadingUsersList = false;
@@ -89,19 +105,24 @@ export default class UsersList extends Vue {
     },
     { text: "", value: "actions", align: "end", sortable: false },
   ];
+  public confirmDialogOpen = false;
+  public employeeData?: IShowEmployee = {};
 
   getUserList(): void {
     this.isLoadingUsersList = true;
     this.userService
       .getAll()
       .then((response) => {
-        console.log(response);
         this.userList = response.Data;
       })
       .catch()
       .finally(() => {
         this.isLoadingUsersList = false;
       });
+  }
+
+  openUserModal(): void {
+    this.confirmDialogOpen = true;
   }
 
   mounted(): void {
