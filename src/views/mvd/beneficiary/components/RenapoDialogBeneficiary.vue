@@ -2,15 +2,22 @@
   <v-dialog v-model="dialog" persistent max-width="750">
     <v-card>
       <v-card-title class="text-h6">
+        {{ hasDataRenapo }}  tiene datos renapo
+        {{ hasDataPTCH }} tiene datos portal
+        {{ existsBeneficiary }} existe derechohabiente 
         {{
           existsBeneficiary
-            ? $t("beneficiary.labels.validations.discharged")
-            : $t("beneficiary.labels.validations.isNotDischarged")
-        }}</v-card-title
-      >
+            ? "Ya esta registrado el derechohabiente y esta activo"
+            : hasDataPTCH
+            ? "Ya esta registrado el derechohabiente y esta inactivo"
+            : "No existe registrado el derechohabiente"
+        }}
+      </v-card-title>
+      <!-- ? $t("beneficiary.labels.validations.discharged")
+            : $t("beneficiary.labels.validations.isNotDischarged") -->
       <v-card-text>
         <v-row>
-          <v-col cols="12" md="6">
+          <v-col cols="12" md="6" v-if="hasDataRenapo">
             <v-card elevation="0" outlined>
               <v-card-title class="subheading font-weight-bold">
                 {{ $t("beneficiary.attributes.title") }}
@@ -63,7 +70,7 @@
               </v-list>
             </v-card>
           </v-col>
-          <v-col cols="12" md="6" v-if="existsBeneficiary">
+          <v-col cols="12" md="6" v-if="hasDataPTCH">
             <v-card elevation="0" outlined>
               <v-card-title class="subheading font-weight-bold">
                 {{ $t("beneficiary.labels.mvd") }}
@@ -127,7 +134,7 @@
           color="success"
           elevation="0"
           @click="select"
-          :disabled="existsBeneficiary"
+          :disabled="existsBeneficiary && !isEdit"
         >
           {{ $t("beneficiary.labels.select") }}
         </v-btn>
@@ -143,7 +150,10 @@ import { IPersonValidationState } from "@/store/person/types";
 @Component({})
 export default class RenapoDialogBeneficiary extends Vue {
   @Prop({ default: false }) dialog!: boolean;
+  @Prop({ default: false }) hasDataRenapo!: boolean;
+  @Prop({ default: false }) hasDataPTCH!: boolean;
   @Prop({ default: false }) existsBeneficiary!: boolean;
+  @Prop({ default: false }) isEdit!: boolean;
 
   get computedPerson(): IPersonValidationState {
     return this.$store.state.person;

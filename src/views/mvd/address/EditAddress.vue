@@ -51,7 +51,7 @@
                     outlined
                     :value="computedFullname"
                     readonly
-                    :loading="isLoadingValidityRights"
+                    :loading="isLoadingValidityRights || isLoadingCurrentAddres"
                   >
                   </v-text-field>
                 </v-col>
@@ -72,6 +72,7 @@
                     rules="required"
                   >
                     <v-autocomplete
+                      class="required"
                       dense
                       name="countries"
                       :items="countries"
@@ -80,7 +81,7 @@
                       :label="$t('address.attributes.country')"
                       outlined
                       :disabled="isLoadingCountries"
-                      :loading="isLoadingCountries"
+                      :loading="isLoadingCountries || isLoadingCurrentAddres"
                       v-model="address.IdPais"
                       @change="getStates"
                       :error-messages="errors"
@@ -94,6 +95,7 @@
                     rules="required"
                   >
                     <v-autocomplete
+                      class="required"
                       dense
                       name="states"
                       :items="states"
@@ -101,7 +103,7 @@
                       item-value="IdEstado"
                       :label="$t('address.attributes.state')"
                       :disabled="isLoadingStates || !address.IdPais"
-                      :loading="isLoadingStates"
+                      :loading="isLoadingStates || isLoadingCurrentAddres"
                       outlined
                       required
                       v-model="address.IdEstado"
@@ -117,13 +119,16 @@
                     rules="required"
                   >
                     <v-autocomplete
+                      class="required"
                       dense
                       name="municipalities"
                       :items="municipalities"
                       item-text="Nombre"
                       item-value="IdMunicipio"
                       :disabled="isLoadingMunicipalities || !address.IdEstado"
-                      :loading="isLoadingMunicipalities"
+                      :loading="
+                        isLoadingMunicipalities || isLoadingCurrentAddres
+                      "
                       :label="$t('address.attributes.municipality')"
                       outlined
                       required
@@ -141,6 +146,7 @@
                     rules="required|numeric|min:5|max:5"
                   >
                     <v-text-field
+                      class="required"
                       :label="$t('address.attributes.zipcode')"
                       name="zipCode"
                       dense
@@ -159,6 +165,7 @@
                     rules="required|max:150"
                   >
                     <v-text-field
+                      class="required"
                       :label="$t('address.attributes.suburb')"
                       name="suburb"
                       dense
@@ -177,6 +184,7 @@
                     rules="required|max:150"
                   >
                     <v-text-field
+                      class="required"
                       :label="$t('address.attributes.locality')"
                       name="locality"
                       dense
@@ -197,6 +205,7 @@
                     rules="required|max:150"
                   >
                     <v-text-field
+                      class="required"
                       :label="$t('address.attributes.street')"
                       name="street"
                       dense
@@ -216,6 +225,7 @@
                     rules="required|max:5"
                   >
                     <v-text-field
+                      class="required"
                       :label="$t('address.attributes.outdoorNumber')"
                       name="outdoorNumber"
                       dense
@@ -330,6 +340,7 @@ export default class EditAddress extends Vue {
     ApellidoMaterno: "",
     Curp: null,
     IdDerechohabiente: null,
+    Sexo:""
   };
   public address: IAddress = {
     IdDomicilio: null,

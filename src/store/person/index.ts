@@ -21,43 +21,15 @@ const initialState: IPersonValidationState = {
     IdEntidadEmisora: "",
   },
   Person: {
-    IdPersona: 0,
+    IdPersona: null,
     Curp: "",
     Nombres: "",
     ApellidoPaterno: "",
     ApellidoMaterno: "",
     FechaNacimiento: "",
     Sexo: "",
-    Rfc: "",
-    EstadoCivil: "",
     IndRenapo: false,
-    Fotografia: "",
-    FechaFoto: "",
-    Firma: "",
-    SiglasEntidad: "",
-    Nacionalidad: "",
-    DpDocumento: 0,
-    DpEntidad: 0,
-    DpFoja: 0,
-    DpMunicipio: 0,
-    DpAnio: 0,
-    DpLibro: 0,
-    DpCrip: "",
-    DpMigracion: 0,
-    DpNatura: 0,
-    DpCertifica: 0,
-    Archivo: "",
-    PfechaAlta: "",
-    PFolioConstancia: 0,
-    PEstatus: 0,
-    XEstatus: "",
-    YEstatus: "",
-    ZEstatus: "",
-    Marca: "",
-    CError: 0,
-    Observacion: "",
-    DpActa: 0,
-    DpTomo: 0,
+    Baja: false,
   },
 };
 
@@ -79,6 +51,10 @@ const personStore: Module<IPersonValidationState, IRootState> = {
     },
     setPersonData({ commit }, person: Partial<IPersonData>) {
       commit("SET_PERSON_DATA", person);
+    },
+    clear({ commit }) {
+      commit("SET_RENAPO_DATA", initialState.Renapo);
+      commit("SET_PERSON_DATA", initialState.Person);
     },
   },
 };

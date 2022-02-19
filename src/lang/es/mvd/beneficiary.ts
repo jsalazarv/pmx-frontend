@@ -46,7 +46,7 @@ export default {
     cancel: "Cancelar",
     select: "Seleccionar",
     newAddress: "Nuevo domicilio...",
-    mvd: "MVD",
+    mvd: "Portal Transaccional",
     dialogs: {
       confirmDelete: {},
       successDelete: {},
@@ -59,6 +59,7 @@ export default {
       },
       errorCreate: {
         message: "Ha ocurrido un problema",
+        error400: "El derechohabiente ya se encuentra dado de alta",
       },
       successCreate: {
         message: "Se ha guardado el derechohabiente correctamente",
@@ -67,9 +68,19 @@ export default {
         message:
           "Ha ocurrido un problema, posibles causas: 1. Curp no valida 2. Servicio de renapo no disponible",
       },
+      errorMessage: {
+        error400: "Ha ocurrido un problema:  Curp no valida",
+        error500: "Ha ocurrido un problema: Servicio de renapo no disponible",
+      },
+      errorEnum: {
+        errorChildrens:
+          "No es posible otorgar la vigencia: debido a que su hijo(a) es mayor a 25 años",
+        errorBrothers:
+          "No es posible otorgar la vigencia: debido a que su hermano(a) es mayor a 17 años",
+      },
     },
     validations: {
-      discharged: "El derechohabiente ya se encuentra dado de alta",
+      discharged: "El derechohabiente ya se encuentra dado de alta y esta activo",
       isNotDischarged: "El derechohabiente no se encuentra dado de alta",
     },
   },

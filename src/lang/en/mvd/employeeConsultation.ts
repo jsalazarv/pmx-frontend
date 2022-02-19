@@ -42,12 +42,18 @@ export default {
     cancel: "Cancel",
     save: "Save data validity",
     medicalUnit: "Medical unit",
+    yes: "Yes",
+    no: "No",
     dialogs: {
       confirmDelete: {
         message: "Do you want to delete the beneficiary?",
       },
-      successDelete: {},
-      errorDelete: {},
+      successDelete: {
+        message: "The beneficiary has been deleted successfully",
+      },
+      errorDelete: {
+        message: "A problem has occurred",
+      },
       errorUpdate: {},
       successUpdate: {},
       errorCreate: {
@@ -59,17 +65,17 @@ export default {
       info: {
         message: "The employee is not currently in force",
       },
-      successAssign:{
-        message:"It has been assigned correctly"
+      successAssign: {
+        message: "It has been assigned correctly",
       },
-      errorAsign:{
-        message:"A problem has occurred"
-      }
+      errorAsign: {
+        message: "A problem has occurred",
+      },
     },
     validations: {
       valid: "Valid",
       notValid: "Not valid ",
-      dateGreaterThanToday:"must be greater than or equal to today's date"
+      dateGreaterThanToday: "must be greater than or equal to today's date",
     },
   },
 };
