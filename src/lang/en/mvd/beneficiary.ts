@@ -46,7 +46,7 @@ export default {
     cancel: "Cancel",
     select: "Select",
     newAddress: "New address...",
-    mvd: "MVD",
+    mvd: "Portal Transaccional",
     dialogs: {
       confirmDelete: {},
       successDelete: {},
@@ -59,13 +59,20 @@ export default {
       },
       errorCreate: {
         message: "A problem has occurred",
+        error400: "The beneficiary is already registered"
       },
       successCreate: {
         message: "Beneficiary has been saved correctly",
       },
-      errorValidate: {
-        message:
-          "A problem has occurred, possible causes: 1. Curp not valid 2. Renapo service not available",
+      errorMessage: {
+        error400: "A problem has occurred: Curp not valid",
+        error500: "A problem has occurred: Renapo service not available",
+      },
+       errorEnum: {
+        errorChildrens:
+          "It is not possible to grant the validity: because your child is older than 25 years",
+        errorBrothers:
+          "It is not possible to grant validity: because your sibling is older than 17 years",
       },
     },
     validations: {

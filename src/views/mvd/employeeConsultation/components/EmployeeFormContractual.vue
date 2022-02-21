@@ -159,6 +159,7 @@ export default class EmployeeFormContractual extends Vue {
     ApellidoMaterno: "",
     Curp: null,
     IdDerechohabiente: null,
+    Sexo:""
   };
 
   get isLoading(): boolean {
@@ -193,8 +194,7 @@ export default class EmployeeFormContractual extends Vue {
   }
 
   formatted(date: any): string | null {
-    if (!date) return null;
-    return moment(date).format("DD/MM/YYYY");
+    return Vue.filter("dateFormatted")(date, "YYYY-MM-DD", "DD/MM/YYYY");
   }
 
   getValidityRights(): void {

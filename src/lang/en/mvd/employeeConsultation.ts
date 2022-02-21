@@ -42,12 +42,18 @@ export default {
     cancel: "Cancel",
     save: "Save data validity",
     medicalUnit: "Medical unit",
+    yes: "Yes",
+    no: "No",
     dialogs: {
       confirmDelete: {
         message: "Do you want to delete the beneficiary?",
       },
-      successDelete: {},
-      errorDelete: {},
+      successDelete: {
+        message: "The beneficiary has been deleted successfully",
+      },
+      errorDelete: {
+        message: "A problem has occurred",
+      },
       errorUpdate: {},
       successUpdate: {},
       errorCreate: {

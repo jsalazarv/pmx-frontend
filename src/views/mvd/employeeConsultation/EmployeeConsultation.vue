@@ -89,6 +89,7 @@
                           rules="required"
                         >
                           <v-autocomplete
+                            class="required"
                             dense
                             name="medicalUnit"
                             outlined
@@ -187,9 +188,15 @@
                         v-model="dialogDelete"
                         persistent
                         max-width="600"
+                        :retain-focus="false"
                       >
                         <template v-slot:activator="{ on, attrs }">
-                          <v-btn class="mx-2" v-bind="attrs" v-on="on">
+                          <v-btn
+                            class="mx-2"
+                            v-bind="attrs"
+                            v-on="on"
+                            @click="idBeneficiary = row.item.IdDerechohabiente"
+                          >
                             <v-icon dark>mdi-delete</v-icon>
                           </v-btn>
                         </template>
@@ -208,25 +215,15 @@
                               text
                               @click="dialogDelete = false"
                             >
-                              <!-- {{
-                                $t(
-                                  "employeeConsultation.consultation.actionsButtons.cancel"
-                                )
-                              }} -->
-                              No
+                              {{ $t("employeeConsultation.labels.no") }}
                             </v-btn>
                             <v-btn
                               color="success"
                               dark
                               dense
-                              @click="dialogDelete = false"
+                              @click="deleteBeneficiary()"
                             >
-                              Si
-                              <!-- {{
-                                $t(
-                                  "employeeConsultation.consultation.actionsButtons.assign"
-                                )
-                              }} -->
+                              {{ $t("employeeConsultation.labels.yes") }}
                             </v-btn>
                           </v-card-actions>
                         </v-card>
@@ -237,7 +234,12 @@
                     <td>{{ row.item.ApellidoMaterno }}</td>
                     <td>{{ row.item.Curp }}</td>
                     <td>{{ row.item.Parentesco }}</td>
-                    <td>{{ formatted(row.item.Vigencia) }}</td>
+                    <td>
+                      {{
+                        row.item.Vigencia
+                          | dateFormatted("YYYY-MM-DD", "DD/MM/YYYY")
+                      }}
+                    </td>
                     <td>
                       <v-checkbox
                         :input-value="row.item.IndIncapacidad"
@@ -290,6 +292,7 @@ export default class EmployeeConsultation extends Vue {
   public isLoadingMedicalUnitsList = false;
   public isLoadingBeneficiaries = false;
   public medicalUnitId: number | null = null;
+  public idBeneficiary: number | null = null;
   public alert = {
     alert: false,
     message: "",
@@ -310,6 +313,7 @@ export default class EmployeeConsultation extends Vue {
     ApellidoMaterno: "",
     Curp: null,
     IdDerechohabiente: null,
+    Sexo: "",
   };
   public titularBeneficiary: ITitularBeneficiaryRequest = {
     IdPersona: null,
@@ -368,11 +372,6 @@ export default class EmployeeConsultation extends Vue {
 
   get computedEmployeeTypeId(): number {
     return Number(this.$route.params.paramEmployeeTypeId);
-  }
-
-  formatted(date: any): string | null {
-    if (!date) return null;
-    return moment(date).format("DD/MM/YYYY");
   }
 
   onBtnEditAddress(): void {
@@ -502,7 +501,6 @@ export default class EmployeeConsultation extends Vue {
         this.medicalUnitId
       )
       .then((response) => {
-        console.log(response.Data);
         this.alert = {
           message: this.$t(
             "employeeConsultation.labels.dialogs.successAssign.message"
@@ -524,6 +522,33 @@ export default class EmployeeConsultation extends Vue {
         this.dialog = false;
       });
     (this.$refs.employeeFormNormative as EmployeeFormNormative).hideAlert();
+  }
+
+  deleteBeneficiary(): void {
+    this.beneficiaryService
+      .delete(this.idBeneficiary)
+      .then((response) => {
+        this.getAllBeneficiaries();
+        this.alert = {
+          message: this.$t(
+            "employeeConsultation.labels.dialogs.successDelete.message"
+          ) as string,
+          alert: true,
+          type: true,
+        };
+      })
+      .catch((error) => {
+        this.alert = {
+          message: this.$t(
+            "employeeConsultation.labels.dialogs.errorDelete.message"
+          ) as string,
+          alert: true,
+          type: false,
+        };
+      })
+      .finally(() => {
+        this.dialogDelete = false;
+      });
   }
 
   async mounted() {

@@ -72,6 +72,7 @@
                     rules="required"
                   >
                     <v-autocomplete
+                      class="required"
                       dense
                       name="countries"
                       :items="countries"
@@ -94,6 +95,7 @@
                     rules="required"
                   >
                     <v-autocomplete
+                      class="required"
                       dense
                       name="states"
                       :items="states"
@@ -117,6 +119,7 @@
                     rules="required"
                   >
                     <v-autocomplete
+                      class="required"
                       dense
                       name="municipalities"
                       :items="municipalities"
@@ -141,6 +144,7 @@
                     rules="required|numeric|min:5|max:5"
                   >
                     <v-text-field
+                      class="required"
                       :label="$t('address.attributes.zipcode')"
                       name="zipCode"
                       dense
@@ -158,6 +162,7 @@
                     rules="required|max:150"
                   >
                     <v-text-field
+                      class="required"
                       :label="$t('address.attributes.suburb')"
                       name="suburb"
                       dense
@@ -175,6 +180,7 @@
                     rules="required|max:150"
                   >
                     <v-text-field
+                      class="required"
                       :label="$t('address.attributes.locality')"
                       name="locality"
                       dense
@@ -194,6 +200,7 @@
                     rules="required|max:150"
                   >
                     <v-text-field
+                      class="required"
                       :label="$t('address.attributes.street')"
                       name="street"
                       dense
@@ -212,6 +219,7 @@
                     rules="required|max:5"
                   >
                     <v-text-field
+                      class="required"
                       :label="$t('address.attributes.outdoorNumber')"
                       name="outdoorNumber"
                       dense
@@ -321,6 +329,7 @@ export default class NewAddress extends Vue {
     ApellidoMaterno: "",
     Curp: null,
     IdDerechohabiente: null,
+    Sexo:""
   };
   public address: IAddress = {
     IdDomicilio: null,
@@ -444,9 +453,8 @@ export default class NewAddress extends Vue {
         this.addressPerson.IdDomicilio = responseAddress.Data.IdDomicilio;
         this.addressPerson.IdPersona = this.computedIdPerson;
 
-        let responseAddressPerson = await this.addressService.createAddresPerson(
-          this.addressPerson
-        );
+        let responseAddressPerson =
+          await this.addressService.createAddresPerson(this.addressPerson);
 
         if (responseAddressPerson.Success) {
           this.alert = {

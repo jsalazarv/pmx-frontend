@@ -58,6 +58,7 @@
               rules="required"
             >
               <v-autocomplete
+                class="required"
                 dense
                 name="workplaces"
                 :items="workplaces"
@@ -80,6 +81,7 @@
               rules="required"
             >
               <v-autocomplete
+                class="required"
                 dense
                 name="departments"
                 :items="departments"
@@ -112,6 +114,7 @@
                   rules="required|validityrule"
                 >
                   <v-text-field
+                    class="required"
                     v-model="computedValidityFormatted"
                     :label="$t('employeeConsultation.attributes.validity')"
                     name="validity"
@@ -221,6 +224,7 @@ export default class EmployeeFormNormative extends Vue {
     ApellidoMaterno: "",
     Curp: null,
     IdDerechohabiente: null,
+    Sexo:""
   };
 
   get isLoading(): boolean {

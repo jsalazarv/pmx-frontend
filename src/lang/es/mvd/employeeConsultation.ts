@@ -46,12 +46,18 @@ export default {
     cancel: "Cancelar",
     save: "Guardar datos vigencia",
     medicalUnit: "Unidad médica",
+    yes: "Si",
+    no: "No",
     dialogs: {
       confirmDelete: {
         message: "¿Desea eliminar al derechohabiente?",
       },
-      successDelete: {},
-      errorDelete: {},
+      successDelete: {
+        message: "Se ha eliminado al derechohabiente correctamente",
+      },
+      errorDelete: {
+        message: "Un problema ha ocurrido",
+      },
       errorUpdate: {},
       successUpdate: {},
       errorCreate: {
@@ -64,10 +70,10 @@ export default {
         message: "El empleado no se encuentra actualmente vigente",
       },
       successAssign: {
-        message: "Se ha asigando correctamente",
+        message: "Se ha asignado correctamente",
       },
       errorAssign: {
-        message: "Un problema ha ocurrido",
+        message: "Ha ocurrido un problema",
       },
     },
     validations: {
