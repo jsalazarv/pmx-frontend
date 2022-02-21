@@ -78,6 +78,7 @@
                       @click="validateCurp"
                     >
                       {{ $t("employee.labels.validate") }}
+                      <v-icon right dark>mdi-account-convert</v-icon>
                     </v-btn>
                     <v-checkbox
                       v-model="enableValidationButton"
@@ -146,7 +147,7 @@
                     class="required"
                     dense
                     name="names"
-                    disabled
+                    :disabled="canEditPersonalInfo"
                     :label="$t('employee.attributes.names')"
                     outlined
                     required
@@ -165,7 +166,7 @@
                     class="required"
                     dense
                     name="lastname"
-                    disabled
+                    :disabled="canEditPersonalInfo"
                     :label="$t('employee.attributes.lastname')"
                     outlined
                     required
@@ -184,7 +185,7 @@
                     class="required"
                     dense
                     name="surname"
-                    disabled
+                    :disabled="canEditPersonalInfo"
                     :label="$t('employee.attributes.surname')"
                     outlined
                     required
@@ -209,7 +210,7 @@
                       <v-text-field
                         class="required"
                         name="birthday"
-                        disabled
+                        :disabled="canEditPersonalInfo"
                         :value="
                           employeeData.Persona.FechaNacimiento
                             | dateFormatted('YYYY-MM-DD', 'DD/MM/YYYY')
@@ -251,7 +252,7 @@
                     item-text="Sigla"
                     item-value="Sigla"
                     :items="gendersList"
-                    disabled
+                    :disabled="canEditPersonalInfo"
                     :label="$t('employee.attributes.gender')"
                     :loading="isLoadingGendersList"
                     v-model="employeeData.Persona.Sexo"
@@ -434,6 +435,7 @@
               :disabled="isUpdating || isValidatingEmployee || isValidatingCurp"
             >
               {{ $t("employeeConsultationMFE.labels.update") }}
+              <v-icon right dark>mdi-autorenew</v-icon>
             </v-btn>
           </v-container>
         </ValidationObserver>
@@ -540,7 +542,7 @@ export default class employeeEdit extends Vue {
   public syndicateSections: Array<ISyndicateSection> = [];
   public employeeValidationData: IPersonValidationResponse | null = null;
   public validationMessage: string | null = null;
-  public infoSelected = false;
+  public infoSelected = true;
   public isLoadingEmployeeList = false;
   public isLoadingEmployeeData = false;
   public isLoadingGendersList = false;
@@ -557,6 +559,17 @@ export default class employeeEdit extends Vue {
   public enableValidationButton = false;
   public isDialogOpen = false;
   public currentCurp = "";
+  public hasIndRenapo = false;
+  public currentEmployeeData = {
+    Curp: "",
+    Nombres: "",
+    ApellidoPaterno: "",
+    ApellidoMaterno: "",
+    FechaNacimiento: "",
+    Sexo: "",
+    EstadoCivil: undefined,
+    RFC: "",
+  };
 
   getEmployeeTypes(): void {
     this.isLoadingEmployeeList = true;
@@ -649,12 +662,26 @@ export default class employeeEdit extends Vue {
     this.employeeService
       .findById(this.$route.params.id)
       .then((response) => {
-        const data = Vue.filter("cleanObject")(response.Data);
-        this.employeeData = { ...initialEmployeeData, ...data };
-        this.currentCurp = data.Persona.Curp;
-        this.getWorkplaces();
-        this.getSyndicateSections();
-        this.selectedEmployeeType(data.EstadoCivil);
+        if (response.Success) {
+          const data = Vue.filter("cleanObject")(response.Data);
+          this.employeeData = { ...initialEmployeeData, ...data };
+          this.currentCurp = data.Persona.Curp;
+          this.hasIndRenapo = data.Persona.IndRenapo;
+          this.currentEmployeeData = data.Persona;
+          this.getWorkplaces();
+          this.getSyndicateSections();
+          this.selectedEmployeeType(data.EstadoCivil);
+          this.$store.dispatch("app/setNotify", {});
+        }
+      })
+      .catch((err) => {
+        if (err.response) {
+          this.$store.dispatch("app/setNotify", {
+            status: err?.response?.status,
+            text: err?.response?.data?.Message?.Texto,
+          });
+          console.error(err?.response);
+        }
       })
       .finally(() => {
         this.isLoadingEmployeeData = false;
@@ -684,11 +711,31 @@ export default class employeeEdit extends Vue {
       Observaciones: this.employeeData.Filiacion?.Observaciones,
       IdTipoEmpleado: this.employeeData.TipoEmpleado?.Id,
       IdEmpleado: this.employeeData.IdEmpleado,
+      IndRenapo: this.hasIndRenapo,
     };
     this.isUpdating = true;
     this.employeeService
       .update(parseInt(this.$route.params.id), data as IUpdateEmployeeRequest)
-      .then()
+      .then((response) => {
+        if (response.Success) {
+          this.$store.dispatch("app/setNotify", {});
+        } else {
+          this.$store.dispatch("app/setNotify", {
+            status: 400,
+            text: response.Message,
+          });
+        }
+      })
+      .catch((err) => {
+        if (err.response) {
+          this.$store.dispatch("app/setNotify", {
+            status: err?.response?.status,
+            text:
+              err?.response?.data?.Message?.Texto ||
+              err?.response?.data?.Message,
+          });
+        }
+      })
       .finally(() => {
         this.isUpdating = false;
       });
@@ -709,24 +756,48 @@ export default class employeeEdit extends Vue {
     };
   }
 
+  get canEditPersonalInfo(): boolean {
+    return this.infoSelected;
+  }
+
   validateCurp(): void {
     this.isValidatingCurp = true;
     this.peopleService
       .validateCurpRenapo(this.employeeData.Persona?.Curp as string)
       .then(this.handleValidationResponse)
-      .catch((error) => {
-        console.log("ERROR HEADER", error.response);
+      .catch((err) => {
+        if (err.response) {
+          this.$store.dispatch("app/setNotify", {
+            status: err?.response?.status,
+            text: err?.response?.data?.Message?.Texto,
+          });
+          console.error(err?.response);
+          this.hasIndRenapo = false;
+          this.infoSelected = false;
+        }
       })
-      .finally();
+      .finally(() => {
+        this.isUpdating = false;
+        this.isValidatingEmployee = false;
+        this.isValidatingCurp = false;
+      });
   }
 
   handleValidationResponse(
     response: IApiResponse<IPersonValidationResponse>
   ): void {
-    this.employeeValidationData = response.Data;
-    this.validationMessage = response.Message;
-
-    this.openDialog();
+    if (response.Success) {
+      this.employeeValidationData = response.Data;
+      this.validationMessage = response.Message;
+      this.$store.dispatch("app/setNotify", {});
+      setTimeout(() => this.openDialog(), 500);
+      this.hasIndRenapo = true;
+    } else {
+      this.$store.dispatch("app/setNotify", {
+        status: 400,
+        text: response.Message,
+      });
+    }
   }
 
   openDialog(): void {
@@ -744,11 +815,19 @@ export default class employeeEdit extends Vue {
   }
 
   resetForm(): void {
-    this.infoSelected = false;
     this.isValidatingCurp = false;
     this.enableValidationButton = false;
     this.employeeData.Persona = {
+      IdPersona: this.employeeData.Persona?.IdPersona,
       Curp: this.currentCurp,
+      Nombres: this.currentEmployeeData.Nombres,
+      ApellidoPaterno: this.currentEmployeeData.ApellidoPaterno,
+      ApellidoMaterno: this.currentEmployeeData.ApellidoMaterno,
+      FechaNacimiento: this.currentEmployeeData.FechaNacimiento,
+      Sexo: this.currentEmployeeData.Sexo,
+      EstadoCivil: this.currentEmployeeData.EstadoCivil,
+      RFC: this.currentEmployeeData.RFC,
+      IndRenapo: this.hasIndRenapo,
     };
   }
 

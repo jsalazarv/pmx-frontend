@@ -14,6 +14,7 @@
             :disabled="isLoadingEmployeeList"
           >
             {{ $t("employeeConsultationMFE.labels.export") }}
+            <v-icon right dark>mdi-file-account</v-icon>
           </v-btn>
           <v-btn
             class="mx-1"
@@ -22,6 +23,7 @@
             :disabled="isLoadingEmployeeList"
           >
             {{ $t("employeeConsultationMFE.labels.add") }}
+            <v-icon right dark>mdi-account-plus</v-icon>
           </v-btn>
         </v-toolbar>
         <v-container fluid>
@@ -117,6 +119,7 @@
                 @click="search"
               >
                 {{ $t("employeeConsultationMFE.labels.search") }}
+                <v-icon right dark> mdi-magnify </v-icon>
               </v-btn>
             </v-col>
           </v-row>
@@ -131,21 +134,36 @@
           :headers="headers"
           :items="employeeList"
         >
-          <template v-slot:item.actions="{ item }">
+          <template v-slot:[`item.actions`]="{ item }">
             <v-btn
+              class="mx-1"
+              color="info"
+              outlined
+              fab
               x-small
               :to="{ name: 'people:show', params: { id: item.IdEmpleado } }"
             >
-              Ver
+              <v-icon dark>mdi-account-eye</v-icon>
             </v-btn>
             <v-btn
+              class="mx-1"
+              color="success"
+              outlined
               x-small
+              fab
               :to="{ name: 'people:edit', params: { id: item.IdEmpleado } }"
             >
-              Editar
+              <v-icon dark>mdi-account-edit</v-icon>
             </v-btn>
-            <v-btn x-small @click="requestDeleteConfirmation(item)">
-              Eliminar
+            <v-btn
+              class="mx-1"
+              color="error"
+              outlined
+              fab
+              x-small
+              @click="requestDeleteConfirmation(item)"
+            >
+              <v-icon dark>mdi-account-remove</v-icon>
             </v-btn>
           </template>
         </v-data-table>
@@ -276,7 +294,20 @@ export default class EmployeeList extends Vue {
     this.employeeService
       .getAll()
       .then((response) => {
-        this.employeeList = response.Data;
+        if (response.Success) {
+          this.employeeList = response.Data;
+
+          this.$store.dispatch("app/setNotify", {});
+        }
+      })
+      .catch((err) => {
+        if (err.response) {
+          this.$store.dispatch("app/setNotify", {
+            status: err?.response?.status,
+            text: err?.response?.data?.Message?.Texto,
+          });
+          console.error(err?.response);
+        }
       })
       .finally(() => {
         this.isLoadingEmployeeList = false;
@@ -311,7 +342,19 @@ export default class EmployeeList extends Vue {
     this.employeeService
       .filter(this.filters)
       .then((response) => {
-        this.employeeList = response.Data;
+        if (response.Success) {
+          this.$store.dispatch("app/setNotify", {});
+          this.employeeList = response.Data;
+        }
+      })
+      .catch((err) => {
+        if (err.response) {
+          this.$store.dispatch("app/setNotify", {
+            status: err?.response?.status,
+            text: err?.response?.data?.Message?.Texto,
+          });
+          console.error(err?.response);
+        }
       })
       .finally(() => {
         this.isLoadingEmployeeList = false;
@@ -327,11 +370,23 @@ export default class EmployeeList extends Vue {
     this.employeeService
       .export(data, this.filters)
       .then((response) => {
-        download(
-          response.data,
-          `${data.NombreReporte}.xlsx`,
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        );
+        if (response.data) {
+          this.$store.dispatch("app/setNotify", {});
+          download(
+            response.data,
+            `${data.NombreReporte}.xlsx`,
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          );
+        }
+      })
+      .catch((err) => {
+        if (err.response) {
+          this.$store.dispatch("app/setNotify", {
+            status: err?.response?.status,
+            text: err?.response?.data?.Message?.Texto,
+          });
+          console.error(err?.response);
+        }
       })
       .finally(() => {
         this.isLoadingEmployeeList = false;

@@ -13,7 +13,7 @@
               :label="$t('assignmentFolios.labels.search')"
               :disabled="isLoadingFoliosLogbookList"
               clearable
-              @click:clear="search"
+              @click:clear="clearFilter"
               single-line
               hide-details
               outlined
@@ -27,6 +27,7 @@
             @click="search"
           >
             {{ $t("assignmentFolios.labels.search") }}
+            <v-icon right dark> mdi-magnify </v-icon>
           </v-btn>
         </v-toolbar>
         <v-progress-linear
@@ -95,12 +96,31 @@ export default class AssignmentFolios extends Vue {
     this.getFoliosLogBook(this.filters());
   }
 
+  clearFilter(): void {
+    this.params = {
+      IdFolioAsignacion: "",
+    };
+    this.getFoliosLogBook(this.filters());
+  }
+
   getFoliosLogBook(filters = {}): void {
     this.isLoadingFoliosLogbookList = true;
     this.foliosLogbookService
       .search(filters)
       .then((response) => {
-        this.foliosLogbookList = response.Data;
+        if (response.Success || !response) {
+          this.$store.dispatch("app/setNotify", {});
+          this.foliosLogbookList = response.Data;
+        }
+      })
+      .catch((err) => {
+        if (err.response) {
+          this.$store.dispatch("app/setNotify", {
+            status: err?.response?.status,
+            text: err?.response?.data?.Message?.Texto,
+          });
+          console.error(err?.response);
+        }
       })
       .finally(() => {
         this.isLoadingFoliosLogbookList = false;

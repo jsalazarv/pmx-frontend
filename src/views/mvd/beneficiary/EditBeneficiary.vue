@@ -1143,13 +1143,10 @@ export default class EditBeneficiary extends Vue {
 
   selectPerson(): void {
     this.beneficiary.Persona.Nombres = this.computedPerson.Renapo.Nombres;
-    this.beneficiary.Persona.ApellidoPaterno =
-      this.computedPerson.Renapo.ApellidoPaterno;
-    this.beneficiary.Persona.ApellidoMaterno =
-      this.computedPerson.Renapo.ApellidoMaterno;
+    this.beneficiary.Persona.ApellidoPaterno = this.computedPerson.Renapo.ApellidoPaterno;
+    this.beneficiary.Persona.ApellidoMaterno = this.computedPerson.Renapo.ApellidoMaterno;
     this.beneficiary.Persona.Sexo = this.computedPerson.Renapo.Sexo;
-    this.beneficiary.Persona.FechaNacimiento =
-      this.computedPerson.Renapo.FechaNacimiento;
+    this.beneficiary.Persona.FechaNacimiento = this.computedPerson.Renapo.FechaNacimiento;
     this.beneficiary.Persona.Edad = this.getAge(
       this.computedPerson.Renapo.FechaNacimiento
     ).toString();

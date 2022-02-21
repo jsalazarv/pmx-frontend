@@ -279,8 +279,7 @@ export default class EmployeeFormNormative extends Vue {
         if (this.validityRights.IdDerechohabiente != null) {
           this.titularBeneficiary.IdCentro = this.validityRights.IdCentro;
           this.getDepartments();
-          this.titularBeneficiary.IdDepartamento =
-            this.validityRights.IdDepartamento;
+          this.titularBeneficiary.IdDepartamento = this.validityRights.IdDepartamento;
           this.titularBeneficiary.Vigencia = this.validityRights.Vigencia;
         }
       })
@@ -325,8 +324,7 @@ export default class EmployeeFormNormative extends Vue {
     this.titularBeneficiary.IdEmpleado = this.computedEmployeeId;
     this.titularBeneficiary.IdTipoEmpleado = this.computedEmployeeTypeId;
     this.titularBeneficiary.IdPersona = this.computedIdPerson;
-    this.titularBeneficiary.IdDerechohabiente =
-      this.validityRights.IdDerechohabiente;
+    this.titularBeneficiary.IdDerechohabiente = this.validityRights.IdDerechohabiente;
     this.beneficiaryService
       .createTitular(this.titularBeneficiary)
       .then((response) => {

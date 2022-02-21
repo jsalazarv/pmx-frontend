@@ -46,8 +46,8 @@ export default {
     cancel: "Cancelar",
     save: "Guardar datos vigencia",
     medicalUnit: "Unidad médica",
-    yes:"Si",
-    no:"No",
+    yes: "Si",
+    no: "No",
     dialogs: {
       confirmDelete: {
         message: "¿Desea eliminar al derechohabiente?",
@@ -69,17 +69,17 @@ export default {
       info: {
         message: "El empleado no se encuentra actualmente vigente",
       },
-      successAssign:{
-        message:"Se ha asignado correctamente"
+      successAssign: {
+        message: "Se ha asignado correctamente",
       },
-      errorAssign:{
-        message:"Un problema ha ocurrido"
-      }
+      errorAssign: {
+        message: "Ha ocurrido un problema",
+      },
     },
     validations: {
       valid: "Vigente",
       notValid: "No vigente",
-      dateGreaterThanToday:"debe ser mayor o igual a la fecha de hoy"
+      dateGreaterThanToday: "debe ser mayor o igual a la fecha de hoy",
     },
   },
 };

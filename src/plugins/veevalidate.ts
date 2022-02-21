@@ -16,7 +16,6 @@ import {
 } from "vee-validate/dist/rules";
 import i18n from "@/lang/index";
 
-
 Vue.component("ValidationObserver", ValidationObserver);
 Vue.component("ValidationProvider", ValidationProvider);
 
@@ -41,7 +40,7 @@ extend("validityrule", (value, args: any) => {
   if (new Date(validityDate) >= new Date(currentDate)) {
     return true;
   }
-  return `{_field_} ${i18n.t("employeeConsultation.labels.validations.dateGreaterThanToday")}`;
+  return `{_field_} ${i18n.t(
+    "employeeConsultation.labels.validations.dateGreaterThanToday"
+  )}`;
 });
-
-

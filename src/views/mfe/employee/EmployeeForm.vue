@@ -21,9 +21,11 @@
             <v-btn
               color="success"
               @click="registerEmployee"
-              :disabled="invalid"
+              :disabled="invalid || isCreating"
+              :loading="isCreating"
             >
               {{ $t("employee.labels.generateAssignmentNumber") }}
+              <v-icon right dark>mdi-plus-thick</v-icon>
             </v-btn>
           </v-container>
         </ValidationObserver>
@@ -52,6 +54,8 @@ import { IValidationObserver } from "@/components/types";
 export default class PeopleCreate extends Vue {
   protected employeeService = new EmployeeService();
 
+  public isCreating = false;
+
   get isLoading(): boolean {
     // TODO Refactor this form is submitting
     return false;
@@ -68,12 +72,24 @@ export default class PeopleCreate extends Vue {
     this.employeeService
       .create(data)
       .then((response) => {
-        //TODO: Success message
-        console.log("Data POST: ", response);
+        this.isCreating = true;
+        if (response.Success) {
+          this.$store.dispatch("app/setNotify", {});
+        }
+      })
+      .catch((err) => {
+        if (err.response) {
+          this.$store.dispatch("app/setNotify", {
+            status: err?.response?.status,
+            text: err?.response?.data?.Message?.Texto,
+          });
+          console.error(err?.response);
+        }
       })
       .finally(() => {
         (this.$refs.form as IValidationObserver).reset();
         this.$store.dispatch("employees/clear");
+        this.isCreating = false;
       });
   }
 

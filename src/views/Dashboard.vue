@@ -27,11 +27,12 @@
                   </v-col>
                   <v-btn
                     @click="searchNumberAssign"
-                    small
                     color="secondary"
-                    class="text-capitalize ml-3"
-                    >Buscar</v-btn
+                    class="ma-2 white--text"
                   >
+                    Buscar
+                    <v-icon right dark> mdi-magnify </v-icon>
+                  </v-btn>
                 </v-row>
               </div>
             </div>
@@ -223,7 +224,13 @@ export default class Dashboard extends Vue {
   protected dashboardService = new DashboardService();
 
   searchNumberAssign(): void {
-    if (!this.numberAssignModel) return;
+    if (!this.numberAssignModel) {
+      this.$store.dispatch("app/setNotify", {
+        status: 400,
+        text: this.$t("notify.enterAnAssignmentNumber"),
+      });
+      return;
+    }
 
     this.$router.push({
       name: "proof:assignment",

@@ -2,9 +2,6 @@
   <v-dialog v-model="dialog" persistent max-width="750">
     <v-card>
       <v-card-title class="text-h6">
-        {{ hasDataRenapo }}  tiene datos renapo
-        {{ hasDataPTCH }} tiene datos portal
-        {{ existsBeneficiary }} existe derechohabiente 
         {{
           existsBeneficiary
             ? "Ya esta registrado el derechohabiente y esta activo"

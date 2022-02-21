@@ -10,6 +10,7 @@
           <v-spacer></v-spacer>
           <v-btn color="primary" :to="{ name: 'people:edit' }">
             {{ $t("employeeConsultationMFE.labels.edit") }}
+            <v-icon right dark>mdi-account-edit</v-icon>
           </v-btn>
         </v-toolbar>
         <v-container>
@@ -312,10 +313,22 @@ export default class employeeShow extends Vue {
     this.employeeService
       .findById(this.$route.params.id)
       .then((response) => {
-        const data = Vue.filter("cleanObject")(response.Data);
-        this.employeeData = { ...initialEmployeeData, ...data };
+        if (response.Success) {
+          const data = Vue.filter("cleanObject")(response.Data);
+          this.employeeData = { ...initialEmployeeData, ...data };
 
-        this.selectedEmployeeType(data.EstadoCivil);
+          this.selectedEmployeeType(data.EstadoCivil);
+          this.$store.dispatch("app/setNotify", {});
+        }
+      })
+      .catch((err) => {
+        if (err.response) {
+          this.$store.dispatch("app/setNotify", {
+            status: err?.response?.status,
+            text: err?.response?.data?.Message?.Texto,
+          });
+          console.error(err?.response);
+        }
       })
       .finally(() => {
         this.isLoadingEmployeeData = false;

@@ -618,7 +618,7 @@
             :hasDataPTCH="hasDataPTCH"
             :existsBeneficiary="existsBeneficiary"
             :isEdit="isEdit"
-          />¿
+          />
         </v-container>
       </v-card>
     </div>
