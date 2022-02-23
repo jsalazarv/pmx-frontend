@@ -3,11 +3,17 @@
     <v-card>
       <v-card-title class="text-h6">
         {{
-          existsBeneficiary
-            ? "Ya esta registrado el derechohabiente y esta activo"
+          !isEdit
+            ? existsBeneficiary
+              ? "Ya esta registrado el derechohabiente y esta activo"
+              : hasDataPTCH
+              ? "Ya esta registrado el derechohabiente y esta inactivo"
+              : "No existe registrado el derechohabiente"
             : hasDataPTCH
-            ? "Ya esta registrado el derechohabiente y esta inactivo"
-            : "No existe registrado el derechohabiente"
+            ? allowEdit
+              ? "Ya esta registrado el derechohabiente y esta disponible para editarlo"
+              : "Ya esta registrado el derechohabiente pero no esta disponible para editarlo"
+            : "No existe registrado el derechohabiente su información se actualizará completamente"
         }}
       </v-card-title>
       <!-- ? $t("beneficiary.labels.validations.discharged")
@@ -131,7 +137,7 @@
           color="success"
           elevation="0"
           @click="select"
-          :disabled="existsBeneficiary && !isEdit"
+          :disabled="isEdit ? !allowEdit : existsBeneficiary"
         >
           {{ $t("beneficiary.labels.select") }}
         </v-btn>
@@ -150,6 +156,7 @@ export default class RenapoDialogBeneficiary extends Vue {
   @Prop({ default: false }) hasDataRenapo!: boolean;
   @Prop({ default: false }) hasDataPTCH!: boolean;
   @Prop({ default: false }) existsBeneficiary!: boolean;
+  @Prop({ default: false }) allowEdit!: boolean;
   @Prop({ default: false }) isEdit!: boolean;
 
   get computedPerson(): IPersonValidationState {

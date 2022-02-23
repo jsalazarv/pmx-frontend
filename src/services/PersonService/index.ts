@@ -6,4 +6,12 @@ export default class PersonService extends BaseService {
   findByCurp(curp: string): IServiceResponse<IPersonValidationResponse> {
     return this.client.get(`Personas/Curp/${curp}`);
   }
+  findByCurpIdBeneficiary(
+    curp: string,
+    beneficiaryId: number
+  ): IServiceResponse<IPersonValidationResponse> {
+    return this.client.get(
+      `Personas/Curp/${curp}/idDerechohabiente/${beneficiaryId}`
+    );
+  }
 }
