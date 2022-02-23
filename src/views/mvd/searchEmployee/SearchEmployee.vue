@@ -127,6 +127,7 @@
                 <v-col cols="12" sm="12" md="2">
                   <v-btn type="submit" color="success" dark large dense>
                     {{ $t("searchEmployee.labels.search") }}
+                    <v-icon right dark> mdi-magnify </v-icon>
                   </v-btn>
                 </v-col>
               </v-row>

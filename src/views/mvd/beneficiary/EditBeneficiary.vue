@@ -81,6 +81,7 @@
                     dense
                   >
                     {{ $t("beneficiary.labels.validate") }}
+                    <v-icon right dark>mdi-account-convert</v-icon>
                   </v-btn>
                 </v-col>
               </v-row>
@@ -624,8 +625,15 @@
               </v-row>
               <v-row>
                 <v-col cols="12" sm="12" md="4" offset="5">
-                  <v-btn type="submit" color="success" x-large dense>
+                  <v-btn
+                    type="submit"
+                    color="success"
+                    x-large
+                    :disabled="disabledSave"
+                    dense
+                  >
                     {{ $t("beneficiary.labels.save") }}
+                    <v-icon right dark>mdi-content-save</v-icon>
                   </v-btn>
                 </v-col>
               </v-row>
@@ -639,6 +647,7 @@
             :isEdit="isEdit"
             :hasDataRenapo="hasDataRenapo"
             :hasDataPTCH="hasDataPTCH"
+            :allowEdit="allowEdit"
           />
         </v-container>
       </v-card>
@@ -707,12 +716,13 @@ export default class EditBeneficiary extends Vue {
   public useAddress: any = false;
   public dialog = false;
 
-  public existsBeneficiary = false;
+  public existsBeneficiary = true;
   public disabledSave = true;
   public hasDataRenapo = false;
   public hasDataPTCH = false;
   public renapoAvailable = false;
   public isEdit = true;
+  public allowEdit = false;
 
   public isDisabledValidate = true;
   public fieldsDisabled = false;
@@ -849,6 +859,10 @@ export default class EditBeneficiary extends Vue {
 
   get computedEmployeeTypeId(): number {
     return Number(this.$route.params.paramEmployeeTypeId);
+  }
+
+  get computedIdBeneficiary(): number {
+    return Number(this.$route.params.paramIdBeneficiary);
   }
 
   get computedBirthdayFormatted(): string | null {
@@ -1035,6 +1049,7 @@ export default class EditBeneficiary extends Vue {
     this.addressService
       .getHeadlineAddresses(this.validityRights.IdDerechohabiente)
       .then((response) => {
+        console.log(response);
         this.addresses = response.Data;
       })
       .finally(() => {
@@ -1046,9 +1061,12 @@ export default class EditBeneficiary extends Vue {
     this.hideAlert();
     this.isLoadingValidate = true;
     await this.personService
-      .findByCurp(this.beneficiary.Persona.Curp)
+      .findByCurpIdBeneficiary(
+        this.beneficiary.Persona.Curp,
+        this.computedIdBeneficiary
+      )
       .then((response) => {
-        console.log(response)
+        console.log(response.Data);
         if (response.Data.Renapo != null) {
           this.renapoData = {
             Curp: response.Data.Renapo.Curp,
@@ -1071,7 +1089,6 @@ export default class EditBeneficiary extends Vue {
           this.hasDataRenapo = true;
         }
         if (response.Data.PortalTransaccional != null) {
-          console.log("entra jdjdjdjdjdj")
           this.personData = {
             IdPersona: response.Data.PortalTransaccional.IdPersona,
             Curp: response.Data.PortalTransaccional.Curp,
@@ -1087,7 +1104,8 @@ export default class EditBeneficiary extends Vue {
           this.hasDataPTCH = true;
         }
 
-        this.existsBeneficiary = response.Data.DerechohabienteExiste;
+        // this.existsBeneficiary = response.Data.PermitirEdicion;
+        this.allowEdit = response.Data.PermitirEdicion;
         this.renapoAvailable = response.Data.RenapoDisponible;
 
         if (this.renapoAvailable) {
@@ -1095,18 +1113,18 @@ export default class EditBeneficiary extends Vue {
             this.dialog = true;
           }
 
-          if (response.Message != "" && response.Message != null) {
-            this.alert = {
-              message: response.Message as string,
-              alert: true,
-              type: false,
-            };
-          }
+          // if (response.Message != "" && response.Message != null) {
+          //   this.alert = {
+          //     message: response.Message as string,
+          //     alert: true,
+          //     type: false,
+          //   };
+          // }
         } else {
           if (this.hasDataPTCH) {
             this.dialog = true;
           }
-          this.disabledSave = this.existsBeneficiary;
+          // this.disabledSave = this.existsBeneficiary;
           this.alert = {
             message:
               "Ha ocurrido un problema: Servicio de renapo no disponible" as string,
@@ -1142,17 +1160,38 @@ export default class EditBeneficiary extends Vue {
   }
 
   selectPerson(): void {
-    this.beneficiary.Persona.Nombres = this.computedPerson.Renapo.Nombres;
-    this.beneficiary.Persona.ApellidoPaterno = this.computedPerson.Renapo.ApellidoPaterno;
-    this.beneficiary.Persona.ApellidoMaterno = this.computedPerson.Renapo.ApellidoMaterno;
-    this.beneficiary.Persona.Sexo = this.computedPerson.Renapo.Sexo;
-    this.beneficiary.Persona.FechaNacimiento = this.computedPerson.Renapo.FechaNacimiento;
-    this.beneficiary.Persona.Edad = this.getAge(
-      this.computedPerson.Renapo.FechaNacimiento
-    ).toString();
+    if (this.renapoAvailable) {
+      this.beneficiary.Persona.IndRenapo = true;
+      this.beneficiary.IdPersona = this.computedPerson.Person.IdPersona;
+      this.beneficiary.Persona.Nombres = this.computedPerson.Renapo.Nombres;
+      this.beneficiary.Persona.ApellidoPaterno =
+        this.computedPerson.Renapo.ApellidoPaterno;
+      this.beneficiary.Persona.ApellidoMaterno =
+        this.computedPerson.Renapo.ApellidoMaterno;
+      this.beneficiary.Persona.Sexo = this.computedPerson.Renapo.Sexo;
+      this.beneficiary.Persona.FechaNacimiento =
+        this.computedPerson.Renapo.FechaNacimiento;
+      this.beneficiary.Persona.Edad = this.getAge(
+        this.computedPerson.Renapo.FechaNacimiento
+      ).toString();
+    } else {
+      this.beneficiary.Persona.IndRenapo = false;
+      this.beneficiary.IdPersona = this.computedPerson.Person.IdPersona;
+      this.beneficiary.Persona.Nombres = this.computedPerson.Person.Nombres;
+      this.beneficiary.Persona.ApellidoPaterno =
+        this.computedPerson.Person.ApellidoPaterno;
+      this.beneficiary.Persona.ApellidoMaterno =
+        this.computedPerson.Person.ApellidoMaterno;
+      this.beneficiary.Persona.Sexo = this.computedPerson.Person.Sexo;
+      this.beneficiary.Persona.FechaNacimiento =
+        this.computedPerson.Person.FechaNacimiento;
+      this.beneficiary.Persona.Edad = this.getAge(
+        this.computedPerson.Person.FechaNacimiento
+      ).toString();
+    }
     this.dialog = false;
     this.fieldsDisabled = true;
-    this.beneficiary.Persona.IndRenapo = true;
+    this.disabledSave = !this.allowEdit;
     this.changeCoding();
   }
 
@@ -1184,8 +1223,13 @@ export default class EditBeneficiary extends Vue {
     this.beneficiary.Persona.Sexo = "";
     this.beneficiary.Persona.Edad = "";
     this.isDisabledValidate = false;
-    this.existsBeneficiary = true;
+    this.renapoAvailable = false;
+    this.existsBeneficiary = false;
+    this.hasDataRenapo = false;
+    this.hasDataPTCH = false;
+    this.disabledSave = true;
     this.fieldsDisabled = false;
+    this.allowEdit = false;
     (this.$refs.form as HTMLFormElement).reset();
   }
 
@@ -1321,6 +1365,7 @@ export default class EditBeneficiary extends Vue {
           this.useAddress = false;
           this.getBeneficiary();
           this.getHeadlineAddresses();
+          this.disabledSave = true;
           this.alert = {
             message: this.$t(
               "beneficiary.labels.dialogs.successCreate.message"

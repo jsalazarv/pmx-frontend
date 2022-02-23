@@ -267,6 +267,7 @@
                 <v-col cols="12" sm="12" md="4" offset="5">
                   <v-btn type="submit" color="success" dark x-large dense>
                     {{ $t("address.labels.save") }}
+                    <v-icon right dark>mdi-content-save</v-icon>
                   </v-btn>
                 </v-col>
               </v-row>
@@ -329,7 +330,7 @@ export default class NewAddress extends Vue {
     ApellidoMaterno: "",
     Curp: null,
     IdDerechohabiente: null,
-    Sexo:""
+    Sexo: "",
   };
   public address: IAddress = {
     IdDomicilio: null,

@@ -447,6 +447,7 @@ export default class EmployeeConsultation extends Vue {
       this.computedEmployeeId,
       this.computedEmployeeTypeId
     );
+    console.log(responseValidityRights)
     if (responseValidityRights.Success) {
       this.validityRights = responseValidityRights.Data;
       if (this.validityRights.IdDerechohabiente == null) {

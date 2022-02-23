@@ -29,4 +29,5 @@ export interface IPersonValidationResponse {
   PortalTransaccional: IPersonData;
   DerechohabienteExiste: boolean;
   RenapoDisponible: boolean;
+  PermitirEdicion: boolean;
 }

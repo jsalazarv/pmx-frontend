@@ -81,6 +81,7 @@
                     dense
                   >
                     {{ $t("beneficiary.labels.validate") }}
+                    <v-icon right dark>mdi-account-convert</v-icon>
                   </v-btn>
                 </v-col>
               </v-row>
@@ -605,6 +606,7 @@
                     :disabled="disabledSave"
                   >
                     {{ $t("beneficiary.labels.save") }}
+                    <v-icon right dark>mdi-content-save</v-icon>
                   </v-btn>
                 </v-col>
               </v-row>
@@ -617,6 +619,7 @@
             :hasDataRenapo="hasDataRenapo"
             :hasDataPTCH="hasDataPTCH"
             :existsBeneficiary="existsBeneficiary"
+            :allowEdit="allowEdit"
             :isEdit="isEdit"
           />
         </v-container>
@@ -684,14 +687,13 @@ export default class NewBeneficiary extends Vue {
   public showPickerValidity: any = false;
   public useAddress: any = false;
   public dialog = false;
-
   public existsBeneficiary = false;
   public disabledSave = true;
   public hasDataRenapo = false;
   public hasDataPTCH = false;
   public renapoAvailable = false;
   public isEdit = false;
-
+  public allowEdit = false;
   public isDisabledValidate = true;
   public fieldsDisabled = false;
   public isLoadingAddresses = false;
@@ -1095,6 +1097,7 @@ export default class NewBeneficiary extends Vue {
 
   selectPerson(): void {
     if (this.renapoAvailable) {
+      this.beneficiary.Persona.IndRenapo = true;
       this.beneficiary.IdPersona = this.computedPerson.Person.IdPersona;
       this.beneficiary.Persona.Nombres = this.computedPerson.Renapo.Nombres;
       this.beneficiary.Persona.ApellidoPaterno =
@@ -1108,6 +1111,7 @@ export default class NewBeneficiary extends Vue {
         this.computedPerson.Renapo.FechaNacimiento
       ).toString();
     } else {
+      this.beneficiary.Persona.IndRenapo = false;
       this.beneficiary.IdPersona = this.computedPerson.Person.IdPersona;
       this.beneficiary.Persona.Nombres = this.computedPerson.Person.Nombres;
       this.beneficiary.Persona.ApellidoPaterno =
@@ -1121,10 +1125,8 @@ export default class NewBeneficiary extends Vue {
         this.computedPerson.Person.FechaNacimiento
       ).toString();
     }
-
     this.dialog = false;
     this.fieldsDisabled = true;
-    this.beneficiary.Persona.IndRenapo = true;
     this.disabledSave = this.existsBeneficiary;
     this.getCoding();
   }
@@ -1279,6 +1281,7 @@ export default class NewBeneficiary extends Vue {
           this.isDisabledValidate = true;
           this.existsBeneficiary = true;
           this.fieldsDisabled = false;
+          this.disabledSave = true;
           (this.$refs.form as HTMLFormElement).reset();
         })
         .catch((error) => {
