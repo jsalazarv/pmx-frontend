@@ -42,26 +42,27 @@
           </template>
         </v-data-table>
       </v-card>
-
-      <pre>
-        {{ employeeData }}
-      </pre>
     </div>
     <UserDialog
       :open.sync="confirmDialogOpen"
       :employeeData.sync="employeeData"
-    ></UserDialog>
+    />
+    <UserCreationDialog
+      :open.sync="openUserCreationDialog"
+      :employee-data="employeeData"
+    />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import { IUser } from "@/services/UserService/types";
 import UserService from "@/services/UserService";
 import UserDialog from "@/views/admin/users/components/UserDialog.vue";
 import { IShowEmployee } from "@/services/EmployeeService/types";
+import UserCreationDialog from "@/views/admin/users/components/UserCreationDialog.vue";
 @Component({
-  components: { UserDialog },
+  components: { UserCreationDialog, UserDialog },
 })
 export default class UsersList extends Vue {
   protected userService = new UserService();
@@ -106,6 +107,7 @@ export default class UsersList extends Vue {
     { text: "", value: "actions", align: "end", sortable: false },
   ];
   public confirmDialogOpen = false;
+  public openUserCreationDialog = false;
   public employeeData?: IShowEmployee = {};
 
   getUserList(): void {
@@ -123,6 +125,11 @@ export default class UsersList extends Vue {
 
   openUserModal(): void {
     this.confirmDialogOpen = true;
+  }
+
+  @Watch("employeeData")
+  test(): void {
+    this.openUserCreationDialog = true;
   }
 
   mounted(): void {
