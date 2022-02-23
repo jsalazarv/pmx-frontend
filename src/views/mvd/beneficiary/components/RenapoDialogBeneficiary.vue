@@ -13,7 +13,7 @@
             ? allowEdit
               ? "Ya esta registrado el derechohabiente y esta disponible para editarlo"
               : "Ya esta registrado el derechohabiente pero no esta disponible para editarlo"
-            : "No existe registrado el derechohabiente su información se actualizará completamente"
+            : "No existe registrado el derechohabiente su información se actualizará completamente al seleccionar"
         }}
       </v-card-title>
       <!-- ? $t("beneficiary.labels.validations.discharged")

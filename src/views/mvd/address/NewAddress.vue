@@ -57,14 +57,6 @@
                 </v-col>
               </v-row>
               <v-row>
-                <Alert
-                  :message="alert.message"
-                  :alert="alert.alert"
-                  :type="alert.type"
-                  @hideAlert="hideAlert"
-                ></Alert>
-              </v-row>
-              <v-row>
                 <v-col cols="12" sm="12" md="4">
                   <ValidationProvider
                     :name="$t('address.attributes.country')"
@@ -264,7 +256,7 @@
                 </v-col>
               </v-row>
               <v-row>
-                <v-col cols="12" sm="12" md="4" offset="5">
+                <v-col cols="12" sm="12" md="4" offset-md="5">
                   <v-btn type="submit" color="success" dark x-large dense>
                     {{ $t("address.labels.save") }}
                     <v-icon right dark>mdi-content-save</v-icon>
@@ -290,13 +282,10 @@ import MunicipalityService from "@/services/MunicipalityService";
 import { IMunicipality } from "@/services/MunicipalityService/types";
 import { IAddress, IAddressPerson } from "@/services/AddressService/types";
 import AddressService from "@/services/AddressService/index";
-import Alert from "@/components/Alert.vue";
 import BeneficiaryService from "@/services/BeneficiaryService";
 import { IValidityRightsResponse } from "@/services/BeneficiaryService/types";
 
-@Component({
-  components: { Alert },
-})
+@Component({})
 export default class NewAddress extends Vue {
   protected beneficiaryService = new BeneficiaryService();
   protected countryService = new CountryService();
@@ -310,11 +299,6 @@ export default class NewAddress extends Vue {
   public isLoadingMunicipalities = false;
   public isLoadingValidityRights = false;
   public municipalities: Array<IMunicipality> = [];
-  public alert = {
-    alert: false,
-    message: "",
-    type: false,
-  };
   public validityRights: IValidityRightsResponse = {
     GrupoPersonal: null,
     AreaPersonal: null,
@@ -440,12 +424,6 @@ export default class NewAddress extends Vue {
       });
   }
 
-  hideAlert(): void {
-    this.alert.message = "";
-    this.alert.alert = false;
-    this.alert.type = false;
-  }
-
   async onSubmit() {
     try {
       let responseAddress = await this.addressService.create(this.address);
@@ -458,13 +436,7 @@ export default class NewAddress extends Vue {
           await this.addressService.createAddresPerson(this.addressPerson);
 
         if (responseAddressPerson.Success) {
-          this.alert = {
-            message: this.$t(
-              "address.labels.dialogs.successCreate.message"
-            ) as string,
-            alert: true,
-            type: true,
-          };
+          this.$store.dispatch("app/setNotify", {});
           this.address = {
             IdDomicilio: null,
             IdPais: null,
@@ -484,13 +456,9 @@ export default class NewAddress extends Vue {
         }
       }
     } catch (error) {
-      this.alert = {
-        message: this.$t(
-          "address.labels.dialogs.errorCreate.message"
-        ) as string,
-        alert: true,
-        type: false,
-      };
+      this.$store.dispatch("app/setNotify", {
+        status: 500,
+      });
     }
   }
 

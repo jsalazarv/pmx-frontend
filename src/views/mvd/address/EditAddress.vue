@@ -57,14 +57,6 @@
                 </v-col>
               </v-row>
               <v-row>
-                <Alert
-                  :message="alert.message"
-                  :alert="alert.alert"
-                  :type="alert.type"
-                  @hideAlert="hideAlert"
-                ></Alert>
-              </v-row>
-              <v-row>
                 <v-col cols="12" sm="12" md="4">
                   <ValidationProvider
                     :name="$t('address.attributes.country')"
@@ -274,7 +266,7 @@
                 </v-col>
               </v-row>
               <v-row>
-                <v-col cols="12" sm="12" md="4" offset="5">
+                <v-col cols="12" sm="12" md="4" offset-md="5">
                   <v-btn type="submit" color="success" dark x-large dense>
                     {{ $t("address.labels.save") }}
                     <v-icon right dark>mdi-content-save</v-icon>
@@ -300,13 +292,10 @@ import MunicipalityService from "@/services/MunicipalityService";
 import { IMunicipality } from "@/services/MunicipalityService/types";
 import { IAddress } from "@/services/AddressService/types";
 import AddressService from "@/services/AddressService/index";
-import Alert from "@/components/Alert.vue";
 import BeneficiaryService from "@/services/BeneficiaryService";
 import { IValidityRightsResponse } from "@/services/BeneficiaryService/types";
 
-@Component({
-  components: { Alert },
-})
+@Component({})
 export default class EditAddress extends Vue {
   protected beneficiaryService = new BeneficiaryService();
   protected countryService = new CountryService();
@@ -321,11 +310,6 @@ export default class EditAddress extends Vue {
   public isLoadingValidityRights = false;
   public isLoadingCurrentAddres = false;
   public municipalities: Array<IMunicipality> = [];
-  public alert = {
-    alert: false,
-    message: "",
-    type: false,
-  };
   public validityRights: IValidityRightsResponse = {
     GrupoPersonal: null,
     AreaPersonal: null,
@@ -448,32 +432,16 @@ export default class EditAddress extends Vue {
       });
   }
 
-  hideAlert(): void {
-    this.alert.message = "";
-    this.alert.alert = false;
-    this.alert.type = false;
-  }
-
   onSubmit(): void {
     this.addressService
       .edit(this.address)
       .then((response) => {
-        this.alert = {
-          message: this.$t(
-            "address.labels.dialogs.successUpdate.message"
-          ) as string,
-          alert: true,
-          type: true,
-        };
+        this.$store.dispatch("app/setNotify", {});
       })
       .catch((error) => {
-        this.alert = {
-          message: this.$t(
-            "address.labels.dialogs.errorUpdate.message"
-          ) as string,
-          alert: true,
-          type: false,
-        };
+        this.$store.dispatch("app/setNotify", {
+          status: 500,
+        });
       });
   }
 
