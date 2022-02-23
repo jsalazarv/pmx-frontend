@@ -35,7 +35,7 @@ export default {
   labels: {
     editAddress: "Edit address",
     newAddress: "New address",
-    assignMedicalUnit: "Assign employee medical unit",
+    assignMedicalUnit: "Assign medical unit",
     credential: "Employee credential",
     addBeneficiary: "Add beneficiary",
     assign: "Assign",

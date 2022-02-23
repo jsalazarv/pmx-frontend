@@ -14,18 +14,10 @@
           :indeterminate="isLoading"
         ></v-progress-linear>
         <v-container>
-          <Alert
-            :message="alert.message"
-            :alert="alert.alert"
-            :type="alert.type"
-            @hideAlert="hideAlert"
-          ></Alert>
           <EmployeeFormContratual v-if="computedEmployeeTypeId == 0" />
           <EmployeeFormNormative
             v-else
             @updateValidityRights="getValidityRights"
-            @hide="hideAlert"
-            ref="employeeFormNormative"
           />
         </v-container>
         <v-divider></v-divider>
@@ -42,6 +34,7 @@
                 @click="onBtnEditAddress"
               >
                 {{ $t("employeeConsultation.labels.editAddress") }}
+                <v-icon right dark>mdi-home-edit</v-icon>
               </v-btn>
             </v-col>
             <v-col cols="12" sm="6" md="3">
@@ -55,6 +48,7 @@
                 @click="onBtnNewAddress"
               >
                 {{ $t("employeeConsultation.labels.newAddress") }}
+                <v-icon right dark>mdi-home-plus</v-icon>
               </v-btn>
             </v-col>
             <v-col cols="12" sm="6" md="3">
@@ -72,6 +66,7 @@
                     @click="onBtnAssignMedicalUnit"
                   >
                     {{ $t("employeeConsultation.labels.assignMedicalUnit") }}
+                    <v-icon right dark>mdi-hospital-building</v-icon>
                   </v-btn>
                 </template>
                 <v-card>
@@ -134,6 +129,7 @@
                 @click="onBtnCredentialization"
               >
                 {{ $t("employeeConsultation.labels.credential") }}
+                <v-icon right dark>mdi-card-account-details</v-icon>
               </v-btn>
             </v-col>
           </v-row>
@@ -158,8 +154,8 @@
                 color="success"
                 @click="onBtnAddBeneficiary"
               >
-                +
                 {{ $t("employeeConsultation.labels.addBeneficiary") }}
+                <v-icon right dark>mdi-account-plus</v-icon>
               </v-btn>
             </v-col>
             <v-col cols="12" sm="12" md="12">
@@ -175,15 +171,35 @@
               >
                 <template v-slot:item="row">
                   <tr>
+                    <td>{{ row.item.Nombre }}</td>
+                    <td>{{ row.item.ApellidoPaterno }}</td>
+                    <td>{{ row.item.ApellidoMaterno }}</td>
+                    <td>{{ row.item.Curp }}</td>
+                    <td>{{ row.item.Parentesco }}</td>
                     <td>
-                      <v-btn
-                        class="mx-2"
-                        @click="onBtnEdit(row.item.IdDerechohabiente)"
-                      >
-                        <v-icon dark>mdi-pencil</v-icon>
-                      </v-btn>
+                      {{
+                        row.item.Vigencia
+                          | dateFormatted("YYYY-MM-DD", "DD/MM/YYYY")
+                      }}
                     </td>
                     <td>
+                      <v-checkbox
+                        :input-value="row.item.IndIncapacidad"
+                        value
+                        disabled
+                      ></v-checkbox>
+                    </td>
+                    <td>
+                      <v-btn
+                        color="success"
+                        outlined
+                        x-small
+                        fab
+                        class="mx-1"
+                        @click="onBtnEdit(row.item.IdDerechohabiente)"
+                      >
+                        <v-icon dark>mdi-account-edit</v-icon>
+                      </v-btn>
                       <v-dialog
                         v-model="dialogDelete"
                         persistent
@@ -192,12 +208,16 @@
                       >
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn
-                            class="mx-2"
+                            color="error"
+                            outlined
+                            x-small
+                            fab
+                            class="mx-1"
                             v-bind="attrs"
                             v-on="on"
                             @click="idBeneficiary = row.item.IdDerechohabiente"
                           >
-                            <v-icon dark>mdi-delete</v-icon>
+                            <v-icon dark>mdi-account-remove</v-icon>
                           </v-btn>
                         </template>
                         <v-card>
@@ -229,24 +249,6 @@
                         </v-card>
                       </v-dialog>
                     </td>
-                    <td>{{ row.item.Nombre }}</td>
-                    <td>{{ row.item.ApellidoPaterno }}</td>
-                    <td>{{ row.item.ApellidoMaterno }}</td>
-                    <td>{{ row.item.Curp }}</td>
-                    <td>{{ row.item.Parentesco }}</td>
-                    <td>
-                      {{
-                        row.item.Vigencia
-                          | dateFormatted("YYYY-MM-DD", "DD/MM/YYYY")
-                      }}
-                    </td>
-                    <td>
-                      <v-checkbox
-                        :input-value="row.item.IndIncapacidad"
-                        value
-                        disabled
-                      ></v-checkbox>
-                    </td>
                   </tr>
                 </template>
               </v-data-table>
@@ -261,7 +263,6 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import moment from "moment";
 import BeneficiaryService from "@/services/BeneficiaryService/";
 import EmployeeService from "@/services/EmployeeService";
 import {
@@ -273,10 +274,9 @@ import EmployeeFormContratual from "./components/EmployeeFormContractual.vue";
 import EmployeeFormNormative from "./components/EmployeeFormNormative.vue";
 import { IMedicalUnit } from "@/services/MedicalUnitService/types";
 import MedicalUnitService from "@/services/MedicalUnitService";
-import Alert from "@/components/Alert.vue";
 
 @Component({
-  components: { EmployeeFormContratual, EmployeeFormNormative, Alert },
+  components: { EmployeeFormContratual, EmployeeFormNormative },
 })
 export default class EmployeeConsultation extends Vue {
   protected beneficiaryService = new BeneficiaryService();
@@ -293,11 +293,6 @@ export default class EmployeeConsultation extends Vue {
   public isLoadingBeneficiaries = false;
   public medicalUnitId: number | null = null;
   public idBeneficiary: number | null = null;
-  public alert = {
-    alert: false,
-    message: "",
-    type: false,
-  };
   public validityRights: IValidityRightsResponse = {
     GrupoPersonal: null,
     AreaPersonal: null,
@@ -325,8 +320,6 @@ export default class EmployeeConsultation extends Vue {
     IdDerechohabiente: null,
   };
   public headers: Array<any> = [
-    { text: "", value: "edit", sortable: false },
-    { text: "", value: "delete", sortable: false },
     {
       text: this.$t("employeeConsultation.attributes.names"),
       value: "nombres",
@@ -355,6 +348,7 @@ export default class EmployeeConsultation extends Vue {
       text: this.$t("employeeConsultation.attributes.inability"),
       value: "incapacidad",
     },
+    { text: "", value: "actions", sortable: false },
   ];
 
   get isLoading(): boolean {
@@ -435,19 +429,13 @@ export default class EmployeeConsultation extends Vue {
       });
   }
 
-  hideAlert(): void {
-    this.alert.message = "";
-    this.alert.alert = false;
-    this.alert.type = false;
-  }
-
   async getValidityRights() {
-    let responseValidityRights = await this.beneficiaryService.getValidityRights(
-      this.computedIdPerson,
-      this.computedEmployeeId,
-      this.computedEmployeeTypeId
-    );
-    console.log(responseValidityRights)
+    let responseValidityRights =
+      await this.beneficiaryService.getValidityRights(
+        this.computedIdPerson,
+        this.computedEmployeeId,
+        this.computedEmployeeTypeId
+      );
     if (responseValidityRights.Success) {
       this.validityRights = responseValidityRights.Data;
       if (this.validityRights.IdDerechohabiente == null) {
@@ -502,27 +490,16 @@ export default class EmployeeConsultation extends Vue {
         this.medicalUnitId
       )
       .then((response) => {
-        this.alert = {
-          message: this.$t(
-            "employeeConsultation.labels.dialogs.successAssign.message"
-          ) as string,
-          alert: true,
-          type: true,
-        };
+        this.$store.dispatch("app/setNotify", {});
       })
       .catch((error) => {
-        this.alert = {
-          message: this.$t(
-            "employeeConsultation.labels.dialogs.errorAssign.message"
-          ) as string,
-          alert: true,
-          type: false,
-        };
+        this.$store.dispatch("app/setNotify", {
+          status: 500,
+        });
       })
       .finally(() => {
         this.dialog = false;
       });
-    (this.$refs.employeeFormNormative as EmployeeFormNormative).hideAlert();
   }
 
   deleteBeneficiary(): void {
@@ -530,22 +507,12 @@ export default class EmployeeConsultation extends Vue {
       .delete(this.idBeneficiary)
       .then((response) => {
         this.getAllBeneficiaries();
-        this.alert = {
-          message: this.$t(
-            "employeeConsultation.labels.dialogs.successDelete.message"
-          ) as string,
-          alert: true,
-          type: true,
-        };
+        this.$store.dispatch("app/setNotify", {});
       })
       .catch((error) => {
-        this.alert = {
-          message: this.$t(
-            "employeeConsultation.labels.dialogs.errorDelete.message"
-          ) as string,
-          alert: true,
-          type: false,
-        };
+        this.$store.dispatch("app/setNotify", {
+          status: 500,
+        });
       })
       .finally(() => {
         this.dialogDelete = false;

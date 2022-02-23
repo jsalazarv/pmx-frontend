@@ -43,14 +43,6 @@
                 </v-col>
               </v-row>
               <v-row>
-                <Alert
-                  :message="alert.message"
-                  :alert="alert.alert"
-                  :type="alert.type"
-                  @hideAlert="hideAlert"
-                ></Alert>
-              </v-row>
-              <v-row>
                 <v-col cols="12" sm="12" md="6">
                   <ValidationProvider
                     :name="$t('beneficiary.attributes.curp')"
@@ -181,6 +173,7 @@
                       no-title
                       @input="calculateAge"
                       locale="es"
+                      :max="maxDate"
                     ></v-date-picker>
                   </v-menu>
                 </v-col>
@@ -651,14 +644,13 @@ import { IMunicipality } from "@/services/MunicipalityService/types";
 import BeneficiaryService from "@/services/BeneficiaryService";
 import AddressService from "@/services/AddressService";
 import { IAddresPersonResponse } from "@/services/AddressService/types";
-import Alert from "@/components/Alert.vue";
 import RenapoDialogBeneficiary from "./components/RenapoDialogBeneficiary.vue";
 import PersonService from "@/services/PersonService";
 import { IPersonData, IPersonValidationState } from "@/store/person/types";
 import { IRenapoData } from "@/services/PersonService/types";
 
 @Component({
-  components: { Alert, RenapoDialogBeneficiary },
+  components: { RenapoDialogBeneficiary },
 })
 export default class NewBeneficiary extends Vue {
   protected beneficiaryService = new BeneficiaryService();
@@ -699,12 +691,8 @@ export default class NewBeneficiary extends Vue {
   public isLoadingAddresses = false;
   public isLoadingValidate = false;
   public rol = "";
+  public maxDate = "9999-31-12";
   public addresses: Array<IAddresPersonResponse> = [];
-  public alert = {
-    alert: false,
-    message: "",
-    type: false,
-  };
   public validityRights: IValidityRightsResponse = {
     GrupoPersonal: null,
     AreaPersonal: null,
@@ -859,6 +847,13 @@ export default class NewBeneficiary extends Vue {
     return this.$store.state.person;
   }
 
+  parseDate(date: any) {
+    if (!date) return null;
+
+    const [month, day, year] = date.split("/");
+    return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+  }
+
   newAddress(): void {
     this.useAddress = true;
     this.beneficiary.Domicilio = {
@@ -975,12 +970,6 @@ export default class NewBeneficiary extends Vue {
     }
   }
 
-  hideAlert(): void {
-    this.alert.message = "";
-    this.alert.alert = false;
-    this.alert.type = false;
-  }
-
   getHeadlineAddresses(): void {
     this.isLoadingAddresses = true;
     this.addressService
@@ -994,7 +983,6 @@ export default class NewBeneficiary extends Vue {
   }
 
   async validateCurp() {
-    this.hideAlert();
     this.clear();
     this.isLoadingValidate = true;
     await this.personService
@@ -1036,41 +1024,33 @@ export default class NewBeneficiary extends Vue {
           this.setPersonData(this.personData);
           this.hasDataPTCH = true;
         }
-
         this.existsBeneficiary = response.Data.DerechohabienteExiste;
         this.renapoAvailable = response.Data.RenapoDisponible;
-
         if (this.renapoAvailable) {
           if (this.hasDataRenapo || this.hasDataPTCH) {
             this.dialog = true;
           }
-
           if (response.Message != "" && response.Message != null) {
-            this.alert = {
-              message: response.Message as string,
-              alert: true,
-              type: false,
-            };
+            this.$store.dispatch("app/setNotify", {
+              status: 400,
+              text: response.Message,
+            });
           }
         } else {
           if (this.hasDataPTCH) {
             this.dialog = true;
           }
           this.disabledSave = this.existsBeneficiary;
-          this.alert = {
-            message:
-              "Ha ocurrido un problema: Servicio de renapo no disponible" as string,
-            alert: true,
-            type: false,
-          };
+          this.$store.dispatch("app/setNotify", {
+            status: 400,
+            text: "Ha ocurrido un problema: Servicio de renapo no disponible" as string,
+          });
         }
       })
       .catch((error) => {
-        this.alert = {
-          message: "Ha ocurrido un problema" as string,
-          alert: true,
-          type: false,
-        };
+        this.$store.dispatch("app/setNotify", {
+          status: 500,
+        });
       })
       .finally(() => {
         this.isLoadingValidate = false;
@@ -1143,6 +1123,13 @@ export default class NewBeneficiary extends Vue {
     return age <= 0 ? 0 : age;
   }
 
+  handleBlur(e: any) {
+    console.log(e.target.value);
+
+    // this.beneficiary.Vigencia = // assign parsed value from this.keyboardEntered
+    // setTimeout(() => this.myDateShown = false, 100)
+  }
+
   calculateAge() {
     this.showPickerBirthday = false;
     this.beneficiary.Persona.Edad = this.getAge(
@@ -1204,13 +1191,7 @@ export default class NewBeneficiary extends Vue {
       this.beneficiaryService
         .create(this.beneficiary)
         .then((response) => {
-          this.alert = {
-            message: this.$t(
-              "beneficiary.labels.dialogs.successCreate.message"
-            ) as string,
-            alert: true,
-            type: true,
-          };
+          this.$store.dispatch("app/setNotify", {});
           this.beneficiary = {
             IdDerechohabiente: null,
             IdPersona: null,
@@ -1285,28 +1266,20 @@ export default class NewBeneficiary extends Vue {
           (this.$refs.form as HTMLFormElement).reset();
         })
         .catch((error) => {
-          this.alert = {
-            message: this.$t(
-              error.response.status == 400
-                ? "beneficiary.labels.dialogs.errorCreate.error400"
-                : "beneficiary.labels.dialogs.errorCreate.message"
-            ) as string,
-            alert: true,
-            type: false,
-          };
-          console.clear();
+          this.$store.dispatch("app/setNotify", {
+            status: 500,
+          });
         });
     } else {
-      this.alert = {
-        message: this.$t(
+      this.$store.dispatch("app/setNotify", {
+        status: 400,
+        text: this.$t(
           this.validityValidations() ==
             EnumValidityValidations.INVALID_CHILDRENS
             ? "beneficiary.labels.dialogs.errorEnum.errorChildrens"
             : "beneficiary.labels.dialogs.errorEnum.errorBrothers"
         ) as string,
-        alert: true,
-        type: false,
-      };
+      });
     }
   }
 

@@ -148,9 +148,19 @@
               >
                 <template v-slot:item="row">
                   <tr>
+                    <td>{{ row.item.TipoEmpleadoDescripcion }}</td>
+                    <td>{{ row.item.Nombres }}</td>
+                    <td>{{ row.item.ApellidoPaterno }}</td>
+                    <td>{{ row.item.ApellidoMaterno }}</td>
+                    <td>{{ row.item.Curp }}</td>
+                    <td>{{ row.item.IdEmpleado }}</td>
                     <td>
                       <v-btn
-                        class="mx-2"
+                        class="mx-4"
+                        color="info"
+                        outlined
+                        fab
+                        x-small
                         @click="
                           onButtonClick(
                             row.item.IdEmpleado,
@@ -159,15 +169,9 @@
                           )
                         "
                       >
-                        <v-icon dark>mdi-eye</v-icon>
+                        <v-icon dark>mdi-account-eye</v-icon>
                       </v-btn>
                     </td>
-                    <td>{{ row.item.TipoEmpleadoDescripcion }}</td>
-                    <td>{{ row.item.Nombres }}</td>
-                    <td>{{ row.item.ApellidoPaterno }}</td>
-                    <td>{{ row.item.ApellidoMaterno }}</td>
-                    <td>{{ row.item.Curp }}</td>
-                    <td>{{ row.item.IdEmpleado }}</td>
                   </tr>
                 </template>
               </v-data-table>
@@ -210,7 +214,6 @@ export default class SearchEmployee extends Vue {
   };
   public searchResponse: Array<ISearchResponse> = [];
   public headers: Array<any> = [
-    { text: "", value: "actions", sortable: false },
     {
       text: this.$t("searchEmployee.attributes.employeeType"),
       align: "start",
@@ -234,6 +237,7 @@ export default class SearchEmployee extends Vue {
       text: this.$t("searchEmployee.attributes.assignmentNumber"),
       value: "num_empleado",
     },
+    { text: "", value: "actions", sortable: false },
   ];
 
   get isLoading(): boolean {

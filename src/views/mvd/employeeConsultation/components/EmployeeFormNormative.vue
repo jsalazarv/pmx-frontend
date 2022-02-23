@@ -1,13 +1,5 @@
 <template>
   <v-container>
-    <v-row>
-      <Alert
-        :message="alert.message"
-        :alert="alert.alert"
-        :type="alert.type"
-        @hideAlert="hideAlert"
-      ></Alert>
-    </v-row>
     <ValidationObserver v-slot="{ handleSubmit }" ref="form">
       <form @submit.prevent="handleSubmit(onSubmit)">
         <v-row>
@@ -161,6 +153,7 @@
               dense
             >
               {{ $t("employeeConsultation.labels.save") }}
+              <v-icon right dark>mdi-content-save</v-icon>
             </v-btn>
           </v-col>
         </v-row>
@@ -172,7 +165,6 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-// import moment from "moment";
 import WorkplaceService from "@/services/WorkplaceService";
 import DepartmentService from "@/services/DepartmentService";
 import { IDepartament } from "@/services/DepartmentService/types";
@@ -182,9 +174,8 @@ import {
   ITitularBeneficiaryRequest,
   IValidityRightsResponse,
 } from "@/services/BeneficiaryService/types";
-import Alert from "@/components/Alert.vue";
 
-@Component({ components: { Alert } })
+@Component({})
 export default class EmployeeFormNormative extends Vue {
   protected workPlaceService = new WorkplaceService();
   protected departmentService = new DepartmentService();
@@ -195,11 +186,6 @@ export default class EmployeeFormNormative extends Vue {
   public workplaces: Array<IWorkplace> = [];
   public departments: Array<IDepartament> = [];
   public showPickerValidity: any = false;
-  public alert = {
-    alert: false,
-    message: "",
-    type: false,
-  };
   public titularBeneficiary: ITitularBeneficiaryRequest = {
     IdPersona: null,
     IdCentro: null,
@@ -224,7 +210,7 @@ export default class EmployeeFormNormative extends Vue {
     ApellidoMaterno: "",
     Curp: null,
     IdDerechohabiente: null,
-    Sexo:""
+    Sexo: "",
   };
 
   get isLoading(): boolean {
@@ -267,19 +253,18 @@ export default class EmployeeFormNormative extends Vue {
       .then((response) => {
         this.validityRights = response.Data;
         if (!this.validityRights.EstadoVigencia) {
-          this.alert = {
-            message: this.$t(
+          this.$store.dispatch("app/setNotify", {
+            status: 400,
+            text: this.$t(
               "employeeConsultation.labels.dialogs.info.message"
             ) as string,
-            alert: true,
-            type: false,
-          };
+          });
         }
-
         if (this.validityRights.IdDerechohabiente != null) {
           this.titularBeneficiary.IdCentro = this.validityRights.IdCentro;
           this.getDepartments();
-          this.titularBeneficiary.IdDepartamento = this.validityRights.IdDepartamento;
+          this.titularBeneficiary.IdDepartamento =
+            this.validityRights.IdDepartamento;
           this.titularBeneficiary.Vigencia = this.validityRights.Vigencia;
         }
       })
@@ -300,12 +285,6 @@ export default class EmployeeFormNormative extends Vue {
       });
   }
 
-  hideAlert(): void {
-    this.alert.message = "";
-    this.alert.alert = false;
-    this.alert.type = false;
-  }
-
   getDepartments(): void {
     if (!this.titularBeneficiary.IdCentro) return;
     this.isLoadingDepartments = true;
@@ -320,32 +299,22 @@ export default class EmployeeFormNormative extends Vue {
   }
 
   onSubmit(): void {
-    this.$emit("hide");
     this.titularBeneficiary.IdEmpleado = this.computedEmployeeId;
     this.titularBeneficiary.IdTipoEmpleado = this.computedEmployeeTypeId;
     this.titularBeneficiary.IdPersona = this.computedIdPerson;
-    this.titularBeneficiary.IdDerechohabiente = this.validityRights.IdDerechohabiente;
+    this.titularBeneficiary.IdDerechohabiente =
+      this.validityRights.IdDerechohabiente;
     this.beneficiaryService
       .createTitular(this.titularBeneficiary)
       .then((response) => {
-        this.alert = {
-          message: this.$t(
-            "employeeConsultation.labels.dialogs.successCreate.message"
-          ) as string,
-          alert: true,
-          type: true,
-        };
+        this.$store.dispatch("app/setNotify", {});
         this.getValidityRights();
         this.$emit("updateValidityRights");
       })
       .catch((error) => {
-        this.alert = {
-          message: this.$t(
-            "employeeConsultation.labels.dialogs.errorCreate.message"
-          ) as string,
-          alert: true,
-          type: false,
-        };
+        this.$store.dispatch("app/setNotify", {
+          status: 500,
+        });
       });
   }
 

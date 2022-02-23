@@ -43,14 +43,6 @@
                 </v-col>
               </v-row>
               <v-row>
-                <Alert
-                  :message="alert.message"
-                  :alert="alert.alert"
-                  :type="alert.type"
-                  @hideAlert="hideAlert"
-                ></Alert>
-              </v-row>
-              <v-row>
                 <v-col cols="12" sm="12" md="6">
                   <ValidationProvider
                     :name="$t('beneficiary.attributes.curp')"
@@ -678,14 +670,13 @@ import { IMunicipality } from "@/services/MunicipalityService/types";
 import BeneficiaryService from "@/services/BeneficiaryService";
 import AddressService from "@/services/AddressService";
 import { IAddresPersonResponse } from "@/services/AddressService/types";
-import Alert from "@/components/Alert.vue";
 import RenapoDialogBeneficiary from "./components/RenapoDialogBeneficiary.vue";
 import PersonService from "@/services/PersonService";
 import { IPersonData, IPersonValidationState } from "@/store/person/types";
 import { IRenapoData } from "@/services/PersonService/types";
 
 @Component({
-  components: { Alert, RenapoDialogBeneficiary },
+  components: { RenapoDialogBeneficiary },
 })
 export default class EditBeneficiary extends Vue {
   protected beneficiaryService = new BeneficiaryService();
@@ -715,7 +706,6 @@ export default class EditBeneficiary extends Vue {
   public isLoadingBeneficiary = false;
   public useAddress: any = false;
   public dialog = false;
-
   public existsBeneficiary = true;
   public disabledSave = true;
   public hasDataRenapo = false;
@@ -723,18 +713,12 @@ export default class EditBeneficiary extends Vue {
   public renapoAvailable = false;
   public isEdit = true;
   public allowEdit = false;
-
   public isDisabledValidate = true;
   public fieldsDisabled = false;
   public isLoadingAddresses = false;
   public isLoadingValidate = false;
   public rol = "";
   public addresses: Array<IAddresPersonResponse> = [];
-  public alert = {
-    alert: false,
-    message: "",
-    type: false,
-  };
   public validityRights: IValidityRightsResponse = {
     GrupoPersonal: null,
     AreaPersonal: null,
@@ -1038,18 +1022,11 @@ export default class EditBeneficiary extends Vue {
     }
   }
 
-  hideAlert(): void {
-    this.alert.message = "";
-    this.alert.alert = false;
-    this.alert.type = false;
-  }
-
   getHeadlineAddresses(): void {
     this.isLoadingAddresses = true;
     this.addressService
       .getHeadlineAddresses(this.validityRights.IdDerechohabiente)
       .then((response) => {
-        console.log(response);
         this.addresses = response.Data;
       })
       .finally(() => {
@@ -1058,7 +1035,6 @@ export default class EditBeneficiary extends Vue {
   }
 
   async validateCurp() {
-    this.hideAlert();
     this.isLoadingValidate = true;
     await this.personService
       .findByCurpIdBeneficiary(
@@ -1066,7 +1042,6 @@ export default class EditBeneficiary extends Vue {
         this.computedIdBeneficiary
       )
       .then((response) => {
-        console.log(response.Data);
         if (response.Data.Renapo != null) {
           this.renapoData = {
             Curp: response.Data.Renapo.Curp,
@@ -1104,41 +1079,40 @@ export default class EditBeneficiary extends Vue {
           this.hasDataPTCH = true;
         }
 
-        // this.existsBeneficiary = response.Data.PermitirEdicion;
         this.allowEdit = response.Data.PermitirEdicion;
         this.renapoAvailable = response.Data.RenapoDisponible;
 
         if (this.renapoAvailable) {
+          this.beneficiary.Persona.IndRenapo = true;
           if (this.hasDataRenapo || this.hasDataPTCH) {
             this.dialog = true;
           }
 
-          // if (response.Message != "" && response.Message != null) {
-          //   this.alert = {
-          //     message: response.Message as string,
-          //     alert: true,
-          //     type: false,
-          //   };
-          // }
+          if (response.Message != "" && response.Message != null) {
+            this.$store.dispatch("app/setNotify", {
+              status: 400,
+              text: response.Message,
+            });
+          }
         } else {
+          this.beneficiary.Persona.IndRenapo = false;
           if (this.hasDataPTCH) {
             this.dialog = true;
           }
-          // this.disabledSave = this.existsBeneficiary;
-          this.alert = {
-            message:
-              "Ha ocurrido un problema: Servicio de renapo no disponible" as string,
-            alert: true,
-            type: false,
-          };
+          if (!this.hasDataRenapo && !this.hasDataPTCH) {
+            this.fieldsDisabled = false;
+          }
+          this.disabledSave = !this.allowEdit;
+          this.$store.dispatch("app/setNotify", {
+            status: 400,
+            text: "Ha ocurrido un problema: Servicio de renapo no disponible" as string,
+          });
         }
       })
       .catch((error) => {
-        this.alert = {
-          message: "Ha ocurrido un problema" as string,
-          alert: true,
-          type: false,
-        };
+        this.$store.dispatch("app/setNotify", {
+          status: 500,
+        });
       })
       .finally(() => {
         this.isLoadingValidate = false;
@@ -1161,7 +1135,6 @@ export default class EditBeneficiary extends Vue {
 
   selectPerson(): void {
     if (this.renapoAvailable) {
-      this.beneficiary.Persona.IndRenapo = true;
       this.beneficiary.IdPersona = this.computedPerson.Person.IdPersona;
       this.beneficiary.Persona.Nombres = this.computedPerson.Renapo.Nombres;
       this.beneficiary.Persona.ApellidoPaterno =
@@ -1175,7 +1148,6 @@ export default class EditBeneficiary extends Vue {
         this.computedPerson.Renapo.FechaNacimiento
       ).toString();
     } else {
-      this.beneficiary.Persona.IndRenapo = false;
       this.beneficiary.IdPersona = this.computedPerson.Person.IdPersona;
       this.beneficiary.Persona.Nombres = this.computedPerson.Person.Nombres;
       this.beneficiary.Persona.ApellidoPaterno =
@@ -1234,7 +1206,6 @@ export default class EditBeneficiary extends Vue {
   }
 
   validityValidations(): string {
-    console.log(this.beneficiary.IdFamiliar);
     // TODO: Cambiar el rol cuando este lo de la sesión
     this.rol = "ADMINISTRADOR";
     let message: string = EnumValidityValidations.VALID_VALIDITY;
@@ -1242,20 +1213,17 @@ export default class EditBeneficiary extends Vue {
       this.beneficiary.IdFamiliar! >= 11 &&
       this.beneficiary.IdFamiliar! <= 40
     ) {
-      console.log("entra");
       if (
         Number(this.beneficiary.Persona.Edad) > 25 &&
         !this.beneficiary.IndIncapacidad &&
         this.rol != "ADMINISTRADORCENTRAL" // TODO: Cambiar el rol cuando este lo de la sesión
       ) {
-        console.log("entrasss");
         message = EnumValidityValidations.INVALID_CHILDRENS;
       }
     } else if (
       this.beneficiary.IdFamiliar! >= 60 &&
       this.beneficiary.IdFamiliar! <= 72
     ) {
-      console.log("ebtra brothers");
       if (
         Number(this.beneficiary.Persona.Edad) > 17 &&
         !this.beneficiary.IndIncapacidad
@@ -1366,46 +1334,23 @@ export default class EditBeneficiary extends Vue {
           this.getBeneficiary();
           this.getHeadlineAddresses();
           this.disabledSave = true;
-          this.alert = {
-            message: this.$t(
-              "beneficiary.labels.dialogs.successCreate.message"
-            ) as string,
-            alert: true,
-            type: true,
-          };
+          this.$store.dispatch("app/setNotify", {});
         })
         .catch((error) => {
-          this.alert = {
-            message: this.$t(
-              error.response.status == 400
-                ? "beneficiary.labels.dialogs.errorCreate.error400"
-                : "beneficiary.labels.dialogs.errorCreate.message"
-            ) as string,
-            alert: true,
-            type: false,
-          };
-          // this.alert = {
-          //   message: this.$t(
-          //     this.validityValidations() ==
-          //       EnumValidityValidations.INVALID_CHILDRENS
-          //       ? "beneficiary.labels.dialogs.errorEnum.errorChildrens"
-          //       : "beneficiary.labels.dialogs.errorEnum.errorBrothers"
-          //   ) as string,
-          //   alert: true,
-          //   type: false,
-          // };
+          this.$store.dispatch("app/setNotify", {
+            status: 500,
+          });
         });
     } else {
-      this.alert = {
-        message: this.$t(
+      this.$store.dispatch("app/setNotify", {
+        status: 400,
+        text: this.$t(
           this.validityValidations() ==
             EnumValidityValidations.INVALID_CHILDRENS
             ? "beneficiary.labels.dialogs.errorEnum.errorChildrens"
             : "beneficiary.labels.dialogs.errorEnum.errorBrothers"
         ) as string,
-        alert: true,
-        type: false,
-      };
+      });
     }
   }
 
