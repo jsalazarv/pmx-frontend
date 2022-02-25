@@ -1,9 +1,9 @@
 <template>
   <div>
     <v-container>
-      <v-btn @click="addRow" small text right color="primary" class="ml-2">
-        <v-icon>mdi-briefcase-plus</v-icon>
-        <span>{{ $t("employee.labels.add") }}</span>
+      <v-btn @click="addRow" small text color="primary" class="ml-2">
+        <v-icon>mdi-card-account-phone</v-icon>
+        <span class="ml-2">{{ $t("employee.labels.add") }}</span>
       </v-btn>
       <v-row
         class="rounded mb-2 mx-0"
@@ -66,7 +66,13 @@
           >
             <v-icon>mdi-menu-down</v-icon>
           </v-btn>
-          <v-btn icon small color="red">
+          <v-btn
+            icon
+            small
+            color="red"
+            :disabled="Object.keys(formData.contacts).length === 1"
+            @click="deleteRow(index)"
+          >
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-col>
@@ -118,6 +124,10 @@ export default class ContactForm extends Vue {
     let temp2 = this.formData.contacts[index + 1];
     this.$set(this.formData.contacts, index, temp2);
     this.$set(this.formData.contacts, index + 1, temp1);
+  }
+
+  deleteRow(index: number): void {
+    this.formData.contacts.splice(index, 1);
   }
 
   mounted(): void {
