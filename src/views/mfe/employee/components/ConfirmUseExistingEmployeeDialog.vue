@@ -183,8 +183,7 @@ export default class ConfirmUseExistingEmployeeDialog extends Vue {
           (this as any).CustomError(err?.response?.status);
           console.error(err?.response?.status);
         }
-      })
-      .finally(() => {});
+      });
   }
 }
 </script>

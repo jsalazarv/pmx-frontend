@@ -220,7 +220,7 @@ export default class ProofAssignment extends Vue {
 
           (this as any).customError(
             err?.response?.status,
-            err?.response?.data?.Message 
+            err?.response?.data?.Message
           );
           console.error(err?.response);
         }

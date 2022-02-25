@@ -467,10 +467,10 @@ export default class EmployeeSearchForm extends Vue {
         );
         this.hasIndRenapo = false;
         this.infoSelected = false;
-        const { Curp, IdTipoEmpleado } = this.employee;
+
         this.$store.dispatch("employees/clear", {
-          Curp: Curp,
-          IdTipoEmpleado: IdTipoEmpleado,
+          Curp: this.employee.Curp,
+          IdTipoEmpleado: this.employee.IdTipoEmpleado,
         });
         break;
 

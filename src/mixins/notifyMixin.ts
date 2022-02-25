@@ -60,7 +60,7 @@ export class NotifyMixin extends Vue {
     this.$store.dispatch("app/setNotify", this.notifyModel);
   }
 
-  baseNotification(text: string, colorText: string, colorBtn: string = "") {
+  baseNotification(text: string, colorText: string, colorBtn = "") {
     this.notifyModel.open = true;
     this.notifyModel.text = text;
     this.notifyModel.colorText = colorText;

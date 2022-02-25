@@ -291,7 +291,7 @@ export default class Dashboard extends Vue {
 
         if (data && data.length) {
           this.totalEmployeeStatusAccept = data[0]?.Total;
-          this.totalEmployeeStatusCancel = data[1]?.Total;
+          this.totalEmployeeStatusCancel = data[1]?.Total || 0;
         }
       })
       .catch((err) => console.error(err));

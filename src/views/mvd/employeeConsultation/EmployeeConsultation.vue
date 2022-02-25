@@ -511,7 +511,7 @@ export default class EmployeeConsultation extends Vue {
           type: true,
         };
       })
-      .catch((error) => {
+      .catch(() => {
         this.alert = {
           message: this.$t(
             "employeeConsultation.labels.dialogs.errorAssign.message"

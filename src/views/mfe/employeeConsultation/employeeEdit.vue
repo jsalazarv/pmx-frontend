@@ -578,9 +578,9 @@ export default class employeeEdit extends Vue {
       .then((response) => {
         this.employeeTypeList = response.Data;
       })
-      .catch(error => {
-        if(error.response){
-          console.error(error.response)
+      .catch((error) => {
+        if (error.response) {
+          console.error(error.response);
         }
       })
       .finally(() => {
@@ -595,9 +595,9 @@ export default class employeeEdit extends Vue {
       .then((response) => {
         this.gendersList = response.Data;
       })
-      .catch(error => {
-        if(error.response){
-          console.error(error.response)
+      .catch((error) => {
+        if (error.response) {
+          console.error(error.response);
         }
       })
       .finally(() => {
@@ -612,9 +612,9 @@ export default class employeeEdit extends Vue {
       .then((response) => {
         this.maritalStatusesList = response.Data;
       })
-      .catch(error => {
-        if(error.response){
-          console.error(error.response)
+      .catch((error) => {
+        if (error.response) {
+          console.error(error.response);
         }
       })
       .finally(() => {
@@ -629,9 +629,9 @@ export default class employeeEdit extends Vue {
       .then((response) => {
         this.companies = response.Data;
       })
-      .catch(error => {
-        if(error.response){
-          console.error(error.response)
+      .catch((error) => {
+        if (error.response) {
+          console.error(error.response);
         }
       })
       .finally(() => {
@@ -646,9 +646,9 @@ export default class employeeEdit extends Vue {
       .then((response) => {
         this.workplaces = response.Data;
       })
-      .catch(error => {
-        if(error.response){
-          console.error(error.response)
+      .catch((error) => {
+        if (error.response) {
+          console.error(error.response);
         }
       })
       .finally(() => {
@@ -663,9 +663,9 @@ export default class employeeEdit extends Vue {
       .then((response) => {
         this.syndicates = response.Data;
       })
-      .catch(error => {
-        if(error.response){
-          console.error(error.response)
+      .catch((error) => {
+        if (error.response) {
+          console.error(error.response);
         }
       })
       .finally(() => {
@@ -682,9 +682,9 @@ export default class employeeEdit extends Vue {
       .then((response) => {
         this.syndicateSections = response.Data;
       })
-      .catch(error => {
-        if(error.response){
-          console.error(error.response)
+      .catch((error) => {
+        if (error.response) {
+          console.error(error.response);
         }
       })
       .finally(() => {
