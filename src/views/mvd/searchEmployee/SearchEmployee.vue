@@ -8,16 +8,20 @@
           </v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
+          <v-btn color="primary" :disabled="isLoadingEmployeeList">
+            {{ $t("employeeConsultationMFE.labels.export") }}
+            <v-icon right dark>mdi-file-account</v-icon>
+          </v-btn>
         </v-toolbar>
         <v-progress-linear
           :active="isLoading"
           :indeterminate="isLoading"
         ></v-progress-linear>
-        <v-container>
+        <v-container fluid>
           <ValidationObserver v-slot="{ handleSubmit }">
             <form @submit.prevent="handleSubmit(onSubmit)">
-              <v-row>
-                <v-col cols="12" sm="12" md="4">
+              <v-row class="mt-0">
+                <v-col class="pb-0" cols="12" sm="12" md="3">
                   <v-autocomplete
                     dense
                     name="employeeType"
@@ -32,7 +36,7 @@
                   ></v-autocomplete>
                 </v-col>
 
-                <v-col cols="12" sm="12" md="6">
+                <v-col class="pb-0" cols="12" sm="12" md="3">
                   <ValidationProvider
                     :name="$t('searchEmployee.attributes.names')"
                     v-slot="{ errors }"
@@ -51,8 +55,8 @@
                 </v-col>
               </v-row>
 
-              <v-row>
-                <v-col cols="12" sm="12" md="4">
+              <v-row class="mt-0">
+                <v-col class="pb-0" cols="12" sm="12" md="3">
                   <ValidationProvider
                     :name="$t('searchEmployee.attributes.curp')"
                     v-slot="{ errors }"
@@ -69,7 +73,7 @@
                     </v-text-field>
                   </ValidationProvider>
                 </v-col>
-                <v-col cols="12" sm="12" md="6">
+                <v-col class="pb-0" cols="12" sm="12" md="3">
                   <ValidationProvider
                     :name="$t('searchEmployee.attributes.lastname')"
                     v-slot="{ errors }"
@@ -88,8 +92,8 @@
                 </v-col>
               </v-row>
 
-              <v-row>
-                <v-col cols="12" sm="12" md="4">
+              <v-row class="mt-0">
+                <v-col cols="12" sm="12" md="3">
                   <ValidationProvider
                     :name="$t('searchEmployee.attributes.assignmentNumber')"
                     v-slot="{ errors }"
@@ -106,7 +110,7 @@
                     </v-text-field>
                   </ValidationProvider>
                 </v-col>
-                <v-col cols="12" sm="12" md="6">
+                <v-col class="pb-0" cols="12" sm="12" md="3">
                   <ValidationProvider
                     :name="$t('searchEmployee.attributes.surname')"
                     v-slot="{ errors }"
@@ -124,55 +128,55 @@
                   </ValidationProvider>
                 </v-col>
 
-                <v-col cols="12" sm="12" md="2">
-                  <v-btn type="submit" color="success" dark large dense>
+                <v-col class="pb-0" cols="12" sm="12" md="2">
+                  <v-btn type="submit" color="success" dark dense>
                     {{ $t("searchEmployee.labels.search") }}
+                    <v-icon right dark> mdi-magnify </v-icon>
                   </v-btn>
                 </v-col>
               </v-row>
             </form>
           </ValidationObserver>
-
-          <v-row>
-            <v-col cols="12" sm="12" md="12">
-              <v-progress-linear
-                :active="isLoadingEmployeeSearch"
-                :indeterminate="isLoadingEmployeeSearch"
-              ></v-progress-linear>
-              <v-data-table
-                :headers="headers"
-                :items="searchResponse"
-                :items-per-page="5"
-                class="elevation-1"
-              >
-                <template v-slot:item="row">
-                  <tr>
-                    <td>
-                      <v-btn
-                        class="mx-2"
-                        @click="
-                          onButtonClick(
-                            row.item.IdEmpleado,
-                            row.item.IdTipoEmpleado,
-                            row.item.IdPersona
-                          )
-                        "
-                      >
-                        <v-icon dark>mdi-eye</v-icon>
-                      </v-btn>
-                    </td>
-                    <td>{{ row.item.TipoEmpleadoDescripcion }}</td>
-                    <td>{{ row.item.Nombres }}</td>
-                    <td>{{ row.item.ApellidoPaterno }}</td>
-                    <td>{{ row.item.ApellidoMaterno }}</td>
-                    <td>{{ row.item.Curp }}</td>
-                    <td>{{ row.item.IdEmpleado }}</td>
-                  </tr>
-                </template>
-              </v-data-table>
-            </v-col>
-          </v-row>
         </v-container>
+        <v-progress-linear
+          :active="isLoadingEmployeeSearch"
+          :indeterminate="isLoadingEmployeeSearch"
+        ></v-progress-linear>
+        <v-data-table
+          :headers="headers"
+          :items="searchResponse"
+          :items-per-page="5"
+          class="elevation-1"
+        >
+          <template v-slot:item="row">
+            <tr>
+              <td>{{ row.item.TipoEmpleadoDescripcion }}</td>
+              <td>{{ row.item.Nombres }}</td>
+              <td>{{ row.item.ApellidoPaterno }}</td>
+              <td>{{ row.item.ApellidoMaterno }}</td>
+              <td>{{ row.item.Curp }}</td>
+              <td>{{ row.item.IdEmpleado }}</td>
+              <td>
+                <v-btn
+                  class="mx-4"
+                  color="info"
+                  outlined
+                  fab
+                  x-small
+                  @click="
+                    onButtonClick(
+                      row.item.IdEmpleado,
+                      row.item.IdTipoEmpleado,
+                      row.item.IdPersona
+                    )
+                  "
+                >
+                  <v-icon dark>mdi-account-eye</v-icon>
+                </v-btn>
+              </td>
+            </tr>
+          </template>
+        </v-data-table>
       </v-card>
     </div>
   </div>
@@ -209,7 +213,6 @@ export default class SearchEmployee extends Vue {
   };
   public searchResponse: Array<ISearchResponse> = [];
   public headers: Array<any> = [
-    { text: "", value: "actions", sortable: false },
     {
       text: this.$t("searchEmployee.attributes.employeeType"),
       align: "start",
@@ -233,6 +236,7 @@ export default class SearchEmployee extends Vue {
       text: this.$t("searchEmployee.attributes.assignmentNumber"),
       value: "num_empleado",
     },
+    { text: "", value: "actions", sortable: false },
   ];
 
   get isLoading(): boolean {

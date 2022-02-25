@@ -1,4 +1,4 @@
 export interface ICoding {
-  Sigla: number;
+  Id: number;
   Nombre: string;
 }

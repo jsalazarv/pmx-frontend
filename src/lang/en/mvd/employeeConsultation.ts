@@ -35,19 +35,25 @@ export default {
   labels: {
     editAddress: "Edit address",
     newAddress: "New address",
-    assignMedicalUnit: "Assign employee medical unit",
+    assignMedicalUnit: "Assign medical unit",
     credential: "Employee credential",
-    addBeneficiary: "Add beneficiary",
+    addBeneficiary: "Add",
     assign: "Assign",
     cancel: "Cancel",
-    save: "Save data validity",
+    save: "Save",
     medicalUnit: "Medical unit",
+    yes: "Yes",
+    no: "No",
     dialogs: {
       confirmDelete: {
         message: "Do you want to delete the beneficiary?",
       },
-      successDelete: {},
-      errorDelete: {},
+      successDelete: {
+        message: "The beneficiary has been deleted successfully",
+      },
+      errorDelete: {
+        message: "A problem has occurred",
+      },
       errorUpdate: {},
       successUpdate: {},
       errorCreate: {

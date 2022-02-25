@@ -13,131 +13,85 @@
           :active="isLoading"
           :indeterminate="isLoading"
         ></v-progress-linear>
-        <v-container>
-          <Alert
-            :message="alert.message"
-            :alert="alert.alert"
-            :type="alert.type"
-            @hideAlert="hideAlert"
-          ></Alert>
+        <v-container fluid>
           <EmployeeFormContratual v-if="computedEmployeeTypeId == 0" />
           <EmployeeFormNormative
             v-else
             @updateValidityRights="getValidityRights"
-            @hide="hideAlert"
-            ref="employeeFormNormative"
           />
         </v-container>
-        <v-divider></v-divider>
-        <v-container>
-          <v-row>
-            <v-col cols="12" sm="6" md="3">
-              <v-btn
-                class="sizeTextButton"
-                type="submit"
-                color="success"
-                dark
-                large
-                dense
-                @click="onBtnEditAddress"
-              >
-                {{ $t("employeeConsultation.labels.editAddress") }}
-              </v-btn>
-            </v-col>
-            <v-col cols="12" sm="6" md="3">
-              <v-btn
-                class="sizeTextButton"
-                type="button"
-                color="success"
-                dark
-                large
-                dense
-                @click="onBtnNewAddress"
-              >
-                {{ $t("employeeConsultation.labels.newAddress") }}
-              </v-btn>
-            </v-col>
-            <v-col cols="12" sm="6" md="3">
-              <v-dialog v-model="dialog" persistent max-width="600">
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn
-                    :disabled="disabledAssignMedicalUnit"
-                    class="sizeTextButton"
-                    type="button"
-                    color="success"
-                    large
-                    dense
-                    v-bind="attrs"
-                    v-on="on"
-                    @click="onBtnAssignMedicalUnit"
-                  >
-                    {{ $t("employeeConsultation.labels.assignMedicalUnit") }}
-                  </v-btn>
-                </template>
-                <v-card>
-                  <ValidationObserver v-slot="{ handleSubmit }" ref="form">
-                    <form @submit.prevent="handleSubmit(onSubmit)">
-                      <v-card-title class="text-h5">
-                        {{
-                          $t("employeeConsultation.labels.assignMedicalUnit")
-                        }}
-                      </v-card-title>
-                      <v-col cols="12" sm="12" md="12">
-                        <ValidationProvider
-                          :name="$t('employeeConsultation.attributes.validity')"
-                          v-slot="{ errors }"
-                          rules="required"
-                        >
-                          <v-autocomplete
-                            dense
-                            name="medicalUnit"
-                            outlined
-                            item-text="Nombre"
-                            item-value="Id"
-                            :items="medicalUnitsList"
-                            :label="
-                              $t('employeeConsultation.labels.medicalUnit')
-                            "
-                            :disabled="isLoadingMedicalUnitsList"
-                            :loading="isLoadingMedicalUnitsList"
-                            v-model="medicalUnitId"
-                            :error-messages="errors"
-                          ></v-autocomplete>
-                        </ValidationProvider>
-                      </v-col>
-                      <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn
-                          color="red darken-1"
-                          text
-                          @click="dialog = false"
-                        >
-                          {{ $t("employeeConsultation.labels.cancel") }}
-                        </v-btn>
-                        <v-btn type="submit" color="success" dark dense>
-                          {{ $t("employeeConsultation.labels.assign") }}
-                        </v-btn>
-                      </v-card-actions>
-                    </form>
-                  </ValidationObserver>
-                </v-card>
-              </v-dialog>
-            </v-col>
-            <v-col cols="12" sm="6" md="3">
-              <v-btn
-                :disabled="disabledCredential"
-                class="colorCredentialButton sizeTextButton"
-                type="button"
-                dense
-                large
-                @click="onBtnCredentialization"
-              >
-                {{ $t("employeeConsultation.labels.credential") }}
-              </v-btn>
-            </v-col>
-          </v-row>
+        <v-container fluid>
+          <v-bottom-navigation>
+            <v-btn @click="onBtnEditAddress">
+              <span>{{ $t("employeeConsultation.labels.editAddress") }}</span>
+              <v-icon right dark>mdi-home-edit</v-icon>
+            </v-btn>
+            <v-btn @click="onBtnNewAddress">
+              <span>{{ $t("employeeConsultation.labels.newAddress") }}</span>
+              <v-icon right dark>mdi-home-plus</v-icon>
+            </v-btn>
+            <v-dialog v-model="dialog" persistent max-width="600">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  :disabled="disabledAssignMedicalUnit"
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="onBtnAssignMedicalUnit"
+                >
+                  {{ $t("employeeConsultation.labels.assignMedicalUnit") }}
+                  <v-icon right dark>mdi-hospital-building</v-icon>
+                </v-btn>
+              </template>
+              <v-card>
+                <ValidationObserver v-slot="{ handleSubmit }" ref="form">
+                  <form @submit.prevent="handleSubmit(onSubmit)">
+                    <v-card-title class="text-h5">
+                      {{ $t("employeeConsultation.labels.assignMedicalUnit") }}
+                    </v-card-title>
+                    <v-col cols="12" sm="12" md="12">
+                      <ValidationProvider
+                        :name="$t('employeeConsultation.attributes.validity')"
+                        v-slot="{ errors }"
+                        rules="required"
+                      >
+                        <v-autocomplete
+                          class="required"
+                          dense
+                          name="medicalUnit"
+                          outlined
+                          item-text="Nombre"
+                          item-value="Id"
+                          :items="medicalUnitsList"
+                          :label="$t('employeeConsultation.labels.medicalUnit')"
+                          :disabled="isLoadingMedicalUnitsList"
+                          :loading="isLoadingMedicalUnitsList"
+                          v-model="medicalUnitId"
+                          :error-messages="errors"
+                        ></v-autocomplete>
+                      </ValidationProvider>
+                    </v-col>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="red darken-1" text @click="dialog = false">
+                        {{ $t("employeeConsultation.labels.cancel") }}
+                      </v-btn>
+                      <v-btn type="submit" color="success" dark dense>
+                        {{ $t("employeeConsultation.labels.assign") }}
+                      </v-btn>
+                    </v-card-actions>
+                  </form>
+                </ValidationObserver>
+              </v-card>
+            </v-dialog>
+            <v-btn
+              :disabled="disabledCredential"
+              @click="onBtnCredentialization"
+            >
+              <span>{{ $t("employeeConsultation.labels.credential") }}</span>
+              <v-icon right dark>mdi-card-account-details</v-icon>
+            </v-btn>
+          </v-bottom-navigation>
         </v-container>
-        <v-divider></v-divider>
         <v-toolbar flat>
           <v-toolbar-title>
             {{ $t("employeeConsultation.list.title") }}
@@ -145,112 +99,115 @@
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
         </v-toolbar>
-        <v-container>
-          <v-row>
-            <v-col cols="12" sm="6" md="3" offset-md="9">
+        <v-container fluid>
+          <v-row class="mt-0">
+            <v-col cols="12" sm="6" md="3" offset-md="10">
               <v-btn
                 :disabled="disabledAddBeneficiary"
-                class="sizeTextButton"
+                class=""
                 type="button"
                 dense
-                large
                 color="success"
                 @click="onBtnAddBeneficiary"
               >
-                +
                 {{ $t("employeeConsultation.labels.addBeneficiary") }}
+                <v-icon right dark>mdi-account-plus</v-icon>
               </v-btn>
-            </v-col>
-            <v-col cols="12" sm="12" md="12">
-              <v-progress-linear
-                :active="isLoadingBeneficiaries"
-                :indeterminate="isLoadingBeneficiaries"
-              ></v-progress-linear>
-              <v-data-table
-                :headers="headers"
-                :items="beneficiaries"
-                :items-per-page="5"
-                class="elevation-1"
-              >
-                <template v-slot:item="row">
-                  <tr>
-                    <td>
-                      <v-btn
-                        class="mx-2"
-                        @click="onBtnEdit(row.item.IdDerechohabiente)"
-                      >
-                        <v-icon dark>mdi-pencil</v-icon>
-                      </v-btn>
-                    </td>
-                    <td>
-                      <v-dialog
-                        v-model="dialogDelete"
-                        persistent
-                        max-width="600"
-                      >
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-btn class="mx-2" v-bind="attrs" v-on="on">
-                            <v-icon dark>mdi-delete</v-icon>
-                          </v-btn>
-                        </template>
-                        <v-card>
-                          <v-card-title class="text-h5">
-                            {{
-                              $t(
-                                "employeeConsultation.labels.dialogs.confirmDelete.message"
-                              )
-                            }}
-                          </v-card-title>
-                          <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn
-                              color="red darken-1"
-                              text
-                              @click="dialogDelete = false"
-                            >
-                              <!-- {{
-                                $t(
-                                  "employeeConsultation.consultation.actionsButtons.cancel"
-                                )
-                              }} -->
-                              No
-                            </v-btn>
-                            <v-btn
-                              color="success"
-                              dark
-                              dense
-                              @click="dialogDelete = false"
-                            >
-                              Si
-                              <!-- {{
-                                $t(
-                                  "employeeConsultation.consultation.actionsButtons.assign"
-                                )
-                              }} -->
-                            </v-btn>
-                          </v-card-actions>
-                        </v-card>
-                      </v-dialog>
-                    </td>
-                    <td>{{ row.item.Nombre }}</td>
-                    <td>{{ row.item.ApellidoPaterno }}</td>
-                    <td>{{ row.item.ApellidoMaterno }}</td>
-                    <td>{{ row.item.Curp }}</td>
-                    <td>{{ row.item.Parentesco }}</td>
-                    <td>{{ formatted(row.item.Vigencia) }}</td>
-                    <td>
-                      <v-checkbox
-                        :input-value="row.item.IndIncapacidad"
-                        value
-                        disabled
-                      ></v-checkbox>
-                    </td>
-                  </tr>
-                </template>
-              </v-data-table>
             </v-col>
           </v-row>
         </v-container>
+        <v-progress-linear
+          :active="isLoadingBeneficiaries"
+          :indeterminate="isLoadingBeneficiaries"
+        ></v-progress-linear>
+        <v-data-table
+          :headers="headers"
+          :items="beneficiaries"
+          :items-per-page="5"
+          class="elevation-1"
+        >
+          <template v-slot:item="row">
+            <tr>
+              <td>{{ row.item.Nombre }}</td>
+              <td>{{ row.item.ApellidoPaterno }}</td>
+              <td>{{ row.item.ApellidoMaterno }}</td>
+              <td>{{ row.item.Curp }}</td>
+              <td>{{ row.item.Parentesco }}</td>
+              <td>
+                {{
+                  row.item.Vigencia | dateFormatted("YYYY-MM-DD", "DD/MM/YYYY")
+                }}
+              </td>
+              <td>
+                <v-checkbox
+                  :input-value="row.item.IndIncapacidad"
+                  value
+                  disabled
+                ></v-checkbox>
+              </td>
+              <td>
+                <v-btn
+                  color="success"
+                  outlined
+                  x-small
+                  fab
+                  class="mx-1"
+                  @click="onBtnEdit(row.item.IdDerechohabiente)"
+                >
+                  <v-icon dark>mdi-account-edit</v-icon>
+                </v-btn>
+                <v-dialog
+                  v-model="dialogDelete"
+                  persistent
+                  max-width="600"
+                  :retain-focus="false"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      color="error"
+                      outlined
+                      x-small
+                      fab
+                      class="mx-1"
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="idBeneficiary = row.item.IdDerechohabiente"
+                    >
+                      <v-icon dark>mdi-account-remove</v-icon>
+                    </v-btn>
+                  </template>
+                  <v-card>
+                    <v-card-title class="text-h5">
+                      {{
+                        $t(
+                          "employeeConsultation.labels.dialogs.confirmDelete.message"
+                        )
+                      }}
+                    </v-card-title>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn
+                        color="red darken-1"
+                        text
+                        @click="dialogDelete = false"
+                      >
+                        {{ $t("employeeConsultation.labels.no") }}
+                      </v-btn>
+                      <v-btn
+                        color="success"
+                        dark
+                        dense
+                        @click="deleteBeneficiary()"
+                      >
+                        {{ $t("employeeConsultation.labels.yes") }}
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </td>
+            </tr>
+          </template>
+        </v-data-table>
       </v-card>
     </div>
   </div>
@@ -259,7 +216,6 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import moment from "moment";
 import BeneficiaryService from "@/services/BeneficiaryService/";
 import EmployeeService from "@/services/EmployeeService";
 import {
@@ -271,10 +227,9 @@ import EmployeeFormContratual from "./components/EmployeeFormContractual.vue";
 import EmployeeFormNormative from "./components/EmployeeFormNormative.vue";
 import { IMedicalUnit } from "@/services/MedicalUnitService/types";
 import MedicalUnitService from "@/services/MedicalUnitService";
-import Alert from "@/components/Alert.vue";
 
 @Component({
-  components: { EmployeeFormContratual, EmployeeFormNormative, Alert },
+  components: { EmployeeFormContratual, EmployeeFormNormative },
 })
 export default class EmployeeConsultation extends Vue {
   protected beneficiaryService = new BeneficiaryService();
@@ -290,11 +245,8 @@ export default class EmployeeConsultation extends Vue {
   public isLoadingMedicalUnitsList = false;
   public isLoadingBeneficiaries = false;
   public medicalUnitId: number | null = null;
-  public alert = {
-    alert: false,
-    message: "",
-    type: false,
-  };
+  public idBeneficiary: number | null = null;
+  public fab = false;
   public validityRights: IValidityRightsResponse = {
     GrupoPersonal: null,
     AreaPersonal: null,
@@ -310,6 +262,7 @@ export default class EmployeeConsultation extends Vue {
     ApellidoMaterno: "",
     Curp: null,
     IdDerechohabiente: null,
+    Sexo: "",
   };
   public titularBeneficiary: ITitularBeneficiaryRequest = {
     IdPersona: null,
@@ -321,8 +274,6 @@ export default class EmployeeConsultation extends Vue {
     IdDerechohabiente: null,
   };
   public headers: Array<any> = [
-    { text: "", value: "edit", sortable: false },
-    { text: "", value: "delete", sortable: false },
     {
       text: this.$t("employeeConsultation.attributes.names"),
       value: "nombres",
@@ -351,6 +302,7 @@ export default class EmployeeConsultation extends Vue {
       text: this.$t("employeeConsultation.attributes.inability"),
       value: "incapacidad",
     },
+    { text: "", value: "actions", sortable: false },
   ];
 
   get isLoading(): boolean {
@@ -368,11 +320,6 @@ export default class EmployeeConsultation extends Vue {
 
   get computedEmployeeTypeId(): number {
     return Number(this.$route.params.paramEmployeeTypeId);
-  }
-
-  formatted(date: any): string | null {
-    if (!date) return null;
-    return moment(date).format("DD/MM/YYYY");
   }
 
   onBtnEditAddress(): void {
@@ -436,18 +383,13 @@ export default class EmployeeConsultation extends Vue {
       });
   }
 
-  hideAlert(): void {
-    this.alert.message = "";
-    this.alert.alert = false;
-    this.alert.type = false;
-  }
-
   async getValidityRights() {
-    let responseValidityRights = await this.beneficiaryService.getValidityRights(
-      this.computedIdPerson,
-      this.computedEmployeeId,
-      this.computedEmployeeTypeId
-    );
+    let responseValidityRights =
+      await this.beneficiaryService.getValidityRights(
+        this.computedIdPerson,
+        this.computedEmployeeId,
+        this.computedEmployeeTypeId
+      );
     if (responseValidityRights.Success) {
       this.validityRights = responseValidityRights.Data;
       if (this.validityRights.IdDerechohabiente == null) {
@@ -502,17 +444,10 @@ export default class EmployeeConsultation extends Vue {
         this.medicalUnitId
       )
       .then((response) => {
-        console.log(response.Data);
-        this.alert = {
-          message: this.$t(
-            "employeeConsultation.labels.dialogs.successAssign.message"
-          ) as string,
-          alert: true,
-          type: true,
-        };
+        this.$store.dispatch("app/setNotify", {});
       })
       .catch(() => {
-        this.alert = {
+        (this as any).alert = {
           message: this.$t(
             "employeeConsultation.labels.dialogs.errorAssign.message"
           ) as string,
@@ -523,7 +458,23 @@ export default class EmployeeConsultation extends Vue {
       .finally(() => {
         this.dialog = false;
       });
-    (this.$refs.employeeFormNormative as EmployeeFormNormative).hideAlert();
+  }
+
+  deleteBeneficiary(): void {
+    this.beneficiaryService
+      .delete(this.idBeneficiary)
+      .then((response) => {
+        this.getAllBeneficiaries();
+        this.$store.dispatch("app/setNotify", {});
+      })
+      .catch((error) => {
+        this.$store.dispatch("app/setNotify", {
+          status: 500,
+        });
+      })
+      .finally(() => {
+        this.dialogDelete = false;
+      });
   }
 
   async mounted() {
@@ -533,15 +484,3 @@ export default class EmployeeConsultation extends Vue {
   }
 }
 </script>
-
-<style scoped>
-.colorCredentialButton {
-  background-color: #660033 !important;
-}
-
-.sizeTextButton {
-  font-size: 11px !important;
-  width: 240px !important;
-  color: white;
-}
-</style>

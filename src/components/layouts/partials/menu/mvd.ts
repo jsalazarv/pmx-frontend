@@ -5,13 +5,13 @@ const mvd: IModuleMenu = {
   name: "Módulo de Vigencia de Derechos",
   children: [
     {
-      icon: "mdi-keyboard-f1",
+      icon: "mdi-account-search",
       text: "Consulta",
       message: null,
       route: "mvd:people:searchEmployee",
     },
     {
-      icon: "mdi-keyboard-f2",
+      icon: "mdi-file-chart",
       text: "Reportes",
       message: null,
       route: "report:list",
