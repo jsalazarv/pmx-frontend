@@ -261,9 +261,8 @@
                   </v-text-field>
                 </v-col>
               </v-row>
-
-              <v-row>
-                <v-col cols="12" sm="12" md="4" offset-md="5">
+              <v-row class="mt-0">
+                <v-col cols="12" sm="12" md="2" offset-md="10">
                   <v-btn type="submit" color="success" dark dense>
                     {{ $t("address.labels.save") }}
                     <v-icon right dark>mdi-content-save</v-icon>
