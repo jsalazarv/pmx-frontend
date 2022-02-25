@@ -13,11 +13,11 @@
           :active="isLoading"
           :indeterminate="isLoading"
         ></v-progress-linear>
-        <v-container>
+        <v-container fluid>
           <ValidationObserver v-slot="{ handleSubmit }" ref="form">
             <form @submit.prevent="handleSubmit(onSubmit)">
-              <v-row>
-                <v-col cols="12" sm="12" md="6">
+              <v-row class="mt-0">
+                <v-col class="pb-0" cols="12" sm="12" md="3">
                   <v-text-field
                     :label="$t('beneficiary.attributes.assignmentNumber')"
                     name="assignmentNumber"
@@ -29,7 +29,7 @@
                   >
                   </v-text-field>
                 </v-col>
-                <v-col cols="12" sm="12" md="6">
+                <v-col class="pb-0" cols="12" sm="12" md="3">
                   <v-text-field
                     :label="$t('beneficiary.attributes.workerValidity')"
                     name="workerValidity"
@@ -41,9 +41,7 @@
                   >
                   </v-text-field>
                 </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="12" sm="12" md="6">
+                <v-col class="pb-0" cols="12" sm="12" md="3">
                   <ValidationProvider
                     :name="$t('beneficiary.attributes.curp')"
                     v-slot="{ errors }"
@@ -63,13 +61,12 @@
                     </v-text-field>
                   </ValidationProvider>
                 </v-col>
-                <v-col cols="12" sm="12" md="4">
+                <v-col cols="12" sm="12" md="3">
                   <v-btn
                     :loading="isLoadingValidate"
                     @click="validateCurp"
                     color="success"
                     :disabled="isDisabledValidate"
-                    large
                     dense
                   >
                     {{ $t("beneficiary.labels.validate") }}
@@ -77,8 +74,8 @@
                   </v-btn>
                 </v-col>
               </v-row>
-              <v-row>
-                <v-col cols="12" sm="12" md="4">
+              <v-row class="mt-0">
+                <v-col class="pb-0" cols="12" sm="12" md="4">
                   <ValidationProvider
                     :name="$t('beneficiary.attributes.names')"
                     v-slot="{ errors }"
@@ -97,7 +94,7 @@
                     </v-text-field>
                   </ValidationProvider>
                 </v-col>
-                <v-col cols="12" sm="12" md="4">
+                <v-col class="pb-0" cols="12" sm="12" md="4">
                   <ValidationProvider
                     :name="$t('beneficiary.attributes.lastname')"
                     v-slot="{ errors }"
@@ -116,7 +113,7 @@
                     </v-text-field>
                   </ValidationProvider>
                 </v-col>
-                <v-col cols="12" sm="12" md="4">
+                <v-col class="pb-0" cols="12" sm="12" md="4">
                   <ValidationProvider
                     :name="$t('beneficiary.attributes.surname')"
                     v-slot="{ errors }"
@@ -136,8 +133,8 @@
                   </ValidationProvider>
                 </v-col>
               </v-row>
-              <v-row>
-                <v-col cols="12" sm="12" md="4">
+              <v-row class="mt-0">
+                <v-col class="pb-0" cols="12" sm="12" md="2">
                   <v-menu
                     v-model="showPickerBirthday"
                     :close-on-content-click="false"
@@ -177,7 +174,7 @@
                     ></v-date-picker>
                   </v-menu>
                 </v-col>
-                <v-col cols="12" sm="12" md="4">
+                <v-col class="pb-0" cols="12" sm="12" md="2">
                   <ValidationProvider
                     :name="$t('beneficiary.attributes.age')"
                     v-slot="{ errors }"
@@ -196,7 +193,7 @@
                     </v-text-field>
                   </ValidationProvider>
                 </v-col>
-                <v-col cols="12" sm="12" md="4">
+                <v-col class="pb-0" cols="12" sm="12" md="2">
                   <ValidationProvider
                     :name="$t('beneficiary.attributes.gender')"
                     v-slot="{ errors }"
@@ -219,9 +216,12 @@
                     ></v-autocomplete>
                   </ValidationProvider>
                 </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="12" sm="12" md="4">
+                <v-col
+                  class="margin-top: 0px !important;"
+                  cols="12"
+                  sm="12"
+                  md="2"
+                >
                   <ValidationProvider
                     :name="$t('beneficiary.attributes.inability')"
                     v-slot="{ errors }"
@@ -236,7 +236,7 @@
                     ></v-checkbox>
                   </ValidationProvider>
                 </v-col>
-                <v-col cols="12" sm="12" md="4">
+                <v-col class="pb-0" cols="12" sm="12" md="2">
                   <ValidationProvider
                     :name="$t('beneficiary.attributes.coding')"
                     v-slot="{ errors }"
@@ -261,7 +261,7 @@
                     ></v-autocomplete>
                   </ValidationProvider>
                 </v-col>
-                <v-col cols="12" sm="12" md="4">
+                <v-col class="pb-0" cols="12" sm="12" md="2">
                   <v-menu
                     v-model="showPickerValidity"
                     :close-on-content-click="false"
@@ -300,8 +300,8 @@
                   </v-menu>
                 </v-col>
               </v-row>
-              <v-row>
-                <v-col cols="12" sm="12" md="4">
+              <v-row class="mt-0">
+                <v-col class="pb-0" cols="12" sm="12" md="5">
                   <ValidationProvider
                     :name="$t('beneficiary.attributes.medicalUnit')"
                     v-slot="{ errors }"
@@ -324,8 +324,8 @@
                   </ValidationProvider>
                 </v-col>
               </v-row>
-              <v-row>
-                <v-col cols="12" sm="12" md="12">
+              <v-row class="mt0">
+                <v-col class="pb-0" cols="12" sm="12" md="12">
                   <ValidationProvider
                     :name="$t('beneficiary.attributes.observations')"
                     v-slot="{ errors }"
@@ -338,13 +338,14 @@
                       outlined
                       :error-messages="errors"
                       v-model="beneficiary.Observaciones"
+                      rows="3"
                     >
                     </v-textarea>
                   </ValidationProvider>
                 </v-col>
               </v-row>
-              <v-row>
-                <v-col cols="12" sm="12" md="12">
+              <v-row class="mt-0">
+                <v-col class="pb-0" cols="12" sm="12" md="10">
                   <ValidationProvider
                     :name="$t('beneficiary.attributes.address')"
                     v-slot="{ errors }"
@@ -385,8 +386,8 @@
                   </ValidationProvider>
                 </v-col>
               </v-row>
-              <v-row v-if="useAddress">
-                <v-col cols="12" sm="12" md="4">
+              <v-row v-if="useAddress" class="mt-0">
+                <v-col class="pb-0" cols="12" sm="12" md="4">
                   <ValidationProvider
                     :name="$t('beneficiary.attributes.country')"
                     v-slot="{ errors }"
@@ -409,7 +410,7 @@
                     ></v-autocomplete>
                   </ValidationProvider>
                 </v-col>
-                <v-col cols="12" sm="12" md="4">
+                <v-col class="pb-0" cols="12" sm="12" md="4">
                   <ValidationProvider
                     :name="$t('beneficiary.attributes.state')"
                     v-slot="{ errors }"
@@ -435,7 +436,7 @@
                     ></v-autocomplete>
                   </ValidationProvider>
                 </v-col>
-                <v-col cols="12" sm="12" md="4">
+                <v-col class="pb-0" cols="12" sm="12" md="4">
                   <ValidationProvider
                     :name="$t('beneficiary.attributes.municipality')"
                     v-slot="{ errors }"
@@ -462,8 +463,8 @@
                   </ValidationProvider>
                 </v-col>
               </v-row>
-              <v-row v-if="useAddress">
-                <v-col cols="12" sm="12" md="4">
+              <v-row class="mt-0" v-if="useAddress">
+                <v-col class="pb-0" cols="12" sm="12" md="4">
                   <ValidationProvider
                     :name="$t('beneficiary.attributes.zipcode')"
                     v-slot="{ errors }"
@@ -481,7 +482,7 @@
                     </v-text-field>
                   </ValidationProvider>
                 </v-col>
-                <v-col cols="12" sm="12" md="4">
+                <v-col class="pb-0" cols="12" sm="12" md="4">
                   <ValidationProvider
                     :name="$t('beneficiary.attributes.suburb')"
                     v-slot="{ errors }"
@@ -499,7 +500,7 @@
                     </v-text-field>
                   </ValidationProvider>
                 </v-col>
-                <v-col cols="12" sm="12" md="4">
+                <v-col class="pb-0" cols="12" sm="12" md="4">
                   <ValidationProvider
                     :name="$t('beneficiary.attributes.locality')"
                     v-slot="{ errors }"
@@ -518,8 +519,8 @@
                   </ValidationProvider>
                 </v-col>
               </v-row>
-              <v-row v-if="useAddress">
-                <v-col cols="12" sm="12" md="4">
+              <v-row class="mt-0" v-if="useAddress">
+                <v-col class="pb-0" cols="12" sm="12" md="4">
                   <ValidationProvider
                     :name="$t('beneficiary.attributes.street')"
                     v-slot="{ errors }"
@@ -538,7 +539,7 @@
                   </ValidationProvider>
                 </v-col>
 
-                <v-col cols="12" sm="12" md="2">
+                <v-col class="pb-0" cols="12" sm="12" md="2">
                   <ValidationProvider
                     :name="$t('beneficiary.attributes.outdoorNumber')"
                     v-slot="{ errors }"
@@ -556,7 +557,7 @@
                     </v-text-field>
                   </ValidationProvider>
                 </v-col>
-                <v-col cols="12" sm="12" md="2">
+                <v-col class="pb-0" cols="12" sm="12" md="2">
                   <v-text-field
                     :label="$t('beneficiary.attributes.interiorNumber')"
                     name="interiorNumber"
@@ -566,7 +567,7 @@
                   >
                   </v-text-field>
                 </v-col>
-                <v-col cols="12" sm="12" md="4">
+                <v-col class="pb-0" cols="12" sm="12" md="2">
                   <v-text-field
                     :label="$t('beneficiary.attributes.block')"
                     name="block"
@@ -576,9 +577,7 @@
                   >
                   </v-text-field>
                 </v-col>
-              </v-row>
-              <v-row v-if="useAddress">
-                <v-col cols="12" sm="12" md="4">
+                <v-col cols="12" sm="12" md="2">
                   <v-text-field
                     :label="$t('beneficiary.attributes.lot')"
                     name="lot"
@@ -594,7 +593,6 @@
                   <v-btn
                     type="submit"
                     color="success"
-                    x-large
                     dense
                     :disabled="disabledSave"
                   >
@@ -1323,4 +1321,8 @@ export default class NewBeneficiary extends Vue {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.v-input--selection-controls {
+  margin-top: 0px !important;
+}
+</style>

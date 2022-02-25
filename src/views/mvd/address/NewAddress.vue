@@ -13,11 +13,11 @@
           :active="isLoading"
           :indeterminate="isLoading"
         ></v-progress-linear>
-        <v-container>
+        <v-container fluid>
           <ValidationObserver v-slot="{ handleSubmit }" ref="form">
             <form @submit.prevent="handleSubmit(onSubmit)">
-              <v-row>
-                <v-col cols="12" sm="12" md="6">
+              <v-row class="mt-0">
+                <v-col class="pb-0" cols="12" sm="12" md="4">
                   <v-text-field
                     :label="$t('address.attributes.employeeType')"
                     name="employeeType"
@@ -29,7 +29,7 @@
                   >
                   </v-text-field>
                 </v-col>
-                <v-col cols="12" sm="12" md="6">
+                <v-col class="pb-0" cols="12" sm="12" md="2">
                   <v-text-field
                     :label="$t('address.attributes.assigmentNumber')"
                     name="assigmentNumber"
@@ -41,9 +41,7 @@
                   >
                   </v-text-field>
                 </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="12" sm="12" md="12">
+                <v-col class="pb-0" cols="12" sm="12" md="6">
                   <v-text-field
                     :label="$t('address.attributes.fullname')"
                     name="fullname"
@@ -56,8 +54,8 @@
                   </v-text-field>
                 </v-col>
               </v-row>
-              <v-row>
-                <v-col cols="12" sm="12" md="4">
+              <v-row class="mt-0">
+                <v-col class="pb-0" cols="12" sm="12" md="4">
                   <ValidationProvider
                     :name="$t('address.attributes.country')"
                     v-slot="{ errors }"
@@ -80,7 +78,7 @@
                     ></v-autocomplete>
                   </ValidationProvider>
                 </v-col>
-                <v-col cols="12" sm="12" md="4">
+                <v-col class="pb-0" cols="12" sm="12" md="4">
                   <ValidationProvider
                     :name="$t('address.attributes.state')"
                     v-slot="{ errors }"
@@ -104,7 +102,7 @@
                     ></v-autocomplete>
                   </ValidationProvider>
                 </v-col>
-                <v-col cols="12" sm="12" md="4">
+                <v-col class="pb-0" cols="12" sm="12" md="4">
                   <ValidationProvider
                     :name="$t('address.attributes.municipality')"
                     v-slot="{ errors }"
@@ -128,8 +126,8 @@
                   </ValidationProvider>
                 </v-col>
               </v-row>
-              <v-row>
-                <v-col cols="12" sm="12" md="4">
+              <v-row class="mt-0">
+                <v-col class="pb-0" cols="12" sm="12" md="4">
                   <ValidationProvider
                     :name="$t('address.attributes.zipcode')"
                     v-slot="{ errors }"
@@ -147,7 +145,7 @@
                     </v-text-field>
                   </ValidationProvider>
                 </v-col>
-                <v-col cols="12" sm="12" md="4">
+                <v-col class="pb-0" cols="12" sm="12" md="4">
                   <ValidationProvider
                     :name="$t('address.attributes.suburb')"
                     v-slot="{ errors }"
@@ -165,7 +163,7 @@
                     </v-text-field>
                   </ValidationProvider>
                 </v-col>
-                <v-col cols="12" sm="12" md="4">
+                <v-col class="pb-0" cols="12" sm="12" md="4">
                   <ValidationProvider
                     :name="$t('address.attributes.locality')"
                     v-slot="{ errors }"
@@ -184,8 +182,8 @@
                   </ValidationProvider>
                 </v-col>
               </v-row>
-              <v-row>
-                <v-col cols="12" sm="12" md="4">
+              <v-row class="mt-0">
+                <v-col class="pb-0" cols="12" sm="12" md="4">
                   <ValidationProvider
                     :name="$t('address.attributes.street')"
                     v-slot="{ errors }"
@@ -204,7 +202,7 @@
                   </ValidationProvider>
                 </v-col>
 
-                <v-col cols="12" sm="12" md="2">
+                <v-col class="pb-0" cols="12" sm="12" md="2">
                   <ValidationProvider
                     :name="$t('address.attributes.outdoorNumber')"
                     v-slot="{ errors }"
@@ -222,7 +220,7 @@
                     </v-text-field>
                   </ValidationProvider>
                 </v-col>
-                <v-col cols="12" sm="12" md="2">
+                <v-col class="pb-0" cols="12" sm="12" md="2">
                   <v-text-field
                     :label="$t('address.attributes.interiorNumber')"
                     name="interiorNumber"
@@ -232,7 +230,7 @@
                   >
                   </v-text-field>
                 </v-col>
-                <v-col cols="12" sm="12" md="4">
+                <v-col class="pb-0" cols="12" sm="12" md="2">
                   <v-text-field
                     :label="$t('address.attributes.block')"
                     name="block"
@@ -242,9 +240,7 @@
                   >
                   </v-text-field>
                 </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="12" sm="12" md="4">
+                <v-col class="pb-0" cols="12" sm="12" md="2">
                   <v-text-field
                     :label="$t('address.attributes.lot')"
                     name="lot"
@@ -257,7 +253,7 @@
               </v-row>
               <v-row>
                 <v-col cols="12" sm="12" md="4" offset-md="5">
-                  <v-btn type="submit" color="success" dark x-large dense>
+                  <v-btn type="submit" color="success" dark dense>
                     {{ $t("address.labels.save") }}
                     <v-icon right dark>mdi-content-save</v-icon>
                   </v-btn>

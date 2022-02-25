@@ -2,8 +2,8 @@
   <v-container>
     <ValidationObserver v-slot="{ handleSubmit }" ref="form">
       <form @submit.prevent="handleSubmit(onSubmit)">
-        <v-row>
-          <v-col cols="12" sm="12" md="6">
+        <v-row class="mt-0">
+          <v-col class="pb-0" cols="12" sm="12" md="4">
             <v-text-field
               :label="$t('employeeConsultation.attributes.employeeType')"
               name="employeeType"
@@ -15,7 +15,7 @@
             >
             </v-text-field>
           </v-col>
-          <v-col cols="12" sm="12" md="6">
+          <v-col class="pb-0" cols="12" sm="12" md="2">
             <v-text-field
               :label="$t('employeeConsultation.attributes.assignmentNumber')"
               name="assignmentNumber"
@@ -27,9 +27,7 @@
             >
             </v-text-field>
           </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="12" sm="12" md="12">
+          <v-col class="pb-0" cols="12" sm="12" md="6">
             <v-text-field
               :label="$t('employeeConsultation.attributes.fullname')"
               name="fullname"
@@ -42,8 +40,8 @@
             </v-text-field>
           </v-col>
         </v-row>
-        <v-row>
-          <v-col cols="120" sm="12" md="6">
+        <v-row class="mt-0">
+          <v-col class="pb-0" cols="120" sm="12" md="6">
             <ValidationProvider
               :name="$t('employeeConsultation.attributes.workplace')"
               v-slot="{ errors }"
@@ -66,7 +64,7 @@
               ></v-autocomplete>
             </ValidationProvider>
           </v-col>
-          <v-col cols="120" sm="12" md="6">
+          <v-col class="pb-0" cols="120" sm="12" md="6">
             <ValidationProvider
               :name="$t('employeeConsultation.attributes.department')"
               v-slot="{ errors }"
@@ -89,8 +87,8 @@
             </ValidationProvider>
           </v-col>
         </v-row>
-        <v-row>
-          <v-col cols="12" sm="12" md="6">
+        <v-row class="mt-0">
+          <v-col class="pb-0" cols="12" sm="12" md="3">
             <v-menu
               v-model="showPickerValidity"
               :close-on-content-click="false"
@@ -130,7 +128,7 @@
             </v-menu>
           </v-col>
 
-          <v-col cols="12" sm="12" md="6">
+          <v-col cols="12" sm="12" md="3">
             <v-text-field
               :label="$t('employeeConsultation.attributes.validityStatus')"
               name="validityStatus"
@@ -143,13 +141,11 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="12" sm="12" md="4" offset-md="4">
+          <v-col cols="12" sm="12" md="4" offset-md="5">
             <v-btn
-              class="sizeTextButton"
               type="submit"
               color="success"
               dark
-              large
               dense
             >
               {{ $t("employeeConsultation.labels.save") }}
@@ -324,10 +320,3 @@ export default class EmployeeFormNormative extends Vue {
   }
 }
 </script>
-
-<style scoped>
-.sizeTextButton {
-  font-size: 11px !important;
-  width: 240px !important;
-}
-</style>
