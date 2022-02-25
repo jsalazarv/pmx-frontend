@@ -251,8 +251,8 @@
                   </v-text-field>
                 </v-col>
               </v-row>
-              <v-row class="mt-0"> 
-               <v-col cols="12" sm="12" md="2" offset-md="10">
+              <v-row class="mt-0">
+                <v-col cols="12" sm="12" md="2" offset-md="10">
                   <v-btn type="submit" color="success" dark dense>
                     {{ $t("address.labels.save") }}
                     <v-icon right dark>mdi-content-save</v-icon>
@@ -428,8 +428,9 @@ export default class NewAddress extends Vue {
         this.addressPerson.IdDomicilio = responseAddress.Data.IdDomicilio;
         this.addressPerson.IdPersona = this.computedIdPerson;
 
-        let responseAddressPerson =
-          await this.addressService.createAddresPerson(this.addressPerson);
+        let responseAddressPerson = await this.addressService.createAddresPerson(
+          this.addressPerson
+        );
 
         if (responseAddressPerson.Success) {
           this.$store.dispatch("app/setNotify", {});

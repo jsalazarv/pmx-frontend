@@ -59,7 +59,7 @@ export default {
       },
       errorCreate: {
         message: "A problem has occurred",
-        error400: "The beneficiary is already registered"
+        error400: "The beneficiary is already registered",
       },
       successCreate: {
         message: "Beneficiary has been saved correctly",
@@ -68,7 +68,7 @@ export default {
         error400: "A problem has occurred: Curp not valid",
         error500: "A problem has occurred: Renapo service not available",
       },
-       errorEnum: {
+      errorEnum: {
         errorChildrens:
           "It is not possible to grant the validity: because your child is older than 25 years",
         errorBrothers:

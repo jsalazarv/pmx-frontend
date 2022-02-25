@@ -73,7 +73,7 @@ export interface IBeneficiaryResponse {
 }
 
 export interface IPerson {
-  IdPersona: number| null;
+  IdPersona: number | null;
   Curp: string;
   Nombres: string;
   ApellidoPaterno: string;
@@ -147,5 +147,5 @@ export interface IBeneficiaryRequest {
 export enum EnumValidityValidations {
   INVALID_CHILDRENS = "INVALID_CHILDRENS",
   INVALID_BROTHERS = "INVALID_BROTHERS",
-  VALID_VALIDITY = "VALID_VALIDITY"
+  VALID_VALIDITY = "VALID_VALIDITY",
 }

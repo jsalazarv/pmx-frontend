@@ -142,12 +142,7 @@
         </v-row>
         <v-row class="mt-0">
           <v-col cols="12" sm="12" md="2" offset-md="10">
-            <v-btn
-              type="submit"
-              color="success"
-              dark
-              dense
-            >
+            <v-btn type="submit" color="success" dark dense>
               {{ $t("employeeConsultation.labels.save") }}
               <v-icon right dark>mdi-content-save</v-icon>
             </v-btn>
@@ -259,8 +254,7 @@ export default class EmployeeFormNormative extends Vue {
         if (this.validityRights.IdDerechohabiente != null) {
           this.titularBeneficiary.IdCentro = this.validityRights.IdCentro;
           this.getDepartments();
-          this.titularBeneficiary.IdDepartamento =
-            this.validityRights.IdDepartamento;
+          this.titularBeneficiary.IdDepartamento = this.validityRights.IdDepartamento;
           this.titularBeneficiary.Vigencia = this.validityRights.Vigencia;
         }
       })
@@ -298,8 +292,7 @@ export default class EmployeeFormNormative extends Vue {
     this.titularBeneficiary.IdEmpleado = this.computedEmployeeId;
     this.titularBeneficiary.IdTipoEmpleado = this.computedEmployeeTypeId;
     this.titularBeneficiary.IdPersona = this.computedIdPerson;
-    this.titularBeneficiary.IdDerechohabiente =
-      this.validityRights.IdDerechohabiente;
+    this.titularBeneficiary.IdDerechohabiente = this.validityRights.IdDerechohabiente;
     this.beneficiaryService
       .createTitular(this.titularBeneficiary)
       .then((response) => {

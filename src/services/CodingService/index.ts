@@ -8,7 +8,9 @@ export default class CodingService extends BaseService {
     idBeneficiary: number | null
   ): IServiceResponse<Array<ICoding>> {
     return this.client.get(
-      `/Familiares?idTitular=${idHeadline}${ idBeneficiary != null ? '&idDerechohabiente='+idBeneficiary : ''}`
+      `/Familiares?idTitular=${idHeadline}${
+        idBeneficiary != null ? "&idDerechohabiente=" + idBeneficiary : ""
+      }`
     );
   }
 }

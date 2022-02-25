@@ -23,8 +23,13 @@ export default class BeneficiaryService extends BaseService {
     return this.client.post("/Derechohabientes", beneficiary);
   }
 
-  update(beneficiary: Partial<IBeneficiaryRequest>): IServiceResponse<IBeneficiary> {
-    return this.client.put(`/Derechohabientes/${beneficiary.IdDerechohabiente}`, beneficiary);
+  update(
+    beneficiary: Partial<IBeneficiaryRequest>
+  ): IServiceResponse<IBeneficiary> {
+    return this.client.put(
+      `/Derechohabientes/${beneficiary.IdDerechohabiente}`,
+      beneficiary
+    );
   }
 
   getAll(idBeneficiary: number | null): IServiceResponse<Array<IBeneficiary>> {

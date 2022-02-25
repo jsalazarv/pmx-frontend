@@ -80,7 +80,8 @@ export default {
       },
     },
     validations: {
-      discharged: "El derechohabiente ya se encuentra dado de alta y esta activo",
+      discharged:
+        "El derechohabiente ya se encuentra dado de alta y esta activo",
       isNotDischarged: "El derechohabiente no se encuentra dado de alta",
     },
   },

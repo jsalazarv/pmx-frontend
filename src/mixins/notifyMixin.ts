@@ -92,6 +92,5 @@ export class NotifyMixin extends Vue {
         break;
     }
   }
-
-  mounted(): void {}
+  
 }

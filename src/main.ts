@@ -11,9 +11,10 @@ import "/src/plugins/veevalidate";
 import i18n from "@/lang";
 import "./filters/dataCleaner";
 import "./filters/dateFormatter";
-import { NotifyMixin } from "./mixins";
+import { NotifyMixin, LanguageMixin } from "./mixins";
 
 Vue.mixin(NotifyMixin);
+Vue.mixin(LanguageMixin);
 
 Vue.use(VueAxios, Axios);
 

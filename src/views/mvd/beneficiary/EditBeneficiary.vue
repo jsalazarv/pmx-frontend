@@ -611,8 +611,8 @@
                   </v-text-field>
                 </v-col>
               </v-row>
-               <v-row class="mt-0">
-                 <v-col cols="12" sm="12" md="2" offset-md="10">
+              <v-row class="mt-0">
+                <v-col cols="12" sm="12" md="2" offset-md="10">
                   <v-btn
                     type="submit"
                     color="success"
@@ -1004,12 +1004,11 @@ export default class EditBeneficiary extends Vue {
 
   async getValidityRights() {
     this.isLoadingValidityRights = true;
-    let responseValidityRights =
-      await this.beneficiaryService.getValidityRights(
-        this.computedIdPerson,
-        this.computedEmployeeId,
-        this.computedEmployeeTypeId
-      );
+    let responseValidityRights = await this.beneficiaryService.getValidityRights(
+      this.computedIdPerson,
+      this.computedEmployeeId,
+      this.computedEmployeeTypeId
+    );
     if (responseValidityRights.Success) {
       this.validityRights = responseValidityRights.Data;
       this.beneficiary.IdDerTitular = this.validityRights.IdDerechohabiente;
@@ -1132,26 +1131,20 @@ export default class EditBeneficiary extends Vue {
     if (this.renapoAvailable) {
       this.beneficiary.IdPersona = this.computedPerson.Person.IdPersona;
       this.beneficiary.Persona.Nombres = this.computedPerson.Renapo.Nombres;
-      this.beneficiary.Persona.ApellidoPaterno =
-        this.computedPerson.Renapo.ApellidoPaterno;
-      this.beneficiary.Persona.ApellidoMaterno =
-        this.computedPerson.Renapo.ApellidoMaterno;
+      this.beneficiary.Persona.ApellidoPaterno = this.computedPerson.Renapo.ApellidoPaterno;
+      this.beneficiary.Persona.ApellidoMaterno = this.computedPerson.Renapo.ApellidoMaterno;
       this.beneficiary.Persona.Sexo = this.computedPerson.Renapo.Sexo;
-      this.beneficiary.Persona.FechaNacimiento =
-        this.computedPerson.Renapo.FechaNacimiento;
+      this.beneficiary.Persona.FechaNacimiento = this.computedPerson.Renapo.FechaNacimiento;
       this.beneficiary.Persona.Edad = this.getAge(
         this.computedPerson.Renapo.FechaNacimiento
       ).toString();
     } else {
       this.beneficiary.IdPersona = this.computedPerson.Person.IdPersona;
       this.beneficiary.Persona.Nombres = this.computedPerson.Person.Nombres;
-      this.beneficiary.Persona.ApellidoPaterno =
-        this.computedPerson.Person.ApellidoPaterno;
-      this.beneficiary.Persona.ApellidoMaterno =
-        this.computedPerson.Person.ApellidoMaterno;
+      this.beneficiary.Persona.ApellidoPaterno = this.computedPerson.Person.ApellidoPaterno;
+      this.beneficiary.Persona.ApellidoMaterno = this.computedPerson.Person.ApellidoMaterno;
       this.beneficiary.Persona.Sexo = this.computedPerson.Person.Sexo;
-      this.beneficiary.Persona.FechaNacimiento =
-        this.computedPerson.Person.FechaNacimiento;
+      this.beneficiary.Persona.FechaNacimiento = this.computedPerson.Person.FechaNacimiento;
       this.beneficiary.Persona.Edad = this.getAge(
         this.computedPerson.Person.FechaNacimiento
       ).toString();

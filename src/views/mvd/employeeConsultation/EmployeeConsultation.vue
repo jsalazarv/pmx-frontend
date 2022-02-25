@@ -384,12 +384,11 @@ export default class EmployeeConsultation extends Vue {
   }
 
   async getValidityRights() {
-    let responseValidityRights =
-      await this.beneficiaryService.getValidityRights(
-        this.computedIdPerson,
-        this.computedEmployeeId,
-        this.computedEmployeeTypeId
-      );
+    let responseValidityRights = await this.beneficiaryService.getValidityRights(
+      this.computedIdPerson,
+      this.computedEmployeeId,
+      this.computedEmployeeTypeId
+    );
     if (responseValidityRights.Success) {
       this.validityRights = responseValidityRights.Data;
       if (this.validityRights.IdDerechohabiente == null) {

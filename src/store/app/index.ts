@@ -2,6 +2,7 @@ import { IAppState, IModuleMenu, Notify } from "@/store/app/types";
 import { Module } from "vuex";
 import { IRootState } from "@/store/types";
 import mfe from "@/components/layouts/partials/menu/mfe";
+import { es, en } from "@/plugins/index";
 
 const initialState: IAppState = {
   layout: "public-layout",
@@ -20,7 +21,9 @@ const initialState: IAppState = {
 
 const appStore: Module<IAppState, IRootState> = {
   namespaced: true,
-  state: { ...initialState },
+  state: {
+    ...initialState,
+  },
   mutations: {
     SET_LAYOUT(state, layout: string) {
       state.layout = layout;
@@ -35,7 +38,14 @@ const appStore: Module<IAppState, IRootState> = {
       state.notifyModel = notify;
     },
   },
-  getters: {},
+  getters: {
+    getLanguages() {
+      return Object.keys({
+        es,
+        en,
+      });
+    },
+  },
   actions: {
     toggleSidebar({ commit }) {
       commit("TOGGLE_SIDEBAR");
