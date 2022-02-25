@@ -57,7 +57,13 @@
           >
             <v-icon>mdi-menu-up</v-icon>
           </v-btn>
-          <v-btn icon small color="primary">
+          <v-btn
+            icon
+            small
+            color="primary"
+            :disabled="index === Object.keys(formData.contacts).length - 1"
+            @click="moveDown(index)"
+          >
             <v-icon>mdi-menu-down</v-icon>
           </v-btn>
           <v-btn icon small color="red">
@@ -105,6 +111,13 @@ export default class ContactForm extends Vue {
     let temp2 = this.formData.contacts[index - 1];
     this.$set(this.formData.contacts, index, temp2);
     this.$set(this.formData.contacts, index - 1, temp1);
+  }
+
+  moveDown(index: number): void {
+    let temp1 = this.formData.contacts[index];
+    let temp2 = this.formData.contacts[index + 1];
+    this.$set(this.formData.contacts, index, temp2);
+    this.$set(this.formData.contacts, index + 1, temp1);
   }
 
   mounted(): void {
