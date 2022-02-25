@@ -48,7 +48,13 @@
           md="1"
           class="d-flex justify-center align-center mx-0 px-0"
         >
-          <v-btn icon small color="primary" :disabled="index === 0">
+          <v-btn
+            icon
+            small
+            color="primary"
+            :disabled="index === 0"
+            @click="moveUp(index)"
+          >
             <v-icon>mdi-menu-up</v-icon>
           </v-btn>
           <v-btn icon small color="primary">
@@ -92,6 +98,13 @@ export default class ContactForm extends Vue {
 
   addRow(): void {
     this.formData.contacts.push({});
+  }
+
+  moveUp(index: number): void {
+    let temp1 = this.formData.contacts[index];
+    let temp2 = this.formData.contacts[index - 1];
+    this.$set(this.formData.contacts, index, temp2);
+    this.$set(this.formData.contacts, index - 1, temp1);
   }
 
   mounted(): void {
