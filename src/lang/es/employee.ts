@@ -45,6 +45,7 @@ export default {
     lot: "Lote",
   },
   labels: {
+    add: "Agregar",
     validate: "Validar",
     generateAssignmentNumber: "Generar número de asignación",
     enable: "Habilitar validación de CURP",
