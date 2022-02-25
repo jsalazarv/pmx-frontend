@@ -100,7 +100,7 @@
           <v-spacer></v-spacer>
         </v-toolbar>
         <v-container fluid>
-          <v-row>
+          <v-row class="mt-0">
             <v-col cols="12" sm="6" md="3" offset-md="10">
               <v-btn
                 :disabled="disabledAddBeneficiary"
@@ -246,16 +246,7 @@ export default class EmployeeConsultation extends Vue {
   public isLoadingBeneficiaries = false;
   public medicalUnitId: number | null = null;
   public idBeneficiary: number | null = null;
-  // public direction = "top";
   public fab = false;
-  // public fling = false;
-  // public hover = false;
-  // public tabs = null;
-  // public top = true;
-  // public right = true;
-  // public bottom = false;
-  // public left = false;
-  // public transition = "slide-y-reverse-transition";
   public validityRights: IValidityRightsResponse = {
     GrupoPersonal: null,
     AreaPersonal: null,

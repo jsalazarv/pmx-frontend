@@ -67,7 +67,6 @@
                     :loading="isLoadingValidate"
                     @click="validateCurp"
                     color="success"
-                    large
                     dense
                   >
                     {{ $t("beneficiary.labels.validate") }}
@@ -612,12 +611,11 @@
                   </v-text-field>
                 </v-col>
               </v-row>
-              <v-row>
-                <v-col cols="12" sm="12" md="4" offset="5">
+               <v-row class="mt-0">
+                 <v-col cols="12" sm="12" md="2" offset-md="10">
                   <v-btn
                     type="submit"
                     color="success"
-                    x-large
                     :disabled="disabledSave"
                     dense
                   >
