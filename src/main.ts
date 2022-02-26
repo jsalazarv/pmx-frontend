@@ -11,15 +11,18 @@ import "/src/plugins/veevalidate";
 import i18n from "@/lang";
 import "./filters/dataCleaner";
 import "./filters/dateFormatter";
+import { NotifyMixin } from "./mixins";
+
+Vue.mixin(NotifyMixin);
 
 Vue.use(VueAxios, Axios);
 
 Vue.config.productionTip = false;
 
 new Vue({
+  i18n,
   router,
   store,
   vuetify,
-  i18n,
   render: (h) => h(App),
 }).$mount("#app");

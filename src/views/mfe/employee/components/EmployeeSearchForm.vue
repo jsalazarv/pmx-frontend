@@ -437,27 +437,47 @@ export default class EmployeeSearchForm extends Vue {
       .findByCurp(this.employee.Curp, this.employee.IdTipoEmpleado)
       .then(this.handleValidationResponse)
       .catch((error) => {
-        if (
-          error.response.data.Message.Regla ===
-          EmployeeValidationRule.NO_REGISTRO_RENAPO_Y_MFE
-        ) {
-          this.showSnackbar(
-            true,
-            this.$t("employee.labels.dialogs.searchNotFound.message") as string,
-            "error"
-          );
-          this.hasIndRenapo = false;
-          this.infoSelected = false;
-          const { Curp, IdTipoEmpleado } = this.employee;
-          this.$store.dispatch("employees/clear", {
-            Curp: Curp,
-            IdTipoEmpleado: IdTipoEmpleado,
-          });
+        if (!error?.response?.data?.Success) {
+          if (
+            error.response.data.Message &&
+            typeof error.response.data.Message === "string"
+          ) {
+            (this as any).customError(
+              error.response.status,
+              error.response.data.Message
+            );
+          } else {
+            this.messageRules(error);
+          }
         }
       })
       .finally(() => {
         this.isValidatingEmployee = false;
       });
+  }
+
+  messageRules(error: any): void {
+    let message: string = error?.response?.data?.Message?.Regla;
+
+    switch (message) {
+      case EmployeeValidationRule.NO_REGISTRO_RENAPO_Y_MFE:
+        (this as any).customError(
+          error.response.status,
+          this.$t("employee.labels.dialogs.searchNotFound.message") as string
+        );
+        this.hasIndRenapo = false;
+        this.infoSelected = false;
+
+        this.$store.dispatch("employees/clear", {
+          Curp: this.employee.Curp,
+          IdTipoEmpleado: this.employee.IdTipoEmpleado,
+        });
+        break;
+
+      default:
+        (this as any).customError(error.response.status);
+        break;
+    }
   }
 
   disableInputs(): void {
@@ -506,6 +526,9 @@ export default class EmployeeSearchForm extends Vue {
       .then((response) => {
         this.employeeTypeList = response.Data;
       })
+      .catch((error) => {
+        console.error(error);
+      })
       .finally(() => {
         this.isLoadingEmployeeList = false;
       });
@@ -518,6 +541,9 @@ export default class EmployeeSearchForm extends Vue {
       .then((response) => {
         this.gendersList = response.Data;
       })
+      .catch((error) => {
+        console.error(error);
+      })
       .finally(() => {
         this.isLoadingGendersList = false;
       });
@@ -529,6 +555,9 @@ export default class EmployeeSearchForm extends Vue {
       .getAll()
       .then((response) => {
         this.maritalStatusesList = response.Data;
+      })
+      .catch((error) => {
+        console.error(error);
       })
       .finally(() => {
         this.isLoadingMaritalStatusesList = false;

@@ -109,16 +109,12 @@ export default class AssignmentFolios extends Vue {
       .search(filters)
       .then((response) => {
         if (response.Success || !response) {
-          this.$store.dispatch("app/setNotify", {});
+          (this as any).ok();
           this.foliosLogbookList = response.Data;
         }
       })
       .catch((err) => {
         if (err.response) {
-          this.$store.dispatch("app/setNotify", {
-            status: err?.response?.status,
-            text: err?.response?.data?.Message?.Texto,
-          });
           console.error(err?.response);
         }
       })

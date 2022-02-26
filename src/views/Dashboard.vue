@@ -225,10 +225,7 @@ export default class Dashboard extends Vue {
 
   searchNumberAssign(): void {
     if (!this.numberAssignModel) {
-      this.$store.dispatch("app/setNotify", {
-        status: 400,
-        text: this.$t("notify.enterAnAssignmentNumber"),
-      });
+      (this as any).badRequest(this.$t("notify.enterAnAssignmentNumber"));
       return;
     }
 
@@ -293,8 +290,8 @@ export default class Dashboard extends Vue {
         let data = res.Data;
 
         if (data && data.length) {
-          this.totalEmployeeStatusAccept = data[0].Total;
-          this.totalEmployeeStatusCancel = data[1].Total;
+          this.totalEmployeeStatusAccept = data[0]?.Total;
+          this.totalEmployeeStatusCancel = data[1]?.Total || 0;
         }
       })
       .catch((err) => console.error(err));
