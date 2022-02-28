@@ -8,10 +8,27 @@ export class LanguageMixin extends Vue {
 
   setLanguageCurrent(language = ""): void {
     const languages: Array<string> = this.$store.getters["app/getLanguages"];
-    if (languages.length && languages.includes(language)) {
-      (this as any).$vuetify.lang.current = language;
-    } else {
-      (this as any).$vuetify.lang.current = languages[0];
-    }
+
+    const languageSelected: string =
+      languages.length && languages.includes(language)
+        ? language
+        : languages[0];
+
+    this.setLanguageIntoSystem(languageSelected);
+  }
+
+  setLanguageIntoSystem(language: string): void {
+    const languageIntoLocalStorage = localStorage.getItem(
+      "language-current-system"
+    );
+    (this as any).$vuetify.lang.current = !languageIntoLocalStorage
+      ? language
+      : languageIntoLocalStorage;
+
+    this.setLanguageIntoLocalStorage(language);
+  }
+
+  setLanguageIntoLocalStorage(language: string): void {
+    localStorage.setItem("language-current-system", language);
   }
 }
