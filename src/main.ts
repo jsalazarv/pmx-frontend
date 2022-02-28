@@ -18,6 +18,8 @@ Vue.mixin(LanguageMixin);
 
 Vue.use(VueAxios, Axios);
 
+Vue.prototype.$env = process.env.NODE_ENV;
+
 Vue.config.productionTip = false;
 
 new Vue({

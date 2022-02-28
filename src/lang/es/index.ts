@@ -11,6 +11,7 @@ import proofAssignment from "./mfe/proofAssignment";
 import credentialization from "./mvd/credentialization";
 import statusCode from "@/lang/es/statusCode";
 import notify from "@/lang/es/mfe/notify";
+import dropDownProfile from './dropDownProfile';
 
 export default {
   dictionary,
@@ -26,4 +27,5 @@ export default {
   credentialization,
   statusCode,
   notify,
+  dropDownProfile
 };

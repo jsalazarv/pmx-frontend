@@ -8,6 +8,7 @@ import address from "./mvd/address";
 import employeeConsultationMFE from "./mfe/employeeConsultation";
 import affiliationLog from "./mfe/affiliationLog";
 import credentialization from "./mvd/credentialization";
+import dropDownProfile from './dropDownProfile';
 
 export default {
   dictionary,
@@ -20,4 +21,5 @@ export default {
   employeeConsultationMFE,
   affiliationLog,
   credentialization,
+  dropDownProfile
 };

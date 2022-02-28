@@ -43,10 +43,7 @@
             <v-list-item-icon>
               <v-icon>mdi-monitor</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>
-              Portal Transaccional de <br />
-              Capital Humano
-            </v-list-item-title>
+            <v-list-item-title v-html="$t('dropDownProfile.nameApplication')"></v-list-item-title>
           </v-list-item>
         </v-list>
 
@@ -57,7 +54,7 @@
             <v-list-item-icon>
               <v-icon>mdi-layers</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>build: 1</v-list-item-title>
+            <v-list-item-title>{{ $t("dropDownProfile.build")}}</v-list-item-title>
           </v-list-item>
         </v-list>
 
@@ -79,7 +76,7 @@
             <v-list-item-icon>
               <v-icon>mdi-earth</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>Ambiente de Desarrollo</v-list-item-title>
+            <v-list-item-title>{{getEnvironmentName}}</v-list-item-title>
           </v-list-item>
         </v-list>
 
@@ -90,7 +87,7 @@
             <v-list-item-icon>
               <v-icon>mdi-phone-classic</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>Teléfono de Soporte - 555 333</v-list-item-title>
+            <v-list-item-title>{{  $t("dropDownProfile.support") }} 555 333</v-list-item-title>
           </v-list-item>
         </v-list>
 
@@ -101,26 +98,16 @@
             <v-list-item-icon>
               <v-icon>mdi-login-variant</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>Cerrar sesión</v-list-item-title>
+            <v-list-item-title>{{ $t("dropDownProfile.logout")}}</v-list-item-title>
           </v-list-item>
         </v-list>
 
         <v-divider></v-divider>
 
+       
         <v-list class="py-1">
           <v-list-item>
-            <v-list-item-title class="text-right">
-              Versión 1.0v
-            </v-list-item-title
-            >
-          </v-list-item>
-        </v-list>
-        
-        <v-divider></v-divider>
-
-        <v-list class="py-1">
-          <v-list-item>
-            <v-list-item-title class="text-right">
+            <v-list-item-title class="text-left">
               <span class="mr-2">
                <v-icon color="green">mdi-checkbox-multiple-blank-circle-outline</v-icon>  es
               </span>
@@ -128,6 +115,18 @@
               <span>
                <v-icon>mdi-checkbox-multiple-blank-circle-outline</v-icon>  en
               </span>
+            </v-list-item-title
+            >
+          </v-list-item>
+        </v-list>
+
+        
+        <v-divider></v-divider>
+
+         <v-list class="py-1">
+          <v-list-item>
+            <v-list-item-title class="text-right">
+              {{ $t("dropDownProfile.version")}} 1.0v
             </v-list-item-title
             >
           </v-list-item>
@@ -156,6 +155,13 @@ export default class Navbar extends Vue {
       .catch((err) => {
         console.log(err);
       });
+  }
+
+  get getEnvironmentName(): string {
+    let isDevelopment = (this as any).$env === 'development';
+
+    return isDevelopment ? this.$t('dropDownProfile.enviromentDevelopment') as string : 
+                          this.$t("dropDownProfile.enviromentProduction") as string;
   }
 }
 </script>
