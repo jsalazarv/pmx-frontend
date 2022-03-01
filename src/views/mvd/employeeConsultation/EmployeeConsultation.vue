@@ -90,6 +90,63 @@
               <span>{{ $t("employeeConsultation.labels.credential") }}</span>
               <v-icon right dark>mdi-card-account-details</v-icon>
             </v-btn>
+            <v-dialog v-model="dialogConstancy" persistent max-width="600">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  <!-- {{ $t("employeeConsultation.labels.assignMedicalUnit") }} -->
+                  Constancia médica
+                  <v-icon right dark>mdi-account-arrow-down</v-icon>
+                </v-btn>
+              </template>
+              <v-card>
+                <ValidationObserver v-slot="{ handleSubmit }" ref="form">
+                  <form @submit.prevent="handleSubmit(onSubmit)">
+                    <!-- <v-card-title class="text-h5">
+                      {{ $t("employeeConsultation.labels.assignMedicalUnit") }}
+                    </v-card-title>
+                    <v-col cols="12" sm="12" md="12">
+                      <ValidationProvider
+                        :name="$t('employeeConsultation.attributes.validity')"
+                        v-slot="{ errors }"
+                        rules="required"
+                      >
+                        <v-autocomplete
+                          class="required"
+                          dense
+                          name="medicalUnit"
+                          outlined
+                          item-text="Nombre"
+                          item-value="Id"
+                          :items="medicalUnitsList"
+                          :label="$t('employeeConsultation.labels.medicalUnit')"
+                          :disabled="isLoadingMedicalUnitsList"
+                          :loading="isLoadingMedicalUnitsList"
+                          v-model="medicalUnitId"
+                          :error-messages="errors"
+                        ></v-autocomplete>
+                      </ValidationProvider>
+                    </v-col> -->
+                    sadjasdk
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="red darken-1" text @click="dialogConstancy = false">
+                        {{ $t("employeeConsultation.labels.cancel") }}
+                      </v-btn>
+                      <v-btn type="submit" color="success" dark dense>
+                        {{ $t("employeeConsultation.labels.assign") }}
+                      </v-btn>
+                    </v-card-actions>
+                  </form>
+                </ValidationObserver>
+              </v-card>
+            </v-dialog>
+            <!-- <v-btn @click="onBtnEditAddress">
+              <span>Constancia médica</span>
+              <v-icon right dark>mdi-account-arrow-down</v-icon>
+            </v-btn> -->
           </v-bottom-navigation>
         </v-container>
         <v-toolbar flat>
@@ -241,6 +298,7 @@ export default class EmployeeConsultation extends Vue {
   public disabledAssignMedicalUnit = false;
   public disabledAddBeneficiary = false;
   public dialog = false;
+  public dialogConstancy = false;
   public dialogDelete = false;
   public isLoadingMedicalUnitsList = false;
   public isLoadingBeneficiaries = false;

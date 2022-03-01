@@ -124,6 +124,7 @@
                 @input="showPickerValidity = false"
                 locale="es"
                 v-model="titularBeneficiary.Vigencia"
+                :max="maxDate"
               ></v-date-picker>
             </v-menu>
           </v-col>
@@ -142,12 +143,7 @@
         </v-row>
         <v-row class="mt-0">
           <v-col cols="12" sm="12" md="2" offset-md="10">
-            <v-btn
-              type="submit"
-              color="success"
-              dark
-              dense
-            >
+            <v-btn type="submit" color="success" dark dense>
               {{ $t("employeeConsultation.labels.save") }}
               <v-icon right dark>mdi-content-save</v-icon>
             </v-btn>
@@ -182,6 +178,7 @@ export default class EmployeeFormNormative extends Vue {
   public workplaces: Array<IWorkplace> = [];
   public departments: Array<IDepartament> = [];
   public showPickerValidity: any = false;
+  public maxDate = "9999-31-12";
   public titularBeneficiary: ITitularBeneficiaryRequest = {
     IdPersona: null,
     IdCentro: null,
