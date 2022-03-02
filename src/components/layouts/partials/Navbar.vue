@@ -43,7 +43,9 @@
             <v-list-item-icon>
               <v-icon>mdi-monitor</v-icon>
             </v-list-item-icon>
-            <v-list-item-title v-html="$t('dropDownProfile.nameApplication')"></v-list-item-title>
+            <v-list-item-title
+              v-html="$t('dropDownProfile.nameApplication')"
+            ></v-list-item-title>
           </v-list-item>
         </v-list>
 
@@ -54,7 +56,9 @@
             <v-list-item-icon>
               <v-icon>mdi-layers</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>{{ $t("dropDownProfile.build")}}</v-list-item-title>
+            <v-list-item-title>{{
+              $t("dropDownProfile.build")
+            }}</v-list-item-title>
           </v-list-item>
         </v-list>
 
@@ -76,7 +80,7 @@
             <v-list-item-icon>
               <v-icon>mdi-earth</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>{{getEnvironmentName}}</v-list-item-title>
+            <v-list-item-title>{{ getEnvironmentName }}</v-list-item-title>
           </v-list-item>
         </v-list>
 
@@ -87,7 +91,9 @@
             <v-list-item-icon>
               <v-icon>mdi-phone-classic</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>{{  $t("dropDownProfile.support") }} 555 333</v-list-item-title>
+            <v-list-item-title
+              >{{ $t("dropDownProfile.support") }} 555 333</v-list-item-title
+            >
           </v-list-item>
         </v-list>
 
@@ -98,37 +104,43 @@
             <v-list-item-icon>
               <v-icon>mdi-login-variant</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>{{ $t("dropDownProfile.logout")}}</v-list-item-title>
+            <v-list-item-title>{{
+              $t("dropDownProfile.logout")
+            }}</v-list-item-title>
           </v-list-item>
         </v-list>
 
         <v-divider></v-divider>
 
-       
         <v-list class="py-1">
           <v-list-item>
-            <v-list-item-title class="text-left">
-              <span class="mr-2">
-               <v-icon color="green">mdi-checkbox-multiple-blank-circle-outline</v-icon>  es
-              </span>
-
-              <span>
-               <v-icon>mdi-checkbox-multiple-blank-circle-outline</v-icon>  en
-              </span>
-            </v-list-item-title
-            >
+            <v-list-item-title class="text-right">
+              <v-btn-toggle
+                mandatory
+                shaped
+                active-class="btn__language--active"
+                v-model="languageModel"
+              >
+                <v-btn
+                  v-for="language in lstLanguagesSystem"
+                  :key="language"
+                  small
+                  :value="language"
+                >
+                  {{ language }}
+                </v-btn>
+              </v-btn-toggle>
+            </v-list-item-title>
           </v-list-item>
         </v-list>
 
-        
         <v-divider></v-divider>
 
-         <v-list class="py-1">
+        <v-list class="py-1">
           <v-list-item>
             <v-list-item-title class="text-right">
-              {{ $t("dropDownProfile.version")}} 1.0v
-            </v-list-item-title
-            >
+              {{ $t("dropDownProfile.version") }} 1.0v
+            </v-list-item-title>
           </v-list-item>
         </v-list>
       </v-card>
@@ -139,9 +151,16 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import { Watch } from "vue-property-decorator";
 
 @Component
 export default class Navbar extends Vue {
+  languageModel = "";
+
+  created(): void {
+    this.languageModel = (this as any).getLanguageLocalStore;
+  }
+
   toggleSidebar(): void {
     this.$store.dispatch("app/toggleSidebar");
   }
@@ -158,12 +177,27 @@ export default class Navbar extends Vue {
   }
 
   get getEnvironmentName(): string {
-    let isDevelopment = (this as any).$env === 'development';
+    let isDevelopment = (this as any).$env === "development";
 
-    return isDevelopment ? this.$t('dropDownProfile.enviromentDevelopment') as string : 
-                          this.$t("dropDownProfile.enviromentProduction") as string;
+    return isDevelopment
+      ? (this.$t("dropDownProfile.enviromentDevelopment") as string)
+      : (this.$t("dropDownProfile.enviromentProduction") as string);
+  }
+
+  get lstLanguagesSystem(): string {
+    return this.$store.getters["app/getLanguages"];
+  }
+
+  @Watch("languageModel", {})
+  watchChangeLanguage(newValue: string, oldValue: string) {
+    (this as any).setLanguageCurrent(newValue);
   }
 }
 </script>
 
-<style scoped></style>
+<style>
+.btn__language--active {
+  background: #9e2244 !important;
+  color: #fff !important;
+}
+</style>
