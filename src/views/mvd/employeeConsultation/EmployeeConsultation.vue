@@ -95,6 +95,9 @@
                 <v-btn
                   v-bind="attrs"
                   v-on="on"
+                  :disabled="
+                    !validityRights.IdDerechohabiente && !medicalUnitId
+                  "
                 >
                   <!-- {{ $t("employeeConsultation.labels.assignMedicalUnit") }} -->
                   Constancia médica
@@ -102,41 +105,39 @@
                 </v-btn>
               </template>
               <v-card>
+                <v-card-title class="text-h5">
+                  Descargar constancia médica
+                </v-card-title>
                 <ValidationObserver v-slot="{ handleSubmit }" ref="form">
-                  <form @submit.prevent="handleSubmit(onSubmit)">
-                    <!-- <v-card-title class="text-h5">
-                      {{ $t("employeeConsultation.labels.assignMedicalUnit") }}
-                    </v-card-title>
+                  <form @submit.prevent="handleSubmit(onDownload)">
                     <v-col cols="12" sm="12" md="12">
                       <ValidationProvider
-                        :name="$t('employeeConsultation.attributes.validity')"
+                        :name="$t('beneficiary.attributes.observations')"
                         v-slot="{ errors }"
-                        rules="required"
+                        rules="max:100"
                       >
-                        <v-autocomplete
-                          class="required"
+                        <v-textarea
+                          :label="$t('beneficiary.attributes.observations')"
+                          name="observations"
                           dense
-                          name="medicalUnit"
                           outlined
-                          item-text="Nombre"
-                          item-value="Id"
-                          :items="medicalUnitsList"
-                          :label="$t('employeeConsultation.labels.medicalUnit')"
-                          :disabled="isLoadingMedicalUnitsList"
-                          :loading="isLoadingMedicalUnitsList"
-                          v-model="medicalUnitId"
                           :error-messages="errors"
-                        ></v-autocomplete>
+                          rows="3"
+                        >
+                        </v-textarea>
                       </ValidationProvider>
-                    </v-col> -->
-                    sadjasdk
+                    </v-col>
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn color="red darken-1" text @click="dialogConstancy = false">
+                      <v-btn
+                        color="red darken-1"
+                        text
+                        @click="dialogConstancy = false"
+                      >
                         {{ $t("employeeConsultation.labels.cancel") }}
                       </v-btn>
                       <v-btn type="submit" color="success" dark dense>
-                        {{ $t("employeeConsultation.labels.assign") }}
+                        Descargar
                       </v-btn>
                     </v-card-actions>
                   </form>
@@ -512,6 +513,10 @@ export default class EmployeeConsultation extends Vue {
       .finally(() => {
         this.dialog = false;
       });
+  }
+
+  onDownload() {
+    console.log("entra");
   }
 
   deleteBeneficiary(): void {

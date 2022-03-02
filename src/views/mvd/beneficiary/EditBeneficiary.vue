@@ -1102,7 +1102,9 @@ export default class EditBeneficiary extends Vue {
           this.disabledSave = !this.allowEdit;
           this.$store.dispatch("app/setNotify", {
             status: 400,
-            text: "Ha ocurrido un problema: Servicio de renapo no disponible" as string,
+            text: this.$t(
+              "beneficiary.labels.customValidations.renapoNotAvailable"
+            ) as string,
           });
         }
       })
@@ -1344,8 +1346,8 @@ export default class EditBeneficiary extends Vue {
         text: this.$t(
           this.validityValidations() ==
             EnumValidityValidations.INVALID_CHILDRENS
-            ? "beneficiary.labels.dialogs.errorEnum.errorChildrens"
-            : "beneficiary.labels.dialogs.errorEnum.errorBrothers"
+            ? "beneficiary.labels.customValidations.errorChildrens"
+            : "beneficiary.labels.customValidations.errorBrothers"
         ) as string,
       });
     }

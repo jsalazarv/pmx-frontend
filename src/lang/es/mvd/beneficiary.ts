@@ -51,37 +51,28 @@ export default {
       confirmDelete: {},
       successDelete: {},
       errorDelete: {},
-      errorUpdate: {
-        message: "Ha ocurrido un problema",
-      },
-      successUpdate: {
-        message: "Se ha guardado el derechohabiente correctamente",
-      },
-      errorCreate: {
-        message: "Ha ocurrido un problema",
-        error400: "El derechohabiente ya se encuentra dado de alta",
-      },
-      successCreate: {
-        message: "Se ha guardado el derechohabiente correctamente",
-      },
-      errorValidate: {
-        message:
-          "Ha ocurrido un problema, posibles causas: 1. Curp no valida 2. Servicio de renapo no disponible",
-      },
-      errorMessage: {
-        error400: "Ha ocurrido un problema:  Curp no valida",
-        error500: "Ha ocurrido un problema: Servicio de renapo no disponible",
-      },
-      errorEnum: {
-        errorChildrens:
-          "No es posible otorgar la vigencia: debido a que su hijo(a) es mayor a 25 años",
-        errorBrothers:
-          "No es posible otorgar la vigencia: debido a que su hermano(a) es mayor a 17 años",
-      },
+      errorUpdate: {},
+      successUpdate: {},
+      successCreate: {},
     },
-    validations: {
-      discharged: "El derechohabiente ya se encuentra dado de alta y esta activo",
-      isNotDischarged: "El derechohabiente no se encuentra dado de alta",
+    customValidations: {
+      renapoNotAvailable:
+        "Ha ocurrido un problema: Servicio de renapo no disponible",
+      errorChildrens:
+        "No es posible otorgar la vigencia: debido a que su hijo(a) es mayor a 25 años",
+      errorBrothers:
+        "No es posible otorgar la vigencia: debido a que su hermano(a) es mayor a 17 años",
+      beneficiaryAlreadyActive:
+        "Ya esta registrado el derechohabiente y esta activo",
+      beneficiaryAlreadyInactive:
+        "Ya esta registrado el derechohabiente y esta inactivo",
+      beneficiaryNotRegistered: "No existe registrado el derechohabiente",
+      beneficiaryRegisteredAvaialble:
+        "Ya esta registrado el derechohabiente y esta disponible para editarlo",
+      beneficiaryRegisteredNotAvaialble:
+        "Ya esta registrado el derechohabiente pero no esta disponible para editarlo",
+      beneficiaryNotRegisteredUpdated:
+        "No existe registrado el derechohabiente su información se actualizará completamente al seleccionar",
     },
   },
 };
