@@ -9,12 +9,17 @@ export class LanguageMixin extends Vue {
   setLanguageCurrent(language = ""): void {
     const languages: Array<string> = this.$store.getters["app/getLanguages"];
 
-    const languageSelected: string =
-      languages.length && languages.includes(language)
-        ? language
-        : languages[0];
+    let languageSelected = "";
 
-    this.setLanguageIntoSystem(languageSelected);
+    if (languages.length && languages.includes(language) && language) {
+      languageSelected = language;
+    } else if (languages.length && !languages.includes(language) && language) {
+      languageSelected = languages[0];
+    } else {
+      languageSelected = "";
+    }
+
+    if(languageSelected) this.setLanguageIntoSystem(languageSelected);
   }
 
   setLanguageIntoSystem(language = ""): void {
@@ -27,12 +32,15 @@ export class LanguageMixin extends Vue {
   }
 
   setLanguageIntoLocalStorage(language: string): void {
+    (this as any).$i18n.locale = language;
     localStorage.setItem("language-current-system", language);
   }
 
   get getLanguageLocalStore(): string {
-    return localStorage.getItem(
-      "language-current-system"
-    ) as string;
+    const language = localStorage.getItem("language-current-system") as string;
+
+    (this as any).$i18n.locale = language;
+
+    return language;
   }
 }
