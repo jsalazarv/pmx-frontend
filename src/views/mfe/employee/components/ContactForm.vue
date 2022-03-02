@@ -7,7 +7,7 @@
       </v-btn>
       <v-row
         class="rounded mb-2 mx-0"
-        v-for="(contact, index) in formData.contacts"
+        v-for="(contact, index) in contacts"
         :key="index"
         style="border: 1px solid lightgrey"
       >
@@ -20,9 +20,9 @@
             required
             :items="contactTypes"
             item-text="Nombre"
-            item-value="Nombre"
+            item-value="IdTipoContacto"
             @change="getContactTypes"
-            v-model="contact.position"
+            v-model="contact.IdTipoContacto"
           ></v-autocomplete>
         </v-col>
         <v-col cols="12" md="4">
@@ -32,6 +32,7 @@
             :label="$t('employee.attributes.contactDetail')"
             outlined
             required
+            v-model="contact.Detalle"
           ></v-text-field>
         </v-col>
         <v-col cols="12" md="4">
@@ -41,6 +42,7 @@
             :label="$t('employee.attributes.extension')"
             outlined
             required
+            v-model="contact.Extension"
           ></v-text-field>
         </v-col>
         <v-col
@@ -61,7 +63,7 @@
             icon
             small
             color="primary"
-            :disabled="index === Object.keys(formData.contacts).length - 1"
+            :disabled="index === contacts.length - 1"
             @click="moveDown(index)"
           >
             <v-icon>mdi-menu-down</v-icon>
@@ -70,7 +72,7 @@
             icon
             small
             color="red"
-            :disabled="Object.keys(formData.contacts).length === 1"
+            :disabled="contacts.length === 1"
             @click="deleteRow(index)"
           >
             <v-icon>mdi-close</v-icon>
@@ -85,15 +87,20 @@
 import { Component, Vue } from "vue-property-decorator";
 import ContactTypesService from "@/services/ContactTypesService";
 import { IContactTypes } from "@/services/ContactTypesService/types";
+import { IContact } from "@/store/employee/types";
 
 @Component({})
 export default class ContactForm extends Vue {
   protected contactTypeService = new ContactTypesService();
   public contactTypes: Array<IContactTypes> = [];
   public isLoadingContactTypes = false;
-  public formData = {
+  /*public formData = {
     contacts: [{}],
-  };
+  };*/
+
+  get contacts(): Array<IContact> {
+    return this.$store.state.employees.contacts;
+  }
 
   getContactTypes(): void {
     this.isLoadingContactTypes = true;
@@ -109,25 +116,25 @@ export default class ContactForm extends Vue {
   }
 
   addRow(): void {
-    this.formData.contacts.push({});
+    this.$store.dispatch("employees/addContact", {});
   }
 
   moveUp(index: number): void {
-    let temp1 = this.formData.contacts[index];
-    let temp2 = this.formData.contacts[index - 1];
-    this.$set(this.formData.contacts, index, temp2);
-    this.$set(this.formData.contacts, index - 1, temp1);
+    let temp1 = this.contacts[index];
+    let temp2 = this.contacts[index - 1];
+    this.$set(this.contacts, index, temp2);
+    this.$set(this.contacts, index - 1, temp1);
   }
 
   moveDown(index: number): void {
-    let temp1 = this.formData.contacts[index];
-    let temp2 = this.formData.contacts[index + 1];
-    this.$set(this.formData.contacts, index, temp2);
-    this.$set(this.formData.contacts, index + 1, temp1);
+    let temp1 = this.contacts[index];
+    let temp2 = this.contacts[index + 1];
+    this.$set(this.contacts, index, temp2);
+    this.$set(this.contacts, index + 1, temp1);
   }
 
   deleteRow(index: number): void {
-    this.formData.contacts.splice(index, 1);
+    this.contacts.splice(index, 1);
   }
 
   mounted(): void {

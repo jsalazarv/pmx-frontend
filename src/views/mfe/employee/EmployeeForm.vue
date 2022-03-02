@@ -104,6 +104,7 @@ export default class PeopleCreate extends Vue {
       ...this.$store.state.employees.employmentData,
       ...this.$store.state.employees.address,
       ...this.$store.state.employees.confirmation,
+      Contactos: this.$store.state.employees.contacts,
     };
 
     this.employeeService
