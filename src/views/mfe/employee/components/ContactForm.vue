@@ -12,38 +12,59 @@
         style="border: 1px solid lightgrey"
       >
         <v-col cols="12" md="3">
-          <v-autocomplete
-            dense
-            name="contactType"
-            :label="$t('employee.attributes.contactType')"
-            outlined
-            required
-            :items="contactTypes"
-            item-text="Nombre"
-            item-value="IdTipoContacto"
-            @change="getContactTypes"
-            v-model="contact.IdTipoContacto"
-          ></v-autocomplete>
+          <ValidationProvider
+            :name="$t('employee.attributes.contactType')"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-autocomplete
+              dense
+              name="contactType"
+              :label="$t('employee.attributes.contactType')"
+              outlined
+              required
+              :items="contactTypes"
+              item-text="Nombre"
+              item-value="IdTipoContacto"
+              @change="getContactTypes"
+              v-model="contact.IdTipoContacto"
+              :error-messages="errors"
+            ></v-autocomplete>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
-          <v-text-field
-            dense
-            name="contactDetail"
-            :label="$t('employee.attributes.contactDetail')"
-            outlined
-            required
-            v-model="contact.Detalle"
-          ></v-text-field>
+          <ValidationProvider
+            :name="$t('employee.attributes.contactDetail')"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-text-field
+              dense
+              name="contactDetail"
+              :label="$t('employee.attributes.contactDetail')"
+              outlined
+              required
+              v-model="contact.Detalle"
+              :error-messages="errors"
+            ></v-text-field>
+          </ValidationProvider>
         </v-col>
         <v-col cols="12" md="4">
-          <v-text-field
-            dense
-            name="extension"
-            :label="$t('employee.attributes.extension')"
-            outlined
-            required
-            v-model="contact.Extension"
-          ></v-text-field>
+          <ValidationProvider
+            :name="$t('employee.attributes.extension')"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <v-text-field
+              dense
+              name="extension"
+              :label="$t('employee.attributes.extension')"
+              outlined
+              required
+              v-model="contact.Extension"
+              :error-messages="errors"
+            ></v-text-field>
+          </ValidationProvider>
         </v-col>
         <v-col
           cols="12"
