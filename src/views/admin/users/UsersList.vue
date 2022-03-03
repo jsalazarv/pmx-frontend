@@ -59,7 +59,7 @@
       :employee-data="employeeData"
     />
 
-    <UserContacts v-model="userContactsDialog" />
+    <UserContactsDialog v-model="userContactsDialog" />
   </div>
 </template>
 
@@ -70,7 +70,7 @@ import UserService from "@/services/UserService";
 import UserDialog from "@/views/admin/users/components/UserDialog.vue";
 import { IShowEmployee } from "@/services/EmployeeService/types";
 import UserCreationDialog from "@/views/admin/users/components/UserCreationDialog.vue";
-import UserContacts from "./components/UserContacts.vue";
+import UserContactsDialog from "./components/UserContactsDialog.vue";
 
 import data_json from "./users.json";
 
@@ -78,7 +78,7 @@ import data_json from "./users.json";
   components: {
     UserCreationDialog,
     UserDialog,
-    UserContacts,
+    UserContactsDialog,
   },
 })
 export default class UsersList extends Vue {

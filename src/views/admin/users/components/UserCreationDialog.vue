@@ -5,8 +5,8 @@
         {{ $t("users.labels.dialogs.createUser.title") }}
       </v-card-title>
       <v-card-text>
-        <v-row>
-          <v-col cols="12" md="6">
+        <v-row dense>
+          <v-col class="py-0" cols="12" md="6">
             <v-text-field
               autocomplete="off"
               dense
@@ -18,7 +18,7 @@
               v-model="employeeData.IdEmpleado"
             ></v-text-field>
           </v-col>
-          <v-col cols="12" md="6">
+          <v-col class="py-0" cols="12" md="6">
             <v-autocomplete
               class="required"
               dense
@@ -34,7 +34,7 @@
               v-model="employeeData.TipoEmpleado.Id"
             ></v-autocomplete>
           </v-col>
-          <v-col cols="12" md="4">
+          <v-col class="py-0" cols="12" md="4">
             <v-text-field
               autocomplete="off"
               dense
@@ -46,7 +46,7 @@
               v-model="employeeData.Persona.Nombres"
             ></v-text-field>
           </v-col>
-          <v-col cols="12" md="4">
+          <v-col class="py-0" cols="12" md="4">
             <v-text-field
               autocomplete="off"
               dense
@@ -58,7 +58,7 @@
               v-model="employeeData.Persona.ApellidoPaterno"
             ></v-text-field>
           </v-col>
-          <v-col cols="12" md="4">
+          <v-col class="py-0" cols="12" md="4">
             <v-text-field
               autocomplete="off"
               dense
@@ -70,16 +70,14 @@
               v-model="employeeData.Persona.ApellidoMaterno"
             ></v-text-field>
           </v-col>
-          <v-col cols="12">
-            <v-treeview
-              :items="getContactsTree"
-              open-on-click
-              open-all
-              transition
-              item-key="IdContacto"
-              item-text="Tipo"
-            >
-            </v-treeview>
+          <v-col class="py-0 my-0" cols="10">
+            <v-autocomplete dense outlined label="Perfil"></v-autocomplete>
+          </v-col>
+          <v-col cols="2" class="py-0">
+            <v-checkbox dense label="Bloquear" hide-details=""></v-checkbox>
+          </v-col>
+          <v-col cols="12" class="py-0">
+            <v-textarea outlined dense label="Roles" no-resize></v-textarea>
           </v-col>
         </v-row>
       </v-card-text>
@@ -120,16 +118,6 @@ export default class UserCreationDialog extends Vue {
   public companies: Array<ICompany> = [];
   public isLoadingEmployeeList = false;
   public isLoadingCompanies = false;
-
-  get getContactsTree(): any {
-    return [
-      {
-        IdContacto: 0,
-        Tipo: "Contactos",
-        children: this.employeeData?.Persona?.Contactos,
-      },
-    ];
-  }
 
   getEmployeeTypes(): void {
     this.isLoadingEmployeeList = true;

@@ -1,0 +1,14 @@
+[
+    {
+        "IdContacto": 7,
+        "Tipo": "Teléfono Oficina",
+        "Extension": "333-444",
+        "Detalle": "1121212121212"
+    },
+    {
+        "IdContacto": 7,
+        "Tipo": "Correo",
+        "Extension": "test@test.com",
+        "Detalle": "1121212121212"
+    }
+]
