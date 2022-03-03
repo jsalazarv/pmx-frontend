@@ -29,9 +29,16 @@
           :headers="headers"
           :items="userList"
         >
-          <template>
-            <v-btn class="mx-1" color="info" outlined fab x-small>
-              <v-icon dark>mdi-account-eye</v-icon>
+          <template v-slot:[`item.actions`]="{ item }">
+            <v-btn
+              class="mx-1"
+              color="info"
+              outlined
+              fab
+              x-small
+              @click="viewContacts(item)"
+            >
+              <v-icon dark></v-icon>
             </v-btn>
             <v-btn class="mx-1" color="success" outlined x-small fab>
               <v-icon dark>mdi-account-edit</v-icon>
@@ -51,6 +58,8 @@
       :open.sync="openUserCreationDialog"
       :employee-data="employeeData"
     />
+
+    <UserContacts v-model="userContactsDialog" />
   </div>
 </template>
 
@@ -61,13 +70,22 @@ import UserService from "@/services/UserService";
 import UserDialog from "@/views/admin/users/components/UserDialog.vue";
 import { IShowEmployee } from "@/services/EmployeeService/types";
 import UserCreationDialog from "@/views/admin/users/components/UserCreationDialog.vue";
+import UserContacts from "./components/UserContacts.vue";
+
+import data_json from "./users.json";
+
 @Component({
-  components: { UserCreationDialog, UserDialog },
+  components: {
+    UserCreationDialog,
+    UserDialog,
+    UserContacts,
+  },
 })
 export default class UsersList extends Vue {
   protected userService = new UserService();
   public isLoadingUsersList = false;
-  public userList: Array<IUser> = [];
+  // public userList: Array<IUser> = [];
+  public userList: any = [];
   public headers = [
     {
       text: this.$t("users.attributes.assignmentNumber"),
@@ -81,12 +99,12 @@ export default class UsersList extends Vue {
     },
     {
       text: this.$t("users.attributes.name"),
-      value: "Nombre",
+      value: "NombreCompleto",
       sortable: false,
     },
     {
       text: this.$t("users.attributes.login"),
-      value: "InicioSesion",
+      value: "UltimaSesion",
       sortable: false,
     },
     {
@@ -101,7 +119,7 @@ export default class UsersList extends Vue {
     },
     {
       text: this.$t("users.attributes.validity"),
-      value: "Vigencia",
+      value: "FechaTermino",
       sortable: false,
     },
     { text: "", value: "actions", align: "end", sortable: false },
@@ -109,6 +127,15 @@ export default class UsersList extends Vue {
   public confirmDialogOpen = false;
   public openUserCreationDialog = false;
   public employeeData?: IShowEmployee = {};
+  public userContactsDialog = false;
+
+  created() {
+    this.userList = data_json;
+  }
+
+  mounted(): void {
+    this.getUserList();
+  }
 
   getUserList(): void {
     this.isLoadingUsersList = true;
@@ -132,8 +159,9 @@ export default class UsersList extends Vue {
     this.openUserCreationDialog = true;
   }
 
-  mounted(): void {
-    this.getUserList();
+  viewContacts(item: any): void {
+    console.log(item);
+    this.userContactsDialog = true;
   }
 }
 </script>

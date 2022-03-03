@@ -77,6 +77,7 @@ export interface IEmployee {
   Genero: IGender;
   EstadoCivil: IMaritalStatus;
   Domicilio: IAddress;
+  Contactos: any;
 }
 
 export interface IEmployeeForm {

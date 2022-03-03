@@ -70,49 +70,16 @@
               v-model="employeeData.Persona.ApellidoMaterno"
             ></v-text-field>
           </v-col>
-          <v-col cols="12" md="6">
-            <v-text-field
-              autocomplete="off"
-              dense
-              name="email"
-              :label="$t('employee.attributes.email')"
-              outlined
-              required
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" md="6">
-            <v-text-field
-              autocomplete="off"
-              dense
-              name="extension"
-              :label="$t('employee.attributes.extension')"
-              outlined
-              required
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" md="6">
-            <v-autocomplete
-              dense
-              name="applicantCompany"
-              :label="$t('employee.attributes.applicantCompany')"
-              outlined
-              required
-              v-model="employeeData.CentroTrabajo.Empresa"
-              :items="companies"
-              item-text="Nombre"
-              item-value="Nombre"
-              @change="getCompanies"
-            ></v-autocomplete>
-          </v-col>
-          <v-col cols="12" md="6">
-            <v-text-field
-              autocomplete="off"
-              dense
-              name="extension"
-              :label="$t('employee.attributes.extension')"
-              outlined
-              required
-            ></v-text-field>
+          <v-col cols="12">
+            <v-treeview
+              :items="getContactsTree"
+              open-on-click
+              open-all
+              transition
+              item-key="IdContacto"
+              item-text="Tipo"
+            >
+            </v-treeview>
           </v-col>
         </v-row>
       </v-card-text>
@@ -126,9 +93,6 @@
           <v-icon right dark> mdi-magnify </v-icon>
         </v-btn>
       </v-card-actions>
-      <pre>
-        {{ employeeData }}
-      </pre>
     </v-card>
   </v-dialog>
 </template>
@@ -156,6 +120,16 @@ export default class UserCreationDialog extends Vue {
   public companies: Array<ICompany> = [];
   public isLoadingEmployeeList = false;
   public isLoadingCompanies = false;
+
+  get getContactsTree(): any {
+    return [
+      {
+        IdContacto: 0,
+        Tipo: "Contactos",
+        children: this.employeeData?.Persona?.Contactos,
+      },
+    ];
+  }
 
   getEmployeeTypes(): void {
     this.isLoadingEmployeeList = true;
