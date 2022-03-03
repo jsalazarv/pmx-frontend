@@ -24,7 +24,9 @@
                 ></v-text-field>
               </v-col>
               <v-col>
-                <v-btn color="primary" class="mr-2" @click="saveContact">Guardar </v-btn>
+                <v-btn color="primary" class="mr-2" @click="saveContact"
+                  >Guardar
+                </v-btn>
                 <v-btn small @click="clearContactSelected"> Cancelar</v-btn>
               </v-col>
             </v-row>
@@ -98,7 +100,7 @@ export default class UserContacts extends Vue {
       {
         value: "actions",
         text: "",
-        sortable:  false
+        sortable: false,
       },
     ];
   }
@@ -121,7 +123,7 @@ export default class UserContacts extends Vue {
   saveContact(): void {
     let form = (this as any).$refs.form;
     if (form.validate()) {
-        this.clearContactSelected();
+      this.clearContactSelected();
     }
   }
 

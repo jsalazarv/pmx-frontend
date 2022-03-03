@@ -111,9 +111,9 @@ export default class UserDialog extends Vue {
     //     const data = Vue.filter("cleanObject")(response.Data);
 
     // this.employeeInformation = { ...initialEmployeeData, ...data };
-    this.employeeInformation = { ...initialEmployeeData  };
+    this.employeeInformation = { ...initialEmployeeData };
     //     this.assignmentNumber = "";
-        this.isDialogOpen = false;
+    this.isDialogOpen = false;
     //   })
     //   .catch()
     //   .finally(() => {

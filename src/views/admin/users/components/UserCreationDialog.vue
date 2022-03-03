@@ -71,13 +71,36 @@
             ></v-text-field>
           </v-col>
           <v-col class="py-0 my-0" cols="10">
-            <v-autocomplete dense outlined label="Perfil"></v-autocomplete>
+            <v-autocomplete
+              v-model="userDataRequest.IdPerfil"
+              dense
+              outlined
+              label="Perfil"
+            ></v-autocomplete>
           </v-col>
           <v-col cols="2" class="py-0">
             <v-checkbox dense label="Bloquear" hide-details=""></v-checkbox>
           </v-col>
           <v-col cols="12" class="py-0">
             <v-textarea outlined dense label="Roles" no-resize></v-textarea>
+          </v-col>
+          <v-col cols="6" class="py-0">
+            <DatePicker
+              v-if="datesLabels.dateBegin"
+              v-model="userDataRequest.FechaInicio"
+              :label="datesLabels.dateBegin"
+              cleareable
+              @clear="clearDateBegin"
+            />
+          </v-col>
+          <v-col cols="6" class="py-0">
+            <DatePicker
+              v-if="datesLabels.dateFinish"
+              v-model="userDataRequest.FechaTermino"
+              :label="datesLabels.dateFinish"
+              cleareable
+              @clear="clearDateFinish"
+            />
           </v-col>
         </v-row>
       </v-card-text>
@@ -98,12 +121,19 @@
 <script lang="ts">
 import { Component, Prop, PropSync, Vue, Watch } from "vue-property-decorator";
 import { IEmployeeType } from "@/services/EmployeeTypeService/types";
-import { IShowEmployee } from "@/services/EmployeeService/types";
+import { IShowEmployee, IUserRequest } from "@/services/EmployeeService/types";
 import { ICompany } from "@/services/CompanyService/types";
 import EmployeeTypeService from "@/services/EmployeeTypeService";
 import CompanyService from "@/services/CompanyService";
 
-@Component
+// components
+import DatePicker from "@/components/Form/DatePicker.vue";
+
+@Component({
+  components: {
+    DatePicker,
+  },
+})
 export default class UserCreationDialog extends Vue {
   protected employeeTypesService = new EmployeeTypeService();
   protected companyService = new CompanyService();
@@ -113,6 +143,28 @@ export default class UserCreationDialog extends Vue {
 
   @Prop()
   public employeeData?: IShowEmployee;
+
+  @Watch("isDialogOpen")
+  getDataLists(): void {
+    if (this.isDialogOpen) {
+      this.getEmployeeTypes();
+      this.getCompanies();
+    }
+  }
+
+  public userDataRequest: IUserRequest = {
+    IdPerfil: 0,
+    IdEmpleado: 0,
+    FechaInicio: "",
+    FechaTermino: "",
+  };
+
+  get datesLabels() {
+    return {
+      dateBegin: "Fecha Inicio",
+      dateFinish: "Fecha Término",
+    };
+  }
 
   public employeeTypeList: Array<IEmployeeType> = [];
   public companies: Array<ICompany> = [];
@@ -143,12 +195,12 @@ export default class UserCreationDialog extends Vue {
       });
   }
 
-  @Watch("isDialogOpen")
-  getDataLists(): void {
-    if (this.isDialogOpen) {
-      this.getEmployeeTypes();
-      this.getCompanies();
-    }
+  clearDateBegin(): void {
+    this.userDataRequest.FechaInicio = "";
+  }
+
+  clearDateFinish(): void {
+    this.userDataRequest.FechaTermino = "";
   }
 }
 </script>

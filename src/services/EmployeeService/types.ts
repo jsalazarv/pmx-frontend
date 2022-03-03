@@ -167,3 +167,10 @@ export interface ISearchResponse {
   IdTipoEmpleado: number;
   IdPersona: number;
 }
+
+export interface IUserRequest {
+  IdEmpleado: number;
+  IdPerfil: number;
+  FechaInicio: string;
+  FechaTermino: string;
+}
