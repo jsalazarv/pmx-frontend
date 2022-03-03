@@ -43,12 +43,23 @@ export default {
     exteriorNumber: "Núm. exterior",
     block: "Manzana",
     lot: "Lote",
+    contactType: "Tipo de contacto",
+    contactDetail: "Detalle",
+    extension: "Extensión",
   },
   labels: {
     add: "Agregar",
     validate: "Validar",
     generateAssignmentNumber: "Generar número de asignación",
     enable: "Habilitar validación de CURP",
+    continue: "Continuar",
+    cancel: "Cancelar",
+    steps: {
+      personalInformation: "Informacón personal",
+      workingInformation: "Información laboral",
+      address: "Dirección",
+      contact: "Contacto",
+    },
     dialogs: {
       renapo: {
         title: "",

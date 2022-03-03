@@ -16,18 +16,20 @@
         <v-stepper v-model="e1">
           <v-stepper-header>
             <v-stepper-step :complete="e1 > 1" step="1">
-              Información personal
+              {{ $t("employee.labels.steps.personalInformation") }}
             </v-stepper-step>
             <v-divider></v-divider>
             <v-stepper-step :complete="e1 > 2" step="2">
-              Name of step 2
+              {{ $t("employee.labels.steps.workingInformation") }}
             </v-stepper-step>
             <v-divider></v-divider>
             <v-stepper-step :complete="e1 > 3" step="3">
-              Name of step 3
+              {{ $t("employee.labels.steps.address") }}
             </v-stepper-step>
             <v-divider></v-divider>
-            <v-stepper-step step="4"> Name of step 4 </v-stepper-step>
+            <v-stepper-step step="4">
+              {{ $t("employee.labels.steps.contact") }}
+            </v-stepper-step>
           </v-stepper-header>
 
           <v-stepper-items>
@@ -35,27 +37,33 @@
               <v-stepper-content step="1">
                 <employee-search-form />
                 <v-btn color="primary" @click="e1 = 2" :disabled="invalid">
-                  Continue
+                  {{ $t("employee.labels.continue") }}
                 </v-btn>
-                <v-btn text> Cancel </v-btn>
+                <v-btn text>
+                  {{ $t("employee.labels.cancel") }}
+                </v-btn>
               </v-stepper-content>
             </ValidationObserver>
             <ValidationObserver ref="form" v-slot="{ invalid }">
               <v-stepper-content step="2">
                 <employment-information-form />
                 <v-btn color="primary" @click="e1 = 3" :disabled="invalid">
-                  Continue
+                  {{ $t("employee.labels.continue") }}
                 </v-btn>
-                <v-btn text> Cancel </v-btn>
+                <v-btn text>
+                  {{ $t("employee.labels.cancel") }}
+                </v-btn>
               </v-stepper-content>
             </ValidationObserver>
             <ValidationObserver ref="form" v-slot="{ invalid }">
               <v-stepper-content step="3">
                 <location-form />
                 <v-btn color="primary" @click="e1 = 4" :disabled="invalid">
-                  Continue
+                  {{ $t("employee.labels.continue") }}
                 </v-btn>
-                <v-btn text> Cancel </v-btn>
+                <v-btn text>
+                  {{ $t("employee.labels.cancel") }}
+                </v-btn>
               </v-stepper-content>
             </ValidationObserver>
             <ValidationObserver ref="form" v-slot="{ invalid }">
@@ -70,7 +78,9 @@
                   {{ $t("employee.labels.generateAssignmentNumber") }}
                   <v-icon right dark>mdi-plus-thick</v-icon>
                 </v-btn>
-                <v-btn text> Cancel </v-btn>
+                <v-btn text>
+                  {{ $t("employee.labels.cancel") }}
+                </v-btn>
               </v-stepper-content>
             </ValidationObserver>
           </v-stepper-items>
