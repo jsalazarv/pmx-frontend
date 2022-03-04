@@ -25,7 +25,12 @@
         ></v-text-field>
       </template>
 
-      <v-date-picker :value="getValue" @input="input"></v-date-picker>
+      <v-date-picker
+        :max="maxDate"
+        :min="minDate"
+        :value="getValue"
+        @input="input"
+      ></v-date-picker>
     </v-menu>
   </div>
 </template>
@@ -68,6 +73,20 @@ export default class DatePicker extends Vue {
     default: () => false,
   })
   public isHideDetails = false;
+
+  @Prop({
+    type: String,
+    required: false,
+    default: () => "",
+  })
+  public maxDate = "";
+
+  @Prop({
+    type: String,
+    required: false,
+    default: () => "",
+  })
+  public minDate = "";
 
   input(value: any) {
     this.$emit("input", value);

@@ -38,12 +38,26 @@
               x-small
               @click="viewContacts(item)"
             >
-              <v-icon dark></v-icon>
+              <v-icon dark>mdi-account-plus</v-icon>
             </v-btn>
-            <v-btn class="mx-1" color="success" outlined x-small fab>
-              <v-icon dark>mdi-account-edit</v-icon>
+            <v-btn
+              class="mx-1"
+              color="red"
+              outlined
+              x-small
+              fab
+              @click="editUser(item)"
+            >
+              <v-icon dark>mdi-pencil</v-icon>
             </v-btn>
-            <v-btn class="mx-1" color="error" outlined fab x-small>
+            <v-btn
+              class="mx-1"
+              color="error"
+              outlined
+              fab
+              x-small
+              @click="eliminationUser(item)"
+            >
               <v-icon dark>mdi-account-remove</v-icon>
             </v-btn>
           </template>
@@ -57,9 +71,17 @@
     <UserCreationDialog
       :open.sync="openUserCreationDialog"
       :employee-data="employeeData"
+      :isCreated="isCreated"
     />
 
     <UserContactsDialog v-model="userContactsDialog" />
+
+    <ConfirmationDialog
+      title="Eliminar Usuario"
+      text="¿Realmente deseas eliminar el usuario?"
+      v-model="confirmEliminationModel"
+      @confirm="confirmElimination"
+    />
   </div>
 </template>
 
@@ -71,14 +93,17 @@ import UserDialog from "@/views/admin/users/components/UserDialog.vue";
 import { IShowEmployee } from "@/services/EmployeeService/types";
 import UserCreationDialog from "@/views/admin/users/components/UserCreationDialog.vue";
 import UserContactsDialog from "./components/UserContactsDialog.vue";
+import ConfirmationDialog from "@/components/Dialogs/ConfirmationDialog.vue";
 
 import data_json from "./users.json";
+import { IEmployee } from "@/store/employee/types";
 
 @Component({
   components: {
     UserCreationDialog,
     UserDialog,
     UserContactsDialog,
+    ConfirmationDialog,
   },
 })
 export default class UsersList extends Vue {
@@ -128,6 +153,8 @@ export default class UsersList extends Vue {
   public openUserCreationDialog = false;
   public employeeData?: IShowEmployee = {};
   public userContactsDialog = false;
+  public isCreated: boolean = true;
+  public confirmEliminationModel: boolean = false;
 
   created() {
     this.userList = data_json;
@@ -150,10 +177,6 @@ export default class UsersList extends Vue {
       });
   }
 
-  openUserModal(): void {
-    this.confirmDialogOpen = true;
-  }
-
   @Watch("employeeData")
   test(): void {
     this.openUserCreationDialog = true;
@@ -162,6 +185,25 @@ export default class UsersList extends Vue {
   viewContacts(item: any): void {
     console.log(item);
     this.userContactsDialog = true;
+  }
+
+  openUserModal(): void {
+    this.confirmDialogOpen = true;
+    this.isCreated = true;
+  }
+
+  editUser(item: IShowEmployee) {
+    this.openUserCreationDialog = true;
+    this.isCreated = false;
+    this.employeeData = {};
+  }
+
+  eliminationUser(item: IShowEmployee) {
+    this.confirmEliminationModel = true;
+  }
+
+  confirmElimination(value: boolean) {
+    alert(value);
   }
 }
 </script>

@@ -1,10 +1,14 @@
 <template>
   <v-dialog v-model="isDialogOpen" max-width="700">
     <v-card>
-      <v-card-title class="headline">
-        {{ $t("users.labels.dialogs.createUser.title") }}
+      <v-card-title class="headline mb-2">
+        {{
+          isCreated
+            ? $t("users.labels.dialogs.createUser.title")
+            : "Editar Usuario"
+        }}
       </v-card-title>
-      <v-card-text>
+      <v-card-text class="py-0">
         <v-row dense>
           <v-col class="py-0" cols="12" md="6">
             <v-text-field
@@ -15,7 +19,7 @@
               outlined
               required
               disabled
-              v-model="employeeData.IdEmpleado"
+              v-model="userDataRequest.IdEmpleado"
             ></v-text-field>
           </v-col>
           <v-col class="py-0" cols="12" md="6">
@@ -31,7 +35,7 @@
               required
               :loading="isLoadingEmployeeList"
               disabled
-              v-model="employeeData.TipoEmpleado.Id"
+              v-model="userDataRequest.IdTipoEmpleado"
             ></v-autocomplete>
           </v-col>
           <v-col class="py-0" cols="12" md="4">
@@ -43,7 +47,7 @@
               outlined
               required
               disabled
-              v-model="employeeData.Persona.Nombres"
+              v-model="userDataRequest.Nombres"
             ></v-text-field>
           </v-col>
           <v-col class="py-0" cols="12" md="4">
@@ -55,7 +59,7 @@
               outlined
               required
               disabled
-              v-model="employeeData.Persona.ApellidoPaterno"
+              v-model="userDataRequest.ApellidoPaterno"
             ></v-text-field>
           </v-col>
           <v-col class="py-0" cols="12" md="4">
@@ -67,10 +71,10 @@
               outlined
               required
               disabled
-              v-model="employeeData.Persona.ApellidoMaterno"
+              v-model="userDataRequest.ApellidoMaterno"
             ></v-text-field>
           </v-col>
-          <v-col class="py-0 my-0" cols="10">
+          <v-col class="py-0 my-0" cols="12" :md="!isCreated ? '10' : '12'">
             <v-autocomplete
               v-model="userDataRequest.IdPerfil"
               dense
@@ -78,7 +82,7 @@
               label="Perfil"
             ></v-autocomplete>
           </v-col>
-          <v-col cols="2" class="py-0">
+          <v-col cols="2" class="py-0" v-if="!isCreated">
             <v-checkbox dense label="Bloquear" hide-details=""></v-checkbox>
           </v-col>
           <v-col cols="12" class="py-0">
@@ -91,6 +95,7 @@
               :label="datesLabels.dateBegin"
               cleareable
               @clear="clearDateBegin"
+              :maxDate="userDataRequest.FechaTermino"
             />
           </v-col>
           <v-col cols="6" class="py-0">
@@ -100,19 +105,17 @@
               :label="datesLabels.dateFinish"
               cleareable
               @clear="clearDateFinish"
+              :minDate="userDataRequest.FechaInicio"
             />
           </v-col>
         </v-row>
       </v-card-text>
       <v-card-actions>
-        <v-btn color="light darken-1" text>
+        <v-btn color="light darken-1" text @click="closeDialog">
           {{ $t("users.labels.dialogs.createUser.actions.dismiss") }}
         </v-btn>
         <v-spacer></v-spacer>
-        <v-btn color="success">
-          {{ $t("users.labels.dialogs.createUser.actions.search") }}
-          <v-icon right dark> mdi-magnify </v-icon>
-        </v-btn>
+        <v-btn color="success" @click="saveUser"> Guardar </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -144,6 +147,30 @@ export default class UserCreationDialog extends Vue {
   @Prop()
   public employeeData?: IShowEmployee;
 
+  @Prop({
+    type: Boolean,
+    required: false,
+    default() {
+      return true;
+    },
+  })
+  public isCreated = true;
+
+  public userDataRequest: IUserRequest = {
+    IdEmpleado: 0,
+    IdPerfil: 0,
+    IdTipoEmpleado: 0,
+    Nombres: "",
+    ApellidoPaterno: "",
+    ApellidoMaterno: "",
+    FechaInicio: "",
+    FechaTermino: "",
+  };
+  public employeeTypeList: Array<IEmployeeType> = [];
+  public companies: Array<ICompany> = [];
+  public isLoadingEmployeeList = false;
+  public isLoadingCompanies = false;
+
   @Watch("isDialogOpen")
   getDataLists(): void {
     if (this.isDialogOpen) {
@@ -152,12 +179,11 @@ export default class UserCreationDialog extends Vue {
     }
   }
 
-  public userDataRequest: IUserRequest = {
-    IdPerfil: 0,
-    IdEmpleado: 0,
-    FechaInicio: "",
-    FechaTermino: "",
-  };
+  created(): void {
+
+    this.setUserDataPerson();
+
+  }
 
   get datesLabels() {
     return {
@@ -166,10 +192,18 @@ export default class UserCreationDialog extends Vue {
     };
   }
 
-  public employeeTypeList: Array<IEmployeeType> = [];
-  public companies: Array<ICompany> = [];
-  public isLoadingEmployeeList = false;
-  public isLoadingCompanies = false;
+  setUserDataPerson() {
+    if (this.isCreated) {
+      this.userDataRequest = {
+        ...this.userDataRequest,
+        IdEmpleado: this.employeeData?.IdEmpleado || 0,
+        IdTipoEmpleado: this.employeeData?.TipoEmpleado?.Id || 0,
+        Nombres: this.employeeData?.Persona?.Nombres || "",
+        ApellidoPaterno: this.employeeData?.Persona?.ApellidoPaterno || "",
+        ApellidoMaterno: this.employeeData?.Persona?.ApellidoMaterno || "",
+      };
+    }
+  }
 
   getEmployeeTypes(): void {
     this.isLoadingEmployeeList = true;
@@ -201,6 +235,14 @@ export default class UserCreationDialog extends Vue {
 
   clearDateFinish(): void {
     this.userDataRequest.FechaTermino = "";
+  }
+
+  closeDialog(): void {
+    this.isDialogOpen = false;
+  }
+
+  saveUser(): void {
+    this.isDialogOpen = false;
   }
 }
 </script>

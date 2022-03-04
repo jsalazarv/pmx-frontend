@@ -1,10 +1,10 @@
 <template>
   <v-dialog v-model="isDialogOpen" max-width="400">
     <v-card>
-      <v-card-title class="headline">
+      <v-card-title class="headline mb-2">
         {{ $t("users.labels.dialogs.createUser.title") }}
       </v-card-title>
-      <v-card-text>
+      <v-card-text class="py-0">
         <v-text-field
           autocomplete="off"
           class="required"
@@ -13,7 +13,6 @@
           :label="$t('users.attributes.assignmentNumber')"
           outlined
           required
-          :disabled="isLoadingEmployeeData"
           v-model="assignmentNumber"
         ></v-text-field>
       </v-card-text>
@@ -22,14 +21,12 @@
           color="light darken-1"
           text
           @click="closeDialog"
-          :disabled="isLoadingEmployeeData"
         >
           {{ $t("users.labels.dialogs.createUser.actions.dismiss") }}
         </v-btn>
         <v-spacer></v-spacer>
         <v-btn
           color="success"
-          :disabled="!assignmentNumber || isLoadingEmployeeData"
           @click="searchEmployee"
         >
           {{ $t("users.labels.dialogs.createUser.actions.search") }}
