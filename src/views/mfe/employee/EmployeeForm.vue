@@ -39,7 +39,7 @@
                 <v-btn color="primary" @click="e1 = 2" :disabled="invalid">
                   {{ $t("employee.labels.continue") }}
                 </v-btn>
-                <v-btn text>
+                <v-btn text @click="clear">
                   {{ $t("employee.labels.cancel") }}
                 </v-btn>
               </v-stepper-content>
@@ -50,7 +50,7 @@
                 <v-btn color="primary" @click="e1 = 3" :disabled="invalid">
                   {{ $t("employee.labels.continue") }}
                 </v-btn>
-                <v-btn text>
+                <v-btn text @click="clear">
                   {{ $t("employee.labels.cancel") }}
                 </v-btn>
               </v-stepper-content>
@@ -61,7 +61,7 @@
                 <v-btn color="primary" @click="e1 = 4" :disabled="invalid">
                   {{ $t("employee.labels.continue") }}
                 </v-btn>
-                <v-btn text>
+                <v-btn text @click="clear">
                   {{ $t("employee.labels.cancel") }}
                 </v-btn>
               </v-stepper-content>
@@ -78,7 +78,7 @@
                   {{ $t("employee.labels.generateAssignmentNumber") }}
                   <v-icon right dark>mdi-plus-thick</v-icon>
                 </v-btn>
-                <v-btn text>
+                <v-btn text @click="clear">
                   {{ $t("employee.labels.cancel") }}
                 </v-btn>
               </v-stepper-content>
@@ -129,10 +129,10 @@ export default class PeopleCreate extends Vue {
       Contactos: this.$store.state.employees.contacts,
     };
 
+    this.isCreating = true;
     this.employeeService
       .create(data)
       .then((response) => {
-        this.isCreating = true;
         if (response.Success) {
           this.$store.dispatch("app/setNotify", {});
         }
@@ -150,7 +150,15 @@ export default class PeopleCreate extends Vue {
         (this.$refs.form as IValidationObserver).reset();
         this.$store.dispatch("employees/clear");
         this.isCreating = false;
+        this.$router.push({
+          name: "people:list",
+        });
       });
+  }
+
+  clear(): void {
+    this.$store.dispatch("employees/clear");
+    this.e1 = 1;
   }
 
   async registerEmployee(): Promise<void> {
