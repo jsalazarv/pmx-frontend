@@ -50,10 +50,11 @@ export default {
   labels: {
     add: "Agregar",
     validate: "Validar",
-    generateAssignmentNumber: "Generar número de asignación",
+    generateAssignmentNumber: "Registrar",
     enable: "Habilitar validación de CURP",
     continue: "Continuar",
     cancel: "Cancelar",
+    back: "Regresar",
     steps: {
       personalInformation: "Informacón personal",
       workingInformation: "Información laboral",

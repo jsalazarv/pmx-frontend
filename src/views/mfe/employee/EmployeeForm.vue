@@ -36,39 +36,57 @@
             <ValidationObserver ref="form" v-slot="{ invalid }">
               <v-stepper-content step="1">
                 <employee-search-form />
-                <v-btn color="primary" @click="e1 = 2" :disabled="invalid">
-                  {{ $t("employee.labels.continue") }}
-                </v-btn>
                 <v-btn text @click="clear">
                   {{ $t("employee.labels.cancel") }}
+                </v-btn>
+                <v-btn @click="e1 = 2" :disabled="invalid">
+                  {{ $t("employee.labels.continue") }}
+                  <v-icon right dark>mdi-skip-forward</v-icon>
                 </v-btn>
               </v-stepper-content>
             </ValidationObserver>
             <ValidationObserver ref="form" v-slot="{ invalid }">
               <v-stepper-content step="2">
                 <employment-information-form />
-                <v-btn color="primary" @click="e1 = 3" :disabled="invalid">
-                  {{ $t("employee.labels.continue") }}
+                <v-btn text @click="goBack()">
+                  <v-icon left dark>mdi-skip-backward</v-icon>
+                  {{ $t("employee.labels.back") }}
                 </v-btn>
                 <v-btn text @click="clear">
                   {{ $t("employee.labels.cancel") }}
+                </v-btn>
+                <v-btn @click="e1 = 3" :disabled="invalid">
+                  {{ $t("employee.labels.continue") }}
+                  <v-icon right dark>mdi-skip-forward</v-icon>
                 </v-btn>
               </v-stepper-content>
             </ValidationObserver>
             <ValidationObserver ref="form" v-slot="{ invalid }">
               <v-stepper-content step="3">
                 <location-form />
-                <v-btn color="primary" @click="e1 = 4" :disabled="invalid">
-                  {{ $t("employee.labels.continue") }}
+                <v-btn text @click="goBack()">
+                  <v-icon left dark>mdi-skip-backward</v-icon>
+                  {{ $t("employee.labels.back") }}
                 </v-btn>
                 <v-btn text @click="clear">
                   {{ $t("employee.labels.cancel") }}
+                </v-btn>
+                <v-btn @click="e1 = 4" :disabled="invalid">
+                  {{ $t("employee.labels.continue") }}
+                  <v-icon right dark>mdi-skip-forward</v-icon>
                 </v-btn>
               </v-stepper-content>
             </ValidationObserver>
             <ValidationObserver ref="form" v-slot="{ invalid }">
               <v-stepper-content step="4">
                 <contact-form />
+                <v-btn text @click="goBack()" :disabled="invalid || isCreating">
+                  <v-icon left dark>mdi-skip-backward</v-icon>
+                  {{ $t("employee.labels.back") }}
+                </v-btn>
+                <v-btn text @click="clear" :disabled="invalid || isCreating">
+                  {{ $t("employee.labels.cancel") }}
+                </v-btn>
                 <v-btn
                   color="success"
                   @click="registerEmployee"
@@ -77,9 +95,6 @@
                 >
                   {{ $t("employee.labels.generateAssignmentNumber") }}
                   <v-icon right dark>mdi-plus-thick</v-icon>
-                </v-btn>
-                <v-btn text @click="clear">
-                  {{ $t("employee.labels.cancel") }}
                 </v-btn>
               </v-stepper-content>
             </ValidationObserver>
@@ -159,6 +174,10 @@ export default class PeopleCreate extends Vue {
   clear(): void {
     this.$store.dispatch("employees/clear");
     this.e1 = 1;
+  }
+
+  goBack(): void {
+    this.e1--;
   }
 
   async registerEmployee(): Promise<void> {
