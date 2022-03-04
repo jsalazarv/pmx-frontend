@@ -18,7 +18,7 @@
               :label="$t('employee.attributes.assignmentNumber')"
               outlined
               required
-              disabled
+              readonly
               v-model="userDataRequest.IdEmpleado"
             ></v-text-field>
           </v-col>
@@ -34,11 +34,11 @@
               outlined
               required
               :loading="isLoadingEmployeeList"
-              disabled
               v-model="userDataRequest.IdTipoEmpleado"
+              readonly
             ></v-autocomplete>
           </v-col>
-          <v-col class="py-0" cols="12" md="4">
+          <v-col class="py-0" cols="12">
             <v-text-field
               autocomplete="off"
               dense
@@ -46,32 +46,8 @@
               :label="$t('employee.attributes.names')"
               outlined
               required
-              disabled
+              readonly
               v-model="userDataRequest.Nombres"
-            ></v-text-field>
-          </v-col>
-          <v-col class="py-0" cols="12" md="4">
-            <v-text-field
-              autocomplete="off"
-              dense
-              name="lastname"
-              :label="$t('employee.attributes.lastname')"
-              outlined
-              required
-              disabled
-              v-model="userDataRequest.ApellidoPaterno"
-            ></v-text-field>
-          </v-col>
-          <v-col class="py-0" cols="12" md="4">
-            <v-text-field
-              autocomplete="off"
-              dense
-              name="surname"
-              :label="$t('employee.attributes.surname')"
-              outlined
-              required
-              disabled
-              v-model="userDataRequest.ApellidoMaterno"
             ></v-text-field>
           </v-col>
           <v-col class="py-0 my-0" cols="12" :md="!isCreated ? '10' : '12'">
@@ -124,7 +100,10 @@
 <script lang="ts">
 import { Component, Prop, PropSync, Vue, Watch } from "vue-property-decorator";
 import { IEmployeeType } from "@/services/EmployeeTypeService/types";
-import { IShowEmployee, IUserRequest } from "@/services/EmployeeService/types";
+import { IShowEmployee } from "@/services/EmployeeService/types";
+
+import { IUser, IUserRequest } from "@/services/UserService/types";
+
 import { ICompany } from "@/services/CompanyService/types";
 import EmployeeTypeService from "@/services/EmployeeTypeService";
 import CompanyService from "@/services/CompanyService";
@@ -135,6 +114,15 @@ import DatePicker from "@/components/Form/DatePicker.vue";
 @Component({
   components: {
     DatePicker,
+  },
+  props: {
+    isCreated: {
+      type: Boolean,
+      required: false,
+      default() {
+        return true;
+      },
+    },
   },
 })
 export default class UserCreationDialog extends Vue {
@@ -147,22 +135,15 @@ export default class UserCreationDialog extends Vue {
   @Prop()
   public employeeData?: IShowEmployee;
 
-  @Prop({
-    type: Boolean,
-    required: false,
-    default() {
-      return true;
-    },
-  })
-  public isCreated = true;
+  @Prop()
+  public user?: IUser;
 
   public userDataRequest: IUserRequest = {
-    IdEmpleado: 0,
-    IdPerfil: 0,
-    IdTipoEmpleado: 0,
+    IdUsuario: null,
+    IdEmpleado: null,
+    IdPerfil: null,
+    IdTipoEmpleado: null,
     Nombres: "",
-    ApellidoPaterno: "",
-    ApellidoMaterno: "",
     FechaInicio: "",
     FechaTermino: "",
   };
@@ -174,15 +155,18 @@ export default class UserCreationDialog extends Vue {
   @Watch("isDialogOpen")
   getDataLists(): void {
     if (this.isDialogOpen) {
-      this.getEmployeeTypes();
-      this.getCompanies();
+      this.init();
     }
   }
 
   created(): void {
+    this.init();
+  }
 
+  init(): void {
+    this.getEmployeeTypes();
+    this.getCompanies();
     this.setUserDataPerson();
-
   }
 
   get datesLabels() {
@@ -193,15 +177,32 @@ export default class UserCreationDialog extends Vue {
   }
 
   setUserDataPerson() {
-    if (this.isCreated) {
+    console.log((this as any).isCreated);
+    if ((this as any).isCreated) {
+      let nombres = `${this.employeeData?.Persona?.Nombres} 
+      ${this.employeeData?.Persona?.ApellidoPaterno} 
+      ${this.employeeData?.Persona?.ApellidoMaterno}`;
+
       this.userDataRequest = {
         ...this.userDataRequest,
         IdEmpleado: this.employeeData?.IdEmpleado || 0,
         IdTipoEmpleado: this.employeeData?.TipoEmpleado?.Id || 0,
-        Nombres: this.employeeData?.Persona?.Nombres || "",
-        ApellidoPaterno: this.employeeData?.Persona?.ApellidoPaterno || "",
-        ApellidoMaterno: this.employeeData?.Persona?.ApellidoMaterno || "",
+        Nombres: nombres,
       };
+
+      this.userDataRequest.IdUsuario = null;
+    } else {
+      this.userDataRequest = {
+        IdUsuario: this.user?.IdUsuario || null,
+        IdEmpleado: this.user?.IdEmpleado || null,
+        IdPerfil: this.user?.Perfil?.IdPerfil || null,
+        IdTipoEmpleado: this.user?.IdTipoEmpleado || null,
+        Nombres: this.user?.NombreCompleto || null,
+        FechaInicio: this.user?.FechaInicio || null,
+        FechaTermino: this.user?.FechaTermino || null,
+      };
+
+      console.log(this.userDataRequest);
     }
   }
 

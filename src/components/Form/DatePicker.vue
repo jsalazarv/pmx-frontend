@@ -54,46 +54,38 @@ import { Vue, Component, Prop } from "vue-property-decorator";
         return false;
       },
     },
+    value: {
+      type: String,
+      default: () => "",
+      required: false,
+    },
+    minDate: {
+      type: String,
+      required: false,
+      default: () => "",
+    },
+    maxDate: {
+      type: String,
+      required: false,
+      default: () => "",
+    },
+    isHideDetails: {
+      type: Boolean,
+      required: false,
+      default: () => false,
+    },
   },
 })
 export default class DatePicker extends Vue {
   public openMenu = false;
   public isMenuOpenModel = false;
 
-  @Prop({
-    type: String,
-    default: () => "",
-    required: false,
-  })
-  public value = "";
-
-  @Prop({
-    type: Boolean,
-    required: false,
-    default: () => false,
-  })
-  public isHideDetails = false;
-
-  @Prop({
-    type: String,
-    required: false,
-    default: () => "",
-  })
-  public maxDate = "";
-
-  @Prop({
-    type: String,
-    required: false,
-    default: () => "",
-  })
-  public minDate = "";
-
   input(value: any) {
     this.$emit("input", value);
   }
 
   get getValue(): string {
-    return this.value;
+    return (this as any).value;
   }
 
   set getValue(value) {
@@ -101,7 +93,7 @@ export default class DatePicker extends Vue {
   }
 
   get dateFormat(): string {
-    return this.value;
+    return (this as any).value;
   }
 
   set dateFormat(value: string) {

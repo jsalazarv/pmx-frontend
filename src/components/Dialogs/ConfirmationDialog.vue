@@ -57,7 +57,7 @@ export default class ConfirmationDialog extends Vue {
     this.emitValueChange();
   }
 
-  emitValueChange(value: boolean = false) {
+  emitValueChange(value = false) {
     this.$emit("input", value);
   }
 

@@ -23,6 +23,23 @@
           :active="isLoadingUsersList"
           :indeterminate="isLoadingUsersList"
         ></v-progress-linear>
+
+        <v-row class="px-2" dense>
+          <v-col cols="4">
+            <v-text-field
+              outlined
+              dense
+              label="Filtrar por número de asignación, nombre"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="3">
+            <v-autocomplete outlined dense label="Perfil"></v-autocomplete>
+          </v-col>
+          <v-col cols="3">
+            <v-autocomplete outlined dense label="Estado"></v-autocomplete>
+          </v-col>
+        </v-row>
+
         <v-data-table
           :items-per-page="5"
           class="elevation-1 mt-5"
@@ -69,10 +86,14 @@
       :employeeData.sync="employeeData"
     />
     <UserCreationDialog
+      v-if="openUserCreationDialog"
       :open.sync="openUserCreationDialog"
       :employee-data="employeeData"
+      :user="userSelected"
       :isCreated="isCreated"
     />
+
+    {{ isCreated }}
 
     <UserContactsDialog v-model="userContactsDialog" />
 
@@ -95,8 +116,8 @@ import UserCreationDialog from "@/views/admin/users/components/UserCreationDialo
 import UserContactsDialog from "./components/UserContactsDialog.vue";
 import ConfirmationDialog from "@/components/Dialogs/ConfirmationDialog.vue";
 
-import data_json from "./users.json";
-import { IEmployee } from "@/store/employee/types";
+// import data_json from "./users.json";
+// import { IEmployee } from "@/store/employee/types";
 
 @Component({
   components: {
@@ -109,8 +130,7 @@ import { IEmployee } from "@/store/employee/types";
 export default class UsersList extends Vue {
   protected userService = new UserService();
   public isLoadingUsersList = false;
-  // public userList: Array<IUser> = [];
-  public userList: any = [];
+  public userList: Array<IUser> = [];
   public headers = [
     {
       text: this.$t("users.attributes.assignmentNumber"),
@@ -153,12 +173,26 @@ export default class UsersList extends Vue {
   public openUserCreationDialog = false;
   public employeeData?: IShowEmployee = {};
   public userContactsDialog = false;
-  public isCreated: boolean = true;
-  public confirmEliminationModel: boolean = false;
+  public isCreated = true;
+  public confirmEliminationModel = false;
+  public userSelected: IUser = {
+    IdUsuario: null,
+    IdEmpleado: null,
+    IdTipoEmpleado: null,
+    TipoEmpleado: "",
+    NombreCompleto: "",
+    Estado: "",
+    FechaInicio: "",
+    FechaTermino: "",
+    PrimeraSesion: "",
+    UltimaSesion: "",
+    Contador: null,
+    Baja: false,
+    Perfil: null,
+    Roles: null,
+  };
 
-  created() {
-    this.userList = data_json;
-  }
+  created() {}
 
   mounted(): void {
     this.getUserList();
@@ -169,6 +203,7 @@ export default class UsersList extends Vue {
     this.userService
       .getAll()
       .then((response) => {
+        console.log("uy", response.Data);
         this.userList = response.Data;
       })
       .catch()
@@ -192,7 +227,9 @@ export default class UsersList extends Vue {
     this.isCreated = true;
   }
 
-  editUser(item: IShowEmployee) {
+  editUser(item: IUser) {
+    console.log(item);
+    this.userSelected = item;
     this.openUserCreationDialog = true;
     this.isCreated = false;
     this.employeeData = {};

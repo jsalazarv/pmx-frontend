@@ -17,18 +17,11 @@
         ></v-text-field>
       </v-card-text>
       <v-card-actions>
-        <v-btn
-          color="light darken-1"
-          text
-          @click="closeDialog"
-        >
+        <v-btn color="light darken-1" text @click="closeDialog">
           {{ $t("users.labels.dialogs.createUser.actions.dismiss") }}
         </v-btn>
         <v-spacer></v-spacer>
-        <v-btn
-          color="success"
-          @click="searchEmployee"
-        >
+        <v-btn color="success" @click="searchEmployee">
           {{ $t("users.labels.dialogs.createUser.actions.search") }}
           <v-icon right dark> mdi-magnify </v-icon>
         </v-btn>
@@ -102,20 +95,20 @@ export default class UserDialog extends Vue {
 
   searchEmployee(): void {
     this.isLoadingEmployeeData = true;
-    // this.employeeService
-    //   .findById(this.assignmentNumber)
-    //   .then((response) => {
-    //     const data = Vue.filter("cleanObject")(response.Data);
+    this.employeeService
+      .findById(this.assignmentNumber)
+      .then((response) => {
+        const data = Vue.filter("cleanObject")(response.Data);
 
-    // this.employeeInformation = { ...initialEmployeeData, ...data };
-    this.employeeInformation = { ...initialEmployeeData };
-    //     this.assignmentNumber = "";
-    this.isDialogOpen = false;
-    //   })
-    //   .catch()
-    //   .finally(() => {
-    //     this.isLoadingEmployeeData = false;
-    //   });
+        this.employeeInformation = { ...initialEmployeeData, ...data };
+        this.employeeInformation = { ...initialEmployeeData };
+        this.assignmentNumber = "";
+        this.isDialogOpen = false;
+      })
+      .catch()
+      .finally(() => {
+        this.isLoadingEmployeeData = false;
+      });
   }
 }
 </script>

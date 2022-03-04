@@ -26,9 +26,9 @@ export interface IProfile {
 }
 
 export interface IUser {
-  IdUsuario: number;
-  IdEmpleado: number;
-  IdTipoEmpleado: number;
+  IdUsuario: number | null;
+  IdEmpleado: number | null;
+  IdTipoEmpleado: number | null;
   TipoEmpleado: string;
   NombreCompleto: string;
   Estado: string;
@@ -36,8 +36,18 @@ export interface IUser {
   FechaTermino: string;
   PrimeraSesion: string;
   UltimaSesion: string;
-  Contador: number;
+  Contador: number | null;
   Baja: boolean;
-  Perfil: IProfile;
-  Roles: IRoles;
+  Perfil: IProfile | null;
+  Roles: IRoles | null;
+}
+
+export interface IUserRequest {
+  IdUsuario: number | null;
+  IdEmpleado: number | null;
+  IdPerfil: number | null;
+  IdTipoEmpleado: number | null;
+  Nombres: string | null;
+  FechaInicio: string | null;
+  FechaTermino: string | null;
 }
