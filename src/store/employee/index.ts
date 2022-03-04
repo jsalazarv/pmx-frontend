@@ -82,7 +82,13 @@ const employeeModule: Module<IEmployeeState, IRootState> = {
       state.contacts.push(contactData);
     },
     CLEAR_CONTACT(state) {
-      state.contacts = [];
+      state.contacts = [
+        {
+          IdTipoContacto: null,
+          Extension: "",
+          Detalle: "",
+        },
+      ];
     },
   },
 
