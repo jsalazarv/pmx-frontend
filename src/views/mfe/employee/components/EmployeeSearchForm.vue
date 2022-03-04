@@ -12,6 +12,7 @@
                 v-slot="{ errors }"
               >
                 <v-autocomplete
+                  autocomplete="off"
                   class="required"
                   dense
                   name="typeOfEmployee"
@@ -35,6 +36,7 @@
                 v-slot="{ errors }"
               >
                 <v-text-field
+                  autocomplete="off"
                   class="required"
                   clearable
                   dense
@@ -72,6 +74,7 @@
                 v-slot="{ errors }"
               >
                 <v-text-field
+                  autocomplete="off"
                   dense
                   name="assignmentNumber"
                   disabled
@@ -89,6 +92,7 @@
                 v-slot="{ errors }"
               >
                 <v-text-field
+                  autocomplete="off"
                   dense
                   name="assignmentNumberStatus"
                   disabled
@@ -106,6 +110,7 @@
                 v-slot="{ errors }"
               >
                 <v-text-field
+                  autocomplete="off"
                   class="required"
                   dense
                   name="invoice"
@@ -128,6 +133,7 @@
             v-slot="{ errors }"
           >
             <v-text-field
+              autocomplete="off"
               class="required"
               dense
               name="names"
@@ -147,6 +153,7 @@
             v-slot="{ errors }"
           >
             <v-text-field
+              autocomplete="off"
               class="required"
               dense
               name="lastname"
@@ -166,6 +173,7 @@
             v-slot="{ errors }"
           >
             <v-text-field
+              autocomplete="off"
               class="required"
               dense
               name="surname"
@@ -192,6 +200,7 @@
                 ref="birthday"
               >
                 <v-text-field
+                  autocomplete="off"
                   class="required"
                   name="birthday"
                   :value="
@@ -226,6 +235,7 @@
             v-slot="{ errors }"
           >
             <v-file-input
+              autocomplete="off"
               dense
               name="photography"
               :label="$t('employee.attributes.photography')"
@@ -243,6 +253,7 @@
             v-slot="{ errors }"
           >
             <v-autocomplete
+              autocomplete="off"
               class="required"
               dense
               name="gender"
@@ -266,6 +277,7 @@
             v-slot="{ errors }"
           >
             <v-autocomplete
+              autocomplete="on"
               class="required"
               dense
               name="maritalStatus"
@@ -289,6 +301,7 @@
             v-slot="{ errors }"
           >
             <v-text-field
+              autocomplete="off"
               class="required"
               dense
               name="rfc"

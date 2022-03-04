@@ -125,9 +125,16 @@ export interface IConfirmForm {
   confirmar: null | boolean;
 }
 
+export interface IContact {
+  IdTipoContacto: number | null;
+  Extension: string;
+  Detalle: string;
+}
+
 export interface IEmployeeState {
   employee: IEmployeeForm;
   employmentData: IEmploymentDataForm;
   address: IAddressForm;
   confirmation: IConfirmForm;
+  contacts: Array<IContact>;
 }
