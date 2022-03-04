@@ -174,23 +174,15 @@ export default class ConfirmUseExistingEmployeeDialog extends Vue {
     this.employeeService
       .reject(data)
       .then((response) => {
-        //TODO: Success action
-        console.log("Success action", response);
         if (response.Success) {
-          this.$store.dispatch("app/setNotify", {});
+          (this as any).ok();
         }
       })
       .catch((err) => {
         if (err.response) {
-          this.$store.dispatch("app/setNotify", {
-            status: err?.response?.status,
-          });
+          (this as any).CustomError(err?.response?.status);
           console.error(err?.response?.status);
         }
-      })
-      .finally(() => {
-        //TODO: Final action
-        console.log("Final action");
       });
   }
 }

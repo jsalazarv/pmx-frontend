@@ -13,11 +13,11 @@
           :active="isLoading"
           :indeterminate="isLoading"
         ></v-progress-linear>
-        <v-container>
+        <v-container fluid>
           <ValidationObserver v-slot="{ handleSubmit }" ref="form">
             <form @submit.prevent="handleSubmit(onSubmit)">
-              <v-row>
-                <v-col cols="12" sm="12" md="6">
+              <v-row class="mt-0">
+                <v-col class="pb-0" cols="12" sm="12" md="4">
                   <v-text-field
                     :label="$t('address.attributes.employeeType')"
                     name="employeeType"
@@ -29,7 +29,7 @@
                   >
                   </v-text-field>
                 </v-col>
-                <v-col cols="12" sm="12" md="6">
+                <v-col class="pb-0" cols="12" sm="12" md="2">
                   <v-text-field
                     :label="$t('address.attributes.assigmentNumber')"
                     name="assigmentNumber"
@@ -41,9 +41,7 @@
                   >
                   </v-text-field>
                 </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="12" sm="12" md="12">
+                <v-col class="pb-0" cols="12" sm="12" md="6">
                   <v-text-field
                     :label="$t('address.attributes.fullname')"
                     name="fullname"
@@ -51,27 +49,20 @@
                     outlined
                     :value="computedFullname"
                     readonly
-                    :loading="isLoadingValidityRights"
+                    :loading="isLoadingValidityRights || isLoadingCurrentAddres"
                   >
                   </v-text-field>
                 </v-col>
               </v-row>
-              <v-row>
-                <Alert
-                  :message="alert.message"
-                  :alert="alert.alert"
-                  :type="alert.type"
-                  @hideAlert="hideAlert"
-                ></Alert>
-              </v-row>
-              <v-row>
-                <v-col cols="12" sm="12" md="4">
+              <v-row class="mt-0">
+                <v-col class="pb-0" cols="12" sm="12" md="4">
                   <ValidationProvider
                     :name="$t('address.attributes.country')"
                     v-slot="{ errors }"
                     rules="required"
                   >
                     <v-autocomplete
+                      class="required"
                       dense
                       name="countries"
                       :items="countries"
@@ -80,20 +71,21 @@
                       :label="$t('address.attributes.country')"
                       outlined
                       :disabled="isLoadingCountries"
-                      :loading="isLoadingCountries"
+                      :loading="isLoadingCountries || isLoadingCurrentAddres"
                       v-model="address.IdPais"
                       @change="getStates"
                       :error-messages="errors"
                     ></v-autocomplete>
                   </ValidationProvider>
                 </v-col>
-                <v-col cols="12" sm="12" md="4">
+                <v-col class="pb-0" cols="12" sm="12" md="4">
                   <ValidationProvider
                     :name="$t('address.attributes.state')"
                     v-slot="{ errors }"
                     rules="required"
                   >
                     <v-autocomplete
+                      class="required"
                       dense
                       name="states"
                       :items="states"
@@ -101,7 +93,7 @@
                       item-value="IdEstado"
                       :label="$t('address.attributes.state')"
                       :disabled="isLoadingStates || !address.IdPais"
-                      :loading="isLoadingStates"
+                      :loading="isLoadingStates || isLoadingCurrentAddres"
                       outlined
                       required
                       v-model="address.IdEstado"
@@ -110,20 +102,23 @@
                     ></v-autocomplete>
                   </ValidationProvider>
                 </v-col>
-                <v-col cols="12" sm="12" md="4">
+                <v-col class="pb-0" cols="12" sm="12" md="4">
                   <ValidationProvider
                     :name="$t('address.attributes.municipality')"
                     v-slot="{ errors }"
                     rules="required"
                   >
                     <v-autocomplete
+                      class="required"
                       dense
                       name="municipalities"
                       :items="municipalities"
                       item-text="Nombre"
                       item-value="IdMunicipio"
                       :disabled="isLoadingMunicipalities || !address.IdEstado"
-                      :loading="isLoadingMunicipalities"
+                      :loading="
+                        isLoadingMunicipalities || isLoadingCurrentAddres
+                      "
                       :label="$t('address.attributes.municipality')"
                       outlined
                       required
@@ -133,14 +128,15 @@
                   </ValidationProvider>
                 </v-col>
               </v-row>
-              <v-row>
-                <v-col cols="12" sm="12" md="4">
+              <v-row class="mt-0">
+                <v-col class="pb-0" cols="12" sm="12" md="4">
                   <ValidationProvider
                     :name="$t('address.attributes.zipcode')"
                     v-slot="{ errors }"
                     rules="required|numeric|min:5|max:5"
                   >
                     <v-text-field
+                      class="required"
                       :label="$t('address.attributes.zipcode')"
                       name="zipCode"
                       dense
@@ -152,13 +148,14 @@
                     </v-text-field>
                   </ValidationProvider>
                 </v-col>
-                <v-col cols="12" sm="12" md="4">
+                <v-col class="pb-0" cols="12" sm="12" md="4">
                   <ValidationProvider
                     :name="$t('address.attributes.suburb')"
                     v-slot="{ errors }"
                     rules="required|max:150"
                   >
                     <v-text-field
+                      class="required"
                       :label="$t('address.attributes.suburb')"
                       name="suburb"
                       dense
@@ -170,13 +167,14 @@
                     </v-text-field>
                   </ValidationProvider>
                 </v-col>
-                <v-col cols="12" sm="12" md="4">
+                <v-col class="pb-0" cols="12" sm="12" md="4">
                   <ValidationProvider
                     :name="$t('address.attributes.locality')"
                     v-slot="{ errors }"
                     rules="required|max:150"
                   >
                     <v-text-field
+                      class="required"
                       :label="$t('address.attributes.locality')"
                       name="locality"
                       dense
@@ -189,14 +187,15 @@
                   </ValidationProvider>
                 </v-col>
               </v-row>
-              <v-row>
-                <v-col cols="12" sm="12" md="4">
+              <v-row class="mt-0">
+                <v-col class="pb-0" cols="12" sm="12" md="4">
                   <ValidationProvider
                     :name="$t('address.attributes.street')"
                     v-slot="{ errors }"
                     rules="required|max:150"
                   >
                     <v-text-field
+                      class="required"
                       :label="$t('address.attributes.street')"
                       name="street"
                       dense
@@ -209,13 +208,14 @@
                   </ValidationProvider>
                 </v-col>
 
-                <v-col cols="12" sm="12" md="2">
+                <v-col class="pb-0" cols="12" sm="12" md="2">
                   <ValidationProvider
                     :name="$t('address.attributes.outdoorNumber')"
                     v-slot="{ errors }"
                     rules="required|max:5"
                   >
                     <v-text-field
+                      class="required"
                       :label="$t('address.attributes.outdoorNumber')"
                       name="outdoorNumber"
                       dense
@@ -227,7 +227,7 @@
                     </v-text-field>
                   </ValidationProvider>
                 </v-col>
-                <v-col cols="12" sm="12" md="2">
+                <v-col class="pb-0" cols="12" sm="12" md="2">
                   <v-text-field
                     :label="$t('address.attributes.interiorNumber')"
                     name="interiorNumber"
@@ -238,7 +238,7 @@
                   >
                   </v-text-field>
                 </v-col>
-                <v-col cols="12" sm="12" md="4">
+                <v-col class="pb-0" cols="12" sm="12" md="2">
                   <v-text-field
                     :label="$t('address.attributes.block')"
                     name="block"
@@ -249,9 +249,7 @@
                   >
                   </v-text-field>
                 </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="12" sm="12" md="4">
+                <v-col class="pb-0" cols="12" sm="12" md="2">
                   <v-text-field
                     :label="$t('address.attributes.lot')"
                     name="lot"
@@ -263,10 +261,11 @@
                   </v-text-field>
                 </v-col>
               </v-row>
-              <v-row>
-                <v-col cols="12" sm="12" md="4" offset="5">
-                  <v-btn type="submit" color="success" dark x-large dense>
+              <v-row class="mt-0">
+                <v-col cols="12" sm="12" md="2" offset-md="10">
+                  <v-btn type="submit" color="success" dark dense>
                     {{ $t("address.labels.save") }}
+                    <v-icon right dark>mdi-content-save</v-icon>
                   </v-btn>
                 </v-col>
               </v-row>
@@ -289,13 +288,10 @@ import MunicipalityService from "@/services/MunicipalityService";
 import { IMunicipality } from "@/services/MunicipalityService/types";
 import { IAddress } from "@/services/AddressService/types";
 import AddressService from "@/services/AddressService/index";
-import Alert from "@/components/Alert.vue";
 import BeneficiaryService from "@/services/BeneficiaryService";
 import { IValidityRightsResponse } from "@/services/BeneficiaryService/types";
 
-@Component({
-  components: { Alert },
-})
+@Component({})
 export default class EditAddress extends Vue {
   protected beneficiaryService = new BeneficiaryService();
   protected countryService = new CountryService();
@@ -310,11 +306,6 @@ export default class EditAddress extends Vue {
   public isLoadingValidityRights = false;
   public isLoadingCurrentAddres = false;
   public municipalities: Array<IMunicipality> = [];
-  public alert = {
-    alert: false,
-    message: "",
-    type: false,
-  };
   public validityRights: IValidityRightsResponse = {
     GrupoPersonal: null,
     AreaPersonal: null,
@@ -330,6 +321,7 @@ export default class EditAddress extends Vue {
     ApellidoMaterno: "",
     Curp: null,
     IdDerechohabiente: null,
+    Sexo: "",
   };
   public address: IAddress = {
     IdDomicilio: null,
@@ -436,32 +428,16 @@ export default class EditAddress extends Vue {
       });
   }
 
-  hideAlert(): void {
-    this.alert.message = "";
-    this.alert.alert = false;
-    this.alert.type = false;
-  }
-
   onSubmit(): void {
     this.addressService
       .edit(this.address)
       .then((response) => {
-        this.alert = {
-          message: this.$t(
-            "address.labels.dialogs.successUpdate.message"
-          ) as string,
-          alert: true,
-          type: true,
-        };
+        this.$store.dispatch("app/setNotify", {});
       })
       .catch((error) => {
-        this.alert = {
-          message: this.$t(
-            "address.labels.dialogs.errorUpdate.message"
-          ) as string,
-          alert: true,
-          type: false,
-        };
+        this.$store.dispatch("app/setNotify", {
+          status: 500,
+        });
       });
   }
 

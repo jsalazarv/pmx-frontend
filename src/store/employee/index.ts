@@ -5,6 +5,7 @@ import {
   IEmploymentDataForm,
   IAddress,
   IConfirmForm,
+  IContact,
 } from "@/store/employee/types";
 import { IRootState } from "@/store/types";
 
@@ -51,6 +52,13 @@ const initialState: IEmployeeState = {
     Justificacion: "",
     confirmar: null,
   },
+  contacts: [
+    {
+      IdTipoContacto: null,
+      Extension: "",
+      Detalle: "",
+    },
+  ],
 };
 
 const employeeModule: Module<IEmployeeState, IRootState> = {
@@ -70,6 +78,18 @@ const employeeModule: Module<IEmployeeState, IRootState> = {
     SET_CONFIRMATION(state, confirmationLogData: Partial<IConfirmForm>) {
       state.confirmation = { ...state.confirmation, ...confirmationLogData };
     },
+    ADD_CONTACT(state, contactData: IContact) {
+      state.contacts.push(contactData);
+    },
+    CLEAR_CONTACT(state) {
+      state.contacts = [
+        {
+          IdTipoContacto: null,
+          Extension: "",
+          Detalle: "",
+        },
+      ];
+    },
   },
 
   actions: {
@@ -79,11 +99,15 @@ const employeeModule: Module<IEmployeeState, IRootState> = {
     setConfirmation({ commit }, confirmation: Partial<IConfirmForm>) {
       commit("SET_CONFIRMATION", confirmation);
     },
+    addContact({ commit }, contact: Partial<IContact>) {
+      commit("ADD_CONTACT", contact);
+    },
     clear({ commit }, employee: Partial<IEmployeeForm>) {
       commit("SET_EMPLOYEE_DATA", { ...initialState.employee, ...employee });
       commit("SET_EMPLOYMENT_DATA", { ...initialState.employmentData });
       commit("SET_ADDRESS", { ...initialState.address });
       commit("SET_CONFIRMATION", { ...initialState.confirmation });
+      commit("CLEAR_CONTACT");
     },
   },
 };

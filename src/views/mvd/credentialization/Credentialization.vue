@@ -15,8 +15,8 @@
         ></v-progress-linear>
         <v-container>
           <v-container>
-            <v-row>
-              <v-col cols="12" sm="12" md="6">
+            <v-row class="mt-0">
+              <v-col cols="12" sm="12" md="3">
                 <v-text-field
                   :label="$t('credentialization.attributes.employeeType')"
                   name="employeeType"
@@ -28,7 +28,7 @@
                 >
                 </v-text-field>
               </v-col>
-              <v-col cols="12" sm="12" md="6">
+              <v-col cols="12" sm="12" md="3">
                 <v-text-field
                   :label="$t('credentialization.attributes.assignmentNumber')"
                   name="assignmentNumber"
@@ -40,9 +40,7 @@
                 >
                 </v-text-field>
               </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="12" sm="12" md="12">
+              <v-col cols="12" sm="12" md="6">
                 <v-text-field
                   :label="$t('credentialization.attributes.fullname')"
                   name="fullname"
@@ -87,6 +85,7 @@ export default class Credentialization extends Vue {
     ApellidoMaterno: "",
     Curp: null,
     IdDerechohabiente: null,
+    Sexo: "",
   };
 
   get isLoading(): boolean {

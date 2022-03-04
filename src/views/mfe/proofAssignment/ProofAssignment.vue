@@ -201,10 +201,7 @@ export default class ProofAssignment extends Vue {
 
   getEmployeeById(): void {
     if (!this.assignmentNumber) {
-      this.$store.dispatch("app/setNotify", {
-        status: 400,
-        text: "Ingrese un Número de Asignación",
-      });
+      (this as any).badRequest(this.$t("notify.enterAnAssignmentNumber"));
       return;
     }
 
@@ -214,15 +211,17 @@ export default class ProofAssignment extends Vue {
       .then((response) => {
         if (response.Success) {
           this.employeeData = response.Data;
-          this.$store.dispatch("app/setNotify", {});
+          (this as any).ok();
         }
       })
       .catch((err) => {
         if (err.response) {
-          this.$store.dispatch("app/setNotify", {
-            status: err?.response?.status,
-            text: err?.response?.data?.Message?.Texto,
-          });
+          console.log(err.response);
+
+          (this as any).customError(
+            err?.response?.status,
+            err?.response?.data?.Message
+          );
           console.error(err?.response);
         }
       })

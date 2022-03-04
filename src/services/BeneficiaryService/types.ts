@@ -13,6 +13,7 @@ export interface IValidityRightsResponse {
   ApellidoMaterno: string | null;
   Curp: string | null;
   IdDerechohabiente: number | null;
+  Sexo: string;
 }
 
 export interface ITitularBeneficiaryRequest {
@@ -37,6 +38,25 @@ export interface IBeneficiary {
   CveBajal: boolean;
 }
 
+export interface IBeneficiaryCustom {
+  IdDerechohabiente: number | null;
+  IdPersona: number;
+  IndRenapo: boolean | null;
+  Nombre: string;
+  ApellidoPaterno: string;
+  ApellidoMaterno: string;
+  Curp: string;
+  IdFamiliar: number | null;
+  FechaNacimiento: string;
+  IdGenero: string;
+  IdUnidadMedica: 100;
+  Observaciones: string;
+  IdDomicilio: number | null;
+  Vigencia: string;
+  IndIncapacidad: boolean | null;
+  CveBajal: boolean | null;
+}
+
 export interface IBeneficiaryResponse {
   IdDerechohabiente: number | null;
   IdPersona: number | null;
@@ -53,7 +73,7 @@ export interface IBeneficiaryResponse {
 }
 
 export interface IPerson {
-  IdPersona: number;
+  IdPersona: number | null;
   Curp: string;
   Nombres: string;
   ApellidoPaterno: string;
@@ -63,7 +83,7 @@ export interface IPerson {
   Sexo: string;
   Rfc: string;
   EstadoCivil: string;
-  IndRenapo: boolean;
+  IndRenapo: boolean | null;
   Fotografia: string;
   FechaFoto: string;
   Firma: string;
@@ -110,7 +130,7 @@ export interface IAddress {
 
 export interface IBeneficiaryRequest {
   IdDerechohabiente: number | null;
-  IdPersona: number;
+  IdPersona: number | null;
   IdDerTitular: number | null;
   IdFamiliar: number | null;
   IdUMedica: number | null;
@@ -118,7 +138,14 @@ export interface IBeneficiaryRequest {
   Vigencia: string;
   Estado: string;
   Observaciones: string;
-  IndIncapacidad: boolean;
+  IndIncapacidad: boolean | null;
   Persona: IPerson;
   Domicilio: IAddress;
+  IdDomicilioExistente: number | null;
+}
+
+export enum EnumValidityValidations {
+  INVALID_CHILDRENS = "INVALID_CHILDRENS",
+  INVALID_BROTHERS = "INVALID_BROTHERS",
+  VALID_VALIDITY = "VALID_VALIDITY",
 }

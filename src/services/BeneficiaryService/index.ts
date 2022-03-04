@@ -2,6 +2,7 @@ import BaseService from "@/services/BaseService";
 import { IServiceResponse } from "@/services/types";
 import {
   IBeneficiary,
+  IBeneficiaryCustom,
   IBeneficiaryRequest,
   ITitularBeneficiaryRequest,
   IValidityRightsResponse,
@@ -22,10 +23,23 @@ export default class BeneficiaryService extends BaseService {
     return this.client.post("/Derechohabientes", beneficiary);
   }
 
+  update(
+    beneficiary: Partial<IBeneficiaryRequest>
+  ): IServiceResponse<IBeneficiary> {
+    return this.client.put(
+      `/Derechohabientes/${beneficiary.IdDerechohabiente}`,
+      beneficiary
+    );
+  }
+
   getAll(idBeneficiary: number | null): IServiceResponse<Array<IBeneficiary>> {
     return this.client.get(
       `Derechohabientes/ObtenerTodosIdTitular/${idBeneficiary}`
     );
+  }
+
+  get(idBeneficiary: number | null): IServiceResponse<IBeneficiaryCustom> {
+    return this.client.get(`Derechohabientes/${idBeneficiary}`);
   }
 
   createTitular(
@@ -41,6 +55,10 @@ export default class BeneficiaryService extends BaseService {
     return this.client.get(
       `Derechohabientes/ObtenerIdUnidadMedica/${idBeneficiary}`
     );
+  }
+
+  delete(idBeneficiary: number | null): IServiceResponse<number> {
+    return this.client.delete(`Derechohabientes/${idBeneficiary}`);
   }
 
   updateMedicalUnit(

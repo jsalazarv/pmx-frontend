@@ -13,6 +13,7 @@ import statusCode from "@/lang/es/statusCode";
 import notify from "@/lang/es/mfe/notify";
 import sidebar from "@/lang/es/sidebar";
 import users from "@/lang/es/admin/users";
+import dropDownProfile from "./dropDownProfile";
 
 export default {
   dictionary,
@@ -30,4 +31,5 @@ export default {
   notify,
   sidebar,
   users,
+  dropDownProfile,
 };

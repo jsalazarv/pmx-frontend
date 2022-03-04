@@ -13,43 +13,15 @@ export interface IRenapoData {
 }
 
 export interface IPersonData {
-  IdPersona: number;
+  IdPersona: number | null;
   Curp: string;
   Nombres: string;
-  ApellidoPaterno: string;
   ApellidoMaterno: string;
+  ApellidoPaterno: string;
   FechaNacimiento: string;
   Sexo: string;
-  Rfc: string;
-  EstadoCivil: string;
   IndRenapo: boolean;
-  Fotografia: string;
-  FechaFoto: string;
-  Firma: string;
-  SiglasEntidad: string;
-  Nacionalidad: string;
-  DpDocumento: number;
-  DpEntidad: number;
-  DpFoja: number;
-  DpMunicipio: number;
-  DpAnio: number;
-  DpLibro: number;
-  DpCrip: unknown;
-  DpMigracion: number;
-  DpNatura: number;
-  DpCertifica: number;
-  Archivo: string;
-  PfechaAlta: string;
-  PFolioConstancia: number;
-  PEstatus: number;
-  XEstatus: unknown;
-  YEstatus: unknown;
-  ZEstatus: string;
-  Marca: unknown;
-  CError: number;
-  Observacion: string;
-  DpActa: number;
-  DpTomo: number;
+  Baja: boolean;
 }
 
 export interface IPersonValidationState {
