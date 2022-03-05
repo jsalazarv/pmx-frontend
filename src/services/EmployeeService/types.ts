@@ -167,4 +167,3 @@ export interface ISearchResponse {
   IdTipoEmpleado: number;
   IdPersona: number;
 }
-

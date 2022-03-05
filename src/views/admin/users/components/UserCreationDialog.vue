@@ -52,10 +52,13 @@
           </v-col>
           <v-col class="py-0 my-0" cols="12" :md="!isCreated ? '10' : '12'">
             <v-autocomplete
+              :items="profiles"
               v-model="userDataRequest.IdPerfil"
               dense
               outlined
               label="Perfil"
+              item-text="Nombre"
+              return-object
             ></v-autocomplete>
           </v-col>
           <v-col cols="2" class="py-0" v-if="!isCreated">
@@ -99,12 +102,15 @@
 
 <script lang="ts">
 import { Component, Prop, PropSync, Vue, Watch } from "vue-property-decorator";
+
 import { IEmployeeType } from "@/services/EmployeeTypeService/types";
 import { IShowEmployee } from "@/services/EmployeeService/types";
-
 import { IUser, IUserRequest } from "@/services/UserService/types";
-
 import { ICompany } from "@/services/CompanyService/types";
+import { IProfile } from "@/services/ProfileService/types";
+
+
+import ProfileService from "@/services/ProfileService";
 import EmployeeTypeService from "@/services/EmployeeTypeService";
 import CompanyService from "@/services/CompanyService";
 
@@ -128,6 +134,7 @@ import DatePicker from "@/components/Form/DatePicker.vue";
 export default class UserCreationDialog extends Vue {
   protected employeeTypesService = new EmployeeTypeService();
   protected companyService = new CompanyService();
+  protected profileService = new ProfileService();
 
   @PropSync("open")
   public isDialogOpen!: boolean;
@@ -151,6 +158,7 @@ export default class UserCreationDialog extends Vue {
   public companies: Array<ICompany> = [];
   public isLoadingEmployeeList = false;
   public isLoadingCompanies = false;
+  public profiles: Array<IProfile> = [];
 
   @Watch("isDialogOpen")
   getDataLists(): void {
@@ -177,7 +185,6 @@ export default class UserCreationDialog extends Vue {
   }
 
   setUserDataPerson() {
-    console.log((this as any).isCreated);
     if ((this as any).isCreated) {
       let nombres = `${this.employeeData?.Persona?.Nombres} 
       ${this.employeeData?.Persona?.ApellidoPaterno} 
@@ -228,6 +235,12 @@ export default class UserCreationDialog extends Vue {
       .finally(() => {
         this.isLoadingCompanies = false;
       });
+  }
+
+  getPerfil(): void {
+    this.profileService.getAll().then((response: any) => {
+      this.profiles = response.Data;
+    });
   }
 
   clearDateBegin(): void {

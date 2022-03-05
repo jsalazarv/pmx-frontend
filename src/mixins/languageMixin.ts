@@ -19,7 +19,7 @@ export class LanguageMixin extends Vue {
       languageSelected = "";
     }
 
-    if(languageSelected) this.setLanguageIntoSystem(languageSelected);
+    if (languageSelected) this.setLanguageIntoSystem(languageSelected);
   }
 
   setLanguageIntoSystem(language = ""): void {

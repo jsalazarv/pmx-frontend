@@ -93,8 +93,6 @@
       :isCreated="isCreated"
     />
 
-    {{ isCreated }}
-
     <UserContactsDialog v-model="userContactsDialog" />
 
     <ConfirmationDialog
@@ -115,9 +113,6 @@ import { IShowEmployee } from "@/services/EmployeeService/types";
 import UserCreationDialog from "@/views/admin/users/components/UserCreationDialog.vue";
 import UserContactsDialog from "./components/UserContactsDialog.vue";
 import ConfirmationDialog from "@/components/Dialogs/ConfirmationDialog.vue";
-
-// import data_json from "./users.json";
-// import { IEmployee } from "@/store/employee/types";
 
 @Component({
   components: {
