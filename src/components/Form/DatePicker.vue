@@ -80,24 +80,29 @@ export default class DatePicker extends Vue {
   public openMenu = false;
   public isMenuOpenModel = false;
 
-  input(value: any) {
-    this.$emit("input", value);
+  input(value: string) {
+    console.log(value);
+    if (value) this.$emit("input", value);
   }
 
   get getValue(): string {
-    return (this as any).value;
+    let vm = this as any;
+    console.log((this as any).value);
+    return vm.value ? vm.$moment(vm.value).format("YYYY-MM-DD") : "";
   }
 
   set getValue(value) {
-    this.input(value);
+    if (value) this.input(value);
   }
 
   get dateFormat(): string {
-    return (this as any).value;
+    let vm = this as any;
+    console.log(vm.value);
+    return vm.value != null ? vm.$moment(vm.value).format("DD-MM-YYYY") : "";
   }
 
   set dateFormat(value: string) {
-    this.$emit("input", "");
+    // this.$emit("input", "");
   }
 }
 </script>
