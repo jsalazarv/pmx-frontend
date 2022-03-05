@@ -81,13 +81,11 @@ export default class DatePicker extends Vue {
   public isMenuOpenModel = false;
 
   input(value: string) {
-    console.log(value);
     if (value) this.$emit("input", value);
   }
 
   get getValue(): string {
     let vm = this as any;
-    console.log((this as any).value);
     return vm.value ? vm.$moment(vm.value).format("YYYY-MM-DD") : "";
   }
 
@@ -97,13 +95,10 @@ export default class DatePicker extends Vue {
 
   get dateFormat(): string {
     let vm = this as any;
-    console.log(vm.value);
     return vm.value != null ? vm.$moment(vm.value).format("DD-MM-YYYY") : "";
   }
 
-  set dateFormat(value: string) {
-    // this.$emit("input", "");
-  }
+  set dateFormat(value: string) {}
 }
 </script>
 

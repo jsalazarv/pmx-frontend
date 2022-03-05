@@ -91,6 +91,7 @@
       :employee-data="employeeData"
       :user="userSelected"
       :isCreated="isCreated"
+      @refresh="refresListUsers"
     />
 
     <UserContactsDialog v-model="userContactsDialog" />
@@ -183,7 +184,22 @@ export default class UsersList extends Vue {
     UltimaSesion: "",
     Contador: null,
     Baja: false,
-    Perfil: null,
+    Perfil: {
+      IdPerfil: 0,
+      Nombre: "",
+      Siglas: "",
+      Descripcion: "",
+      Estado: "",
+      Baja: false,
+      Roles: {
+        IdRol: 0,
+        IdModulo: 0,
+        Clave: "",
+        Descripcion: "",
+        Modulo: null,
+        Baja: false
+      },
+    },
     Roles: null,
   };
 
@@ -198,7 +214,6 @@ export default class UsersList extends Vue {
     this.userService
       .getAll()
       .then((response) => {
-        console.log("uy", response.Data);
         this.userList = response.Data;
       })
       .catch()
@@ -213,7 +228,6 @@ export default class UsersList extends Vue {
   }
 
   viewContacts(item: any): void {
-    console.log(item);
     this.userContactsDialog = true;
   }
 
@@ -236,6 +250,10 @@ export default class UsersList extends Vue {
 
   confirmElimination(value: boolean) {
     alert(value);
+  }
+
+  refresListUsers(){
+    this.getUserList();
   }
 }
 </script>

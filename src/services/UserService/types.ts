@@ -11,7 +11,7 @@ export interface IRoles {
   IdModulo: number;
   Clave: string;
   Descripcion: string;
-  Modulo: IModule;
+  Modulo: IModule | null;
   Baja: boolean;
 }
 
@@ -38,7 +38,7 @@ export interface IUser {
   UltimaSesion: string;
   Contador: number | null;
   Baja: boolean;
-  Perfil: IProfile | null;
+  Perfil: IProfile;
   Roles: IRoles | null;
 }
 

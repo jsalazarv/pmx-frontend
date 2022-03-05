@@ -53,6 +53,7 @@
             </v-col>
             <v-col class="py-0 my-0" cols="12" :md="!isCreated ? '10' : '12'">
               <v-autocomplete
+                v-model="profileModel"
                 :items="profiles"
                 dense
                 outlined
@@ -121,6 +122,7 @@ import { IRoles } from "@/services/RolesService/types";
 import ProfileService from "@/services/ProfileService";
 import EmployeeTypeService from "@/services/EmployeeTypeService";
 import CompanyService from "@/services/CompanyService";
+import UserService from "@/services/UserService";
 
 // components
 import DatePicker from "@/components/Form/DatePicker.vue";
@@ -143,6 +145,7 @@ export default class UserCreationDialog extends Vue {
   protected employeeTypesService = new EmployeeTypeService();
   protected companyService = new CompanyService();
   protected profileService = new ProfileService();
+  protected userService = new UserService();
 
   @PropSync("open")
   public isDialogOpen!: boolean;
@@ -168,6 +171,15 @@ export default class UserCreationDialog extends Vue {
   public isLoadingCompanies = false;
   public profiles: Array<IProfile> = [];
   public roles: Array<IRoles> = [];
+  public profileModel: IProfile = {
+    IdPerfil: 0,
+    Nombre: "",
+    Siglas: "",
+    Descripcion: "",
+    Estado: "",
+    Baja: false,
+    Roles: [],
+  };
   public rules: object = {
     required: (val: any) => !!val || "El campo es requerido",
   };
@@ -203,10 +215,18 @@ export default class UserCreationDialog extends Vue {
     return roles.join(", ");
   }
 
+  get getPerfilSelected(): IProfile {
+    let idProfile: number = this.userDataRequest?.IdPerfil || 0;
+
+    return (
+      this.profiles.find((x) => x.IdPerfil === idProfile) || this.profileModel
+    );
+  }
+
   setUserDataPerson() {
     if ((this as any).isCreated) {
-      let nombres = `${this.employeeData?.Persona?.Nombres} 
-      ${this.employeeData?.Persona?.ApellidoPaterno} 
+      let nombres = `${this.employeeData?.Persona?.Nombres}
+      ${this.employeeData?.Persona?.ApellidoPaterno}
       ${this.employeeData?.Persona?.ApellidoMaterno}`;
 
       this.userDataRequest = {
@@ -228,7 +248,10 @@ export default class UserCreationDialog extends Vue {
         FechaTermino: this.user?.FechaTermino || null,
       };
 
-      console.log(this.userDataRequest);
+      setTimeout(() => {
+        this.profileModel = this.getPerfilSelected;
+        this.roles = this.getPerfilSelected.Roles;
+      }, 2000);
     }
   }
 
@@ -263,7 +286,6 @@ export default class UserCreationDialog extends Vue {
   }
 
   changeProfile(item: IProfile) {
-    console.log(item);
     this.userDataRequest.IdPerfil = item.IdPerfil;
     this.roles = item.Roles;
   }
@@ -281,9 +303,29 @@ export default class UserCreationDialog extends Vue {
   }
 
   saveUser(): void {
-    if ((this as any).$refs.form.validate()) {
-      this.isDialogOpen = false;
+    let vm = this as any;
+
+    if (vm.$refs.form.validate()) {
+      if (!vm.isCreated) {
+        this.updateUser();
+      }
     }
+  }
+
+  updateUser() {
+    let vm = this as any;
+
+    vm.userService
+      .update(vm.userDataRequest)
+      .then((res: any) => {
+        if (res.Success) {
+          vm.ok("El usuario se ha actualizado correctamente");
+        }
+        vm.$emit("refresh");
+      })
+      .finally(() => {
+        this.isDialogOpen = false;
+      });
   }
 }
 </script>

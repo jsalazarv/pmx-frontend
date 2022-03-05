@@ -1,7 +1,7 @@
 import { IRoles } from "@/services/RolesService/types";
 
 export interface IProfile {
-  IdPerfil: number;
+  IdPerfil: number | null;
   Nombre: string;
   Siglas: string;
   Descripcion: string;
