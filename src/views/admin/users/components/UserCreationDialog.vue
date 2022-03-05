@@ -9,85 +9,93 @@
         }}
       </v-card-title>
       <v-card-text class="py-0">
-        <v-row dense>
-          <v-col class="py-0" cols="12" md="6">
-            <v-text-field
-              autocomplete="off"
-              dense
-              name="assignmentNumber"
-              :label="$t('employee.attributes.assignmentNumber')"
-              outlined
-              required
-              readonly
-              v-model="userDataRequest.IdEmpleado"
-            ></v-text-field>
-          </v-col>
-          <v-col class="py-0" cols="12" md="6">
-            <v-autocomplete
-              class="required"
-              dense
-              name="typeOfEmployee"
-              :items="employeeTypeList"
-              item-text="Nombre"
-              item-value="Id"
-              :label="$t('employee.attributes.typeOfEmployee')"
-              outlined
-              required
-              :loading="isLoadingEmployeeList"
-              v-model="userDataRequest.IdTipoEmpleado"
-              readonly
-            ></v-autocomplete>
-          </v-col>
-          <v-col class="py-0" cols="12">
-            <v-text-field
-              autocomplete="off"
-              dense
-              name="name"
-              :label="$t('employee.attributes.names')"
-              outlined
-              required
-              readonly
-              v-model="userDataRequest.Nombres"
-            ></v-text-field>
-          </v-col>
-          <v-col class="py-0 my-0" cols="12" :md="!isCreated ? '10' : '12'">
-            <v-autocomplete
-              :items="profiles"
-              v-model="userDataRequest.IdPerfil"
-              dense
-              outlined
-              label="Perfil"
-              item-text="Nombre"
-              return-object
-            ></v-autocomplete>
-          </v-col>
-          <v-col cols="2" class="py-0" v-if="!isCreated">
-            <v-checkbox dense label="Bloquear" hide-details=""></v-checkbox>
-          </v-col>
-          <v-col cols="12" class="py-0">
-            <v-textarea outlined dense label="Roles" no-resize></v-textarea>
-          </v-col>
-          <v-col cols="6" class="py-0">
-            <DatePicker
-              v-if="datesLabels.dateBegin"
-              v-model="userDataRequest.FechaInicio"
-              :label="datesLabels.dateBegin"
-              cleareable
-              @clear="clearDateBegin"
-              :maxDate="userDataRequest.FechaTermino"
-            />
-          </v-col>
-          <v-col cols="6" class="py-0">
-            <DatePicker
-              v-if="datesLabels.dateFinish"
-              v-model="userDataRequest.FechaTermino"
-              :label="datesLabels.dateFinish"
-              cleareable
-              @clear="clearDateFinish"
-              :minDate="userDataRequest.FechaInicio"
-            />
-          </v-col>
-        </v-row>
+        <v-form ref="form">
+          <v-row dense>
+            <v-col class="py-0" cols="12" md="6">
+              <v-text-field
+                autocomplete="off"
+                dense
+                name="assignmentNumber"
+                :label="$t('employee.attributes.assignmentNumber')"
+                outlined
+                required
+                readonly
+                v-model="userDataRequest.IdEmpleado"
+              ></v-text-field>
+            </v-col>
+            <v-col class="py-0" cols="12" md="6">
+              <v-autocomplete
+                class="required"
+                dense
+                name="typeOfEmployee"
+                :items="employeeTypeList"
+                item-text="Nombre"
+                item-value="Id"
+                :label="$t('employee.attributes.typeOfEmployee')"
+                outlined
+                required
+                :loading="isLoadingEmployeeList"
+                v-model="userDataRequest.IdTipoEmpleado"
+                readonly
+              ></v-autocomplete>
+            </v-col>
+            <v-col class="py-0" cols="12">
+              <v-text-field
+                autocomplete="off"
+                dense
+                name="name"
+                :label="$t('employee.attributes.names')"
+                outlined
+                required
+                readonly
+                v-model="userDataRequest.Nombres"
+              ></v-text-field>
+            </v-col>
+            <v-col class="py-0 my-0" cols="12" :md="!isCreated ? '10' : '12'">
+              <v-autocomplete
+                :items="profiles"
+                dense
+                outlined
+                label="Perfil"
+                item-text="Nombre"
+                return-object
+                @change="changeProfile"
+                :rules="[rules.required]"
+              ></v-autocomplete>
+            </v-col>
+            <v-col cols="12" class="py-0">
+              <v-textarea
+                outlined
+                dense
+                label="Roles"
+                no-resize
+                v-model="rolesText"
+              ></v-textarea>
+            </v-col>
+            <v-col cols="6" class="py-0">
+              <DatePicker
+                v-if="datesLabels.dateBegin"
+                v-model="userDataRequest.FechaInicio"
+                :label="datesLabels.dateBegin"
+                cleareable
+                @clear="clearDateBegin"
+                :maxDate="userDataRequest.FechaTermino"
+                :rules="[rules.required]"
+              />
+            </v-col>
+            <v-col cols="6" class="py-0">
+              <DatePicker
+                v-if="datesLabels.dateFinish"
+                v-model="userDataRequest.FechaTermino"
+                :label="datesLabels.dateFinish"
+                cleareable
+                @clear="clearDateFinish"
+                :minDate="userDataRequest.FechaInicio"
+                :rules="[rules.required]"
+              />
+            </v-col>
+          </v-row>
+        </v-form>
       </v-card-text>
       <v-card-actions>
         <v-btn color="light darken-1" text @click="closeDialog">
@@ -108,7 +116,7 @@ import { IShowEmployee } from "@/services/EmployeeService/types";
 import { IUser, IUserRequest } from "@/services/UserService/types";
 import { ICompany } from "@/services/CompanyService/types";
 import { IProfile } from "@/services/ProfileService/types";
-
+import { IRoles } from "@/services/RolesService/types";
 
 import ProfileService from "@/services/ProfileService";
 import EmployeeTypeService from "@/services/EmployeeTypeService";
@@ -159,6 +167,10 @@ export default class UserCreationDialog extends Vue {
   public isLoadingEmployeeList = false;
   public isLoadingCompanies = false;
   public profiles: Array<IProfile> = [];
+  public roles: Array<IRoles> = [];
+  public rules: object = {
+    required: (val: any) => !!val || "El campo es requerido",
+  };
 
   @Watch("isDialogOpen")
   getDataLists(): void {
@@ -175,6 +187,7 @@ export default class UserCreationDialog extends Vue {
     this.getEmployeeTypes();
     this.getCompanies();
     this.setUserDataPerson();
+    this.getPerfil();
   }
 
   get datesLabels() {
@@ -182,6 +195,12 @@ export default class UserCreationDialog extends Vue {
       dateBegin: "Fecha Inicio",
       dateFinish: "Fecha Término",
     };
+  }
+
+  get rolesText() {
+    let roles = this.roles.map((rol) => rol.Descripcion);
+
+    return roles.join(", ");
   }
 
   setUserDataPerson() {
@@ -243,6 +262,12 @@ export default class UserCreationDialog extends Vue {
     });
   }
 
+  changeProfile(item: IProfile) {
+    console.log(item);
+    this.userDataRequest.IdPerfil = item.IdPerfil;
+    this.roles = item.Roles;
+  }
+
   clearDateBegin(): void {
     this.userDataRequest.FechaInicio = "";
   }
@@ -256,7 +281,9 @@ export default class UserCreationDialog extends Vue {
   }
 
   saveUser(): void {
-    this.isDialogOpen = false;
+    if ((this as any).$refs.form.validate()) {
+      this.isDialogOpen = false;
+    }
   }
 }
 </script>

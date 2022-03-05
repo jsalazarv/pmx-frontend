@@ -7,13 +7,13 @@ export class LanguageMixin extends Vue {
   }
 
   setLanguageCurrent(language = ""): void {
-    const languages: Array<string> = this.$store.getters["app/getLanguages"];
+    const languages: Array<string> = this.$store?.getters["app/getLanguages"];
 
     let languageSelected = "";
 
-    if (languages.length && languages.includes(language) && language) {
+    if (languages && languages.length && languages.includes(language) && language) {
       languageSelected = language;
-    } else if (languages.length && !languages.includes(language) && language) {
+    } else if (languages && languages.length && !languages.includes(language) && language) {
       languageSelected = languages[0];
     } else {
       languageSelected = "";

@@ -185,7 +185,7 @@ export default class Navbar extends Vue {
   }
 
   get lstLanguagesSystem(): string {
-    return this.$store.getters["app/getLanguages"];
+    return this.$store?.getters["app/getLanguages"];
   }
 
   @Watch("languageModel", {})
