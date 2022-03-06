@@ -48,6 +48,6 @@ export interface IUserRequest {
   IdPerfil: number | null;
   IdTipoEmpleado: number | null;
   Nombres: string | null;
-  FechaInicio: string | null;
-  FechaTermino: string | null;
+  FechaInicio: string;
+  FechaTermino: string;
 }

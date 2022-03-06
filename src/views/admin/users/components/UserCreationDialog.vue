@@ -225,15 +225,18 @@ export default class UserCreationDialog extends Vue {
 
   setUserDataPerson() {
     if ((this as any).isCreated) {
-      let nombres = `${this.employeeData?.Persona?.Nombres}
-      ${this.employeeData?.Persona?.ApellidoPaterno}
-      ${this.employeeData?.Persona?.ApellidoMaterno}`;
+      let nombres = `${this.employeeData?.Persona?.Nombres} ${
+        this.employeeData?.Persona?.ApellidoPaterno
+      } ${this.employeeData?.Persona?.ApellidoMaterno || ""}`;
 
       this.userDataRequest = {
-        ...this.userDataRequest,
         IdEmpleado: this.employeeData?.IdEmpleado || 0,
         IdTipoEmpleado: this.employeeData?.TipoEmpleado?.Id || 0,
         Nombres: nombres,
+        FechaInicio: '',
+        FechaTermino: '',
+        IdPerfil: null,
+        IdUsuario: null
       };
 
       this.userDataRequest.IdUsuario = null;
@@ -244,8 +247,8 @@ export default class UserCreationDialog extends Vue {
         IdPerfil: this.user?.Perfil?.IdPerfil || null,
         IdTipoEmpleado: this.user?.IdTipoEmpleado || null,
         Nombres: this.user?.NombreCompleto || null,
-        FechaInicio: this.user?.FechaInicio || null,
-        FechaTermino: this.user?.FechaTermino || null,
+        FechaInicio: this.user?.FechaInicio || "",
+        FechaTermino: this.user?.FechaTermino || "",
       };
 
       setTimeout(() => {
@@ -307,9 +310,30 @@ export default class UserCreationDialog extends Vue {
 
     if (vm.$refs.form.validate()) {
       if (!vm.isCreated) {
-        this.updateUser();
+        vm.updateUser();
+      } else {
+        vm.createUser();
       }
     }
+  }
+
+  createUser() {
+    let vm = this as any;
+
+    vm.userService
+      .create(vm.userDataRequest)
+      .then((res: any) => {
+        if (res.Success) {
+          vm.ok("El usuario se ha creado correctamente");
+        } 
+        vm.$emit("refresh");
+      })
+      .catch((err: any) => {
+        vm.customError(err?.response?.status, err?.response?.data?.Message);
+      })
+      .finally(() => {
+        this.isDialogOpen = false;
+      });
   }
 
   updateUser() {

@@ -108,7 +108,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import ContactTypesService from "@/services/ContactTypesService";
 import { IContactTypes } from "@/services/ContactTypesService/types";
-import { IContact } from "@/store/employee/types";
+import { IContactRequest } from "@/store/employee/types";
 
 @Component({})
 export default class ContactForm extends Vue {
@@ -119,7 +119,7 @@ export default class ContactForm extends Vue {
     contacts: [{}],
   };*/
 
-  get contacts(): Array<IContact> {
+  get contacts(): Array<IContactRequest> {
     return this.$store.state.employees.contacts;
   }
 

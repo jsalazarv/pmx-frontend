@@ -94,7 +94,12 @@
       @refresh="refresListUsers"
     />
 
-    <UserContactsDialog v-model="userContactsDialog" />
+    <UserContactsDialog
+      v-if="userContactsDialog"
+      v-model="userContactsDialog"
+      :idUser="idUserSelected"
+      :idPerson="null"
+    />
 
     <ConfirmationDialog
       title="Eliminar Usuario"
@@ -197,11 +202,12 @@ export default class UsersList extends Vue {
         Clave: "",
         Descripcion: "",
         Modulo: null,
-        Baja: false
+        Baja: false,
       },
     },
     Roles: null,
   };
+  public idUserSelected: number | null = null;
 
   created() {}
 
@@ -227,8 +233,9 @@ export default class UsersList extends Vue {
     this.openUserCreationDialog = true;
   }
 
-  viewContacts(item: any): void {
+  viewContacts(item: IUser): void {
     this.userContactsDialog = true;
+    this.idUserSelected = item.IdUsuario;
   }
 
   openUserModal(): void {
@@ -237,22 +244,36 @@ export default class UsersList extends Vue {
   }
 
   editUser(item: IUser) {
-    console.log(item);
     this.userSelected = item;
     this.openUserCreationDialog = true;
     this.isCreated = false;
     this.employeeData = {};
   }
 
-  eliminationUser(item: IShowEmployee) {
+  eliminationUser(item: IUser) {
+    this.userSelected = item;
     this.confirmEliminationModel = true;
   }
 
   confirmElimination(value: boolean) {
-    alert(value);
+    let vm = this as any;
+
+    if (value) {
+      vm.userService
+        .delete(vm.userSelected?.IdUsuario || 0)
+        .then((res: any) => {
+          if (res.Success) {
+            vm.ok("El usuario se ha eliminado correctamente");
+          }
+          vm.getUserList();
+        })
+        .finally(() => {
+          vm.userSelected = null;
+        });
+    }
   }
 
-  refresListUsers(){
+  refresListUsers() {
     this.getUserList();
   }
 }

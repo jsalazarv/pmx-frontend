@@ -5,7 +5,7 @@ import {
   IEmploymentDataForm,
   IAddress,
   IConfirmForm,
-  IContact,
+  IContactRequest,
 } from "@/store/employee/types";
 import { IRootState } from "@/store/types";
 
@@ -78,7 +78,7 @@ const employeeModule: Module<IEmployeeState, IRootState> = {
     SET_CONFIRMATION(state, confirmationLogData: Partial<IConfirmForm>) {
       state.confirmation = { ...state.confirmation, ...confirmationLogData };
     },
-    ADD_CONTACT(state, contactData: IContact) {
+    ADD_CONTACT(state, contactData: IContactRequest) {
       state.contacts.push(contactData);
     },
     CLEAR_CONTACT(state) {
@@ -99,7 +99,7 @@ const employeeModule: Module<IEmployeeState, IRootState> = {
     setConfirmation({ commit }, confirmation: Partial<IConfirmForm>) {
       commit("SET_CONFIRMATION", confirmation);
     },
-    addContact({ commit }, contact: Partial<IContact>) {
+    addContact({ commit }, contact: Partial<IContactRequest>) {
       commit("ADD_CONTACT", contact);
     },
     clear({ commit }, employee: Partial<IEmployeeForm>) {
