@@ -4,7 +4,27 @@
       <v-card>
         <v-card-title class="headline">Contactos</v-card-title>
         <v-card-text>
-          <v-row dense>
+          <!-- <v-row dense class="mt-2">
+            <v-col class="text-right">
+              <v-btn
+                color="primary"
+                @click="isCreated = true"
+                v-if="!isCreated"
+                small
+              >
+                Agregar
+              </v-btn>
+              <v-btn
+                color="primary"
+                @click="isCreated = false"
+                v-if="isCreated"
+                small
+              >
+                Cancelar
+              </v-btn>
+            </v-col>
+          </v-row> -->
+          <!-- <v-row dense v-if="isCreated">
             <v-col cols="12">
               <v-btn
                 @click="addRow"
@@ -16,109 +36,107 @@
                 <v-icon>mdi-card-account-phone</v-icon>
                 <span class="ml-2">{{ $t("employee.labels.add") }}</span>
               </v-btn>
-              <v-row>
-                <v-row
-                  class="rounded"
-                  v-for="(item, index) of contacts"
-                  :key="item.IdContacto"
-                  style="border: 1px solid lightgrey"
-                  dense
-                >
-                  <v-col cols="12" md="3" class="py-0">
-                    <ValidationProvider
-                      :name="$t('employee.attributes.contactType')"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-autocomplete
-                        dense
-                        name="contactType"
-                        :label="$t('employee.attributes.contactType')"
-                        outlined
-                        required
-                        :items="contactTypes"
-                        item-text="Nombre"
-                        item-value="IdTipoContacto"
-                        @change="getContactTypes"
-                        v-model="item.IdTipoContacto"
-                        :error-messages="errors"
-                      ></v-autocomplete>
-                    </ValidationProvider>
-                  </v-col>
-                  <v-col cols="12" md="4" class="py-0">
-                    <ValidationProvider
-                      :name="$t('employee.attributes.contactDetail')"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-text-field
-                        dense
-                        name="contactDetail"
-                        :label="$t('employee.attributes.contactDetail')"
-                        outlined
-                        required
-                        v-model="item.Detalle"
-                        :error-messages="errors"
-                      ></v-text-field>
-                    </ValidationProvider>
-                  </v-col>
-                  <v-col cols="12" md="4" class="py-0">
-                    <ValidationProvider
-                      :name="$t('employee.attributes.extension')"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-text-field
-                        dense
-                        name="extension"
-                        :label="$t('employee.attributes.extension')"
-                        outlined
-                        v-model="item.Extension"
-                        :error-messages="errors"
-                      ></v-text-field>
-                    </ValidationProvider>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    md="1"
-                    class="d-flex justify-center align-center mx-0 pa-0"
+
+              <v-row
+                class="rounded"
+                v-for="(item, index) of contacts"
+                :key="item.IdContacto"
+                style="border: 1px solid lightgrey"
+                dense
+              >
+                <v-col cols="12" md="3" class="py-0">
+                  <ValidationProvider
+                    :name="$t('employee.attributes.contactType')"
+                    rules="required"
+                    v-slot="{ errors }"
                   >
-                    <v-btn
-                      icon
-                      small
-                      color="primary"
-                      :disabled="index === 0"
-                      @click="moveUp(index)"
-                    >
-                      <v-icon>mdi-menu-up</v-icon>
-                    </v-btn>
-                    <v-btn
-                      icon
-                      small
-                      color="primary"
-                      :disabled="index === getItemsContacts.length - 1"
-                      @click="moveDown(index)"
-                    >
-                      <v-icon>mdi-menu-down</v-icon>
-                    </v-btn>
-                    <v-btn
-                      icon
-                      small
-                      color="red"
-                      :disabled="getItemsContacts.length === 1"
-                      @click="deleteRow(index)"
-                    >
-                      <v-icon>mdi-close</v-icon>
-                    </v-btn>
-                  </v-col>
-                </v-row>
+                    <v-autocomplete
+                      dense
+                      name="contactType"
+                      :label="$t('employee.attributes.contactType')"
+                      outlined
+                      required
+                      :items="contactTypes"
+                      item-text="Nombre"
+                      item-value="IdTipoContacto"
+                      @change="getContactTypes"
+                      v-model="item.IdTipoContacto"
+                      :error-messages="errors"
+                    ></v-autocomplete>
+                  </ValidationProvider>
+                </v-col>
+                <v-col cols="12" md="4" class="py-0">
+                  <ValidationProvider
+                    :name="$t('employee.attributes.contactDetail')"
+                    rules="required"
+                    v-slot="{ errors }"
+                  >
+                    <v-text-field
+                      dense
+                      name="contactDetail"
+                      :label="$t('employee.attributes.contactDetail')"
+                      outlined
+                      required
+                      v-model="item.Detalle"
+                      :error-messages="errors"
+                    ></v-text-field>
+                  </ValidationProvider>
+                </v-col>
+                <v-col cols="12" md="4" class="py-0">
+                  <ValidationProvider
+                    :name="$t('employee.attributes.extension')"
+                    rules="required"
+                    v-slot="{ errors }"
+                  >
+                    <v-text-field
+                      dense
+                      name="extension"
+                      :label="$t('employee.attributes.extension')"
+                      outlined
+                      v-model="item.Extension"
+                      :error-messages="errors"
+                    ></v-text-field>
+                  </ValidationProvider>
+                </v-col>
+                <v-col
+                  cols="12"
+                  md="1"
+                  class="d-flex justify-center align-center mx-0 pa-0"
+                >
+                  <v-btn
+                    icon
+                    small
+                    color="primary"
+                    :disabled="index === 0"
+                    @click="moveUp(index)"
+                  >
+                    <v-icon>mdi-menu-up</v-icon>
+                  </v-btn>
+                  <v-btn
+                    icon
+                    small
+                    color="primary"
+                    :disabled="index === getItemsContacts.length - 1"
+                    @click="moveDown(index)"
+                  >
+                    <v-icon>mdi-menu-down</v-icon>
+                  </v-btn>
+                  <v-btn
+                    icon
+                    small
+                    color="red"
+                    :disabled="getItemsContacts.length === 1"
+                    @click="deleteRow(index)"
+                  >
+                    <v-icon>mdi-close</v-icon>
+                  </v-btn>
+                </v-col>
               </v-row>
             </v-col>
+          </v-row> -->
+          <v-row dense>
             <v-col>
-              <v-data-table
-                :items="contacts"
-                :headers="header"
-              ></v-data-table>
+              <v-data-table :items="contacts" :headers="header"></v-data-table>
             </v-col>
           </v-row>
         </v-card-text>
@@ -171,25 +189,28 @@ export default class UserContacts extends Vue {
     required: (val: any) => !!val || "Campo requerido",
   };
   public contacts: Array<IContact> = [];
+  public isCreated: boolean = false;
 
   mounted(): void {
     this.getContactTypes();
     this.getContacts();
   }
 
-  get header(){
-    return [{
-      text: "Tipo de Contacto",
-      value: "Tipo"
-    },
-    {
-      text: "Detalle",
-      value: "Detalle"
-    },
-    {
-      Text: "Extensión",
-      value: "Extension"
-    }]
+  get header() {
+    return [
+      {
+        text: "Tipo de Contacto",
+        value: "Tipo",
+      },
+      {
+        text: "Detalle",
+        value: "Detalle",
+      },
+      {
+        Text: "Extensión",
+        value: "Extension",
+      },
+    ];
   }
 
   get openModel(): boolean {
