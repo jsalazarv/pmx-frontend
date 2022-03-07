@@ -1,5 +1,5 @@
 export interface IContact {
-  IdContacto: number;
+  IdContacto: number | null;
   IdPersona: number;
   IdTipoContacto: number;
   Tipo: string;

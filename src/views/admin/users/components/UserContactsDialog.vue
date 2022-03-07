@@ -4,27 +4,7 @@
       <v-card>
         <v-card-title class="headline">Contactos</v-card-title>
         <v-card-text>
-          <!-- <v-row dense class="mt-2">
-            <v-col class="text-right">
-              <v-btn
-                color="primary"
-                @click="isCreated = true"
-                v-if="!isCreated"
-                small
-              >
-                Agregar
-              </v-btn>
-              <v-btn
-                color="primary"
-                @click="isCreated = false"
-                v-if="isCreated"
-                small
-              >
-                Cancelar
-              </v-btn>
-            </v-col>
-          </v-row> -->
-          <!-- <v-row dense v-if="isCreated">
+          <v-row dense class="mt-2">
             <v-col cols="12">
               <v-btn
                 @click="addRow"
@@ -40,7 +20,7 @@
               <v-row
                 class="rounded"
                 v-for="(item, index) of contacts"
-                :key="item.IdContacto"
+                :key="index"
                 style="border: 1px solid lightgrey"
                 dense
               >
@@ -133,15 +113,17 @@
                 </v-col>
               </v-row>
             </v-col>
-          </v-row> -->
-          <v-row dense>
-            <v-col>
-              <v-data-table :items="contacts" :headers="header"></v-data-table>
-            </v-col>
           </v-row>
         </v-card-text>
         <v-card-actions class="text-right px-5">
           <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            class="text-capitalize mr-2"
+            @click="saveContacts"
+            v-if="contacts.length"
+            >Guardar</v-btn
+          >
           <v-btn class="text-capitalize" @click="closeContactsDialog"
             >Cerrar</v-btn
           >
@@ -248,24 +230,22 @@ export default class UserContacts extends Vue {
       vm.contactService.getContactsByIdUser(vm.idUser).then((response: any) => {
         this.contacts = [];
         let data: Array<IContact> = response.Data;
-        console.log(data);
         vm.contacts = data;
       });
+    } else if (vm.idPerson) {
+      vm.contactService
+        .getContactsByIdPerson(vm.idPerson)
+        .then((response: any) => {
+          this.contacts = [];
+          let data: Array<IContact> = response.Data;
+          vm.contacts = data;
+        });
     }
-    //  else if (vm.idPerson) {
-    //   vm.contactService
-    //     .getContactsByIdPerson(vm.idPerson)
-    //     .then((response: any) => {
-    //       this.contacts = [];
-    //       let data: Array<IContact> = response.Data;
-    //       vm.contacts = data;
-    //     });
-    // }
   }
 
   addRow(): void {
     let contact: IContact = {
-      IdContacto: 0,
+      IdContacto: null,
       IdPersona: 0,
       IdTipoContacto: 0,
       Tipo: "",
@@ -295,6 +275,8 @@ export default class UserContacts extends Vue {
   deleteRow(index: number): void {
     this.contacts.splice(index, 1);
   }
+
+  saveContacts(): void {}
 }
 </script>
 
