@@ -8,3 +8,13 @@ export interface IContact {
   Referencia: string | null;
   Baja: false | null;
 }
+
+
+export interface IContactRequest {
+  IdContacto: number | null;
+  IdPersona: number;
+  IdTipoContacto: number;
+  Extension: string | null;
+  Detalle: string;
+  Referencia: string | null;
+}

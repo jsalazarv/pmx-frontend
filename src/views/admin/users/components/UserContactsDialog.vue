@@ -139,7 +139,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import ContactTypesService from "@/services/ContactTypesService";
 import { IContactTypes } from "@/services/ContactTypesService/types";
 
-import { IContact } from "@/services/ContactService/types";
+import { IContact, IContactRequest } from "@/services/ContactService/types";
 import ContactService from "@/services/ContactService";
 
 @Component({
@@ -276,7 +276,42 @@ export default class UserContacts extends Vue {
     this.contacts.splice(index, 1);
   }
 
-  saveContacts(): void {}
+  saveContacts(): void {
+    let vm = this as any;
+
+    if (vm.contacts.length) {
+      let contacts: Array<IContactRequest> = vm.contacts.map(
+        (item: IContact) => {
+          return {
+            IdContacto: item.IdContacto,
+            IdPersona: item.IdPersona,
+            IdTipoContacto: item.IdTipoContacto,
+            Detalle: item.Detalle,
+            Extension: item.Extension,
+            Referencia: item.Referencia,
+          } as IContactRequest;
+        }
+      );
+
+      if (vm.idUser) {
+        vm.contactService
+          .generateContactsByIdUser(vm.idUser, contacts)
+          .then((response: any) => {
+            if (response.Success) {
+              console.log(response);
+            }
+          });
+      } else {
+        vm.contactService
+          .generateContactsByIdPerson(vm.idPerson, contacts)
+          .then((response: any) => {
+            if (response.Success) {
+              console.log(response);
+            }
+          });
+      }
+    }
+  }
 }
 </script>
 
