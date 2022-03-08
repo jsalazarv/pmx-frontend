@@ -14,6 +14,7 @@
           :indeterminate="isLoading"
         ></v-progress-linear>
         <v-container fluid>
+          {{validityRights}}
           <EmployeeFormContratual v-if="computedEmployeeTypeId == 0" />
           <EmployeeFormNormative
             v-else
@@ -23,11 +24,16 @@
         <v-container fluid>
           <v-bottom-navigation>
             <v-btn @click="onBtnEditAddress">
-              <span>{{ $t("employeeConsultation.labels.editAddress") }}</span>
+              <span class="d-none d-sm-flex d-xs-flex">{{
+                $t("employeeConsultation.labels.editAddress")
+              }}</span>
+
               <v-icon right dark>mdi-home-edit</v-icon>
             </v-btn>
             <v-btn @click="onBtnNewAddress">
-              <span>{{ $t("employeeConsultation.labels.newAddress") }}</span>
+              <span class="d-none d-sm-flex">{{
+                $t("employeeConsultation.labels.newAddress")
+              }}</span>
               <v-icon right dark>mdi-home-plus</v-icon>
             </v-btn>
             <v-dialog v-model="dialog" persistent max-width="600">
@@ -38,7 +44,9 @@
                   v-on="on"
                   @click="onBtnAssignMedicalUnit"
                 >
-                  {{ $t("employeeConsultation.labels.assignMedicalUnit") }}
+                  <span class="d-none d-sm-flex">{{
+                    $t("employeeConsultation.labels.assignMedicalUnit")
+                  }}</span>
                   <v-icon right dark>mdi-hospital-building</v-icon>
                 </v-btn>
               </template>
@@ -87,7 +95,9 @@
               :disabled="disabledCredential"
               @click="onBtnCredentialization"
             >
-              <span>{{ $t("employeeConsultation.labels.credential") }}</span>
+              <span class="d-none d-sm-flex">{{
+                $t("employeeConsultation.labels.credential")
+              }}</span>
               <v-icon right dark>mdi-card-account-details</v-icon>
             </v-btn>
             <v-dialog v-model="dialogConstancy" persistent max-width="600">
@@ -100,7 +110,7 @@
                   "
                 >
                   <!-- {{ $t("employeeConsultation.labels.assignMedicalUnit") }} -->
-                  Constancia médica
+                  <span class="d-none d-sm-flex">Constancia médica</span>
                   <v-icon right dark>mdi-account-arrow-down</v-icon>
                 </v-btn>
               </template>
