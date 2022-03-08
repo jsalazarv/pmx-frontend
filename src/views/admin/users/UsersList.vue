@@ -94,7 +94,7 @@
       @refresh="refresListUsers"
     />
 
-    <UserContactsDialog
+    <ContactsDialog
       v-if="userContactsDialog"
       v-model="userContactsDialog"
       :idUser="idUserSelected"
@@ -117,14 +117,14 @@ import UserService from "@/services/UserService";
 import UserDialog from "@/views/admin/users/components/UserDialog.vue";
 import { IShowEmployee } from "@/services/EmployeeService/types";
 import UserCreationDialog from "@/views/admin/users/components/UserCreationDialog.vue";
-import UserContactsDialog from "./components/UserContactsDialog.vue";
+import ContactsDialog from "@/components/Contacts/ContactsDialog.vue";
 import ConfirmationDialog from "@/components/Dialogs/ConfirmationDialog.vue";
 
 @Component({
   components: {
     UserCreationDialog,
     UserDialog,
-    UserContactsDialog,
+    ContactsDialog,
     ConfirmationDialog,
   },
 })

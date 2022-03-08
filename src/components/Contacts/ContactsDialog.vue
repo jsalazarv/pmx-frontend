@@ -161,7 +161,7 @@ import ContactService from "@/services/ContactService";
     },
   },
 })
-export default class UserContacts extends Vue {
+export default class ContactsDialog extends Vue {
   protected contactTypeService = new ContactTypesService();
   protected contactService = new ContactService();
   public contactSelected: any = null;
