@@ -30,6 +30,7 @@ export interface IUser {
   IdEmpleado: number | null;
   IdTipoEmpleado: number | null;
   TipoEmpleado: string;
+  IdPersona: number | null;
   NombreCompleto: string;
   Estado: string;
   FechaInicio: string;

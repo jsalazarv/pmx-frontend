@@ -97,8 +97,8 @@
     <ContactsDialog
       v-if="userContactsDialog"
       v-model="userContactsDialog"
-      :idUser="idUserSelected"
-      :idPerson="null"
+      :idPerson="idPersonSelected"
+      @refresh="refresListUsers"
     />
 
     <ConfirmationDialog
@@ -168,7 +168,13 @@ export default class UsersList extends Vue {
       value: "FechaTermino",
       sortable: false,
     },
-    { text: "", value: "actions", align: "end", sortable: false },
+    { 
+      text: "", 
+      value: "actions", 
+      width: "20%", 
+      align: "end", 
+      sortable: false 
+    },
   ];
   public confirmDialogOpen = false;
   public openUserCreationDialog = false;
@@ -181,6 +187,7 @@ export default class UsersList extends Vue {
     IdEmpleado: null,
     IdTipoEmpleado: null,
     TipoEmpleado: "",
+    IdPersona: null,
     NombreCompleto: "",
     Estado: "",
     FechaInicio: "",
@@ -207,7 +214,7 @@ export default class UsersList extends Vue {
     },
     Roles: null,
   };
-  public idUserSelected: number | null = null;
+  public idPersonSelected: number | null = null;
 
   created() {}
 
@@ -235,7 +242,7 @@ export default class UsersList extends Vue {
 
   viewContacts(item: IUser): void {
     this.userContactsDialog = true;
-    this.idUserSelected = item.IdUsuario;
+    this.idPersonSelected = item.IdPersona;
   }
 
   openUserModal(): void {
@@ -275,6 +282,7 @@ export default class UsersList extends Vue {
 
   refresListUsers() {
     this.getUserList();
+    this.idPersonSelected = null;
   }
 }
 </script>

@@ -65,7 +65,6 @@
                 <v-col cols="12" md="4" class="py-0">
                   <ValidationProvider
                     :name="$t('employee.attributes.extension')"
-                    rules="required"
                     v-slot="{ errors }"
                   >
                     <v-text-field
@@ -154,11 +153,6 @@ import ContactService from "@/services/ContactService";
       default: () => null,
       required: false,
     },
-    idUser: {
-      type: Number,
-      default: () => null,
-      required: false,
-    },
   },
 })
 export default class ContactsDialog extends Vue {
@@ -226,27 +220,22 @@ export default class ContactsDialog extends Vue {
 
   getContacts() {
     let vm = this as any;
-    if (vm.idUser) {
-      vm.contactService.getContactsByIdUser(vm.idUser).then((response: any) => {
+
+    vm.contactService
+      .getContactsByIdPerson(vm.idPerson)
+      .then((response: any) => {
         this.contacts = [];
         let data: Array<IContact> = response.Data;
         vm.contacts = data;
       });
-    } else if (vm.idPerson) {
-      vm.contactService
-        .getContactsByIdPerson(vm.idPerson)
-        .then((response: any) => {
-          this.contacts = [];
-          let data: Array<IContact> = response.Data;
-          vm.contacts = data;
-        });
-    }
   }
 
   addRow(): void {
+    let vm = this as any;
+
     let contact: IContact = {
       IdContacto: null,
-      IdPersona: 0,
+      IdPersona: vm.idPerson,
       IdTipoContacto: 0,
       Tipo: "",
       Extension: "",
@@ -293,23 +282,18 @@ export default class ContactsDialog extends Vue {
         }
       );
 
-      if (vm.idUser) {
-        vm.contactService
-          .generateContactsByIdUser(vm.idUser, contacts)
-          .then((response: any) => {
-            if (response.Success) {
-              console.log(response);
-            }
-          });
-      } else {
-        vm.contactService
-          .generateContactsByIdPerson(vm.idPerson, contacts)
-          .then((response: any) => {
-            if (response.Success) {
-              console.log(response);
-            }
-          });
-      }
+      vm.contactService
+        .generateContactsByIdPerson(vm.idPerson, contacts)
+        .then((response: any) => {
+          if (response.Success) {
+            this.$emit("refresh");
+            vm.ok("Contacto registrados correctamente");
+          }
+        })
+        .finally(() => {
+          vm.closeContactsDialog();
+          vm.contacts = [];
+        });
     }
   }
 }
