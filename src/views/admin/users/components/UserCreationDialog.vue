@@ -61,7 +61,8 @@
                 item-text="Nombre"
                 return-object
                 @change="changeProfile"
-                :rules="[rules.required]"
+                :rules="[rules.required, rules.requiredProfile]"
+                required
               ></v-autocomplete>
             </v-col>
             <v-col cols="12" class="py-0">
@@ -103,7 +104,14 @@
           {{ $t("users.labels.dialogs.createUser.actions.dismiss") }}
         </v-btn>
         <v-spacer></v-spacer>
-        <v-btn color="success" @click="saveUser"> Guardar </v-btn>
+        <v-btn
+          color="success"
+          :disabled="sendCreated"
+          :loading="sendCreated"
+          @click="saveUser"
+        >
+          Guardar
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -172,7 +180,7 @@ export default class UserCreationDialog extends Vue {
   public profiles: Array<IProfile> = [];
   public roles: Array<IRoles> = [];
   public profileModel: IProfile = {
-    IdPerfil: 0,
+    IdPerfil: null,
     Nombre: "",
     Siglas: "",
     Descripcion: "",
@@ -182,7 +190,10 @@ export default class UserCreationDialog extends Vue {
   };
   public rules: object = {
     required: (val: any) => !!val || "El campo es requerido",
+    requiredProfile: (val: IProfile) =>
+      !!val.IdPerfil || "El campo es requerido",
   };
+  public sendCreated: boolean = false;
 
   @Watch("isDialogOpen")
   getDataLists(): void {
@@ -233,10 +244,10 @@ export default class UserCreationDialog extends Vue {
         IdEmpleado: this.employeeData?.IdEmpleado || 0,
         IdTipoEmpleado: this.employeeData?.TipoEmpleado?.Id || 0,
         Nombres: nombres,
-        FechaInicio: '',
-        FechaTermino: '',
+        FechaInicio: "",
+        FechaTermino: "",
         IdPerfil: null,
-        IdUsuario: null
+        IdUsuario: null,
       };
 
       this.userDataRequest.IdUsuario = null;
@@ -320,12 +331,14 @@ export default class UserCreationDialog extends Vue {
   createUser() {
     let vm = this as any;
 
+    this.sendCreated = true;
+
     vm.userService
       .create(vm.userDataRequest)
       .then((res: any) => {
         if (res.Success) {
           vm.ok("El usuario se ha creado correctamente");
-        } 
+        }
         vm.$emit("refresh");
       })
       .catch((err: any) => {
@@ -333,11 +346,14 @@ export default class UserCreationDialog extends Vue {
       })
       .finally(() => {
         this.isDialogOpen = false;
+        this.sendCreated = false;
       });
   }
 
   updateUser() {
     let vm = this as any;
+
+    this.sendCreated = true;
 
     vm.userService
       .update(vm.userDataRequest)
@@ -349,6 +365,7 @@ export default class UserCreationDialog extends Vue {
       })
       .finally(() => {
         this.isDialogOpen = false;
+        this.sendCreated = false;
       });
   }
 }
