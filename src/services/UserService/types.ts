@@ -52,3 +52,10 @@ export interface IUserRequest {
   FechaInicio: string;
   FechaTermino: string;
 }
+
+export interface IUserFilterRequest {
+  IdEmpleado: number | null;
+  IdPerfil: number | null;
+  Nombre: string | null;
+  Estado: string | null;
+}
