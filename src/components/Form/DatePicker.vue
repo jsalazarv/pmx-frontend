@@ -81,7 +81,7 @@ export default class DatePicker extends Vue {
   public isMenuOpenModel = false;
 
   created(){
-    console.log((this as any).value !== null)
+  
   }
 
   input(value: string) {
