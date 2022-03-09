@@ -91,7 +91,7 @@
               x-small
               @click="viewContacts(item)"
             >
-              <v-icon dark>mdi-account-plus</v-icon>
+              <v-icon dark>mdi-contacts</v-icon>
             </v-btn>
             <v-btn
               class="mx-1"

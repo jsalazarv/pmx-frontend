@@ -121,6 +121,8 @@
             class="text-capitalize mr-2"
             @click="saveContacts"
             v-if="contacts.length"
+            :disabled="sendCreated"
+            :loading="sendCreated"
             >Guardar</v-btn
           >
           <v-btn class="text-capitalize" @click="closeContactsDialog"
@@ -166,6 +168,7 @@ export default class ContactsDialog extends Vue {
   };
   public contacts: Array<IContact> = [];
   public isCreated: boolean = false;
+  public sendCreated: boolean = false;
 
   mounted(): void {
     this.getContactTypes();
@@ -207,6 +210,7 @@ export default class ContactsDialog extends Vue {
 
   getContactTypes(): void {
     this.isLoadingContactTypes = true;
+
     this.contactTypeService
       .getAll()
       .then((response) => {
@@ -267,6 +271,7 @@ export default class ContactsDialog extends Vue {
 
   saveContacts(): void {
     let vm = this as any;
+    this.sendCreated = true;
 
     if (vm.contacts.length) {
       let contacts: Array<IContactRequest> = vm.contacts.map(
@@ -293,6 +298,7 @@ export default class ContactsDialog extends Vue {
         .finally(() => {
           vm.closeContactsDialog();
           vm.contacts = [];
+          this.sendCreated = false;
         });
     }
   }
