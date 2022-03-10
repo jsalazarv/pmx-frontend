@@ -1,6 +1,9 @@
 export default {
+  labels: {
+    module: "Módulo",
+  },
   mfe: {
-    moduleName: "Módulo de Filiación de Empleados",
+    moduleName: "Filiación de Empleados",
     items: {
       home: "Inicio",
       employeeRegistration: "Alta",

@@ -2,11 +2,12 @@
   <v-navigation-drawer v-model="sidebar.open" clipped app dark>
     <v-col cols="12">
       <v-select
+        :label="$t('sidebar.labels.module')"
+        outlined
         :items="modulesMenu"
         :value="menu.name"
         item-text="name"
         :return-object="true"
-        solo
         @change="switchMenu"
       ></v-select>
     </v-col>
