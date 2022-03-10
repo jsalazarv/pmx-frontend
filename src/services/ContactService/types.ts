@@ -9,7 +9,6 @@ export interface IContact {
   Baja: false | null;
 }
 
-
 export interface IContactRequest {
   IdContacto: number | null;
   IdPersona: number;

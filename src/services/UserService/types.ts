@@ -38,6 +38,7 @@ export interface IUser {
   PrimeraSesion: string;
   UltimaSesion: string;
   Contador: number | null;
+  Bloqueado: boolean | null;
   Baja: boolean;
   Perfil: IProfile;
   Roles: IRoles | null;

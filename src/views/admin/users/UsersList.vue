@@ -82,6 +82,14 @@
           :headers="headers"
           :items="userList"
         >
+          <template v-slot:[`item.locked`]="{ item }">
+            <v-switch
+              dense
+              v-model="item.Bloqueado"
+              @change="changeStateUser(item)"
+              :color="!item.Bloqueado ? 'primary': 'success'"
+            ></v-switch>
+          </template>
           <template v-slot:[`item.actions`]="{ item }">
             <v-btn
               class="mx-1"
@@ -190,6 +198,7 @@ export default class UsersList extends Vue {
       text: this.$t("users.attributes.name"),
       value: "NombreCompleto",
       sortable: false,
+      width: "25%",
     },
     {
       text: this.$t("users.attributes.login"),
@@ -200,6 +209,7 @@ export default class UsersList extends Vue {
       text: this.$t("users.attributes.profileName"),
       value: "Perfil.Nombre",
       sortable: false,
+      width: "25%",
     },
     {
       text: this.$t("users.attributes.state"),
@@ -210,6 +220,10 @@ export default class UsersList extends Vue {
       text: this.$t("users.attributes.validity"),
       value: "FechaTermino",
       sortable: false,
+    },
+    {
+      text: "Bloquear",
+      value: "locked",
     },
     {
       text: "",
@@ -239,6 +253,7 @@ export default class UsersList extends Vue {
     UltimaSesion: "",
     Contador: null,
     Baja: false,
+    Bloqueado: null,
     Perfil: {
       IdPerfil: 0,
       Nombre: "",
@@ -362,6 +377,30 @@ export default class UsersList extends Vue {
   clearState(): void {
     this.userFilterModel.Estado = null;
     this.getUserList();
+  }
+
+  changeStateUser(item: IUser) {
+    let vm = this as any;
+
+    vm.userService
+      .setStateChangeByUserId(
+        <number>item.IdUsuario,
+        (<boolean>item.Bloqueado)
+      )
+      .then((res: any) => {
+        let success = res.Success;
+
+        if (success) {
+          let message = <boolean>res.Data.Bloqueado
+            ? "Usuario bloqueado correctamente"
+            : "Usuario desbloqueado correctamente";
+
+          vm.ok(message);
+        }
+      })
+      .finally(() => {
+        vm.getUserList();
+      });
   }
 }
 </script>

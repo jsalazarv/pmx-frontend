@@ -193,7 +193,7 @@ export default class UserCreationDialog extends Vue {
     requiredProfile: (val: IProfile) =>
       !!val.IdPerfil || "El campo es requerido",
   };
-  public sendCreated: boolean = false;
+  public sendCreated = false;
 
   @Watch("isDialogOpen")
   getDataLists(): void {

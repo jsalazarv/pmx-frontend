@@ -14,14 +14,13 @@ import "./filters/dataCleaner";
 import "./filters/dateFormatter";
 import { NotifyMixin, LanguageMixin } from "./mixins";
 
-
 Vue.mixin(NotifyMixin);
 Vue.mixin(LanguageMixin);
 
 Vue.use(VueAxios, Axios);
 
 Vue.prototype.$env = process.env.NODE_ENV;
-Vue.prototype.$moment = moment; 
+Vue.prototype.$moment = moment;
 
 Vue.config.productionTip = false;
 

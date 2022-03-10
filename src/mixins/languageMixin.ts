@@ -11,9 +11,19 @@ export class LanguageMixin extends Vue {
 
     let languageSelected = "";
 
-    if (languages && languages.length && languages.includes(language) && language) {
+    if (
+      languages &&
+      languages.length &&
+      languages.includes(language) &&
+      language
+    ) {
       languageSelected = language;
-    } else if (languages && languages.length && !languages.includes(language) && language) {
+    } else if (
+      languages &&
+      languages.length &&
+      !languages.includes(language) &&
+      language
+    ) {
       languageSelected = languages[0];
     } else {
       languageSelected = "";
