@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-dialog v-model="openModel" width="1200">
+    <v-dialog v-model="openModel" width="1200" :persistent="sendCreated">
       <v-card>
         <v-card-title class="headline">Contactos</v-card-title>
         <v-card-text>
@@ -125,9 +125,13 @@
             :loading="sendCreated"
             >Guardar</v-btn
           >
-          <v-btn class="text-capitalize" @click="closeContactsDialog"
-            >Cerrar</v-btn
+          <v-btn
+            class="text-capitalize"
+            @click="closeContactsDialog"
+            :disabled="sendCreated"
           >
+            Cerrar
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -167,8 +171,8 @@ export default class ContactsDialog extends Vue {
     required: (val: any) => !!val || "Campo requerido",
   };
   public contacts: Array<IContact> = [];
-  public isCreated: boolean = false;
-  public sendCreated: boolean = false;
+  public isCreated = false;
+  public sendCreated = false;
 
   mounted(): void {
     this.getContactTypes();
@@ -222,7 +226,7 @@ export default class ContactsDialog extends Vue {
       });
   }
 
-  getContacts() {
+  getContacts(): void {
     let vm = this as any;
 
     vm.contactService
@@ -230,7 +234,23 @@ export default class ContactsDialog extends Vue {
       .then((response: any) => {
         this.contacts = [];
         let data: Array<IContact> = response.Data;
-        vm.contacts = data;
+
+        if (data.length) {
+          vm.contacts = data;
+        } else {
+          let contact: IContact = {
+            IdContacto: null,
+            IdPersona: vm.idPerson,
+            IdTipoContacto: 0,
+            Tipo: "",
+            Extension: "",
+            Detalle: "",
+            Referencia: "",
+            Baja: false,
+          };
+
+          vm.contacts.push(contact);
+        }
       });
   }
 
