@@ -8,6 +8,10 @@
           </v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
+          <v-btn color="success" @click="openContactDialog()">
+            {{ $t("employeeConsultationMFE.labels.addContact") }}
+            <v-icon right dark>mdi-card-account-phone</v-icon>
+          </v-btn>
         </v-toolbar>
         <ValidationObserver ref="form">
           <v-container>
@@ -448,6 +452,11 @@
       @onSelect="newRenapoData"
       @onCancel="resetForm"
     />
+    <ContactsDialog
+      v-if="openContactsDialog"
+      v-model="openContactsDialog"
+      :id-person="employeeData.Persona.IdPersona"
+    />
   </div>
 </template>
 
@@ -476,8 +485,9 @@ import { ISyndicateSection } from "@/services/SyndicateSectionService/types";
 import { IMaritalStatus } from "@/services/MaritalStatusService/types";
 import { IApiResponse } from "@/services/types";
 import { IPersonValidationResponse } from "@/services/PeopleService/types";
-import RenapoEditDialog from "@/views/mfe/employeeConsultation/components/RenapoEditDialog.vue";
 import { IEmployeeForm } from "@/store/employee/types";
+import RenapoEditDialog from "@/views/mfe/employeeConsultation/components/RenapoEditDialog.vue";
+import ContactsDialog from "@/components/Contacts/ContactsDialog.vue";
 
 const initialEmployeeData: IShowEmployee = {
   IdEmpleado: undefined,
@@ -520,7 +530,7 @@ const initialEmployeeData: IShowEmployee = {
 };
 
 @Component({
-  components: { RenapoEditDialog },
+  components: { ContactsDialog, RenapoEditDialog },
 })
 export default class employeeEdit extends Vue {
   protected peopleService = new PeopleService();
@@ -570,6 +580,7 @@ export default class employeeEdit extends Vue {
     EstadoCivil: undefined,
     RFC: "",
   };
+  public openContactsDialog = false;
 
   getEmployeeTypes(): void {
     this.isLoadingEmployeeList = true;
@@ -853,6 +864,10 @@ export default class employeeEdit extends Vue {
       RFC: this.currentEmployeeData.RFC,
       IndRenapo: this.hasIndRenapo,
     };
+  }
+
+  openContactDialog(): void {
+    this.openContactsDialog = true;
   }
 
   mounted(): void {
