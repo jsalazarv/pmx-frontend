@@ -16,9 +16,11 @@ export default {
   mvd: {
     title: "",
   },
-  common: {
+  admin: {
+    title: "Administrar",
     items: {
-      manageUsers: "Administrar usuarios",
+      users: "Usuarios",
+      profiles: "Perfiles",
     },
   },
 };
