@@ -80,7 +80,7 @@ export default class DatePicker extends Vue {
   public openMenu = false;
   public isMenuOpenModel = false;
 
-  input(value: string) {
+  input(value: string): void {
     this.$emit("input", value || "");
   }
 
@@ -101,7 +101,6 @@ export default class DatePicker extends Vue {
 
     return value ? vm.$moment(vm.value).format("DD-MM-YYYY") : "";
   }
-
 }
 </script>
 
