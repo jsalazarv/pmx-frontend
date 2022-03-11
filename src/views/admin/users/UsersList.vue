@@ -14,7 +14,7 @@
             :disabled="isLoadingUsersList"
             @click="openUserModal"
           >
-            {{ $t("users.labels.add") }}
+            {{ $t("users.create.title") }}
             <v-icon right dark>mdi-account-plus</v-icon>
           </v-btn>
         </v-toolbar>
@@ -31,7 +31,7 @@
             <v-text-field
               outlined
               dense
-              label="Número de Asignación"
+              :label="$t('users.attributes.searchAssignNumber')"
               v-model="userFilterModel.IdEmpleado"
               @keypress.enter="getUserList"
               clearable
@@ -42,7 +42,7 @@
             <v-text-field
               outlined
               dense
-              label="Nombre"
+              :label="$t('users.attributes.namePerson')"
               v-model="userFilterModel.Nombre"
               @keypress.enter="getUserList"
               clearable
@@ -56,7 +56,7 @@
               item-value="IdPerfil"
               outlined
               dense
-              label="Perfil"
+              :label="$t('users.attributes.profileName')"
               v-model="userFilterModel.IdPerfil"
               @change="getUserList"
               clearable
@@ -67,7 +67,7 @@
             <v-text-field
               outlined
               dense
-              label="Estado"
+              :label="$t('users.attributes.state')"
               v-model="userFilterModel.Estado"
               @change="getUserList"
               clearable
@@ -87,7 +87,7 @@
               dense
               v-model="item.Bloqueado"
               @change="changeStateUser(item)"
-              :color="!item.Bloqueado ? 'primary': 'success'"
+              :color="!item.Bloqueado ? 'primary' : 'success'"
             ></v-switch>
           </template>
           <template v-slot:[`item.actions`]="{ item }">
@@ -183,56 +183,6 @@ export default class UsersList extends Vue {
 
   public isLoadingUsersList = false;
   public userList: Array<IUser> = [];
-  public headers = [
-    {
-      text: this.$t("users.attributes.assignmentNumber"),
-      value: "IdEmpleado",
-      sortable: false,
-    },
-    {
-      text: this.$t("users.attributes.typeOfEmployee"),
-      value: "TipoEmpleado",
-      sortable: false,
-    },
-    {
-      text: this.$t("users.attributes.name"),
-      value: "NombreCompleto",
-      sortable: false,
-      width: "25%",
-    },
-    {
-      text: this.$t("users.attributes.login"),
-      value: "UltimaSesion",
-      sortable: false,
-    },
-    {
-      text: this.$t("users.attributes.profileName"),
-      value: "Perfil.Nombre",
-      sortable: false,
-      width: "25%",
-    },
-    {
-      text: this.$t("users.attributes.state"),
-      value: "Estado",
-      sortable: false,
-    },
-    {
-      text: this.$t("users.attributes.validity"),
-      value: "FechaTermino",
-      sortable: false,
-    },
-    {
-      text: "Bloquear",
-      value: "locked",
-    },
-    {
-      text: "",
-      value: "actions",
-      width: "20%",
-      align: "end",
-      sortable: false,
-    },
-  ];
   public confirmDialogOpen = false;
   public openUserCreationDialog = false;
   public employeeData?: IShowEmployee = {};
@@ -286,6 +236,59 @@ export default class UsersList extends Vue {
   mounted(): void {
     this.getUserList();
     this.getProfilesList();
+  }
+
+  get headers() {
+    return [
+      {
+        text: this.$t("users.attributes.assignmentNumber"),
+        value: "IdEmpleado",
+        sortable: false,
+      },
+      {
+        text: this.$t("users.attributes.typeOfEmployee"),
+        value: "TipoEmpleado",
+        sortable: false,
+      },
+      {
+        text: this.$t("users.attributes.name"),
+        value: "NombreCompleto",
+        sortable: false,
+        width: "25%",
+      },
+      {
+        text: this.$t("users.attributes.login"),
+        value: "UltimaSesion",
+        sortable: false,
+      },
+      {
+        text: this.$t("users.attributes.profileName"),
+        value: "Perfil.Nombre",
+        sortable: false,
+        width: "25%",
+      },
+      {
+        text: this.$t("users.attributes.state"),
+        value: "Estado",
+        sortable: false,
+      },
+      {
+        text: this.$t("users.attributes.validity"),
+        value: "FechaTermino",
+        sortable: false,
+      },
+      {
+        text: this.$t("users.attributes.locked"),
+        value: "locked",
+      },
+      {
+        text: "",
+        value: "actions",
+        width: "20%",
+        align: "end",
+        sortable: false,
+      },
+    ];
   }
 
   getUserList(): void {
@@ -383,10 +386,7 @@ export default class UsersList extends Vue {
     let vm = this as any;
 
     vm.userService
-      .setStateChangeByUserId(
-        <number>item.IdUsuario,
-        (<boolean>item.Bloqueado)
-      )
+      .setStateChangeByUserId(<number>item.IdUsuario, <boolean>item.Bloqueado)
       .then((res: any) => {
         let success = res.Success;
 

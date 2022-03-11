@@ -10,6 +10,7 @@ import affiliationLog from "./mfe/affiliationLog";
 import credentialization from "./mvd/credentialization";
 import dropDownProfile from "./dropDownProfile";
 import proofAssignment from "./mfe/proofAssignment";
+import users from "@/lang/en/admin/users";
 
 export default {
   dictionary,
@@ -24,4 +25,5 @@ export default {
   credentialization,
   dropDownProfile,
   proofAssignment,
+  users
 };

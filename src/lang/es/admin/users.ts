@@ -3,16 +3,16 @@ export default {
     title: "Lista de usuarios",
   },
   show: {
-    title: "",
+    title: "Mostrar",
   },
   edit: {
-    title: "",
+    title: "Editar",
   },
   create: {
-    title: "",
+    title: "Agregar",
   },
   delete: {
-    title: "",
+    title: "Eliminar",
   },
   attributes: {
     assignmentNumber: "Número de asignación",
@@ -22,6 +22,9 @@ export default {
     profileName: "Perfil",
     state: "Estado",
     validity: "Vigencia",
+    searchAssignNumber: "Número de Asignación",
+    namePerson: "Nombres",
+    locked: "Bloquear"
   },
   labels: {
     add: "Agregar",
