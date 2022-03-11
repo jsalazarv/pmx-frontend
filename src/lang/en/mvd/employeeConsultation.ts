@@ -48,28 +48,14 @@ export default {
       confirmDelete: {
         message: "Do you want to delete the beneficiary?",
       },
-      successDelete: {
-        message: "The beneficiary has been deleted successfully",
-      },
-      errorDelete: {
-        message: "A problem has occurred",
-      },
+      successDelete: {},
+      errorDelete: {},
       errorUpdate: {},
       successUpdate: {},
-      errorCreate: {
-        message: "A problem has occurred",
-      },
-      successCreate: {
-        message: "The headline has been saved successfully",
-      },
+      errorCreate: {},
+      successCreate: {},
       info: {
         message: "The employee is not currently in force",
-      },
-      successAssign: {
-        message: "It has been assigned correctly",
-      },
-      errorAsign: {
-        message: "A problem has occurred",
       },
     },
     validations: {

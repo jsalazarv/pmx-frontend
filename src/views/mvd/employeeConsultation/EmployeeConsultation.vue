@@ -23,11 +23,16 @@
         <v-container fluid>
           <v-bottom-navigation>
             <v-btn @click="onBtnEditAddress">
-              <span>{{ $t("employeeConsultation.labels.editAddress") }}</span>
+              <span class="d-none d-sm-flex d-xs-flex">{{
+                $t("employeeConsultation.labels.editAddress")
+              }}</span>
+
               <v-icon right dark>mdi-home-edit</v-icon>
             </v-btn>
             <v-btn @click="onBtnNewAddress">
-              <span>{{ $t("employeeConsultation.labels.newAddress") }}</span>
+              <span class="d-none d-sm-flex">{{
+                $t("employeeConsultation.labels.newAddress")
+              }}</span>
               <v-icon right dark>mdi-home-plus</v-icon>
             </v-btn>
             <v-dialog v-model="dialog" persistent max-width="600">
@@ -38,7 +43,9 @@
                   v-on="on"
                   @click="onBtnAssignMedicalUnit"
                 >
-                  {{ $t("employeeConsultation.labels.assignMedicalUnit") }}
+                  <span class="d-none d-sm-flex">{{
+                    $t("employeeConsultation.labels.assignMedicalUnit")
+                  }}</span>
                   <v-icon right dark>mdi-hospital-building</v-icon>
                 </v-btn>
               </template>
@@ -87,9 +94,69 @@
               :disabled="disabledCredential"
               @click="onBtnCredentialization"
             >
-              <span>{{ $t("employeeConsultation.labels.credential") }}</span>
+              <span class="d-none d-sm-flex">{{
+                $t("employeeConsultation.labels.credential")
+              }}</span>
               <v-icon right dark>mdi-card-account-details</v-icon>
             </v-btn>
+            <v-dialog v-model="dialogConstancy" persistent max-width="600">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  v-bind="attrs"
+                  v-on="on"
+                  :disabled="
+                    !validityRights.IdDerechohabiente && !medicalUnitId
+                  "
+                >
+                  <!-- {{ $t("employeeConsultation.labels.assignMedicalUnit") }} -->
+                  <span class="d-none d-sm-flex">Constancia médica</span>
+                  <v-icon right dark>mdi-account-arrow-down</v-icon>
+                </v-btn>
+              </template>
+              <v-card>
+                <v-card-title class="text-h5">
+                  Descargar constancia médica
+                </v-card-title>
+                <ValidationObserver v-slot="{ handleSubmit }" ref="form">
+                  <form @submit.prevent="handleSubmit(onDownload)">
+                    <v-col cols="12" sm="12" md="12">
+                      <ValidationProvider
+                        :name="$t('beneficiary.attributes.observations')"
+                        v-slot="{ errors }"
+                        rules="max:100"
+                      >
+                        <v-textarea
+                          :label="$t('beneficiary.attributes.observations')"
+                          name="observations"
+                          dense
+                          outlined
+                          :error-messages="errors"
+                          rows="3"
+                        >
+                        </v-textarea>
+                      </ValidationProvider>
+                    </v-col>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn
+                        color="red darken-1"
+                        text
+                        @click="dialogConstancy = false"
+                      >
+                        {{ $t("employeeConsultation.labels.cancel") }}
+                      </v-btn>
+                      <v-btn type="submit" color="success" dark dense>
+                        Descargar
+                      </v-btn>
+                    </v-card-actions>
+                  </form>
+                </ValidationObserver>
+              </v-card>
+            </v-dialog>
+            <!-- <v-btn @click="onBtnEditAddress">
+              <span>Constancia médica</span>
+              <v-icon right dark>mdi-account-arrow-down</v-icon>
+            </v-btn> -->
           </v-bottom-navigation>
         </v-container>
         <v-toolbar flat>
@@ -241,6 +308,7 @@ export default class EmployeeConsultation extends Vue {
   public disabledAssignMedicalUnit = false;
   public disabledAddBeneficiary = false;
   public dialog = false;
+  public dialogConstancy = false;
   public dialogDelete = false;
   public isLoadingMedicalUnitsList = false;
   public isLoadingBeneficiaries = false;
@@ -457,6 +525,10 @@ export default class EmployeeConsultation extends Vue {
       .finally(() => {
         this.dialog = false;
       });
+  }
+
+  onDownload() {
+    console.log("entra");
   }
 
   deleteBeneficiary(): void {
