@@ -231,8 +231,6 @@ export default class UsersList extends Vue {
   };
   profiles: Array<IProfile> = [];
 
-  created() {}
-
   mounted(): void {
     this.getUserList();
     this.getProfilesList();
