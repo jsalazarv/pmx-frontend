@@ -238,11 +238,11 @@ export default class UsersList extends Vue {
     this.getProfilesList();
   }
 
-  get titleModalElimination(): string{
+  get titleModalElimination(): string {
     return this.$t("users.attributes.eliminationTitle") as string;
   }
 
-  get messageConfirmationElimination(): string{
+  get messageConfirmationElimination(): string {
     return this.$t("users.attributes.eliminationMsg") as string;
   }
 

@@ -9,8 +9,7 @@ export default Object.freeze({
   },
   badRequest: {
     status: "400",
-    text:
-      "La solicitud se ha completado pero no cumple una o más reglas de validación",
+    text: "La solicitud se ha completado pero no cumple una o más reglas de validación",
   },
   notFound: {
     status: "404",

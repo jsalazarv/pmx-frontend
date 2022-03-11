@@ -6,8 +6,7 @@ export default [
     meta: { requiresAuth: true },
   },
   {
-    path:
-      "/mvd/empleados/consulta/:paramEmployeeId?/:paramEmployeeTypeId?/:paramIdPerson?",
+    path: "/mvd/empleados/consulta/:paramEmployeeId?/:paramEmployeeTypeId?/:paramIdPerson?",
     name: "mvd:people:employeeConsultation",
     props: true,
     component: () =>
@@ -15,40 +14,35 @@ export default [
     meta: { requiresAuth: true },
   },
   {
-    path:
-      "/mvd/domicilio/editar/:paramEmployeeId?/:paramEmployeeTypeId?/:paramIdPerson?",
+    path: "/mvd/domicilio/editar/:paramEmployeeId?/:paramEmployeeTypeId?/:paramIdPerson?",
     name: "address:editAddress",
     props: true,
     component: () => import("@/views/mvd/address/EditAddress.vue"),
     meta: { requiresAuth: true },
   },
   {
-    path:
-      "/mvd/domicilio/nuevo/:paramEmployeeId?/:paramEmployeeTypeId?/:paramIdPerson?",
+    path: "/mvd/domicilio/nuevo/:paramEmployeeId?/:paramEmployeeTypeId?/:paramIdPerson?",
     name: "address:newAddress",
     props: true,
     component: () => import("@/views/mvd/address/NewAddress.vue"),
     meta: { requiresAuth: true },
   },
   {
-    path:
-      "/mvd/derechohabiente/alta/:paramEmployeeId?/:paramEmployeeTypeId?/:paramIdPerson?",
+    path: "/mvd/derechohabiente/alta/:paramEmployeeId?/:paramEmployeeTypeId?/:paramIdPerson?",
     name: "beneficiary:newBeneficiary",
     props: true,
     component: () => import("@/views/mvd/beneficiary/NewBeneficiary.vue"),
     meta: { requiresAuth: true },
   },
   {
-    path:
-      "/mvd/derechohabiente/editar/:paramEmployeeId?/:paramEmployeeTypeId?/:paramIdPerson?/:paramIdBeneficiary?",
+    path: "/mvd/derechohabiente/editar/:paramEmployeeId?/:paramEmployeeTypeId?/:paramIdPerson?/:paramIdBeneficiary?",
     name: "beneficiary:editBeneficiary",
     props: true,
     component: () => import("@/views/mvd/beneficiary/EditBeneficiary.vue"),
     meta: { requiresAuth: true },
   },
   {
-    path:
-      "/mvd/credencializacion/:paramEmployeeId?/:paramEmployeeTypeId?/:paramIdPerson?",
+    path: "/mvd/credencializacion/:paramEmployeeId?/:paramEmployeeTypeId?/:paramIdPerson?",
     name: "credentialization:credentialization",
     props: true,
     component: () =>

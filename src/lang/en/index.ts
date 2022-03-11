@@ -27,5 +27,5 @@ export default {
   dropDownProfile,
   proofAssignment,
   users,
-  contacts
+  contacts,
 };

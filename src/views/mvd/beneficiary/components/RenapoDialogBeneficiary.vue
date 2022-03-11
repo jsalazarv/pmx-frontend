@@ -5,15 +5,27 @@
         {{
           !isEdit
             ? existsBeneficiary
-              ? $t("beneficiary.labels.customValidations.beneficiaryAlreadyActive")
+              ? $t(
+                  "beneficiary.labels.customValidations.beneficiaryAlreadyActive"
+                )
               : hasDataPTCH
-              ?  $t("beneficiary.labels.customValidations.beneficiaryAlreadyInactive")
-              : $t("beneficiary.labels.customValidations.beneficiaryNotRegistered")
+              ? $t(
+                  "beneficiary.labels.customValidations.beneficiaryAlreadyInactive"
+                )
+              : $t(
+                  "beneficiary.labels.customValidations.beneficiaryNotRegistered"
+                )
             : hasDataPTCH
             ? allowEdit
-              ? $t("beneficiary.labels.customValidations.beneficiaryRegisteredAvaialble")
-              : $t("beneficiary.labels.customValidations.beneficiaryRegisteredNotAvaialble")
-            : $t("beneficiary.labels.customValidations.beneficiaryNotRegisteredUpdated")
+              ? $t(
+                  "beneficiary.labels.customValidations.beneficiaryRegisteredAvaialble"
+                )
+              : $t(
+                  "beneficiary.labels.customValidations.beneficiaryRegisteredNotAvaialble"
+                )
+            : $t(
+                "beneficiary.labels.customValidations.beneficiaryNotRegisteredUpdated"
+              )
         }}
       </v-card-title>
 
@@ -161,7 +173,7 @@ export default class RenapoDialogBeneficiary extends Vue {
   get computedPerson(): IPersonValidationState {
     return this.$store.state.person;
   }
-  
+
   hide() {
     this.$emit("hideDialog");
   }
