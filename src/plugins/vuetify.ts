@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuetify from "vuetify/lib/framework";
+import { es, en } from "./index";
 
 Vue.use(Vuetify);
 
@@ -40,5 +41,12 @@ export default new Vuetify({
         gris: "#90A4AE",
       },
     },
+  },
+  lang: {
+    locales: {
+      es,
+      en,
+    },
+    current: "es",
   },
 });

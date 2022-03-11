@@ -40,7 +40,7 @@ export default class EmployeeService extends BaseService {
   async create(
     data: ICreateEmployeeRequest
   ): IServiceResponse<ICreateEmployeeResponse> {
-    const body = serialize(data);
+    const body = serialize(data, { indices: true });
 
     const config = {
       headers: {

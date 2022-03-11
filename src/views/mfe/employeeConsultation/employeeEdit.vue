@@ -8,6 +8,10 @@
           </v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
+          <v-btn color="success" @click="openContactDialog()">
+            {{ $t("employeeConsultationMFE.labels.addContact") }}
+            <v-icon right dark>mdi-card-account-phone</v-icon>
+          </v-btn>
         </v-toolbar>
         <ValidationObserver ref="form">
           <v-container>
@@ -448,6 +452,11 @@
       @onSelect="newRenapoData"
       @onCancel="resetForm"
     />
+    <ContactsDialog
+      v-if="openContactsDialog"
+      v-model="openContactsDialog"
+      :id-person="employeeData.Persona.IdPersona"
+    />
   </div>
 </template>
 
@@ -476,8 +485,9 @@ import { ISyndicateSection } from "@/services/SyndicateSectionService/types";
 import { IMaritalStatus } from "@/services/MaritalStatusService/types";
 import { IApiResponse } from "@/services/types";
 import { IPersonValidationResponse } from "@/services/PeopleService/types";
-import RenapoEditDialog from "@/views/mfe/employeeConsultation/components/RenapoEditDialog.vue";
 import { IEmployeeForm } from "@/store/employee/types";
+import RenapoEditDialog from "@/views/mfe/employeeConsultation/components/RenapoEditDialog.vue";
+import ContactsDialog from "@/components/Contacts/ContactsDialog.vue";
 
 const initialEmployeeData: IShowEmployee = {
   IdEmpleado: undefined,
@@ -520,7 +530,7 @@ const initialEmployeeData: IShowEmployee = {
 };
 
 @Component({
-  components: { RenapoEditDialog },
+  components: { ContactsDialog, RenapoEditDialog },
 })
 export default class employeeEdit extends Vue {
   protected peopleService = new PeopleService();
@@ -570,6 +580,7 @@ export default class employeeEdit extends Vue {
     EstadoCivil: undefined,
     RFC: "",
   };
+  public openContactsDialog = false;
 
   getEmployeeTypes(): void {
     this.isLoadingEmployeeList = true;
@@ -577,6 +588,11 @@ export default class employeeEdit extends Vue {
       .getAll()
       .then((response) => {
         this.employeeTypeList = response.Data;
+      })
+      .catch((error) => {
+        if (error.response) {
+          console.error(error.response);
+        }
       })
       .finally(() => {
         this.isLoadingEmployeeList = false;
@@ -590,6 +606,11 @@ export default class employeeEdit extends Vue {
       .then((response) => {
         this.gendersList = response.Data;
       })
+      .catch((error) => {
+        if (error.response) {
+          console.error(error.response);
+        }
+      })
       .finally(() => {
         this.isLoadingGendersList = false;
       });
@@ -601,6 +622,11 @@ export default class employeeEdit extends Vue {
       .getAll()
       .then((response) => {
         this.maritalStatusesList = response.Data;
+      })
+      .catch((error) => {
+        if (error.response) {
+          console.error(error.response);
+        }
       })
       .finally(() => {
         this.isLoadingMaritalStatusesList = false;
@@ -614,6 +640,11 @@ export default class employeeEdit extends Vue {
       .then((response) => {
         this.companies = response.Data;
       })
+      .catch((error) => {
+        if (error.response) {
+          console.error(error.response);
+        }
+      })
       .finally(() => {
         this.isLoadingCompanies = false;
       });
@@ -626,6 +657,11 @@ export default class employeeEdit extends Vue {
       .then((response) => {
         this.workplaces = response.Data;
       })
+      .catch((error) => {
+        if (error.response) {
+          console.error(error.response);
+        }
+      })
       .finally(() => {
         this.isLoadingWorkplaces = false;
       });
@@ -637,6 +673,11 @@ export default class employeeEdit extends Vue {
       .getAll()
       .then((response) => {
         this.syndicates = response.Data;
+      })
+      .catch((error) => {
+        if (error.response) {
+          console.error(error.response);
+        }
       })
       .finally(() => {
         this.isLoadingSyndicates = false;
@@ -651,6 +692,11 @@ export default class employeeEdit extends Vue {
       .getBySyndicateId(this.employeeData.SeccionSindical?.IdSindicato)
       .then((response) => {
         this.syndicateSections = response.Data;
+      })
+      .catch((error) => {
+        if (error.response) {
+          console.error(error.response);
+        }
       })
       .finally(() => {
         this.isLoadingSyndicateSections = false;
@@ -671,15 +717,12 @@ export default class employeeEdit extends Vue {
           this.getWorkplaces();
           this.getSyndicateSections();
           this.selectedEmployeeType(data.EstadoCivil);
-          this.$store.dispatch("app/setNotify", {});
+
+          (this as any).ok();
         }
       })
       .catch((err) => {
         if (err.response) {
-          this.$store.dispatch("app/setNotify", {
-            status: err?.response?.status,
-            text: err?.response?.data?.Message?.Texto,
-          });
           console.error(err?.response);
         }
       })
@@ -718,22 +761,17 @@ export default class employeeEdit extends Vue {
       .update(parseInt(this.$route.params.id), data as IUpdateEmployeeRequest)
       .then((response) => {
         if (response.Success) {
-          this.$store.dispatch("app/setNotify", {});
+          (this as any).ok();
         } else {
-          this.$store.dispatch("app/setNotify", {
-            status: 400,
-            text: response.Message,
-          });
+          (this as any).customError(400, response.Message);
         }
       })
       .catch((err) => {
         if (err.response) {
-          this.$store.dispatch("app/setNotify", {
-            status: err?.response?.status,
-            text:
-              err?.response?.data?.Message?.Texto ||
-              err?.response?.data?.Message,
-          });
+          (this as any).customError(
+            err?.response?.status,
+            err?.response?.data?.Message?.Texto || err?.response?.data?.Message
+          );
         }
       })
       .finally(() => {
@@ -767,10 +805,10 @@ export default class employeeEdit extends Vue {
       .then(this.handleValidationResponse)
       .catch((err) => {
         if (err.response) {
-          this.$store.dispatch("app/setNotify", {
-            status: err?.response?.status,
-            text: err?.response?.data?.Message?.Texto,
-          });
+          (this as any).customError(
+            err?.response?.status,
+            err?.response?.data?.Message?.Texto
+          );
           console.error(err?.response);
           this.hasIndRenapo = false;
           this.infoSelected = false;
@@ -789,14 +827,11 @@ export default class employeeEdit extends Vue {
     if (response.Success) {
       this.employeeValidationData = response.Data;
       this.validationMessage = response.Message;
-      this.$store.dispatch("app/setNotify", {});
+      (this as any).ok();
       setTimeout(() => this.openDialog(), 500);
       this.hasIndRenapo = true;
     } else {
-      this.$store.dispatch("app/setNotify", {
-        status: 400,
-        text: response.Message,
-      });
+      (this as any).customError(400, response.Message);
     }
   }
 
@@ -829,6 +864,10 @@ export default class employeeEdit extends Vue {
       RFC: this.currentEmployeeData.RFC,
       IndRenapo: this.hasIndRenapo,
     };
+  }
+
+  openContactDialog(): void {
+    this.openContactsDialog = true;
   }
 
   mounted(): void {

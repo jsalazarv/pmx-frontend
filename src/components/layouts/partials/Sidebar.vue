@@ -2,11 +2,12 @@
   <v-navigation-drawer v-model="sidebar.open" clipped app dark>
     <v-col cols="12">
       <v-select
+        :label="$t('sidebar.labels.module')"
+        outlined
         :items="modulesMenu"
         :value="menu.name"
         item-text="name"
         :return-object="true"
-        solo
         @change="switchMenu"
       ></v-select>
     </v-col>
@@ -66,6 +67,20 @@
         </v-list-item>
       </template>
     </v-list>
+    <template v-slot:append>
+      <v-list dense>
+        <v-list-item link :to="{ name: 'users:list' }" exact>
+          <v-list-item-action>
+            <v-icon>mdi-account-multiple-plus</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>
+              {{ $t("sidebar.common.items.manageUsers") }}
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </template>
   </v-navigation-drawer>
 </template>
 

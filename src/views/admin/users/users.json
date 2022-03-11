@@ -1,0 +1,52 @@
+[
+    {
+        "IdUsuario": 10295,
+        "IdEmpleado": 10295,
+        "IdTipoEmpleado": 5,
+        "TipoEmpleado": "Art. 123",
+        "NombreCompleto": "JUAN SALAZAR VAZQUEZ",
+        "Estado": "Activo",
+        "FechaInicio": "2022/01/22",
+        "FechaTermino": "2022/02/23",
+        "PrimeraSesion": "2022/02/22",
+        "UltimaSesion": "2022/23/22",
+        "Contador": 3,
+        "Baja": false,
+        "Perfil": {
+            "IdPerfil": 0,
+            "Nombre": "yyy",
+            "Siglas": "xxx",
+            "Descripcion": "xxx",
+            "Estado": "Activo",
+            "Baja": false,
+            "Roles": {
+                "IdRol": 0,
+                "IdModulo": 0,
+                "Clave": "xxx",
+                "Descripcion": "xxx",
+                "Modulo:": {
+                    "IdModulo": 0,
+                    "Nombre": "xxx",
+                    "Siglas": "xxx",
+                    "Descripcion": "xxx",
+                    "Baja": false
+                },
+                "Baja": false
+            }
+        },
+        "Roles": {
+            "IdRol": 0,
+            "IdModulo": 0,
+            "Clave": "xxx",
+            "Descripcion": "xxx",
+            "Modulo:": {
+                "IdModulo": 1,
+                "Nombre": "xxx",
+                "Siglas": "xxx",
+                "Descripcion": "xxx",
+                "Baja": false
+            },
+            "Baja": false
+        }
+    }
+]

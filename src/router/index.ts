@@ -3,6 +3,7 @@ import VueRouter, { RouteConfig } from "vue-router";
 import store from "../store/index";
 import mfe from "./mfe";
 import mvd from "./mvd";
+import common from "./common";
 
 Vue.use(VueRouter);
 
@@ -14,6 +15,7 @@ const routes: Array<RouteConfig> = [
   },
   ...mfe,
   ...mvd,
+  ...common,
 ];
 
 const router = new VueRouter({

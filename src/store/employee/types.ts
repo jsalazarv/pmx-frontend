@@ -77,6 +77,7 @@ export interface IEmployee {
   Genero: IGender;
   EstadoCivil: IMaritalStatus;
   Domicilio: IAddress;
+  Contactos: any;
 }
 
 export interface IEmployeeForm {
@@ -125,9 +126,16 @@ export interface IConfirmForm {
   confirmar: null | boolean;
 }
 
+export interface IContactRequest {
+  IdTipoContacto: number | null;
+  Extension: string;
+  Detalle: string;
+}
+
 export interface IEmployeeState {
   employee: IEmployeeForm;
   employmentData: IEmploymentDataForm;
   address: IAddressForm;
   confirmation: IConfirmForm;
+  contacts: Array<IContactRequest>;
 }

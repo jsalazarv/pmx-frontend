@@ -2,6 +2,7 @@ import { IAppState, IModuleMenu, Notify } from "@/store/app/types";
 import { Module } from "vuex";
 import { IRootState } from "@/store/types";
 import mfe from "@/components/layouts/partials/menu/mfe";
+import { es, en } from "@/plugins/index";
 
 const initialState: IAppState = {
   layout: "public-layout",
@@ -20,7 +21,9 @@ const initialState: IAppState = {
 
 const appStore: Module<IAppState, IRootState> = {
   namespaced: true,
-  state: { ...initialState },
+  state: {
+    ...initialState,
+  },
   mutations: {
     SET_LAYOUT(state, layout: string) {
       state.layout = layout;
@@ -35,7 +38,14 @@ const appStore: Module<IAppState, IRootState> = {
       state.notifyModel = notify;
     },
   },
-  getters: {},
+  getters: {
+    getLanguages() {
+      return Object.keys({
+        es,
+        en,
+      });
+    },
+  },
   actions: {
     toggleSidebar({ commit }) {
       commit("TOGGLE_SIDEBAR");
@@ -43,55 +53,16 @@ const appStore: Module<IAppState, IRootState> = {
     setCurrentMenu({ commit }, menu: IModuleMenu) {
       commit("SET_CURRENT_MENU", menu);
     },
-    setNotify({ commit }, { status, text }) {
-      const notifyModel: Notify = {
-        open: true,
-        text: "",
-        colorText: "",
-        colorBtn: "",
-      };
-
-      switch (status) {
-        case 200:
-          notifyModel.text = "Petición Exitosa";
-          notifyModel.colorText = "green";
-          notifyModel.colorBtn = "green";
-          break;
-        case 204:
-          notifyModel.text = "Petición Exitosa";
-          notifyModel.colorText = "green";
-          notifyModel.colorBtn = "green";
-          break;
-        case 400:
-          notifyModel.text = text;
-          notifyModel.colorText = "orange";
-          notifyModel.colorBtn = "orange";
-          break;
-        case 404:
-          notifyModel.text = "Registro no Encontrado";
-          notifyModel.colorText = "orange";
-          notifyModel.colorBtn = "orange";
-          break;
-        case 500:
-          notifyModel.text = "Error Interno en el Servidor";
-          notifyModel.colorText = "white";
-          notifyModel.colorBtn = "red";
-          break;
-        default:
-          notifyModel.text = "Petición Exitosa";
-          notifyModel.colorText = "green";
-          notifyModel.colorBtn = "green";
-      }
-
-      commit("SET_NOTIFY", notifyModel);
+    setNotify({ commit }, notify: Notify) {
+      commit("SET_NOTIFY", notify);
 
       setTimeout(() => {
-        notifyModel.open = false;
-        notifyModel.colorText = "";
-        notifyModel.colorBtn = "";
-        notifyModel.text = "";
-        commit("SET_NOTIFY", notifyModel);
-      }, 8000);
+        notify.open = false;
+        notify.colorText = "";
+        notify.colorBtn = "";
+        notify.text = "";
+        commit("SET_NOTIFY", notify);
+      }, 3000);
     },
     clearNotify({ commit }) {
       const notifyModel: Notify = {

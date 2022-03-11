@@ -1,36 +1,37 @@
 import { IModuleMenu } from "@/store/app/types";
+import i18n from "@/lang";
 
 const mfe: IModuleMenu = {
   initials: "MFE",
-  name: "Módulo de Filiación de Empleados",
+  name: i18n.t("sidebar.mfe.moduleName") as string,
   children: [
     {
       icon: "mdi-view-dashboard",
-      text: "Inicio",
+      text: i18n.t("sidebar.mfe.items.home") as string,
       message: null,
       route: "dashboard",
     },
     {
       icon: "mdi-account-plus",
-      text: "Alta",
+      text: i18n.t("sidebar.mfe.items.employeeRegistration") as string,
       message: null,
       route: "people:create",
     },
     {
       icon: "mdi-account-search",
-      text: "Consulta",
+      text: i18n.t("sidebar.mfe.items.employeeConsultation") as string,
       message: null,
       route: "people:list",
     },
     {
       icon: "mdi-card-account-details",
-      text: "Folios asignación",
+      text: i18n.t("sidebar.mfe.items.assignmentFolios") as string,
       message: null,
       route: "folios:list",
     },
     {
       icon: "mdi-file-account",
-      text: "Constancia de asignación",
+      text: i18n.t("sidebar.mfe.items.proofOfAssignment") as string,
       message: null,
       route: "proof:assignment",
     },

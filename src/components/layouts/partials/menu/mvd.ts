@@ -2,7 +2,7 @@ import { IModuleMenu } from "@/store/app/types";
 
 const mvd: IModuleMenu = {
   initials: "MVD",
-  name: "Módulo de Vigencia de Derechos",
+  name: "Vigencia de Derechos",
   children: [
     {
       icon: "mdi-account-search",

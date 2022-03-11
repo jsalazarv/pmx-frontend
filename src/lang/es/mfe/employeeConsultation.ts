@@ -29,6 +29,7 @@ export default {
     export: "Exportar",
     search: "Buscar",
     delete: "Eliminar",
+    addContact: "Agregar contacto",
     dialogs: {
       searchNotFound: {
         message: "",

@@ -452,12 +452,11 @@ export default class EmployeeConsultation extends Vue {
   }
 
   async getValidityRights() {
-    let responseValidityRights =
-      await this.beneficiaryService.getValidityRights(
-        this.computedIdPerson,
-        this.computedEmployeeId,
-        this.computedEmployeeTypeId
-      );
+    let responseValidityRights = await this.beneficiaryService.getValidityRights(
+      this.computedIdPerson,
+      this.computedEmployeeId,
+      this.computedEmployeeTypeId
+    );
     if (responseValidityRights.Success) {
       this.validityRights = responseValidityRights.Data;
       if (this.validityRights.IdDerechohabiente == null) {
@@ -514,10 +513,14 @@ export default class EmployeeConsultation extends Vue {
       .then((response) => {
         this.$store.dispatch("app/setNotify", {});
       })
-      .catch((error) => {
-        this.$store.dispatch("app/setNotify", {
-          status: 500,
-        });
+      .catch(() => {
+        (this as any).alert = {
+          message: this.$t(
+            "employeeConsultation.labels.dialogs.errorAssign.message"
+          ) as string,
+          alert: true,
+          type: false,
+        };
       })
       .finally(() => {
         this.dialog = false;
