@@ -14,7 +14,6 @@
           :indeterminate="isLoading"
         ></v-progress-linear>
         <v-container fluid>
-          {{validityRights}}
           <EmployeeFormContratual v-if="computedEmployeeTypeId == 0" />
           <EmployeeFormNormative
             v-else
