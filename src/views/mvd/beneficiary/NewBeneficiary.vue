@@ -951,11 +951,12 @@ export default class NewBeneficiary extends Vue {
 
   async getValidityRights() {
     this.isLoadingValidityRights = true;
-    let responseValidityRights = await this.beneficiaryService.getValidityRights(
-      this.computedIdPerson,
-      this.computedEmployeeId,
-      this.computedEmployeeTypeId
-    );
+    let responseValidityRights =
+      await this.beneficiaryService.getValidityRights(
+        this.computedIdPerson,
+        this.computedEmployeeId,
+        this.computedEmployeeTypeId
+      );
     if (responseValidityRights.Success) {
       this.validityRights = responseValidityRights.Data;
       this.beneficiary.IdDerTitular = this.validityRights.IdDerechohabiente;
@@ -1075,10 +1076,13 @@ export default class NewBeneficiary extends Vue {
       this.beneficiary.Persona.IndRenapo = true;
       this.beneficiary.IdPersona = this.computedPerson.Person.IdPersona;
       this.beneficiary.Persona.Nombres = this.computedPerson.Renapo.Nombres;
-      this.beneficiary.Persona.ApellidoPaterno = this.computedPerson.Renapo.ApellidoPaterno;
-      this.beneficiary.Persona.ApellidoMaterno = this.computedPerson.Renapo.ApellidoMaterno;
+      this.beneficiary.Persona.ApellidoPaterno =
+        this.computedPerson.Renapo.ApellidoPaterno;
+      this.beneficiary.Persona.ApellidoMaterno =
+        this.computedPerson.Renapo.ApellidoMaterno;
       this.beneficiary.Persona.Sexo = this.computedPerson.Renapo.Sexo;
-      this.beneficiary.Persona.FechaNacimiento = this.computedPerson.Renapo.FechaNacimiento;
+      this.beneficiary.Persona.FechaNacimiento =
+        this.computedPerson.Renapo.FechaNacimiento;
       this.beneficiary.Persona.Edad = this.getAge(
         this.computedPerson.Renapo.FechaNacimiento
       ).toString();
@@ -1086,10 +1090,13 @@ export default class NewBeneficiary extends Vue {
       this.beneficiary.Persona.IndRenapo = false;
       this.beneficiary.IdPersona = this.computedPerson.Person.IdPersona;
       this.beneficiary.Persona.Nombres = this.computedPerson.Person.Nombres;
-      this.beneficiary.Persona.ApellidoPaterno = this.computedPerson.Person.ApellidoPaterno;
-      this.beneficiary.Persona.ApellidoMaterno = this.computedPerson.Person.ApellidoMaterno;
+      this.beneficiary.Persona.ApellidoPaterno =
+        this.computedPerson.Person.ApellidoPaterno;
+      this.beneficiary.Persona.ApellidoMaterno =
+        this.computedPerson.Person.ApellidoMaterno;
       this.beneficiary.Persona.Sexo = this.computedPerson.Person.Sexo;
-      this.beneficiary.Persona.FechaNacimiento = this.computedPerson.Person.FechaNacimiento;
+      this.beneficiary.Persona.FechaNacimiento =
+        this.computedPerson.Person.FechaNacimiento;
       this.beneficiary.Persona.Edad = this.getAge(
         this.computedPerson.Person.FechaNacimiento
       ).toString();

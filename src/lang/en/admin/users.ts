@@ -31,7 +31,7 @@ export default {
     editUser: "Edit User",
     createUser: "Create User",
     eliminationTitle: "Delete User",
-    eliminationMsg: "do you really want to delete the user?"
+    eliminationMsg: "do you really want to delete the user?",
   },
   labels: {
     add: "Add",

@@ -3,8 +3,5 @@ declare module "*.vue" {
   export default Vue;
 }
 declare module "vue-barcode";
-declare module "vue-web-cam"
+declare module "vue-web-cam";
 declare module "lodash";
-
-
-
