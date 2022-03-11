@@ -1,11 +1,11 @@
 <template>
-  <v-dialog v-model="isDialogOpen" max-width="700">
+  <v-dialog v-model="isDialogOpen" max-width="700" :persistent="sendCreated">
     <v-card>
       <v-card-title class="headline mb-2">
         {{
           isCreated
-            ? $t("users.labels.dialogs.createUser.title")
-            : "Editar Usuario"
+            ? $t("users.attributes.createUser")
+            : $t("users.attributes.editUser")
         }}
       </v-card-title>
       <v-card-text class="py-0">
@@ -16,7 +16,7 @@
                 autocomplete="off"
                 dense
                 name="assignmentNumber"
-                :label="$t('employee.attributes.assignmentNumber')"
+                :label="$t('users.attributes.assignmentNumber')"
                 outlined
                 required
                 readonly
@@ -31,7 +31,7 @@
                 :items="employeeTypeList"
                 item-text="Nombre"
                 item-value="Id"
-                :label="$t('employee.attributes.typeOfEmployee')"
+                :label="$t('users.attributes.typeOfEmployee')"
                 outlined
                 required
                 :loading="isLoadingEmployeeList"
@@ -44,7 +44,7 @@
                 autocomplete="off"
                 dense
                 name="name"
-                :label="$t('employee.attributes.names')"
+                :label="$t('users.attributes.namePerson')"
                 outlined
                 required
                 readonly
@@ -57,7 +57,7 @@
                 :items="profiles"
                 dense
                 outlined
-                label="Perfil"
+                :label="$t('users.attributes.profileName')"
                 item-text="Nombre"
                 return-object
                 @change="changeProfile"
@@ -69,7 +69,7 @@
               <v-textarea
                 outlined
                 dense
-                label="Roles"
+                :label="$t('users.attributes.rol')"
                 no-resize
                 v-model="rolesText"
               ></v-textarea>
@@ -100,7 +100,12 @@
         </v-form>
       </v-card-text>
       <v-card-actions>
-        <v-btn color="light darken-1" text @click="closeDialog">
+        <v-btn
+          color="light darken-1"
+          text
+          @click="closeDialog"
+          :disabled="sendCreated"
+        >
           {{ $t("users.labels.dialogs.createUser.actions.dismiss") }}
         </v-btn>
         <v-spacer></v-spacer>
@@ -110,7 +115,7 @@
           :loading="sendCreated"
           @click="saveUser"
         >
-          Guardar
+          {{ $t("users.labels.save") }}
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -215,8 +220,8 @@ export default class UserCreationDialog extends Vue {
 
   get datesLabels() {
     return {
-      dateBegin: "Fecha Inicio",
-      dateFinish: "Fecha Término",
+      dateBegin: this.$t("users.attributes.startDate"),
+      dateFinish: this.$t("users.attributes.finalDate"),
     };
   }
 

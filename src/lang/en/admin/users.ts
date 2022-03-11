@@ -24,7 +24,12 @@ export default {
     state: "State",
     searchAssignNumber: "Assign of Number",
     namePerson: "Name",
-    locked: "Locked"
+    locked: "Locked",
+    rol: "Roles",
+    startDate: "Start Date",
+    finalDate: "Final Date",
+    editUser: "Edit User",
+    createUser: "Create User"
   },
   labels: {
     add: "Add",
@@ -32,6 +37,7 @@ export default {
     update: "Update",
     delete: "Delete",
     search: "Search",
+    save: "Save",
     dialogs: {
       createUser: {
         title: "Add User",

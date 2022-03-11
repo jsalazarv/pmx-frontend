@@ -24,13 +24,20 @@ export default {
     validity: "Vigencia",
     searchAssignNumber: "Número de Asignación",
     namePerson: "Nombres",
-    locked: "Bloquear"
+    locked: "Bloquear",
+    rol: "Roles",
+    startDate: "Fecha Inicio",
+    finalDate: "Fecha Término",
+    
+    editUser: "Editar Usuario",
+    createUser: "Crear Usuario"
   },
   labels: {
     add: "Agregar",
     edit: "Editar",
     update: "Actualizar",
     delete: "Eliminar",
+    save: "Guardar",
     search: "Buscar",
     dialogs: {
       createUser: {
