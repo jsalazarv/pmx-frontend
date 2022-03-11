@@ -68,18 +68,37 @@
       </template>
     </v-list>
     <template v-slot:append>
-      <v-list dense>
-        <v-list-item link :to="{ name: 'users:list' }" exact>
-          <v-list-item-action>
-            <v-icon>mdi-account-multiple-plus</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>
-              {{ $t("sidebar.common.items.manageUsers") }}
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
+      <v-list-group :value="true" prepend-icon="mdi-shield-account">
+        <template v-slot:activator>
+          <v-list-item-title>{{ $t("sidebar.admin.title") }}</v-list-item-title>
+        </template>
+
+        <v-list dense>
+          <v-list-item link :to="{ name: 'users:list' }" exact>
+            <v-list-item-action>
+              <v-icon>mdi-account-multiple-plus</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>
+                {{ $t("sidebar.admin.items.users") }}
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+
+        <v-list dense>
+          <v-list-item link :to="{ name: 'profiles:list' }" exact>
+            <v-list-item-action>
+              <v-icon>mdi-account-lock</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>
+                {{ $t("sidebar.admin.items.profiles") }}
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-list-group>
     </template>
   </v-navigation-drawer>
 </template>
