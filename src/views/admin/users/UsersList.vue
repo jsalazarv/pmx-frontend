@@ -146,8 +146,8 @@
     />
 
     <ConfirmationDialog
-      title="Eliminar Usuario"
-      text="¿Realmente deseas eliminar el usuario?"
+      :title="titleModalElimination"
+      :text="messageConfirmationElimination"
       v-model="confirmEliminationModel"
       @confirm="confirmElimination"
     />
@@ -236,6 +236,14 @@ export default class UsersList extends Vue {
   mounted(): void {
     this.getUserList();
     this.getProfilesList();
+  }
+
+  get titleModalElimination(): string{
+    return this.$t("users.attributes.eliminationTitle") as string;
+  }
+
+  get messageConfirmationElimination(): string{
+    return this.$t("users.attributes.eliminationMsg") as string;
   }
 
   get headers() {

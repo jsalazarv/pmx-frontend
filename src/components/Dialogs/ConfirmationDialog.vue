@@ -10,9 +10,11 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn class="text-capitalize mr-2" @click="cancel"> Cancelar </v-btn>
+          <v-btn class="text-capitalize mr-2" @click="cancel">
+            {{ $t("dictionary.cancel") }}
+          </v-btn>
           <v-btn class="text-capitalize" color="primary" @click="confirm">
-            Aceptar
+            {{ $t("dictionary.confirm") }}
           </v-btn>
         </v-card-actions>
       </v-card>

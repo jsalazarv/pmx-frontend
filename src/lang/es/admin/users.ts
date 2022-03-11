@@ -29,7 +29,9 @@ export default {
     startDate: "Fecha Inicio",
     finalDate: "Fecha Término",
     editUser: "Editar Usuario",
-    createUser: "Crear Usuario"
+    createUser: "Crear Usuario",
+    eliminationTitle: "Eliminar Usuario",
+    eliminationMsg: "¿Realmente deseas eliminar el usuario?"
   },
   labels: {
     add: "Agregar",
