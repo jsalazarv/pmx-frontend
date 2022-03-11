@@ -134,7 +134,7 @@
                 </v-col>
               </v-row>
               <v-row class="mt-0">
-                <v-col class="pb-0" cols="12" sm="12" md="2">
+                <v-col class="pb-0" cols="12" sm="12" md="3">
                   <v-menu
                     v-model="showPickerBirthday"
                     :close-on-content-click="false"
@@ -156,6 +156,7 @@
                           name="birthday"
                           hint="DD/MM/YYYY"
                           persistent-hint
+                          prepend-icon="mdi-calendar"
                           readonly
                           v-on="on"
                           dense
@@ -170,11 +171,10 @@
                       no-title
                       @input="calculateAge"
                       locale="es"
-                      :max="maxDate"
                     ></v-date-picker>
                   </v-menu>
                 </v-col>
-                <v-col class="pb-0" cols="12" sm="12" md="2">
+                <v-col class="pb-0" cols="12" sm="12" md="3">
                   <ValidationProvider
                     :name="$t('beneficiary.attributes.age')"
                     v-slot="{ errors }"
@@ -193,7 +193,7 @@
                     </v-text-field>
                   </ValidationProvider>
                 </v-col>
-                <v-col class="pb-0" cols="12" sm="12" md="2">
+                <v-col class="pb-0" cols="12" sm="12" md="3">
                   <ValidationProvider
                     :name="$t('beneficiary.attributes.gender')"
                     v-slot="{ errors }"
@@ -220,7 +220,7 @@
                   class="margin-top: 0px !important;"
                   cols="12"
                   sm="12"
-                  md="2"
+                  md="3"
                 >
                   <ValidationProvider
                     :name="$t('beneficiary.attributes.inability')"
@@ -236,7 +236,7 @@
                     ></v-checkbox>
                   </ValidationProvider>
                 </v-col>
-                <v-col class="pb-0" cols="12" sm="12" md="2">
+                <v-col class="pb-0" cols="12" sm="12" md="3">
                   <ValidationProvider
                     :name="$t('beneficiary.attributes.coding')"
                     v-slot="{ errors }"
@@ -261,7 +261,7 @@
                     ></v-autocomplete>
                   </ValidationProvider>
                 </v-col>
-                <v-col class="pb-0" cols="12" sm="12" md="2">
+                <v-col class="pb-0" cols="12" sm="12" md="3">
                   <v-menu
                     v-model="showPickerValidity"
                     :close-on-content-click="false"
@@ -283,6 +283,7 @@
                           name="validity"
                           hint="DD/MM/YYYY"
                           persistent-hint
+                          prepend-icon="mdi-calendar"
                           readonly
                           v-on="on"
                           dense
@@ -294,14 +295,14 @@
                     <v-date-picker
                       v-model="beneficiary.Vigencia"
                       no-title
+                      :close-on-content-click="false"
                       @input="showPickerValidity = false"
                       locale="es"
+                      :max="maxDate"
                     ></v-date-picker>
                   </v-menu>
                 </v-col>
-              </v-row>
-              <v-row class="mt-0">
-                <v-col class="pb-0" cols="12" sm="12" md="5">
+                <v-col class="pb-0" cols="12" sm="12" md="6">
                   <ValidationProvider
                     :name="$t('beneficiary.attributes.medicalUnit')"
                     v-slot="{ errors }"
@@ -646,6 +647,8 @@ import RenapoDialogBeneficiary from "./components/RenapoDialogBeneficiary.vue";
 import PersonService from "@/services/PersonService";
 import { IPersonData, IPersonValidationState } from "@/store/person/types";
 import { IRenapoData } from "@/services/PersonService/types";
+import moment from "moment";
+import { Watch } from "vue-property-decorator";
 
 @Component({
   components: { RenapoDialogBeneficiary },
@@ -845,13 +848,6 @@ export default class NewBeneficiary extends Vue {
     return this.$store.state.person;
   }
 
-  parseDate(date: any) {
-    if (!date) return null;
-
-    const [month, day, year] = date.split("/");
-    return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
-  }
-
   newAddress(): void {
     this.useAddress = true;
     this.beneficiary.Domicilio = {
@@ -1040,7 +1036,9 @@ export default class NewBeneficiary extends Vue {
           this.disabledSave = this.existsBeneficiary;
           this.$store.dispatch("app/setNotify", {
             status: 400,
-            text: "Ha ocurrido un problema: Servicio de renapo no disponible" as string,
+            text: this.$t(
+              "beneficiary.labels.customValidations.renapoNotAvailable"
+            ) as string,
           });
         }
       })
@@ -1112,13 +1110,6 @@ export default class NewBeneficiary extends Vue {
       age--;
     }
     return age <= 0 ? 0 : age;
-  }
-
-  handleBlur(e: any) {
-    console.log(e.target.value);
-
-    // this.beneficiary.Vigencia = // assign parsed value from this.keyboardEntered
-    // setTimeout(() => this.myDateShown = false, 100)
   }
 
   calculateAge() {
@@ -1267,8 +1258,8 @@ export default class NewBeneficiary extends Vue {
         text: this.$t(
           this.validityValidations() ==
             EnumValidityValidations.INVALID_CHILDRENS
-            ? "beneficiary.labels.dialogs.errorEnum.errorChildrens"
-            : "beneficiary.labels.dialogs.errorEnum.errorBrothers"
+            ? "beneficiary.labels.customValidations.errorChildrens"
+            : "beneficiary.labels.customValidations.errorBrothers"
         ) as string,
       });
     }

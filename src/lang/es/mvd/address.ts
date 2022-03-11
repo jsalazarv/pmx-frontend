@@ -34,18 +34,10 @@ export default {
       confirmDelete: {},
       successDelete: {},
       errorDelete: {},
-      errorUpdate: {
-        message: "Ha ocurrido un problema",
-      },
-      successUpdate: {
-        message: "Se ha guardado el domicilio correctamente",
-      },
-      errorCreate: {
-        message: "Ha ocurrido un problema",
-      },
-      successCreate: {
-        message: "Se ha guardado el domicilio correctamente",
-      },
+      errorUpdate: {},
+      successUpdate: {},
+      errorCreate: {},
+      successCreate: {},
     },
   },
 };

@@ -51,33 +51,29 @@ export default {
       confirmDelete: {},
       successDelete: {},
       errorDelete: {},
-      errorUpdate: {
-        message: "A problem has occurred",
-      },
-      successUpdate: {
-        message: "Beneficiary has been saved correctly",
-      },
-      errorCreate: {
-        message: "A problem has occurred",
-        error400: "The beneficiary is already registered",
-      },
-      successCreate: {
-        message: "Beneficiary has been saved correctly",
-      },
-      errorMessage: {
-        error400: "A problem has occurred: Curp not valid",
-        error500: "A problem has occurred: Renapo service not available",
-      },
-      errorEnum: {
-        errorChildrens:
-          "It is not possible to grant the validity: because your child is older than 25 years",
-        errorBrothers:
-          "It is not possible to grant validity: because your sibling is older than 17 years",
-      },
+      errorUpdate: {},
+      successUpdate: {},
+      errorCreate: {},
+      successCreate: {},
     },
-    validations: {
-      discharged: "The beneficiary is already registered",
-      isNotDischarged: "",
+    customValidations: {
+      renapoNotAvailable:
+        "A problem has occurred: Renapo service not available",
+      errorChildrens:
+        "It is not possible to grant the validity: because your child is older than 25 years",
+      errorBrothers:
+        "It is not possible to grant validity: because your sibling is older than 17 years",
+      beneficiaryAlreadyActive:
+        "The beneficiary is already registered and is active",
+      beneficiaryAlreadyInactive:
+        "The beneficiary is already registered and is inactive",
+      beneficiaryNotRegistered: "The beneficiary does not exist registered",
+      beneficiaryRegisteredAvaialble:
+        "The beneficiary is already registered and is available to edit it",
+      beneficiaryRegisteredNotAvaialble:
+        "The beneficiary is already registered but is not available to edit it",
+      beneficiaryNotRegisteredUpdated:
+        "There is no registered beneficiary, your information will be completely updated when you select",
     },
   },
 };

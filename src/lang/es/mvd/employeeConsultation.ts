@@ -52,28 +52,14 @@ export default {
       confirmDelete: {
         message: "¿Desea eliminar al derechohabiente?",
       },
-      successDelete: {
-        message: "Se ha eliminado al derechohabiente correctamente",
-      },
-      errorDelete: {
-        message: "Un problema ha ocurrido",
-      },
+      successDelete: {},
+      errorDelete: {},
       errorUpdate: {},
       successUpdate: {},
-      errorCreate: {
-        message: "Un problema ha ocurrido",
-      },
-      successCreate: {
-        message: "Se ha guardado al titular correctamente",
-      },
+      errorCreate: {},
+      successCreate: {},
       info: {
         message: "El empleado no se encuentra actualmente vigente",
-      },
-      successAssign: {
-        message: "Se ha asignado correctamente",
-      },
-      errorAssign: {
-        message: "Ha ocurrido un problema",
       },
     },
     validations: {

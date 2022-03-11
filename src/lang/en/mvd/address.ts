@@ -34,18 +34,10 @@ export default {
       confirmDelete: {},
       successDelete: {},
       errorDelete: {},
-      errorUpdate: {
-        message: "A problem has occurred",
-      },
-      successUpdate: {
-        message: "Address has been saved correctly",
-      },
-      errorCreate: {
-        message: "A problem has occurred",
-      },
-      successCreate: {
-        message: "Address has been saved correctly",
-      },
+      errorUpdate: {},
+      successUpdate: {},
+      errorCreate: {},
+      successCreate: {},
     },
   },
 };

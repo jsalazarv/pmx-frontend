@@ -5,19 +5,18 @@
         {{
           !isEdit
             ? existsBeneficiary
-              ? "Ya esta registrado el derechohabiente y esta activo"
+              ? $t("beneficiary.labels.customValidations.beneficiaryAlreadyActive")
               : hasDataPTCH
-              ? "Ya esta registrado el derechohabiente y esta inactivo"
-              : "No existe registrado el derechohabiente"
+              ?  $t("beneficiary.labels.customValidations.beneficiaryAlreadyInactive")
+              : $t("beneficiary.labels.customValidations.beneficiaryNotRegistered")
             : hasDataPTCH
             ? allowEdit
-              ? "Ya esta registrado el derechohabiente y esta disponible para editarlo"
-              : "Ya esta registrado el derechohabiente pero no esta disponible para editarlo"
-            : "No existe registrado el derechohabiente su información se actualizará completamente al seleccionar"
+              ? $t("beneficiary.labels.customValidations.beneficiaryRegisteredAvaialble")
+              : $t("beneficiary.labels.customValidations.beneficiaryRegisteredNotAvaialble")
+            : $t("beneficiary.labels.customValidations.beneficiaryNotRegisteredUpdated")
         }}
       </v-card-title>
-      <!-- ? $t("beneficiary.labels.validations.discharged")
-            : $t("beneficiary.labels.validations.isNotDischarged") -->
+
       <v-card-text>
         <v-row>
           <v-col cols="12" md="6" v-if="hasDataRenapo">
@@ -162,7 +161,7 @@ export default class RenapoDialogBeneficiary extends Vue {
   get computedPerson(): IPersonValidationState {
     return this.$store.state.person;
   }
-
+  
   hide() {
     this.$emit("hideDialog");
   }

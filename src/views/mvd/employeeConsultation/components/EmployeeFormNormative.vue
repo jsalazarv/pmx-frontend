@@ -124,6 +124,7 @@
                 @input="showPickerValidity = false"
                 locale="es"
                 v-model="titularBeneficiary.Vigencia"
+                :max="maxDate"
               ></v-date-picker>
             </v-menu>
           </v-col>
@@ -177,6 +178,7 @@ export default class EmployeeFormNormative extends Vue {
   public workplaces: Array<IWorkplace> = [];
   public departments: Array<IDepartament> = [];
   public showPickerValidity: any = false;
+  public maxDate = "9999-31-12";
   public titularBeneficiary: ITitularBeneficiaryRequest = {
     IdPersona: null,
     IdCentro: null,
