@@ -14,6 +14,7 @@ import notify from "@/lang/es/mfe/notify";
 import sidebar from "@/lang/es/sidebar";
 import users from "@/lang/es/admin/users";
 import dropDownProfile from "./dropDownProfile";
+import contacts from "./mfe/contacts";
 
 export default {
   dictionary,
@@ -32,4 +33,5 @@ export default {
   sidebar,
   users,
   dropDownProfile,
+  contacts
 };

@@ -11,6 +11,7 @@ import credentialization from "./mvd/credentialization";
 import dropDownProfile from "./dropDownProfile";
 import proofAssignment from "./mfe/proofAssignment";
 import users from "@/lang/en/admin/users";
+import contacts from "./mfe/contacts";
 
 export default {
   dictionary,
@@ -25,5 +26,6 @@ export default {
   credentialization,
   dropDownProfile,
   proofAssignment,
-  users
+  users,
+  contacts
 };

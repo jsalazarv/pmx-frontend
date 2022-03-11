@@ -2,7 +2,9 @@
   <div>
     <v-dialog v-model="openModel" width="1200" :persistent="sendCreated">
       <v-card>
-        <v-card-title class="headline">Contactos</v-card-title>
+        <v-card-title class="headline">
+          {{ $t("contacts.contacts") }}
+        </v-card-title>
         <v-card-text>
           <v-row dense class="mt-2">
             <v-col cols="12">
@@ -14,7 +16,7 @@
                 class="ml-2 mb-2"
               >
                 <v-icon>mdi-card-account-phone</v-icon>
-                <span class="ml-2">{{ $t("employee.labels.add") }}</span>
+                <span class="ml-2">{{ $t("contacts.add") }}</span>
               </v-btn>
 
               <v-row
@@ -33,7 +35,7 @@
                     <v-autocomplete
                       dense
                       name="contactType"
-                      :label="$t('employee.attributes.contactType')"
+                      :label="$t('contacts.contactType')"
                       outlined
                       required
                       :items="contactTypes"
@@ -54,7 +56,7 @@
                     <v-text-field
                       dense
                       name="contactDetail"
-                      :label="$t('employee.attributes.contactDetail')"
+                      :label="$t('contacts.detail')"
                       outlined
                       required
                       v-model="item.Detalle"
@@ -70,7 +72,7 @@
                     <v-text-field
                       dense
                       name="extension"
-                      :label="$t('employee.attributes.extension')"
+                      :label="$t('contacts.extension')"
                       outlined
                       v-model="item.Extension"
                       :error-messages="errors"
@@ -123,14 +125,15 @@
             v-if="contacts.length"
             :disabled="sendCreated"
             :loading="sendCreated"
-            >Guardar</v-btn
           >
+            {{ $t("contacts.save") }}
+          </v-btn>
           <v-btn
             class="text-capitalize"
             @click="closeContactsDialog"
             :disabled="sendCreated"
           >
-            Cerrar
+            {{ $t("contacts.close") }}
           </v-btn>
         </v-card-actions>
       </v-card>

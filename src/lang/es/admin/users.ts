@@ -28,7 +28,6 @@ export default {
     rol: "Roles",
     startDate: "Fecha Inicio",
     finalDate: "Fecha Término",
-    
     editUser: "Editar Usuario",
     createUser: "Crear Usuario"
   },
