@@ -92,7 +92,7 @@
                 v-slot="{ errors }"
               >
                 <v-text-field
-                  autocomplete="off"
+                  autocomplete="on"
                   dense
                   name="assignmentNumberStatus"
                   disabled
